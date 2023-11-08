@@ -7,3 +7,8 @@
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
+
+.bg-forgotpassword {
+  background: rgb(153, 157, 156);
+  background: linear-gradient(0deg, rgba(153, 157, 156, 1) 0%, rgba(253, 222, 204, 1) 100%);
+}
