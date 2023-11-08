@@ -24,6 +24,10 @@ module.exports = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out'
+      },
+      colors: {
+        primary: '#DD2153',
+        font: '#0C1421'
       }
     }
   },
