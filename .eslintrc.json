@@ -22,7 +22,8 @@
     "**/tailwind.config.js",
     "**/postcss.config.js",
     "**/dist/*",
-    "**/coverage/*"
+    "**/coverage/*",
+    "**/src/components/ui"
   ],
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "off",
@@ -36,6 +37,8 @@
           "attributes": false
         }
       }
-    ]
+    ],
+    "@typescript-eslint/indent": "off",
+    "@typescript-eslint/consistent-type-assertions": "off"
   }
 }
