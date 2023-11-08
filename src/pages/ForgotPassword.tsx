@@ -1,3 +1,58 @@
+import { Logo } from '@/assets'
+import { Button } from '@/components/ui/button'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { useForm } from 'react-hook-form'
+import { BsChevronLeft } from 'react-icons/bs'
+import { useNavigate } from 'react-router-dom'
+
 export default function ForgotPassword() {
-  return <div>ForgotPassword</div>
+  interface FormValues {
+    email: string
+  }
+
+  const forms = useForm<FormValues>({
+    mode: 'onTouched'
+  })
+
+  const onSubmit = async (values: FormValues) => {
+    console.log(values)
+  }
+
+  const Navigate = useNavigate()
+
+  return (
+    <div className="bg-forgotpassword min-h-screen">
+      <div className="flex flex-col  items-center justify-between flex-1 min-h-screen">
+        <img className="w-[386.96px] mx-auto pt-[90px]" src={Logo} alt="" />
+        <div className="w-[699px] h-[393] bg-white py-[35px] px-[39px] rounded-3xl shadow-xl">
+          <Button onClick={() => { Navigate('/login') }} variant={'ghost'}>
+            <BsChevronLeft className="text-xl" />
+          </Button>
+          <div className="text-center">
+            <h1 className="font-bold text-3xl">Lupa Password?</h1>
+            <h2 className="text-xl pt-5">Masukan Email Anda</h2>
+          </div>
+          <Form {...forms}>
+            <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
+              <FormField
+                name="email"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
+                    <FormControl>
+                      <Input {...field} type="email" placeholder="Example@email.com" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <Button className="py-6 text-[17px] font-normal">Kirim</Button>
+            </form>
+          </Form>
+        </div>
+        <p className="font-normal text-base text-white text-center pb-[30px]  ">© 2023 ALL RIGHTS RESERVED</p>
+      </div>
+    </div>
+  )
 }
