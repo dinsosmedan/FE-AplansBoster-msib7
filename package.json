@@ -9,15 +9,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "format": "prettier --write .",
-    "prepare": "husky install",
     "check-format": "prettier --check .",
     "check-lint": "eslint . --ext ts --ext tsx --ext js"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npx pretty-quick --staged ng lint ng test",
-      "pre-push": "ng buld -aot true"
-    }
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
@@ -50,7 +43,6 @@
     "eslint-plugin-n": "^16.3.0",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.33.2",
-    "husky": "^8.0.3",
     "postcss": "^8.4.31",
     "prettier": "^3.0.3",
     "pretty-quick": "^3.1.3",
