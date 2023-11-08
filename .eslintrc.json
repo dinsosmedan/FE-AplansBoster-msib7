@@ -1,0 +1,33 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["plugin:react/recommended", "standard-with-typescript"],
+  "overrides": [],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": ["react"],
+  "ignorePatterns": [
+    ".eslintrc.cjs",
+    "vite.config.ts",
+    "**/build/*",
+    "**/node_modules",
+    "**/public/*",
+    "**/tsconfig.json",
+    "**/tsconfig.node.json",
+    "**/README.md",
+    "**/tailwind.config.js",
+    "**/postcss.config.js",
+    "**/dist/*",
+    "**/coverage/*"
+  ],
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/space-before-function-paren": "off",
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/no-non-null-assertion": "off"
+  }
+}
