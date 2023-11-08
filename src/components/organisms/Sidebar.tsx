@@ -10,6 +10,7 @@ import {
   HiOutlineUserGroup,
   HiSquares2X2
 } from 'react-icons/hi2'
+import { NavLink } from 'react-router-dom'
 
 export default function Sidebar() {
   return (
@@ -19,43 +20,75 @@ export default function Sidebar() {
         <div className="flex flex-col gap-4">
           <span className="uppercase text-[#C7C7C7] text-xs font-bold">Main Menu</span>
           <nav className="flex flex-col gap-3">
-            <Button className="gap-3 justify-start pl-8">
-              <HiSquares2X2 className="text-xl" />
-              <span>Dashboard</span>
-            </Button>
-            <Button variant="base" className="gap-3 justify-start pl-8">
-              <HiOutlineClipboardDocumentList className="text-xl" />
-              <span>Layanan</span>
-            </Button>
-            <Button variant="base" className="gap-3 justify-start pl-8">
-              <HiOutlineClipboardDocumentCheck className="text-xl" />
-              <span>Data Penerima</span>
-            </Button>
-            <Button variant="base" className="gap-3 justify-start pl-8">
-              <HiOutlineMagnifyingGlassCircle className="text-xl" />
-              <span>Profiling Masyarakat</span>
-            </Button>
-            <Button variant="base" className="gap-3 justify-start pl-8">
-              <HiOutlineFolderOpen className="text-xl" />
-              <span>Data Master</span>
-            </Button>
-            <Button variant="base" className="gap-3 justify-start pl-8">
-              <HiOutlineArchiveBox className="text-xl" />
-              <span>Data DTKS</span>
-            </Button>
+            <NavLink to="/">
+              {({ isActive }) => (
+                <Button variant={isActive ? "default" : "base"} className="gap-3 justify-start pl-8 w-full">
+                  <HiSquares2X2 className="text-xl" />
+                  <span>Dashboard</span>
+                </Button>
+              )}
+            </NavLink>
+            <NavLink to="/layanan">
+              {({ isActive }) => (
+                <Button variant={isActive ? "default" : "base"} className="gap-3 justify-start pl-8 w-full">
+                  <HiOutlineClipboardDocumentList className="text-xl" />
+                  <span>Layanan</span>
+                </Button>
+              )}
+            </NavLink>
+            <NavLink to="/data-penerima">
+              {({ isActive }) => (
+                <Button variant={isActive ? "default" : "base"} className="gap-3 justify-start pl-8 w-full">
+                  <HiOutlineClipboardDocumentCheck className="text-xl" />
+                  <span>Data Penerima</span>
+                </Button>
+              )}
+            </NavLink>
+            <NavLink to="/profiling-masyarakat">
+              {({ isActive }) => (
+                <Button variant={isActive ? "default" : "base"} className="gap-3 justify-start pl-8 w-full">
+                  <HiOutlineMagnifyingGlassCircle className="text-xl" />
+                  <span>Profiling Masyarakat</span>
+                </Button>
+              )}
+            </NavLink>
+            <NavLink to="/data-master">
+              {({ isActive }) => (
+                <Button variant={isActive ? "default" : "base"} className="gap-3 justify-start pl-8 w-full">
+                  <HiOutlineFolderOpen className="text-xl" />
+                  <span>Data Master</span>
+                </Button>
+              )}
+            </NavLink>
+            <NavLink to="/data-dtks">
+              {({ isActive }) => (
+                <Button variant={isActive ? "default" : "base"} className="gap-3 justify-start pl-8 w-full">
+                  <HiOutlineArchiveBox className="text-xl" />
+                  <span>Data DTKS</span>
+                </Button>
+              )}
+            </NavLink>
           </nav>
         </div>
         <div className="flex flex-col gap-4">
           <span className="uppercase text-[#C7C7C7] text-xs font-bold">MENU MANAJEMEN </span>
           <nav className="flex flex-col gap-3">
-            <Button variant="base" className="gap-3 justify-start pl-8">
-              <HiOutlineCog6Tooth className="text-xl" />
-              <span>Manajemen Role</span>
-            </Button>
-            <Button variant="base" className="gap-3 justify-start pl-8">
-              <HiOutlineUserGroup className="text-xl" />
-              <span>Manajemen User</span>
-            </Button>
+            <NavLink to="/manajemen-role">
+              {({ isActive }) => (
+                <Button variant={isActive ? "default" : "base"} className="gap-3 justify-start pl-8 w-full">
+                  <HiOutlineCog6Tooth className="text-xl" />
+                  <span>Manajemen Role</span>
+                </Button>
+              )}
+            </NavLink>
+            <NavLink to="/manajemen-user">
+              {({ isActive }) => (
+                <Button variant={isActive ? "default" : "base"} className="gap-3 justify-start pl-8 w-full">
+                  <HiOutlineUserGroup className="text-xl" />
+                  <span>Manajemen User</span>
+                </Button>
+              )}
+            </NavLink>
           </nav>
         </div>
       </section>
