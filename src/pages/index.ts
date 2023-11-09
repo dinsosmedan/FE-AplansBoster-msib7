@@ -9,4 +9,15 @@ import ProfilingMasyarakat from './ProfilingMasyarakat'
 import ManajemenUser from './ManajemenUser'
 import ManajemenRole from './ManajemenRole'
 
-export { Home, Login, ForgotPassword,Layanan,DataPenerima,DataMaster,DataDTKS,ProfilingMasyarakat,ManajemenRole,ManajemenUser}
+export {
+  Home,
+  Login,
+  ForgotPassword,
+  Layanan,
+  DataPenerima,
+  DataMaster,
+  DataDTKS,
+  ProfilingMasyarakat,
+  ManajemenRole,
+  ManajemenUser
+}
