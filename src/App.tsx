@@ -13,6 +13,7 @@ import {
   ProfilingMasyarakat
 } from './pages'
 import { DashboardLayout } from './components'
+import BansosLansia from './pages/Layanan/BansosLansia'
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
         <Route path="/manajemen-role" element={<ManajemenRole />} />
         <Route path="/manajemen-user" element={<ManajemenUser />} />
         <Route path="/profiling-masyarakat" element={<ProfilingMasyarakat />} />
+        <Route path="/bansos-lansia" element={<BansosLansia />} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
