@@ -26,7 +26,12 @@ export default function ForgotPassword() {
       <div className="flex flex-col  items-center justify-between flex-1 min-h-screen">
         <img className="w-[386.96px] mx-auto pt-[90px]" src={Logo} alt="" />
         <div className="w-[699px] h-[393] bg-white py-[35px] px-[39px] rounded-3xl shadow-xl">
-          <Button onClick={() => { Navigate('/login') }} variant={'ghost'}>
+          <Button
+            onClick={() => {
+              Navigate('/login')
+            }}
+            variant={'ghost'}
+          >
             <BsChevronLeft className="text-xl" />
           </Button>
           <div className="text-center">

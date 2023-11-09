@@ -22,7 +22,7 @@ export default function Sidebar() {
           <nav className="flex flex-col gap-3">
             <NavLink to="/">
               {({ isActive }) => (
-                <Button variant={isActive ? "default" : "base"} className="gap-3 justify-start pl-8 w-full">
+                <Button variant={isActive ? 'default' : 'base'} className="gap-3 justify-start pl-8 w-full">
                   <HiSquares2X2 className="text-xl" />
                   <span>Dashboard</span>
                 </Button>
@@ -30,7 +30,7 @@ export default function Sidebar() {
             </NavLink>
             <NavLink to="/layanan">
               {({ isActive }) => (
-                <Button variant={isActive ? "default" : "base"} className="gap-3 justify-start pl-8 w-full">
+                <Button variant={isActive ? 'default' : 'base'} className="gap-3 justify-start pl-8 w-full">
                   <HiOutlineClipboardDocumentList className="text-xl" />
                   <span>Layanan</span>
                 </Button>
@@ -38,7 +38,7 @@ export default function Sidebar() {
             </NavLink>
             <NavLink to="/data-penerima">
               {({ isActive }) => (
-                <Button variant={isActive ? "default" : "base"} className="gap-3 justify-start pl-8 w-full">
+                <Button variant={isActive ? 'default' : 'base'} className="gap-3 justify-start pl-8 w-full">
                   <HiOutlineClipboardDocumentCheck className="text-xl" />
                   <span>Data Penerima</span>
                 </Button>
@@ -46,7 +46,7 @@ export default function Sidebar() {
             </NavLink>
             <NavLink to="/profiling-masyarakat">
               {({ isActive }) => (
-                <Button variant={isActive ? "default" : "base"} className="gap-3 justify-start pl-8 w-full">
+                <Button variant={isActive ? 'default' : 'base'} className="gap-3 justify-start pl-8 w-full">
                   <HiOutlineMagnifyingGlassCircle className="text-xl" />
                   <span>Profiling Masyarakat</span>
                 </Button>
@@ -54,7 +54,7 @@ export default function Sidebar() {
             </NavLink>
             <NavLink to="/data-master">
               {({ isActive }) => (
-                <Button variant={isActive ? "default" : "base"} className="gap-3 justify-start pl-8 w-full">
+                <Button variant={isActive ? 'default' : 'base'} className="gap-3 justify-start pl-8 w-full">
                   <HiOutlineFolderOpen className="text-xl" />
                   <span>Data Master</span>
                 </Button>
@@ -62,7 +62,7 @@ export default function Sidebar() {
             </NavLink>
             <NavLink to="/data-dtks">
               {({ isActive }) => (
-                <Button variant={isActive ? "default" : "base"} className="gap-3 justify-start pl-8 w-full">
+                <Button variant={isActive ? 'default' : 'base'} className="gap-3 justify-start pl-8 w-full">
                   <HiOutlineArchiveBox className="text-xl" />
                   <span>Data DTKS</span>
                 </Button>
@@ -75,7 +75,7 @@ export default function Sidebar() {
           <nav className="flex flex-col gap-3">
             <NavLink to="/manajemen-role">
               {({ isActive }) => (
-                <Button variant={isActive ? "default" : "base"} className="gap-3 justify-start pl-8 w-full">
+                <Button variant={isActive ? 'default' : 'base'} className="gap-3 justify-start pl-8 w-full">
                   <HiOutlineCog6Tooth className="text-xl" />
                   <span>Manajemen Role</span>
                 </Button>
@@ -83,7 +83,7 @@ export default function Sidebar() {
             </NavLink>
             <NavLink to="/manajemen-user">
               {({ isActive }) => (
-                <Button variant={isActive ? "default" : "base"} className="gap-3 justify-start pl-8 w-full">
+                <Button variant={isActive ? 'default' : 'base'} className="gap-3 justify-start pl-8 w-full">
                   <HiOutlineUserGroup className="text-xl" />
                   <span>Manajemen User</span>
                 </Button>
