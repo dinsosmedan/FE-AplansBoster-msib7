@@ -12,3 +12,9 @@ body {
   background: rgb(153, 157, 156);
   background: linear-gradient(0deg, rgba(153, 157, 156, 1) 0%, rgba(253, 222, 204, 1) 100%);
 }
+
+@layer base {
+  .no-scroll::-webkit-scrollbar {
+    display: none;
+  }
+}
