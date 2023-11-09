@@ -27,6 +27,7 @@ export default function Sidebar() {
 
   const handleMinimize = () => {
     setIsMinimize(!isMinimize)
+    setIsShowSub(false)
   }
 
   const handleCloseSub = () => {
@@ -36,7 +37,7 @@ export default function Sidebar() {
   return (
     <aside
       className={cn(
-        'flex flex-col pt-[42px] pb-5 gap-10 border-r border-[#E9E9E9] h-screen',
+        'flex flex-col pt-[42px] pb-5 gap-10 border-r border-[#E9E9E9] h-screen sticky top-0 z-50',
         isMinimize ? 'w-24' : 'flex-[1.4] px-[33px]'
       )}
     >
@@ -45,7 +46,10 @@ export default function Sidebar() {
         <Button
           size="icon"
           onClick={handleMinimize}
-          className={`rounded-full absolute right-[calc(${!isMinimize ? '-33px' : ''}-12px)] w-6 h-6 z-[999999]`}
+          className={cn(
+            'rounded-full absolute w-6 h-6 z-[999999]',
+            isMinimize ? 'right-[-12px]' : 'right-[calc(-33px-12px)]'
+          )}
         >
           <HiChevronRight className={isMinimize ? '' : 'rotate-180'} />
         </Button>
@@ -58,9 +62,9 @@ export default function Sidebar() {
               Dashboard
             </Menu>
 
-            <NavLink to="/layanan/rehabsos">
-              {({ isActive }) => (
-                <div className="flex flex-col gap-3 relative group w-full flex-1 self-start">
+            <div className="flex flex-col gap-3 relative">
+              <NavLink to="/layanan/rehabsos">
+                {({ isActive }) => (
                   <Button
                     onClick={handleShowSub}
                     variant={isActive ? 'default' : 'base'}
@@ -71,31 +75,31 @@ export default function Sidebar() {
                       <span className={cn('text-sm', isMinimize ? 'hidden' : 'flex')}>Layanan</span>
                     </div>
                     {!isMinimize && (
-                      <HiChevronRight className={cn('text-sm text-zinc-900', isActive && 'rotate-90 text-white')} />
+                      <HiChevronRight className={cn('text-sm text-zinc-900', isShowSub && 'rotate-90 text-white')} />
                     )}
                   </Button>
-                  <div
-                    className={cn(
-                      'flex flex-col bg-white transition-all',
-                      isMinimize && 'absolute shadow-md w-36 left-[calc(100%+33px)] p-1 rounded-lg z-10 gap-1',
-                      isShowSub
-                        ? isMinimize
-                          ? 'visible opacity-100 translate-x-0'
-                          : 'gap-3 w-full flex'
-                        : isMinimize
-                        ? 'invisible opacity-0 translate-x-[-5px]'
-                        : 'hidden'
-                    )}
-                  >
-                    {SUB_MENU_LAYANAN.map((item, index) => (
-                      <SubMenu href={item.link} action={handleCloseSub} key={index}>
-                        {item.title}
-                      </SubMenu>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </NavLink>
+                )}
+              </NavLink>
+              <div
+                className={cn(
+                  'flex flex-col bg-white transition-all',
+                  isMinimize && 'absolute shadow-md w-36 left-[calc(100%+33px)] p-1 rounded-lg z-10 gap-1',
+                  isShowSub
+                    ? isMinimize
+                      ? 'visible opacity-100 translate-x-0'
+                      : 'gap-3 w-full flex'
+                    : isMinimize
+                    ? 'invisible opacity-0 translate-x-[-5px]'
+                    : 'hidden'
+                )}
+              >
+                {SUB_MENU_LAYANAN.map((item, index) => (
+                  <SubMenu href={item.link} action={handleCloseSub} key={index}>
+                    {item.title}
+                  </SubMenu>
+                ))}
+              </div>
+            </div>
 
             {MAIN_MENU.map((item, index) => (
               <Menu

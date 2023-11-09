@@ -31,6 +31,7 @@ export default function ForgotPassword() {
               Navigate('/login')
             }}
             variant={'ghost'}
+            className="px-3"
           >
             <BsChevronLeft className="text-xl" />
           </Button>
