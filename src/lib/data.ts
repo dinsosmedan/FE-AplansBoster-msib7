@@ -8,7 +8,7 @@ import {
   HiOutlineClipboardDocumentCheck,
   HiOutlineCog6Tooth,
   HiOutlineFolderOpen,
-  HiOutlineMagnifyingGlass,
+  HiOutlineMagnifyingGlassCircle,
   HiOutlineUserGroup,
   HiUserGroup
 } from 'react-icons/hi2'
@@ -24,7 +24,7 @@ export const MAIN_MENU = [
     link: '/profiling-masyarakat',
     title: 'Profiling Masyarakat',
     activeIcon: HiMagnifyingGlassCircle,
-    inactiveIcon: HiOutlineMagnifyingGlass
+    inactiveIcon: HiOutlineMagnifyingGlassCircle
   },
   {
     link: '/data-master',

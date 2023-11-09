@@ -10,7 +10,7 @@ import {
 
 export default function Header() {
   return (
-    <header className="h-24 flex items-center px-8 sticky top-0 bg-white border-b border-[#E9E9E9] text-font">
+    <header className="h-24 flex items-center px-8 z-[10] sticky top-0 bg-white border-b border-[#E9E9E9] text-font">
       <nav className="flex items-center justify-between flex-1">
         <h2 className="font-bold text-3xl">Dashboard</h2>
         <div className="flex items-center gap-6">
@@ -31,7 +31,7 @@ export default function Header() {
                 </div>
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className='mr-5'>
+            <DropdownMenuContent className="mr-5">
               <DropdownMenuItem>
                 <DropdownMenuLabel className="text-primary  w-[170px]">Pengaturan</DropdownMenuLabel>
               </DropdownMenuItem>

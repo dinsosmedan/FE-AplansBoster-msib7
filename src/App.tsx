@@ -20,7 +20,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<DashboardLayout />}>
         <Route index element={<Home />} />
-        <Route path="/layanan" element={<Layanan />} />
+        <Route path="/layanan/rehabsos" element={<Layanan />} />
         <Route path="/data-penerima" element={<DataPenerima />} />
         <Route path="/data-dtks" element={<DataDTKS />} />
         <Route path="/data-master" element={<DataMaster />} />
