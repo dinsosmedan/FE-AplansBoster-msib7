@@ -236,7 +236,7 @@ const DataMaster = () => {
             </div>
             <div className="w-4/12">
               <FormField
-                name="nama"
+                name="kecamatan"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
