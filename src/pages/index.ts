@@ -8,6 +8,11 @@ import DataDTKS from './DataDTKS'
 import ProfilingMasyarakat from './ProfilingMasyarakat'
 import ManajemenUser from './ManajemenUser'
 import ManajemenRole from './ManajemenRole'
+import Bpnt from './Bpnt'
+import Kube from './Kube'
+import Hibah from './Hibah'
+import Djp from './Djp'
+import Ri from './Ri'
 
 export {
   Home,
@@ -19,5 +24,10 @@ export {
   DataDTKS,
   ProfilingMasyarakat,
   ManajemenRole,
-  ManajemenUser
+  ManajemenUser,
+  Bpnt,
+  Kube,
+  Hibah,
+  Djp,
+  Ri
 }

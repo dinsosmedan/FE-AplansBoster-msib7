@@ -10,7 +10,12 @@ import {
   Login,
   ManajemenRole,
   ManajemenUser,
-  ProfilingMasyarakat
+  ProfilingMasyarakat,
+  Bpnt,
+  Kube,
+  Hibah,
+  Djp,
+  Ri
 } from './pages'
 import { DashboardLayout } from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
@@ -28,6 +33,11 @@ export default function App() {
         <Route path="/manajemen-user" element={<ManajemenUser />} />
         <Route path="/profiling-masyarakat" element={<ProfilingMasyarakat />} />
         <Route path="/bansos-lansia" element={<BansosLansia />} />
+        <Route path="/bpnt" element={<Bpnt />} />
+        <Route path="/kube" element={<Kube/>} />
+        <Route path="/hibah" element={<Hibah/>} />
+        <Route path="/djp" element={<Djp/>} />
+        <Route path="/ri" element={<Ri/>} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
