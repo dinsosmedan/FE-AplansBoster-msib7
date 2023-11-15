@@ -15,7 +15,9 @@ import {
   Kube,
   Hibah,
   Djp,
-  Ri
+  Ri,
+  Bbp,
+  Pkh
 } from './pages'
 import { DashboardLayout } from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
@@ -38,6 +40,8 @@ export default function App() {
         <Route path="/hibah" element={<Hibah/>} />
         <Route path="/djp" element={<Djp/>} />
         <Route path="/ri" element={<Ri/>} />
+        <Route path="/Bbp" element={<Bbp/>} />
+        <Route path="/Pkh" element={<Pkh/>} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />

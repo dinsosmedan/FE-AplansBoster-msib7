@@ -13,6 +13,8 @@ import Kube from './Kube'
 import Hibah from './Hibah'
 import Djp from './Djp'
 import Ri from './Ri'
+import Bbp from './Bbp'
+import Pkh from './Pkh'
 
 export {
   Home,
@@ -29,5 +31,7 @@ export {
   Kube,
   Hibah,
   Djp,
-  Ri
+  Ri,
+  Bbp,
+  Pkh
 }
