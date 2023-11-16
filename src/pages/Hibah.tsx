@@ -7,29 +7,23 @@ import { Textarea } from '@/components/ui/textarea'
 
 const Hibah = () => {
   interface FormValues {
-    nik: string
-    noKk: string
-    nama: string
-    kota: string
     namaLembaga: string
-    noNib: string
-    namaKetua: string
-    nikKetua: string
-    namaSekretaris: string
-    nikSekretaris: string
-    namaBendahara: string
-    nikBendahara: string
-    permohonanRab: string
-    anggaranDisetujui: string
-    termin1: string
-    termin2: string
-    noRekening: string
-    alamatRekening: string
-    namabank: string
-    noPemohon: string
+    noLembaga: string
+    kota: string
     kecamatan: string
     kelurahan: string
     alamatLengkap: string
+    nikKetua: string
+    namaKetua: string
+    nikSekretaris: string
+    namaSekretaris: string
+    nikBendahara: string
+    namaBendahara: string
+    noRekening: string
+    namaBank: string
+    alamatRekening: string
+    jumlahBantuan: string
+    tahun: string
     keterangan: string
   }
 
@@ -48,33 +42,14 @@ const Hibah = () => {
       </div>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="flex flex-row justify-between gap-3">
-            <div className="w-11/12">
-              <FormField
-                name="nik"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan NIK Masyarakat" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-1/12 flex items-end justify-end">
-              <Button className="w-full">Cari</Button>
-            </div>
-          </div>
-          <div className="flex flex-row gap-4">
+          <div className="flex flex-row gap-4 pt-5">
             <div className="w-6/12">
               <FormField
-                name="nama"
+                name="namaLembaga"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nama Pemohon</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">Nama Lembaga/Organisasi</FormLabel>
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Nama Pemohon" />
                     </FormControl>
@@ -84,43 +59,13 @@ const Hibah = () => {
             </div>
             <div className="w-6/12">
               <FormField
-                name="noPemohon"
+                name="noLembaga"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">No .Telepon Pemohon</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">No. Telepon Lembaga/Organisasi</FormLabel>
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan No. Telepon Pemohon " />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-6/12">
-              <FormField
-                name="namaLembaga"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nama Lembaga</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama Lembaga" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-6/12">
-              <FormField
-                name="noNib"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">No. NIB</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan No. NIB " />
                     </FormControl>
                   </FormItem>
                 )}
@@ -320,73 +265,13 @@ const Hibah = () => {
           <div className="flex flex-row gap-4">
             <div className="w-6/12">
               <FormField
-                name="permohonanRab"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">NIK Ketua</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan NIK Ketua" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-6/12">
-              <FormField
-                name="anggaranDisetujui"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nama Ketua</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama Ketua " />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-6/12">
-              <FormField
-                name="termin1"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Termin 1</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Termin 1" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-6/12">
-              <FormField
-                name="termin2"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nama Termin 2</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Termin 2 " />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-6/12">
-              <FormField
                 name="noRekening"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">No. Rekening</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan NIK Bendahara" />
+                      <Input {...field} type="text" placeholder="Masukkan No. Rekening " />
                     </FormControl>
                   </FormItem>
                 )}
@@ -394,13 +279,13 @@ const Hibah = () => {
             </div>
             <div className="w-6/12">
               <FormField
-                name="namaBendahara"
+                name="namaBank"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nama Bendahara</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">Nama Bank</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama Bendahara " />
+                      <Input {...field} type="text" placeholder="Masukkan Nama Bank" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -417,6 +302,36 @@ const Hibah = () => {
                     <FormLabel className="font-semibold dark:text-white">Alamat Rekening</FormLabel>
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Alamat Rekening" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="w-6/12">
+              <FormField
+                name="jumlahBantuan"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Jumlah Bantuan</FormLabel>
+                    <FormControl>
+                      <Input {...field} type="text" placeholder="Masukkan Jumlah Bantuan " />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          <div className="flex flex-row gap-4">
+            <div className="w-6/12">
+              <FormField
+                name="tahun"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Tahun</FormLabel>
+                    <FormControl>
+                      <Input {...field} type="text" placeholder="Masukkan Tahun Anggaran" />
                     </FormControl>
                   </FormItem>
                 )}
