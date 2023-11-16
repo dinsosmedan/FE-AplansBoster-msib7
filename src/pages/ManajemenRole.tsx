@@ -28,7 +28,7 @@ const ManajemenRole = () => {
   }
 
   return (
-    <div className="container bg-white py-5 flex flex-col">
+    <div className="container bg-white py-5 flex flex-col w-full">
       <div className="flex items-center mb-4">
         <div className="w-[398px] h-14 border rounded-xl flex flex-row items-center">
           <CiSearch className="w-6 h-6 my-4 mx-[18px]" />
@@ -36,7 +36,7 @@ const ManajemenRole = () => {
         </div>
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline" className="w-[160px] h-14 ml-auto bg-primary">
+            <Button className="w-[160px] h-14 ml-auto bg-primary">
               <HiUserAdd className="w-6 h-6 text-white" />
               <p className=" text-white font-semibold text-sm pl-2">Tambah Role</p>
             </Button>
