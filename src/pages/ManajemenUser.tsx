@@ -3,31 +3,31 @@ import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { CiSearch } from 'react-icons/ci'
 import { HiPencilSquare } from 'react-icons/hi2'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
-import { Label } from '@/components/ui/label'
-import { HiUserAdd } from 'react-icons/hi'
 import { Badge } from '@/components/ui/badge'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import Modal from '@/components/organisms/Modal'
+import * as React from 'react'
+import { HiUserAdd } from 'react-icons/hi'
 
 const ManajemenUser = () => {
   interface FormValues {
+    nip: string
+    email: string
+    nama: string
+    noHp: string
+    username: string
     role: string
     status: string
+
   }
+  const [isShow, setIsShow] = React.useState(false)
   const forms = useForm<FormValues>({
     mode: 'onTouched'
   })
-  const onSubmit = async (values: FormValues) => {
+
+  const onSubmit = async (values: any) => {
     console.log(values)
   }
   return (
@@ -37,95 +37,94 @@ const ManajemenUser = () => {
           <CiSearch className="w-6 h-6 my-4 mx-[18px]" />
           <Input className="border-0 bg-transparent text-base font-bold" type="text" placeholder="Cari" />
         </div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="w-[160px] h-14 ml-auto bg-primary">
-              <HiUserAdd className="w-6 h-6 text-white" />
-              <p className=" text-white font-semibold text-sm pl-2">Tambah Role</p>
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="w-[764px] h-[578px]">
-            <DialogHeader>
-              <DialogTitle className="font-semibold text-3xl">Tambah Role</DialogTitle>
-              <DialogDescription className="text-base">Masukkan Data Role Baru</DialogDescription>
-            </DialogHeader>
-            <Form {...forms}>
-              <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="name" className="text-start text-base">
-                      NIP
-                    </Label>
-                    <Input id="name" placeholder="Masukkan Role" className="col-span-3" />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="name" className="text-start text-base">
-                      Email
-                    </Label>
-                    <Input id="Status" placeholder="Pilih Akses" className="col-span-3" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="name" className="text-start text-base">
-                      Nama
-                    </Label>
-                    <Input id="name" placeholder="Masukkan Role" className="col-span-3" />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="name" className="text-start text-base">
-                      No. HP
-                    </Label>
-                    <Input id="Status" placeholder="Pilih Akses" className="col-span-3" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="name" className="text-start text-base">
-                      Username
-                    </Label>
-                    <Input id="name" placeholder="Masukkan Role" className="col-span-3" />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <FormField
-                      name="role"
-                      control={forms.control}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="font-semibold dark:text-white">Role</FormLabel>
-                          <FormControl>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Pilih Role" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                                <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                                <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
+        <Button onClick={() => setIsShow(true)} className="w-[160px] h-14 ml-auto bg-primary">
+          <HiUserAdd className="w-6 h-6 text-white" />
+          <p className=" text-white font-semibold text-sm pl-2">Tambah Role</p>
+        </Button>
+        <Modal isShow={isShow}>
+          <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+            <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Tambah Role</h3>
+            <p className="text-sm text-[#A1A1A1]">Masukkan Data Role Baru</p>
+          </Modal.Header>
+          <Form {...forms}>
+            <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
+              <div className="grid grid-cols-2 gap-2">
+                <FormField
+                  name="nip"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold dark:text-white">NIP</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Masukkan NIP" />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="email"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Masukkan Email" />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <FormField
+                  name="nama"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Masukkan Nama" />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="noHp"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold dark:text-white">No. HP</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Masukkan No. HP" />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <FormField
+                  name="username"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold dark:text-white">Username</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Masukkan Username" />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
                 <div className="flex flex-col gap-2">
                   <FormField
                     name="role"
                     control={forms.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-semibold dark:text-white">Status</FormLabel>
+                        <FormLabel className="font-semibold dark:text-white">Role</FormLabel>
                         <FormControl>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Pilih Status" />
-                              </SelectTrigger>
-                            </FormControl>
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Pilih Role" />
+                            </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="m@example.com">Krisna Asu</SelectItem>
                               <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
@@ -137,18 +136,45 @@ const ManajemenUser = () => {
                     )}
                   />
                 </div>
-              </form>
-            </Form>
-            <DialogFooter>
-              <button type="submit" className="w-[101px] h-[52px] border-2 rounded-lg border-primary text-primary">
-                Cancel
-              </button>
-              <Button type="submit" className="w-[150px] h-[52px]">
-                Tambah Data
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+              </div>
+              <div className="flex flex-col gap-2">
+                <FormField
+                  name="role"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold dark:text-white">Status</FormLabel>
+                      <FormControl>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Pilih Status" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="m@example.com">Krisna Asu</SelectItem>
+                            <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
+                            <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </form>
+          </Form>
+          <Modal.Footer>
+            <Button
+              variant="outline"
+              className="rounded-lg text-primary border-primary"
+              onClick={() => setIsShow(false)}
+            >
+              Cancel
+            </Button>
+            <Button className="rounded-lg">Tambah Data</Button>
+          </Modal.Footer>
+        </Modal>
       </div>
       <Table>
         <TableHeader className="bg-primary text-base ">
@@ -178,120 +204,9 @@ const ManajemenUser = () => {
               </Badge>
             </TableCell>
             <TableCell className="text-center">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="ghost" className="bg-transparent">
-                    <HiPencilSquare className="w-6 h-6" />
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle className="font-semibold text-3xl">Edit User</DialogTitle>
-                    <DialogDescription className="text-base pt-3">Edit Data User</DialogDescription>
-                  </DialogHeader>
-                  <Form {...forms}>
-                    <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className="flex flex-col gap-2">
-                          <Label htmlFor="name" className="text-start text-base">
-                            NIP
-                          </Label>
-                          <Input id="name" placeholder="Masukkan Role" className="col-span-3" />
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          <Label htmlFor="name" className="text-start text-base">
-                            Email
-                          </Label>
-                          <Input id="Status" placeholder="Pilih Akses" className="col-span-3" />
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className="flex flex-col gap-2">
-                          <Label htmlFor="name" className="text-start text-base">
-                            Nama
-                          </Label>
-                          <Input id="name" placeholder="Masukkan Role" className="col-span-3" />
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          <Label htmlFor="name" className="text-start text-base">
-                            No. HP
-                          </Label>
-                          <Input id="Status" placeholder="Pilih Akses" className="col-span-3" />
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className="flex flex-col gap-2">
-                          <Label htmlFor="name" className="text-start text-base">
-                            Username
-                          </Label>
-                          <Input id="name" placeholder="Masukkan Role" className="col-span-3" />
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          <FormField
-                            name="role"
-                            control={forms.control}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="font-semibold dark:text-white">Role</FormLabel>
-                                <FormControl>
-                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Pilih Role" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                                      <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                                      <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                                    </SelectContent>
-                                  </Select>
-                                </FormControl>
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <FormField
-                          name="role"
-                          control={forms.control}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="font-semibold dark:text-white">Status</FormLabel>
-                              <FormControl>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Pilih Status" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                                    <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                                    <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                                  </SelectContent>
-                                </Select>
-                              </FormControl>
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                    </form>
-                  </Form>
-                  <DialogFooter>
-                    <button
-                      type="submit"
-                      className="w-[101px] h-[52px] border-2 rounded-lg border-primary text-primary"
-                    >
-                      Cancel
-                    </button>
-                    <Button type="submit" className="w-[150px] h-[52px]">
-                      Tambah Data
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
+              <Button variant="ghost" className="bg-transparent" onClick={() => setIsShow(true)}>
+                <HiPencilSquare className="w-6 h-6" />
+              </Button>
             </TableCell>
           </TableRow>
         </TableBody>
