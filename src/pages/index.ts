@@ -15,6 +15,8 @@ import Djp from './Djp'
 import Ri from './Ri'
 import Bbp from './Bbp'
 import Pkh from './Pkh'
+import Djpm from './Djpm'
+import Veteran from './Veteran'
 
 export {
   Home,
@@ -33,5 +35,7 @@ export {
   Djp,
   Ri,
   Bbp,
-  Pkh
+  Pkh,
+  Djpm,
+  Veteran
 }
