@@ -89,8 +89,8 @@ export default function Sidebar() {
                       ? 'visible opacity-100 translate-x-0'
                       : 'gap-3 w-full flex'
                     : isMinimize
-                    ? 'invisible opacity-0 translate-x-[-5px]'
-                    : 'hidden'
+                      ? 'invisible opacity-0 translate-x-[-5px]'
+                      : 'hidden'
                 )}
               >
                 {SUB_MENU_LAYANAN.map((item, index) => (

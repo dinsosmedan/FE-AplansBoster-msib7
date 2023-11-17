@@ -1,6 +1,10 @@
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import useTitle from '@/hooks/useTitle'
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
 
 const Layanan = () => {
+  useTitle('Layanan ')
+
   return (
     <div className="container bg-white py-5">
       <div className="px-[105px] flex flex-wrap gap-[70px]">

@@ -2,6 +2,7 @@ import { BgLogin, Logo } from '@/assets'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import useTitle from '@/hooks/useTitle'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
@@ -11,6 +12,8 @@ interface FormValues {
 }
 
 export default function Login() {
+  useTitle('Login ')
+
   const forms = useForm<FormValues>({
     mode: 'onTouched'
   })
