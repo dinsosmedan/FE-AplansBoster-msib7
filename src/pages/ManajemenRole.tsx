@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form'
 import * as React from 'react'
 
 import { Modal, MultiSelect } from '@/components'
+import useTitle from '@/hooks/useTitle'
 
 interface FormValues {
   role: string
@@ -40,6 +41,8 @@ const PERMISSION = [
 ]
 
 const ManajemenRole = () => {
+  useTitle('Manajemen Role ')
+
   const [isShow, setIsShow] = React.useState(false)
   const formsCreate = useForm<FormValues>({
     mode: 'onTouched',

@@ -2,11 +2,14 @@ import { Logo } from '@/assets'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import useTitle from '@/hooks/useTitle'
 import { useForm } from 'react-hook-form'
 import { BsChevronLeft } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 
 export default function ForgotPassword() {
+  useTitle('Lupa Password')
+
   interface FormValues {
     email: string
   }

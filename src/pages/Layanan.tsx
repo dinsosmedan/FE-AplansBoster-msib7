@@ -1,6 +1,9 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import useTitle from '@/hooks/useTitle'
 
 const Layanan = () => {
+  useTitle('Layanan ')
+
   return (
     <div>
       <span>Layanan</span>

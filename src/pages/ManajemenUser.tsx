@@ -10,8 +10,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import Modal from '@/components/organisms/Modal'
 import * as React from 'react'
 import { HiUserAdd } from 'react-icons/hi'
+import useTitle from '@/hooks/useTitle'
 
 const ManajemenUser = () => {
+  useTitle('Manajemen User ')
+
   interface FormValues {
     nip: string
     email: string

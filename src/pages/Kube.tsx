@@ -7,8 +7,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
 import { HiOutlineDocumentArrowUp } from 'react-icons/hi2'
+import useTitle from '@/hooks/useTitle'
 
 const Kube = () => {
+  useTitle('Kelompok Usaha Bersama ')
+
   interface FormValues {
     nik: string
     kota: string

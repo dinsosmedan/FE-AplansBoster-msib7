@@ -4,8 +4,10 @@ import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import useTitle from '@/hooks/useTitle'
 
 const Hibah = () => {
+  useTitle('Hibah')
   interface FormValues {
     namaLembaga: string
     noLembaga: string
