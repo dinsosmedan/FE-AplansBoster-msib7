@@ -1,5 +1,4 @@
 import useTitle from '@/hooks/useTitle'
-import React from 'react'
 
 const ProfilingMasyarakat = () => {
   useTitle('Profiling Masyarakat ')

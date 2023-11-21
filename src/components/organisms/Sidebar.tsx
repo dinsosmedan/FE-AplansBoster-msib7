@@ -171,25 +171,25 @@ const Menu = ({ action, children, href, activeIcon, inactiveIcon }: MenuProps) =
   )
 }
 
-interface SubMenuProps {
-  action: () => void
-  children: string
-  href: string
-}
+// interface SubMenuProps {
+//   action: () => void
+//   children: string
+//   href: string
+// }
 
-const SubMenu = ({ children, href, action }: SubMenuProps) => {
-  const expanded = useExpandedBar((state) => state.expanded)
+// const SubMenu = ({ children, href, action }: SubMenuProps) => {
+//   const expanded = useExpandedBar((state) => state.expanded)
 
-  return (
-    <NavLink to={href} onClick={action}>
-      {({ isActive }) => (
-        <Button
-          variant="base"
-          className={cn('uppercase justify-start w-full', isActive && 'text-zinc-900', !expanded && 'pl-16')}
-        >
-          {children}
-        </Button>
-      )}
-    </NavLink>
-  )
-}
+//   return (
+//     <NavLink to={href} onClick={action}>
+//       {({ isActive }) => (
+//         <Button
+//           variant="base"
+//           className={cn('uppercase justify-start w-full', isActive && 'text-zinc-900', !expanded && 'pl-16')}
+//         >
+//           {children}
+//         </Button>
+//       )}
+//     </NavLink>
+//   )
+// }

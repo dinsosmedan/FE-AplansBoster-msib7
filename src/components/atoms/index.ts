@@ -1,4 +1,4 @@
 import Loading from './Loading'
-import MultiSelect from './Multiselect'
+import MultiSelect from './multiselect'
 
 export { Loading, MultiSelect }
