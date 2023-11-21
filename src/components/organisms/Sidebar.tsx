@@ -12,7 +12,7 @@ import { Logo, LogoMini } from '@/assets'
 import { Button } from '../ui/button'
 import { cn } from '@/lib/utils'
 import { useExpandedBar } from '@/store/client/useExpandedBar'
-import { MAIN_MENU, MENU_MANAJEMEN, SUB_MENU_LAYANAN } from '@/lib/data'
+import { MAIN_MENU, MENU_MANAJEMEN } from '@/lib/data'
 
 export default function Sidebar() {
   const [isShowSub, setIsShowSub] = React.useState(false)
@@ -63,7 +63,7 @@ export default function Sidebar() {
             </Menu>
 
             <div className="flex flex-col gap-3 relative">
-              <NavLink to="/layanan/rehabsos">
+              <NavLink to="/layanan">
                 {({ isActive }) => (
                   <Button
                     onClick={handleShowSub}
@@ -74,13 +74,13 @@ export default function Sidebar() {
                       {isActive ? <HiClipboardDocumentList /> : <HiOutlineClipboardDocumentList />}
                       <span className={cn('text-sm', isMinimize ? 'hidden' : 'flex')}>Layanan</span>
                     </div>
-                    {!isMinimize && (
+                    {/* {!isMinimize && (
                       <HiChevronRight className={cn('text-sm text-zinc-900', isShowSub && 'rotate-90 text-white')} />
-                    )}
+                    )} */}
                   </Button>
                 )}
               </NavLink>
-              <div
+              {/* <div
                 className={cn(
                   'flex flex-col bg-white transition-all',
                   isMinimize && 'absolute shadow-md w-36 left-[calc(100%+33px)] p-1 rounded-lg z-10 gap-1',
@@ -89,8 +89,8 @@ export default function Sidebar() {
                       ? 'visible opacity-100 translate-x-0'
                       : 'gap-3 w-full flex'
                     : isMinimize
-                    ? 'invisible opacity-0 translate-x-[-5px]'
-                    : 'hidden'
+                      ? 'invisible opacity-0 translate-x-[-5px]'
+                      : 'hidden'
                 )}
               >
                 {SUB_MENU_LAYANAN.map((item, index) => (
@@ -98,7 +98,7 @@ export default function Sidebar() {
                     {item.title}
                   </SubMenu>
                 ))}
-              </div>
+              </div> */}
             </div>
 
             {MAIN_MENU.map((item, index) => (
