@@ -89,8 +89,8 @@ export default function Sidebar() {
                       ? 'visible opacity-100 translate-x-0'
                       : 'gap-3 w-full flex'
                     : isMinimize
-                      ? 'invisible opacity-0 translate-x-[-5px]'
-                      : 'hidden'
+                    ? 'invisible opacity-0 translate-x-[-5px]'
+                    : 'hidden'
                 )}
               >
                 {SUB_MENU_LAYANAN.map((item, index) => (
@@ -164,7 +164,7 @@ const Menu = ({ action, children, href, activeIcon, inactiveIcon }: MenuProps) =
           className={cn('flex gap-3 justify-start text-xl', !expanded ? 'pl-8 w-full ' : 'px-3')}
         >
           {isActive ? activeIcon : inactiveIcon}
-          <span className={cn('text-sm', expanded ? 'hidden' : 'flex')}>{children}</span>
+          <span className={cn('text-sm truncate max-w-fit', expanded ? 'hidden' : 'flex')}>{children}</span>
         </Button>
       )}
     </NavLink>
