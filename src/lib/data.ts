@@ -1,19 +1,37 @@
 import {
   HiArchiveBox,
+  HiCircleStack,
   HiClipboardDocumentCheck,
+  HiClipboardDocumentList,
   HiCog6Tooth,
   HiFolderOpen,
   HiMagnifyingGlassCircle,
   HiOutlineArchiveBox,
+  HiOutlineCircleStack,
   HiOutlineClipboardDocumentCheck,
+  HiOutlineClipboardDocumentList,
   HiOutlineCog6Tooth,
   HiOutlineFolderOpen,
   HiOutlineMagnifyingGlassCircle,
+  HiOutlineSquares2X2,
   HiOutlineUserGroup,
+  HiSquares2X2,
   HiUserGroup
 } from 'react-icons/hi2'
 
 export const MAIN_MENU = [
+  {
+    link: '/',
+    title: 'Dashboard',
+    activeIcon: HiSquares2X2,
+    inactiveIcon: HiOutlineSquares2X2
+  },
+  {
+    link: '/layanan',
+    title: 'Layanan',
+    activeIcon: HiClipboardDocumentList,
+    inactiveIcon: HiOutlineClipboardDocumentList
+  },
   {
     link: '/data-penerima',
     title: 'Data Penerima',
@@ -21,10 +39,16 @@ export const MAIN_MENU = [
     inactiveIcon: HiOutlineClipboardDocumentCheck
   },
   {
-    link: '/profiling-masyarakat',
-    title: 'Profiling Masyarakat',
+    link: '/cek-riwayat-bansos',
+    title: 'Cek Riwayat Bansos',
     activeIcon: HiMagnifyingGlassCircle,
     inactiveIcon: HiOutlineMagnifyingGlassCircle
+  },
+  {
+    link: '/cek-data-dukcapil',
+    title: 'Cek Data Dukcapil',
+    activeIcon: HiCircleStack,
+    inactiveIcon: HiOutlineCircleStack
   },
   {
     link: '/data-master',
