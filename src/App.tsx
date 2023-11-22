@@ -26,6 +26,7 @@ import BansosLansia from './pages/Layanan/BansosLansia'
 import LayananRehabsos from './pages/Layanan/LayananRehabsos'
 import LayananLinjamsos from './pages/Layanan/LayananLinjamsos'
 import LayananDayasos from './pages/Layanan/LayananDayasos'
+import CekRiwayatBansos from './pages/CekRiwayatBansos'
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="/layanan" element={<Layanan />} />
         <Route path="/layanan/rehabsos" element={<LayananRehabsos />} />
         <Route path="/layanan/linjamsos" element={<LayananLinjamsos />} />
+        <Route path="/cek-riwayat-bansos" element={<CekRiwayatBansos />} />
         <Route path="/layanan/dayasos" element={<LayananDayasos />} />
         <Route path="/data-penerima" element={<DataPenerima />} />
         <Route path="/data-dtks" element={<DataDTKS />} />
