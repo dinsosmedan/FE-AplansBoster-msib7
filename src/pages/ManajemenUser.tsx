@@ -1,9 +1,16 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table'
 import { CiSearch } from 'react-icons/ci'
-import { HiPencilSquare } from 'react-icons/hi2'
-import { Badge } from '@/components/ui/badge'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -23,7 +30,6 @@ const ManajemenUser = () => {
     username: string
     role: string
     status: string
-
   }
   const [isShow, setIsShow] = React.useState(false)
   const forms = useForm<FormValues>({
@@ -180,38 +186,28 @@ const ManajemenUser = () => {
         </Modal>
       </div>
       <Table>
-        <TableHeader className="bg-primary text-base ">
+        <TableCaption>A list of your recent invoices.</TableCaption>
+        <TableHeader className="bg-primary">
           <TableRow>
-            <TableHead className="text-center text-white">NIP</TableHead>
-            <TableHead className="text-center text-white">Nama</TableHead>
-            <TableHead className="text-center text-white">Username</TableHead>
-            <TableHead className="text-center text-white">Email</TableHead>
-            <TableHead className="text-center text-white">No. HP</TableHead>
-            <TableHead className="text-center text-white">Role</TableHead>
-            <TableHead className="text-center text-white">Status</TableHead>
-            <TableHead className="text-center text-white">Action</TableHead>
+            <TableHead className="text-white">NIP</TableHead>
+            <TableHead className="text-white">Nama</TableHead>
+            <TableHead className="text-white">Username</TableHead>
+            <TableHead className="text-white">Email</TableHead>
+            <TableHead className="text-white">No. HP</TableHead>
+            <TableHead className="text-white">Role</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
+          {/* {invoices.map((invoice) => ( */}
           <TableRow>
-            <TableCell className="text-base text-center">198608212009012001</TableCell>
-            <TableCell className="text-base text-center">198608212009012001</TableCell>
-            <TableCell className="text-base text-center">Syamsul</TableCell>
-            <TableCell className="text-base text-center">elytha79sipayung@gmail.com</TableCell>
-            <TableCell className="text-base text-center">081376331191</TableCell>
-            <TableCell className="text-base text-center">Admin </TableCell>
-            <TableCell className="text-base text-center">
-              <Badge variant="outline" className="text-[#409261] bg-[#E9FFEF] rounde-[54px] gap-[7px]">
-                <div className="w-2 h-2 rounded-full bg-[#409261]"></div>
-                <p> Active</p>
-              </Badge>
-            </TableCell>
-            <TableCell className="text-center">
-              <Button variant="ghost" className="bg-transparent" onClick={() => setIsShow(true)}>
-                <HiPencilSquare className="w-6 h-6" />
-              </Button>
-            </TableCell>
+            <TableCell className="font-medium">198608212009012001</TableCell>
+            <TableCell>198608212009012001</TableCell>
+            <TableCell>Syamsul</TableCell>
+            <TableCell className="text-right">elytha79sipayung@gmail.com</TableCell>
+            <TableCell className="text-right">081376331191</TableCell>
+            <TableCell className="text-right">Admin</TableCell>
           </TableRow>
+          {/* ))} */}
         </TableBody>
       </Table>
     </div>
