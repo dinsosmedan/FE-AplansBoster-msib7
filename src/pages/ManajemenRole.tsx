@@ -5,11 +5,10 @@ import { Input } from '@/components/ui/input'
 
 import { HiPencilSquare } from 'react-icons/hi2'
 import { HiUserAdd } from 'react-icons/hi'
-import { CiSearch } from 'react-icons/ci'
 import { useForm } from 'react-hook-form'
 import * as React from 'react'
 
-import { Modal, MultiSelect } from '@/components'
+import { Modal, MultiSelect, Search } from '@/components'
 import useTitle from '@/hooks/useTitle'
 
 interface FormValues {
@@ -59,10 +58,7 @@ const ManajemenRole = () => {
   return (
     <div className="container bg-white py-5 flex flex-col">
       <div className="flex items-center mb-4">
-        <div className="w-[398px] h-14 border rounded-xl flex flex-row items-center">
-          <CiSearch className="w-6 h-6 my-4 mx-[18px]" />
-          <Input className="border-0 bg-transparent text-base font-bold" type="text" placeholder="Cari" />
-        </div>
+        <Search placeholder="Search" className="w-[398px]" />
         <Button className="w-fit py-6 px-4 ml-auto bg-primary" onClick={() => setIsShow(true)}>
           <HiUserAdd className="w-6 h-6 text-white" />
           <p className=" text-white font-semibold text-sm pl-2">Tambah Role</p>

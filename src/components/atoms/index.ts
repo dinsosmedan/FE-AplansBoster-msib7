@@ -1,4 +1,5 @@
 import Loading from './Loading'
-import MultiSelect from './multiselect'
+import MultiSelect from './Multiselect'
+import Search from './Search'
 
-export { Loading, MultiSelect }
+export { Loading, MultiSelect, Search }
