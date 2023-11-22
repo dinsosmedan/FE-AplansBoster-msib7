@@ -1,7 +1,6 @@
 import { BgDukcapil } from '@/assets'
 import { Search } from '@/components'
 import { Button } from '@/components/ui/button'
-import * as React from 'react'
 import { HiArrowRight } from 'react-icons/hi'
 
 const CekDataDukcapil = () => {

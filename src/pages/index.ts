@@ -18,6 +18,7 @@ import Pkh from './Pkh'
 import Djpm from './Djpm'
 import Veteran from './Veteran'
 import CekDataDukcapil from './CekDataDukcapil'
+import Pokmas from './Pokmas'
 
 export {
   Home,
@@ -39,5 +40,6 @@ export {
   Pkh,
   Djpm,
   Veteran,
-  CekDataDukcapil
+  CekDataDukcapil,
+  Pokmas
 }
