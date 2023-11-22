@@ -87,7 +87,7 @@ const CekRiwayatBansos: FunctionComponent = () => {
     </>
   );
 };
-
+// 
 const TableRiwayatBansos = () => {
   return (
     <>
