@@ -19,7 +19,8 @@ import {
   Bbp,
   Pkh,
   Djpm,
-  Veteran
+  Veteran,
+  Pokmas
 } from './pages'
 import { DashboardLayout } from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
@@ -56,6 +57,7 @@ export default function App() {
         <Route path="/Djpm" element={<Djpm />} />
         <Route path="/Veteran" element={<Veteran />} />
         <Route path="/cek-data-dukcapil" element={<CekDataDukcapil />} />
+        <Route path="/pokmas" element={< Pokmas/>} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
