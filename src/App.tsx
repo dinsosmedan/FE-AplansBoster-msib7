@@ -26,6 +26,7 @@ import BansosLansia from './pages/Layanan/BansosLansia'
 import LayananRehabsos from './pages/Layanan/LayananRehabsos'
 import LayananLinjamsos from './pages/Layanan/LayananLinjamsos'
 import LayananDayasos from './pages/Layanan/LayananDayasos'
+import CekDataDukcapil from './pages/CekDataDukcapil'
 
 export default function App() {
   return (
@@ -52,6 +53,7 @@ export default function App() {
         <Route path="/Pkh" element={<Pkh />} />
         <Route path="/Djpm" element={<Djpm />} />
         <Route path="/Veteran" element={<Veteran />} />
+        <Route path="/cek-data-dukcapil" element={<CekDataDukcapil />} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
