@@ -1,15 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { CiSearch } from 'react-icons/ci'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
