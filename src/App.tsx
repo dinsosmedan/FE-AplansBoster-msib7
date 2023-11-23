@@ -29,6 +29,9 @@ import LayananLinjamsos from './pages/Layanan/LayananLinjamsos'
 import LayananDayasos from './pages/Layanan/LayananDayasos'
 import CekRiwayatBansos from './pages/CekRiwayatBansos'
 import CekDataDukcapil from './pages/CekDataDukcapil'
+import DataPenerimaLinjamsos from './pages/DataPenerima/DataPenerimaLinjamsos'
+import DataPenerimaRehabsos from './pages/DataPenerima/DataPenerimaRehabsos'
+import DataPenerimaDayasos from './pages/DataPenerima/DataPenerimaDayasos'
 
 export default function App() {
   return (
@@ -41,6 +44,9 @@ export default function App() {
         <Route path="/cek-riwayat-bansos" element={<CekRiwayatBansos />} />
         <Route path="/layanan/dayasos" element={<LayananDayasos />} />
         <Route path="/data-penerima" element={<DataPenerima />} />
+        <Route path="/data-penerima/linjamsos" element={<DataPenerimaLinjamsos />} />
+        <Route path="/data-penerima/rehabsos" element={<DataPenerimaRehabsos />} />
+        <Route path="/data-penerima/dayasos" element={<DataPenerimaDayasos/>} />
         <Route path="/data-dtks" element={<DataDTKS />} />
         <Route path="/data-master" element={<DataMaster />} />
         <Route path="/manajemen-role" element={<ManajemenRole />} />
