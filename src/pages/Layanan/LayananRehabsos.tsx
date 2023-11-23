@@ -1,7 +1,14 @@
+import CardLinkSub from '@/components/organisms/CardLinkSub'
 import useTitle from '@/hooks/useTitle'
 import { LucidePlus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
+
+interface CardLayananRehabsosProps {
+    title: string
+    deskripsi?: string
+    url: string
+}
 const LayananRehabsos = () => {
     useTitle('Layanan Rehabsos ')
 
@@ -21,10 +28,10 @@ const LayananRehabsos = () => {
     )
 }
 
-const CardLayananRehabsos = ({ title, deskripsi, url }: any) => {
+const CardLayananRehabsos = ({ title, deskripsi, url }: CardLayananRehabsosProps) => {
     return (
         <>
-            <div className="w-[385px] flex flex-col rounded-[20px] border border-primary overflow-hidden">
+            {/* <div className="w-[385px] flex flex-col rounded-[20px] border border-primary overflow-hidden">
                 <div className="bg-primary w-[400px] h-[170px] flex flex-col gap-5 justify-center items-center relative  ">
                     <p className="font-extrabold text-[32px] text-white text-center p-5">{title}</p>
                     <p className="font-normal text-[16px] pb-[15px] text-white text-center">{deskripsi}</p>
@@ -35,7 +42,12 @@ const CardLayananRehabsos = ({ title, deskripsi, url }: any) => {
                         <p className='font-bold' >Input Data</p>
                     </div>
                 </Link>
-            </div>
+            </div> */}
+
+            <CardLinkSub >
+                <CardLinkSub.Header title={title} deskripsi={deskripsi} />
+                <CardLinkSub.Footer url={url} />
+            </CardLinkSub>
         </>
     )
 }
