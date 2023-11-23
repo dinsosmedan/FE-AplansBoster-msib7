@@ -1,7 +1,7 @@
 import { CardLink, Container } from '@/components'
 import useTitle from '@/hooks/useTitle'
 // import { Link } from 'react-router-dom'
-import { HiPlus } from 'react-icons/hi2'
+    import { HiPlus } from 'react-icons/hi2'
 
 const LayananLinjamsos = () => {
   useTitle('Layanan Linjamsos ')
