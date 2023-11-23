@@ -12,7 +12,7 @@ import { useTitleHeader } from '@/store/client/useTitleHeader'
 export default function Header() {
   const title = useTitleHeader((state) => state.title)
   return (
-    <header className="h-24 flex items-center px-8 z-[10] sticky top-0 bg-white border-b border-[#E9E9E9] text-font">
+    <header className="h-24 flex items-center px-8 z-[20] sticky top-0 bg-white border-b border-[#E9E9E9] text-font">
       <nav className="flex items-center justify-between flex-1">
         <h2 className="font-bold text-3xl">{title}</h2>
         <div className="flex items-center gap-6">

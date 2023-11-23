@@ -15,7 +15,7 @@ const Modal = ({ isShow, children }: ModalProps) => {
   return (
     <section
       className={cn(
-        'visible fixed inset-0 z-50 flex items-center justify-center p-4 px-[18px] transition-colors md:px-0',
+        'fixed inset-0 z-50 flex items-center justify-center p-4 px-[18px] transition-all duration-300 md:px-0',
         isShow ? 'visible bg-gray-900/75' : 'invisible'
       )}
     >
