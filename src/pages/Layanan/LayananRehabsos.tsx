@@ -1,8 +1,6 @@
-import CardLinkSub from '@/components/organisms/CardLinkSub'
+import { CardLink } from '@/components'
 import useTitle from '@/hooks/useTitle'
 import { LucidePlus } from 'lucide-react'
-import { Link } from 'react-router-dom'
-
 
 interface CardLayananRehabsosProps {
     title: string
@@ -15,7 +13,7 @@ const LayananRehabsos = () => {
     return (
         <div className="container bg-white py-5 ">
             <h1 className='font-bold text-3xl p-5' >Rehabsos</h1>
-            <div className="px-[105px] flex flex-wrap gap-[70px]">
+            <div className="px-[105px] grid grid-cols-2 gap-[70px]">
                 <CardLayananRehabsos title={'Anak Anak'} deskripsi={'Children'} url={'/layanan/rehabsos'} />
                 <CardLayananRehabsos title={'Disabilitas'} deskripsi={'Disability'} url={'/layanan/rehabsos'} />
                 <CardLayananRehabsos title={'Korban Perdagangan Orang'} deskripsi={'People Trade'} url={'/layanan/rehabsos'} />
@@ -43,11 +41,21 @@ const CardLayananRehabsos = ({ title, deskripsi, url }: CardLayananRehabsosProps
                     </div>
                 </Link>
             </div> */}
-
-            <CardLinkSub >
+            <CardLink className="w-full rounded-[20px]">
+                <CardLink.Header className="h-[185px] flex-col" title={title} circlePosition="bottom">
+                    <p className="pt-11 text-white text-base">{deskripsi}</p>
+                </CardLink.Header>
+                <CardLink.Footer href={url}>
+                    <div className="flex gap-3 items-center">
+                        <LucidePlus className=" text-primary text-xl" />
+                        <p className="text-[30px] text-primary text-center font-bold ">Input Data</p>
+                    </div>
+                </CardLink.Footer>
+            </CardLink>
+            {/* <CardLinkSub >
                 <CardLinkSub.Header title={title} deskripsi={deskripsi} />
                 <CardLinkSub.Footer url={url} />
-            </CardLinkSub>
+            </CardLinkSub> */}
         </>
     )
 }

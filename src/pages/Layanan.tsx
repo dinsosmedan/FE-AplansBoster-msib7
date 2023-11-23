@@ -7,21 +7,21 @@ export default function Layanan() {
   return (
     <Container className="flex justify-center">
       <div className="grid grid-cols-2 gap-x-[70px] gap-y-[45px]">
-        <CardLink url="/layanan/rehabsos">
+        <CardLink >
           <CardLink.Header title="REHABSOS" circlePosition="bottom" />
-          <CardLink.Footer>
+          <CardLink.Footer href="/layanan/rehabsos">
             <p className="text-[15px] text-primary text-center">Rehabilitasi Sosial (Social Rehabilitation)</p>
           </CardLink.Footer>
         </CardLink>
-        <CardLink url="/layanan/linjamsos">
+        <CardLink >
           <CardLink.Header title="LINJAMSOS" circlePosition="top" />
-          <CardLink.Footer>
+          <CardLink.Footer href="/layanan/linjamsos">
             <p className="text-[15px] text-primary text-center">Rehabilitasi Sosial (Social Rehabilitation)</p>
           </CardLink.Footer>
         </CardLink>
-        <CardLink url="/layanan/dayasos">
+        <CardLink >
           <CardLink.Header title="DAYASOS" circlePosition="bottom" />
-          <CardLink.Footer>
+          <CardLink.Footer href="/layanan/dayasos">
             <p className="text-[15px] text-primary text-center">
               Pemberdayaan Sosial dan Penanganan Fakir Miskin (Social Empowerment and Poor Handling)
             </p>
