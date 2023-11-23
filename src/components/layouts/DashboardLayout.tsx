@@ -7,7 +7,7 @@ export default function DashboardLayout() {
       <Sidebar />
       <div className="flex-[8] bg-[#F9F9F9]">
         <Header />
-        <main className="px-8 py-5">
+        <main className="px-6 py-6">
           <Outlet />
         </main>
       </div>
