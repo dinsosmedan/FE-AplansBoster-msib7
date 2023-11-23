@@ -1,40 +1,84 @@
+import { CardLink, Container } from '@/components'
 import useTitle from '@/hooks/useTitle'
-import { LucidePlus } from 'lucide-react'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
+import { HiPlus } from 'react-icons/hi2'
 
 const LayananLinjamsos = () => {
-    useTitle('Layanan Linjamsos ')
+  useTitle('Layanan Linjamsos ')
 
-    return (
-        <div className="container bg-white py-5 ">
-            <h1 className='font-bold text-3xl p-5' >Linjamsos</h1>
-            <div className="px-[105px] flex flex-wrap gap-[70px]">
-                <CardLayananLinjamsos title={'Bantuan Biaya \n  Pendidikan'} deskripsi={'Education Financial Aid'} url={'/layanan/rehabsos'} />
-                <CardLayananLinjamsos title={'Penerima Bantuan Iuran (PBI)'} deskripsi={'Premium Assistance Beneficiary'} url={'/layanan/rehabsos'} />
-                <CardLayananLinjamsos title={'Penanganan Kelompok Rentan'} deskripsi={'Program Keluarga Harapan (PKH)'} url={'/layanan/rehabsos'} />
-                <CardLayananLinjamsos title={'Program Keluarga Harapan (PKH)'} deskripsi={'Family Home Program'} url={'/layanan/rehabsos'} />
-                <CardLayananLinjamsos title={'Surat Keterangan Tidak Mampu (SKTM)'} deskripsi={'Indigency Certificate'} url={'/layanan/rehabsos'} />
+  return (
+    <Container className="px-[81px]">
+      <h1 className="font-bold text-2xl ">LINJAMSOS</h1>
+      <div className="grid grid-cols-2 gap-x-[85px] gap-y-[45px] mt-10">
+        <CardLink className="w-full rounded-lg">
+          <CardLink.Header className="h-[185px] flex-col" title="Bantuan Biaya Pendidikan" circlePosition="bottom">
+            <p className="pt-11 text-white text-base">Education Financial Aid</p>
+          </CardLink.Header>
+          <CardLink.Footer href="/layanan/rehabsos">
+            <div className="flex gap-1 items-center">
+              <HiPlus className="h-[30px] w-[30px] text-primary" />
+              <p className="text-[25px] text-primary text-center font-bold ">Input Data</p>
             </div>
-        </div>
-    )
-}
-
-const CardLayananLinjamsos = ({ title, deskripsi, url }: any) => {
-    return (
-        <>
-            <div className="w-[385px] flex flex-col rounded-[20px] border border-primary overflow-hidden">
-                <div className="bg-primary w-[400px] h-[170px] flex flex-col gap-5 justify-center items-center   p-3 ">
-                    <p className="font-extrabold text-3xl text-white text-center p-5">{title}</p>
-                    <p className="font-normal text-base	 text-white text-center pb-[15px]">{deskripsi}</p>
-                </div>
-                <Link to={url}>
-                    <div className="bg-white flex p-5  gap-3 justify-center items-center text-lg text-primary text-center">
-                        <LucidePlus className="text-xl" />
-                        <p className='font-bold' >Input Data</p>
-                    </div>
-                </Link>
+          </CardLink.Footer>
+        </CardLink>
+        <CardLink className="w-full rounded-lg">
+          <CardLink.Header className="h-[185px] flex-col" title="Penerima Bantuan Iuran (PBI)" circlePosition="bottom">
+            <p className="pt-11 text-white text-base">Premium Assistance Beneficiary</p>
+          </CardLink.Header>
+          <CardLink.Footer href="/layanan/rehabsos">
+            <div className="flex gap-1 items-center">
+              <HiPlus className="h-[30px] w-[30px] text-primary" />
+              <p className="text-[25px] text-primary text-center font-bold ">Input Data</p>
             </div>
-        </>
-    )
+          </CardLink.Footer>
+        </CardLink>
+        <CardLink className="w-full rounded-lg">
+          <CardLink.Header
+            className="h-[185px] flex-col px-4"
+            title="Penanganan Kelompok Rentan"
+            circlePosition="bottom"
+          >
+            <p className="pt-11 text-white text-base">Vulnerable Group Handling</p>
+          </CardLink.Header>
+          <CardLink.Footer href="/layanan/rehabsos">
+            <div className="flex gap-1 items-center">
+              <HiPlus className="h-[30px] w-[30px] text-primary" />
+              <p className="text-[25px] text-primary text-center font-bold ">Input Data</p>
+            </div>
+          </CardLink.Footer>
+        </CardLink>
+        <CardLink className="w-full rounded-lg">
+          <CardLink.Header
+            className="h-[185px] flex-col"
+            title="Program Keluarga Harapan (PKH)"
+            circlePosition="bottom"
+          >
+            <p className="pt-11 text-white text-base">Family Home Program</p>
+          </CardLink.Header>
+          <CardLink.Footer href="/layanan/rehabsos">
+            <div className="flex gap-1 items-center">
+              <HiPlus className="h-[30px] w-[30px] text-primary" />
+              <p className="text-[25px] text-primary text-center font-bold ">Input Data</p>
+            </div>
+          </CardLink.Footer>
+        </CardLink>
+        <CardLink className="w-full rounded-lg">
+          <CardLink.Header
+            className="h-[185px] flex-col px-5"
+            title="Surat Keterangan Tidak Mampu (SKTM)"
+            circlePosition="bottom"
+          >
+            <p className="pt-11 text-white text-base">Indigency Certificate</p>
+          </CardLink.Header>
+          <CardLink.Footer href="/layanan/rehabsos">
+            <div className="flex gap-1 items-center">
+              <HiPlus className="h-[30px] w-[30px] text-primary" />
+              <p className="text-[25px] text-primary text-center font-bold ">Input Data</p>
+            </div>
+          </CardLink.Footer>
+        </CardLink>
+      </div>
+    </Container>
+  )
 }
 export default LayananLinjamsos
