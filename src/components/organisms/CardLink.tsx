@@ -25,7 +25,7 @@ interface CardLinkHeaderProps {
 const Header = ({ title, className, children, circlePosition }: CardLinkHeaderProps) => {
   return (
     <div className={cn('bg-primary w-full h-[132px] flex justify-center items-center relative', className)}>
-      <p className="font-extrabold text-[32px] text-white text-center">{title}</p>
+      <p className="font-extrabold text-[30px] text-white text-center">{title}</p>
       {children}
       <div
         className={cn(
