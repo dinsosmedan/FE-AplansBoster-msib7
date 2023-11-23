@@ -1,57 +1,78 @@
+import { CardLink, Container } from '@/components'
 import useTitle from '@/hooks/useTitle'
-import { LucidePlus } from 'lucide-react'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
+import { HiEye } from 'react-icons/hi2'
 
 const DataPenerimaLinjamsos = () => {
-  useTitle('Data Penerima Dayasos ')
+  useTitle('Data Penerima Linjamsos ')
 
   return (
-    <div className="container bg-white py-5 ">
-      <h1 className="font-bold text-3xl p-5">Dayasosaaa</h1>
-      <div className="px-[105px] flex flex-wrap gap-[70px]">
-        <CardLayananDayasos
-          title={'Bansos Dana Jasa Pelayanan (DJP)'}
-          deskripsi={'(Service Fund Assistance)'}
-          url={'/layanan/Dayasos'}
-        />
-        <CardLayananDayasos
-          title={'Bantuan Langsung Tunai BBM'}
-          deskripsi={'Fuel Cash Assistance'}
-          url={'/layanan/Dayasos'}
-        />
-        <CardLayananDayasos
-          title={'Bantuan Pangan Non Tunai (BPNT)'}
-          deskripsi={'Joint Business Group'}
-          url={'/layanan/Dayasos'}
-        />
-        <CardLayananDayasos
-          title={'Bansos Hibah Organisasi/ Lembaga'}
-          deskripsi={'Organization Grant Assistance'}
-          url={'/layanan/Dayasos'}
-        />
-        <CardLayananDayasos title={'Rumah Ibadah'} deskripsi={'House of Worship'} url={'/layanan/Dayasos'} />
-        <CardLayananDayasos title={'Veteran'} deskripsi={'Veteran'} url={'/layanan/Dayasos'} />
+    <Container className="px-[81px]">
+      <h1 className="font-bold text-2xl ">LINJAMSOS</h1>
+      <div className="grid grid-cols-2 gap-x-[85px] gap-y-[45px] mt-10">
+        <CardLink className="w-full rounded-lg">
+          <CardLink.Header className="h-[185px] flex-col" title="Bantuan Biaya Pendidikan" circlePosition="bottom">
+            <p className="pt-11 text-white text-base">Education Financial Aid</p>
+          </CardLink.Header>
+          <CardLink.Footer href="/layanan/rehabsos">
+            <div className="flex gap-3 items-center">
+              <HiEye className="h-[30px] w-[30px] text-primary" />
+              <p className="text-[30px] text-primary text-center font-bold ">Lihat Data</p>
+            </div>
+          </CardLink.Footer>
+        </CardLink>
+        <CardLink className="w-full rounded-lg">
+          <CardLink.Header className="h-[185px] flex-col" title="Penerima Bantuan Iuran (PBI)" circlePosition="bottom">
+            <p className="pt-11 text-white text-base">Premium Assistance Beneficiary</p>
+          </CardLink.Header>
+          <CardLink.Footer href="/layanan/rehabsos">
+            <div className="flex gap-3 items-center">
+              <HiEye className="h-[30px] w-[30px] text-primary" />
+              <p className="text-[30px] text-primary text-center font-bold ">Lihat Data</p>
+            </div>
+          </CardLink.Footer>
+        </CardLink>
+        <CardLink className="w-full rounded-lg">
+          <CardLink.Header className="h-[185px] flex-col px-4" title="Penanganan Kelompok Rentan" circlePosition="bottom">
+            <p className="pt-11 text-white text-base">Vulnerable Group Handling</p>
+          </CardLink.Header>
+          <CardLink.Footer href="/layanan/rehabsos">
+            <div className="flex gap-3 items-center">
+              <HiEye className="h-[30px] w-[30px] text-primary" />
+              <p className="text-[30px] text-primary text-center font-bold ">Lihat Data</p>
+            </div>
+          </CardLink.Footer>
+        </CardLink>
+        <CardLink className="w-full rounded-lg">
+          <CardLink.Header
+            className="h-[185px] flex-col"
+            title="Program Keluarga Harapan (PKH)"
+            circlePosition="bottom">
+            <p className="pt-11 text-white text-base">Family Home Program</p>
+          </CardLink.Header>
+          <CardLink.Footer href="/layanan/rehabsos">
+            <div className="flex gap-3 items-center">
+              <HiEye className="h-[30px] w-[30px] text-primary" />
+              <p className="text-[30px] text-primary text-center font-bold ">Lihat Data</p>
+            </div>
+          </CardLink.Footer>
+        </CardLink>
+        <CardLink className="w-full rounded-lg">
+          <CardLink.Header
+            className="h-[185px] flex-col px-5"
+            title="Surat Keterangan Tidak Mampu (SKTM)"
+            circlePosition="bottom">
+            <p className="pt-11 text-white text-base">Indigency Certificate</p>
+          </CardLink.Header>
+          <CardLink.Footer href="/layanan/rehabsos">
+            <div className="flex gap-3 items-center">
+              <HiEye className="h-[30px] w-[30px] text-primary" />
+              <p className="text-[30px] text-primary text-center font-bold ">Lihat Data</p>
+            </div>
+          </CardLink.Footer>
+        </CardLink>
       </div>
-    </div>
-  )
-}
-
-const CardLayananDayasos = ({ title, deskripsi, url }: any) => {
-  return (
-    <>
-      <div className="w-[385px] flex flex-col rounded-[20px] border border-primary overflow-hidden">
-        <div className="bg-primary w-[400px] h-[170px] flex flex-col gap-5 justify-center items-center relative  ">
-          <p className="font-extrabold text-[32px] text-white text-center p-[15px]">{title}</p>
-          <p className="font-normal text-[16px] text-white text-center pb-[15px]">{deskripsi}</p>
-        </div>
-        <Link to={url}>
-          <div className="bg-white flex p-5  gap-3 justify-center items-center text-lg text-primary text-center">
-            <LucidePlus className="text-xl" />
-            <p className="font-bold">Input Data</p>
-          </div>
-        </Link>
-      </div>
-    </>
+    </Container>
   )
 }
 export default DataPenerimaLinjamsos
