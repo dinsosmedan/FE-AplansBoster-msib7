@@ -4,14 +4,14 @@ import * as React from 'react'
 
 interface CardLayananProps {
   children: React.ReactNode
-  url: string
+  className?: string
 }
 
-export default function CardLink({ children, url }: CardLayananProps) {
+export default function CardLink({ children, className }: CardLayananProps) {
   return (
-    <Link to={url} className="w-[385px] h-fit flex flex-col rounded-[20px] border border-primary overflow-hidden">
+    <article className={cn('w-[385px] h-fit flex flex-col rounded-[20px] border border-primary overflow-hidden', className)}>
       {children}
-    </Link>
+    </article>
   )
 }
 
@@ -24,7 +24,7 @@ interface CardLinkHeaderProps {
 
 const Header = ({ title, className, children, circlePosition }: CardLinkHeaderProps) => {
   return (
-    <div className={cn('bg-primary w-[400px] h-[132px] flex justify-center items-center relative', className)}>
+    <div className={cn('bg-primary w-full h-[132px] flex justify-center items-center relative', className)}>
       <p className="font-extrabold text-[32px] text-white text-center">{title}</p>
       {children}
       <div
@@ -41,10 +41,11 @@ const Header = ({ title, className, children, circlePosition }: CardLinkHeaderPr
 
 interface CardLinkFooterProps {
   children: React.ReactNode
+  href: string
 }
 
-const Footer = ({ children }: CardLinkFooterProps) => {
-  return <div className="bg-white flex h-[93px] px-10 justify-center items-center relative z-10">{children}</div>
+const Footer = ({ children, href }: CardLinkFooterProps) => {
+  return <Link to={href} className=" hover:bg-zinc-100 bg-white flex h-[93px] px-10 justify-center items-center relative z-10">{children}</Link>
 }
 
 CardLink.Header = Header
