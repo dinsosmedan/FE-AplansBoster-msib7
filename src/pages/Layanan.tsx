@@ -1,25 +1,25 @@
 import { CardLink, Container } from '@/components'
 import useTitle from '@/hooks/useTitle'
 
-export default function Layanan() {
-  useTitle('Layanan ')
+export default function DataPenerima() {
+  useTitle('Data Penerima  ')
 
   return (
     <Container className="flex justify-center">
       <div className="grid grid-cols-2 gap-x-[70px] gap-y-[45px]">
-        <CardLink >
+        <CardLink>
           <CardLink.Header title="REHABSOS" circlePosition="bottom" />
           <CardLink.Footer href="/layanan/rehabsos">
             <p className="text-[15px] text-primary text-center">Rehabilitasi Sosial (Social Rehabilitation)</p>
           </CardLink.Footer>
         </CardLink>
-        <CardLink >
+        <CardLink>
           <CardLink.Header title="LINJAMSOS" circlePosition="top" />
           <CardLink.Footer href="/layanan/linjamsos">
             <p className="text-[15px] text-primary text-center">Rehabilitasi Sosial (Social Rehabilitation)</p>
           </CardLink.Footer>
         </CardLink>
-        <CardLink >
+        <CardLink>
           <CardLink.Header title="DAYASOS" circlePosition="bottom" />
           <CardLink.Footer href="/layanan/dayasos">
             <p className="text-[15px] text-primary text-center">
