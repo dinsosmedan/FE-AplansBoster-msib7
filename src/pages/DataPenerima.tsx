@@ -15,7 +15,7 @@ export default function DataPenerima () {
         </CardLink>
         <CardLink>
           <CardLink.Header title="LINJAMSOS" circlePosition="top" />
-          <CardLink.Footer href="data-penerima/linjamsos">
+          <CardLink.Footer href="/data-penerima/linjamsos">
             <p className="text-[15px] text-primary text-center">Rehabilitasi Sosial (Social Rehabilitation)</p>
           </CardLink.Footer>
         </CardLink>
