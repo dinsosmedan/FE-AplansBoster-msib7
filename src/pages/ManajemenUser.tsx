@@ -8,7 +8,8 @@ import Modal from '@/components/organisms/Modal'
 import * as React from 'react'
 import { HiOutlinePencilAlt, HiUserAdd } from 'react-icons/hi'
 import useTitle from '@/hooks/useTitle'
-import { Pagination, Search } from '@/components'
+import { Container, Pagination, Search } from '@/components'
+import { useAlert } from '@/store/client'
 
 interface FormValues {
   nip: string
@@ -22,6 +23,7 @@ interface FormValues {
 
 const ManajemenUser = () => {
   useTitle('Manajemen User ')
+  const { alert } = useAlert()
 
   const [isShow, setIsShow] = React.useState(false)
   const [currentPage, setCurrentPage] = React.useState(1)
@@ -31,8 +33,19 @@ const ManajemenUser = () => {
     console.log(values)
   }
 
+  const showAlert = () => {
+    void alert({
+      title: 'User ditambahkan',
+      description: 'User berhasil ditambahkan',
+      submitText: 'Oke',
+      variant: 'success'
+    }).then(() => {
+      console.log('oke')
+    })
+  }
+
   return (
-    <section className="container bg-white py-5 min-h-[calc(100vh-40px-96px)] relative">
+    <Container className="relative pt-[34px] pb-[22px] px-7">
       <div className="flex items-center mb-[18px]">
         <Search placeholder="Search" className="w-[398px] py-[23px]" />
         <Button className="w-fit py-6 px-4 ml-auto bg-primary" onClick={() => setIsShow(true)}>
@@ -73,6 +86,7 @@ const ManajemenUser = () => {
                 size="icon"
                 variant="base"
                 className="bg-[#959595] text-white hover:bg-[#828282] hover:text-white"
+                onClick={showAlert}
               >
                 <HiOutlinePencilAlt className="text-lg" />
               </Button>
@@ -91,8 +105,8 @@ const ManajemenUser = () => {
 
       <Modal isShow={isShow}>
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Tambah Role</h3>
-          <p className="text-sm text-[#A1A1A1]">Masukkan Data Role Baru</p>
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Tambah User</h3>
+          <p className="text-sm text-[#A1A1A1]">Masukkan Data User Baru</p>
         </Modal.Header>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-3">
@@ -209,10 +223,12 @@ const ManajemenUser = () => {
           <Button variant="outline" className="rounded-lg text-primary border-primary" onClick={() => setIsShow(false)}>
             Cancel
           </Button>
-          <Button className="rounded-lg">Tambah Data</Button>
+          <Button className="rounded-lg" type="submit">
+            Tambah Data
+          </Button>
         </Modal.Footer>
       </Modal>
-    </section>
+    </Container>
   )
 }
 
