@@ -7,10 +7,10 @@ const LayananRehabsos = () => {
   useTitle('Layanan Rehabsos ')
 
   return (
-    <Container className="px-[81px]">
+    <Container className="px-[120px]">
       <h1 className="font-bold text-2xl ">REHABSOS</h1>
       <div className="grid grid-cols-2 gap-x-[85px] gap-y-[45px] mt-10">
-        <CardLink className="w-full rounded-lg">
+        <CardLink className="w-full rounded-2xl">
           <CardLink.Header className="h-[185px] flex-col" title="Anak Anak" circlePosition="bottom">
             <p className="pt-11 text-white text-base">Children</p>
           </CardLink.Header>
@@ -21,7 +21,7 @@ const LayananRehabsos = () => {
             </div>
           </CardLink.Footer>
         </CardLink>
-        <CardLink className="w-full rounded-lg">
+        <CardLink className="w-full rounded-2xl">
           <CardLink.Header className="h-[185px] flex-col" title="Disabilitas" circlePosition="bottom">
             <p className="pt-11 text-white text-base">Disability</p>
           </CardLink.Header>
@@ -32,7 +32,7 @@ const LayananRehabsos = () => {
             </div>
           </CardLink.Footer>
         </CardLink>
-        <CardLink className="w-full rounded-lg">
+        <CardLink className="w-full rounded-2xl">
           <CardLink.Header className="h-[185px] flex-col" title="Korban Perdagangan Orang" circlePosition="bottom">
             <p className="pt-11 text-white text-base">People Trade</p>
           </CardLink.Header>
@@ -43,7 +43,7 @@ const LayananRehabsos = () => {
             </div>
           </CardLink.Footer>
         </CardLink>
-        <CardLink className="w-full rounded-lg">
+        <CardLink className="w-full rounded-2xl">
           <CardLink.Header className="h-[185px] flex-col" title="Orang Lanjut Usia" circlePosition="bottom">
             <p className="pt-11 text-white text-base">The Elderly</p>
           </CardLink.Header>
@@ -54,7 +54,7 @@ const LayananRehabsos = () => {
             </div>
           </CardLink.Footer>
         </CardLink>
-        <CardLink className="w-full rounded-lg">
+        <CardLink className="w-full rounded-2xl">
           <CardLink.Header className="h-[185px] flex-col" title="Rehabilitasi Sosial" circlePosition="bottom">
             <p className="pt-11 text-white text-base">Social Rehabilitation</p>
           </CardLink.Header>
@@ -65,7 +65,7 @@ const LayananRehabsos = () => {
             </div>
           </CardLink.Footer>
         </CardLink>
-        <CardLink className="w-full rounded-lg">
+        <CardLink className="w-full rounded-2xl">
           <CardLink.Header
             className="h-[185px] flex-col px-5"
             title="Tanda Daftar/Izin Operasional LKS"
@@ -80,7 +80,7 @@ const LayananRehabsos = () => {
             </div>
           </CardLink.Footer>
         </CardLink>
-        <CardLink className="w-full rounded-lg">
+        <CardLink className="w-full rounded-2xl">
           <CardLink.Header className="h-[185px] flex-col" title="Tuna Sosial" circlePosition="bottom">
             <p className="pt-11 text-white text-base">Socially Impaired</p>
           </CardLink.Header>
