@@ -17,7 +17,7 @@ const LayananLinjamsos = () => {
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-1 items-center">
               <HiPlus className="h-[30px] w-[30px] text-primary" />
-              <p className="text-[25px] text-primary text-center font-bold ">Input Data</p>
+              <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
             </div>
           </CardLink.Footer>
         </CardLink>
@@ -28,7 +28,7 @@ const LayananLinjamsos = () => {
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-1 items-center">
               <HiPlus className="h-[30px] w-[30px] text-primary" />
-              <p className="text-[25px] text-primary text-center font-bold ">Input Data</p>
+              <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
             </div>
           </CardLink.Footer>
         </CardLink>
@@ -43,7 +43,7 @@ const LayananLinjamsos = () => {
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-1 items-center">
               <HiPlus className="h-[30px] w-[30px] text-primary" />
-              <p className="text-[25px] text-primary text-center font-bold ">Input Data</p>
+              <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
             </div>
           </CardLink.Footer>
         </CardLink>
@@ -58,7 +58,7 @@ const LayananLinjamsos = () => {
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-1 items-center">
               <HiPlus className="h-[30px] w-[30px] text-primary" />
-              <p className="text-[25px] text-primary text-center font-bold ">Input Data</p>
+              <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
             </div>
           </CardLink.Footer>
         </CardLink>
@@ -73,7 +73,7 @@ const LayananLinjamsos = () => {
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-1 items-center">
               <HiPlus className="h-[30px] w-[30px] text-primary" />
-              <p className="text-[25px] text-primary text-center font-bold ">Input Data</p>
+              <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
             </div>
           </CardLink.Footer>
         </CardLink>
