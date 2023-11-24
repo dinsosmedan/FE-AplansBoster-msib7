@@ -1,59 +1,21 @@
 import { Button } from '@/components/ui/button'
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import useTitle from '@/hooks/useTitle'
-import { useForm } from 'react-hook-form'
+import { Search } from '@/components'
 import { HiArrowRight } from 'react-icons/hi2'
 
 const CekDataDukcapil = () => {
-  useTitle('Cek Data Dukcapil ')
+  useTitle('Cek Riwayat Bansos ')
 
-  interface FormValues {
-    nik: number
-  }
-  const forms = useForm<FormValues>({
-    mode: 'onTouched'
-  })
-  const onSubmit = async (values: FormValues) => {
-    console.log(values)
-  }
   return (
     <>
-      <div className="  flex justify-center">
-        <div className=" relative bg-[url('@/assets/images/bg-cekriwayat-bansos.svg')]  w-[1050px] h-[390px]">
-          <Form {...forms}>
-            <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col  gap-6 w-9/12 justify-center">
-              <div className="flex flex-row gap-5 bottom-3 right-12 absolute justify-center w-[90%]">
-                <div className="w-11/12">
-                  <FormField
-                    name="nik"
-                    control={forms.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        {/* <FormLabel className="font-semibold dark:text-white">NIK</FormLabel> */}
-                        <FormControl>
-                          <Input
-                            {...field}
-                            type="text"
-                            className="h-[75px] p-2 px-10 font-bold"
-                            placeholder="Masukkan NIK Masyarakat Disini"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="w-2/12 flex items-end justify-end">
-                  <Button className="h-[75px] w-full text-base font-bold">Cari</Button>
-                </div>
-              </div>
-            </form>
-          </Form>
+      <div className="relative bg-[url('@/assets/images/bg-cekriwayat-bansos.svg')] w-full h-[402px] bg-no-repeat bg-cover">
+        <div className="flex items-center gap-5 px-[99px] w-full absolute bottom-[-32px]">
+          <Search placeholder="Masukkan NIK Masyarakat Disini" className="h-[75px] w-full" />
+          <Button className="h-[75px] px-7 text-base font-bold">Cari</Button>
         </div>
       </div>
 
-      <div className="bg-white p-7 rounded-xl mt-5">
+      <div className="bg-white p-7 rounded-xl mt-[74px]">
         <div className="w-full grid grid-cols-4">
           <div className="px-24 pt-8 flex flex-col gap-5">
             <div>
@@ -152,5 +114,4 @@ const CekDataDukcapil = () => {
     </>
   )
 }
-//
 export default CekDataDukcapil
