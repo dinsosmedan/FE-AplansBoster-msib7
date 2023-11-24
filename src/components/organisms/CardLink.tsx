@@ -9,7 +9,9 @@ interface CardLayananProps {
 
 export default function CardLink({ children, className }: CardLayananProps) {
   return (
-    <article className={cn('w-[385px] h-fit flex flex-col rounded-[20px] border border-primary overflow-hidden', className)}>
+    <article
+      className={cn('w-[385px] h-fit flex flex-col rounded-[20px] border border-primary overflow-hidden', className)}
+    >
       {children}
     </article>
   )
@@ -26,7 +28,7 @@ const Header = ({ title, className, children, circlePosition }: CardLinkHeaderPr
   return (
     <div className={cn('bg-primary w-full h-[132px] flex justify-center items-center relative', className)}>
       <p className="font-extrabold text-[30px] text-white text-center">{title}</p>
-      {children}
+      <div className='relative z-10'>{children}</div>
       <div
         className={cn(
           'w-[196px] h-[196px] rounded-full bg-[#D71F50] absolute z-0',
@@ -45,7 +47,14 @@ interface CardLinkFooterProps {
 }
 
 const Footer = ({ children, href }: CardLinkFooterProps) => {
-  return <Link to={href} className=" hover:bg-zinc-100 bg-white flex h-[93px] px-10 justify-center items-center relative z-10">{children}</Link>
+  return (
+    <Link
+      to={href}
+      className=" hover:bg-zinc-100 bg-white flex h-[93px] px-10 justify-center items-center relative z-10"
+    >
+      {children}
+    </Link>
+  )
 }
 
 CardLink.Header = Header
