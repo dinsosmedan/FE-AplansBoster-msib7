@@ -55,7 +55,7 @@ const DataPenerimaRehabsos = () => {
           </CardLink.Footer>
         </CardLink>
         <CardLink className="w-full rounded-2xl">
-          <CardLink.Header className="h-[185px] flex-col" title="Rehabilitasi Sosial" circlePosition="bottom">
+          <CardLink.Header className="h-[185px] flex-col" title="Rehabilitasi Sosial" circlePosition="top">
             <p className="pt-11 text-white text-base">Social Rehabilitation</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
@@ -69,7 +69,8 @@ const DataPenerimaRehabsos = () => {
           <CardLink.Header
             className="h-[185px] flex-col px-5"
             title="Tanda Daftar/Izin Operasional LKS"
-            circlePosition="bottom">
+            circlePosition="bottom"
+          >
             {/* <p className="pt-11 text-white text-base">Children</p> */}
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
