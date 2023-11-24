@@ -11,6 +11,9 @@ module.exports = {
       }
     },
     extend: {
+      fontFamily: {
+        inter: ['Inter', 'sans-serif']
+      },
       keyframes: {
         'accordion-down': {
           from: { height: 0 },
