@@ -1,13 +1,9 @@
 import {
-  HiArchiveBox,
-  HiCircleStack,
   HiClipboardDocumentCheck,
   HiClipboardDocumentList,
   HiCog6Tooth,
   HiFolderOpen,
   HiMagnifyingGlassCircle,
-  HiOutlineArchiveBox,
-  HiOutlineCircleStack,
   HiOutlineClipboardDocumentCheck,
   HiOutlineClipboardDocumentList,
   HiOutlineCog6Tooth,
@@ -16,7 +12,11 @@ import {
   HiOutlineSquares2X2,
   HiOutlineUserGroup,
   HiSquares2X2,
-  HiUserGroup
+  HiUserGroup,
+  HiOutlineChartBar,
+  HiChartBar,
+  HiMegaphone,
+  HiOutlineMegaphone
 } from 'react-icons/hi2'
 
 export const MAIN_MENU = [
@@ -35,6 +35,12 @@ export const MAIN_MENU = [
   {
     link: '/data-penerima',
     title: 'Data Penerima',
+    activeIcon: HiChartBar,
+    inactiveIcon: HiOutlineChartBar
+  },
+   {
+    link: '/cek-data-dukcapil',
+    title: 'Cek Data Dukcapil',
     activeIcon: HiClipboardDocumentCheck,
     inactiveIcon: HiOutlineClipboardDocumentCheck
   },
@@ -45,22 +51,16 @@ export const MAIN_MENU = [
     inactiveIcon: HiOutlineMagnifyingGlassCircle
   },
   {
-    link: '/cek-data-dukcapil',
-    title: 'Cek Data Dukcapil',
-    activeIcon: HiCircleStack,
-    inactiveIcon: HiOutlineCircleStack
-  },
-  {
     link: '/data-master',
     title: 'Data Master',
     activeIcon: HiFolderOpen,
     inactiveIcon: HiOutlineFolderOpen
   },
   {
-    link: '/data-dtks',
-    title: 'Data DTKS',
-    activeIcon: HiArchiveBox,
-    inactiveIcon: HiOutlineArchiveBox
+    link: '/event',
+    title: 'Event',
+    activeIcon: HiMegaphone,
+    inactiveIcon: HiOutlineMegaphone
   }
 ]
 

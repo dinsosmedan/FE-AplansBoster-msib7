@@ -4,7 +4,6 @@ import ForgotPassword from './ForgotPassword'
 import Layanan from './Layanan'
 import DataPenerima from './DataPenerima'
 import DataMaster from './DataMaster'
-import DataDTKS from './DataDTKS'
 import ProfilingMasyarakat from './ProfilingMasyarakat'
 import ManajemenUser from './ManajemenUser'
 import ManajemenRole from './ManajemenRole'
@@ -19,6 +18,7 @@ import Djpm from './Djpm'
 import Veteran from './Veteran'
 import CekDataDukcapil from './CekDataDukcapil'
 import Pokmas from './Pokmas'
+import Event from './Event'
 
 export {
   Home,
@@ -27,7 +27,7 @@ export {
   Layanan,
   DataPenerima,
   DataMaster,
-  DataDTKS,
+  Event,
   ProfilingMasyarakat,
   ManajemenRole,
   ManajemenUser,

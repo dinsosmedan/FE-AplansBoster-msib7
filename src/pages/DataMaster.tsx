@@ -1,9 +1,11 @@
-import { Search } from "@/components"
-import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { HiOutlineExclamationCircle, HiPlus } from "react-icons/hi2"
+import { Search } from '@/components'
+import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import useTitle from '@/hooks/useTitle'
+import { HiOutlineExclamationCircle, HiPlus } from 'react-icons/hi2'
 const TableDataMaster = () => {
+  useTitle('Data Master  ')
   return (
     <>
       <Table>
@@ -180,7 +182,6 @@ const DataMaster = () => {
             </SelectContent>
           </Select>
         </div>
-
       </div>
       <TableDataMaster />
     </div>

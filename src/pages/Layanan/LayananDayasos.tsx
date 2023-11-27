@@ -4,7 +4,7 @@ import useTitle from '@/hooks/useTitle'
 import { HiPlus } from 'react-icons/hi2'
 
 const LayananDayasos = () => {
-  useTitle('Layanan Dayasos ')
+  useTitle('Layanan / Dayasos ')
 
   return (
     <Container className="px-[120px]">
