@@ -14,9 +14,9 @@ const DataPenerimaDayasos = () => {
           <CardLink.Header
             className="h-[185px] flex-col"
             title="Bansos Dana Jasa Pelayanan (DJP)"
-            circlePosition="bottom"
+            circlePosition="top"
           >
-            <p className="pt-11 text-white text-base">Service Fund Assistance</p>
+            <p className="pt-11 text-white text-base italic font-inter ">Service Fund Assistance</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-3 items-center">
@@ -29,9 +29,9 @@ const DataPenerimaDayasos = () => {
           <CardLink.Header
             className="h-[185px] flex-col px-10"
             title="Bantuan Langsung Tunai BBM"
-            circlePosition="bottom"
+            circlePosition="top"
           >
-            <p className="pt-11 text-white text-base">Fuel Cash Assistance</p>
+            <p className="pt-11 text-white text-base italic font-inter">Fuel Cash Assistance</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-3 items-center">
@@ -44,9 +44,9 @@ const DataPenerimaDayasos = () => {
           <CardLink.Header
             className="h-[185px] flex-col"
             title="Bantuan Pangan Non Tunai (BPNT)"
-            circlePosition="bottom"
+            circlePosition="top"
           >
-            <p className="pt-11 text-white text-base">Joint Business Group</p>
+            <p className="pt-11 text-white text-base italic font-inter">Joint Business Group</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-3 items-center">
@@ -61,7 +61,7 @@ const DataPenerimaDayasos = () => {
             title="Bansos Hibah Organisasi/ Lembaga"
             circlePosition="bottom"
           >
-            <p className="pt-11 text-white text-base">Organization Grant Assistance</p>
+            <p className="pt-11 text-white text-base italic font-inter">Organization Grant Assistance</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-3 items-center">
@@ -72,7 +72,7 @@ const DataPenerimaDayasos = () => {
         </CardLink>
         <CardLink className="w-full rounded-2xl">
           <CardLink.Header className="h-[185px] flex-col" title="Kelompok Usaha Bersama (KUBE)" circlePosition="bottom">
-            <p className="pt-11 text-white text-base"> Joint Business Group</p>
+            <p className="pt-11 text-white text-base italic font-inter"> Joint Business Group</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-3 items-center">
@@ -87,7 +87,7 @@ const DataPenerimaDayasos = () => {
             title="Kelompok Masyarakat (POKMAS)"
             circlePosition="bottom"
           >
-            <p className="pt-11 text-white text-base">Community Group</p>
+            <p className="pt-11 text-white text-base italic font-inter">Community Group</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-3 items-center">
@@ -98,7 +98,7 @@ const DataPenerimaDayasos = () => {
         </CardLink>
         <CardLink className="w-full rounded-2xl">
           <CardLink.Header className="h-[185px] flex-col" title="Rumah Ibadah" circlePosition="bottom">
-            <p className="pt-11 text-white text-base">House of Worship</p>
+            <p className="pt-11 text-white text-base italic font-inter">House of Worship</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-3 items-center">
@@ -108,8 +108,8 @@ const DataPenerimaDayasos = () => {
           </CardLink.Footer>
         </CardLink>
         <CardLink className="w-full rounded-2xl">
-          <CardLink.Header className="h-[185px] flex-col" title="Veteran" circlePosition="bottom">
-            <p className="pt-11 text-white text-base">Veteran</p>
+          <CardLink.Header className="h-[185px] flex-col" title="Veteran" circlePosition="top">
+            <p className="pt-11 text-white text-base italic font-inter">Veteran</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-3 items-center">
