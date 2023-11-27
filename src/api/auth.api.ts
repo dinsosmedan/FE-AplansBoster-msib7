@@ -3,9 +3,8 @@ import { type IAuthResponse } from '@/lib/types/user.type'
 import { type LoginInput } from '@/lib/validations/auth.validation'
 import axios from 'axios'
 
-const baseURL = 'https://api.aplansboster.dinas.social/api/v1'
 const apiPublic = axios.create({
-  baseURL: ENV.apiUrl || baseURL,
+  baseURL: ENV.apiUrl,
   headers: { Accept: 'application/json' }
 })
 

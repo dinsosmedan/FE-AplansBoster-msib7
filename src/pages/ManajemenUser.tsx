@@ -103,7 +103,7 @@ const ManajemenUser = () => {
         onPageChange={(page) => setCurrentPage(page)}
       />
 
-      <Modal isShow={isShow}>
+      <Modal isShow={isShow} className="max-h-[calc(100vh-200px)] overflow-y-auto">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Tambah User</h3>
           <p className="text-sm text-[#A1A1A1]">Masukkan Data User Baru</p>
@@ -119,6 +119,102 @@ const ManajemenUser = () => {
                     <FormLabel className="font-semibold dark:text-white">NIP</FormLabel>
                     <FormControl>
                       <Input {...field} placeholder="Masukkan NIP" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="email"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Masukkan Email" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="email"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Masukkan Email" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="email"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Masukkan Email" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="email"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Masukkan Email" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="email"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Masukkan Email" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="email"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Masukkan Email" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="email"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Masukkan Email" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="email"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Masukkan Email" />
                     </FormControl>
                   </FormItem>
                 )}
