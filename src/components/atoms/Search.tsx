@@ -2,7 +2,7 @@ import { HiOutlineMagnifyingGlass } from 'react-icons/hi2'
 import { Input } from '../ui/input'
 import { cn } from '@/lib/utils'
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> { }
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
 export default function Search({ className, ...props }: InputProps) {
   return (

@@ -28,7 +28,7 @@ const Header = ({ title, className, children, circlePosition }: CardLinkHeaderPr
   return (
     <div className={cn('bg-primary w-full h-[132px] flex justify-center items-center relative', className)}>
       <p className="relative z-20 font-extrabold text-[30px] text-white text-center">{title}</p>
-      <div className='relative z-10'>{children}</div>
+      <div className="relative z-10">{children}</div>
       <div
         className={cn(
           'w-[196px] h-[196px] rounded-full bg-[#D71F50] absolute z-0',

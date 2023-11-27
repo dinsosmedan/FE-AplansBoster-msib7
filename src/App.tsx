@@ -24,6 +24,7 @@ import {
   DataDjp,
   DataVeteran,
   DataBltbbm
+  // InfoDataMaster
 } from './pages'
 import { DashboardLayout, Alert } from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
@@ -41,6 +42,7 @@ import DataPokmas from './pages/DataPenerima/Dayasos/DataPokmas'
 import DataKube from './pages/DataPenerima/Dayasos/DataKube'
 import DataRumahIbadah from './pages/DataPenerima/Dayasos/DataRumahIbadah'
 import DataHibah from './pages/DataPenerima/Dayasos/DataHibah'
+import { Toaster } from './components/ui/toaster'
 
 export default function App() {
   const { alertOptions, handleClose, handleSubmit } = useAlert()
@@ -52,6 +54,7 @@ export default function App() {
         onClose={handleClose}
         {...(alertOptions as AlertOptions)}
       />
+      <Toaster />
       <Routes>
         <Route path="/" element={<DashboardLayout />}>
           <Route index element={<Home />} />

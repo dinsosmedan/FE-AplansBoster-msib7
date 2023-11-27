@@ -1,9 +1,9 @@
-import { Search } from "@/components"
-import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { HiOutlineExclamationCircle, HiPlus } from "react-icons/hi2"
-import { Link } from "react-router-dom"
+import { Search } from '@/components'
+import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { HiOutlineExclamationCircle, HiPlus } from 'react-icons/hi2'
+import { Link } from 'react-router-dom'
 const TableDataMaster = () => {
   useTitle('Data Master  ')
   return (

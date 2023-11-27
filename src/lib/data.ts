@@ -38,7 +38,7 @@ export const MAIN_MENU = [
     activeIcon: HiChartBar,
     inactiveIcon: HiOutlineChartBar
   },
-   {
+  {
     link: '/cek-data-dukcapil',
     title: 'Cek Data Dukcapil',
     activeIcon: HiClipboardDocumentCheck,
