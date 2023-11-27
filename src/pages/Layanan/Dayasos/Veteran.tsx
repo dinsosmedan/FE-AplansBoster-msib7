@@ -4,8 +4,10 @@ import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import useTitle from '@/hooks/useTitle'
 
 const Veteran = () => {
+  useTitle('Veteran')
   interface FormValues {
     nik: string
     nama: string
@@ -29,7 +31,7 @@ const Veteran = () => {
   return (
     <div className="container bg-white py-5">
       <div className="w-full text-center">
-        <p className="text-2xl font-bold">Data Personal</p>
+        <p className="text-2xl font-bold">Data Veteran</p>
       </div>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
