@@ -7,7 +7,7 @@ import { HiOutlinePencilAlt, HiUserAdd } from 'react-icons/hi'
 import { useForm } from 'react-hook-form'
 import * as React from 'react'
 
-import { Modal, MultiSelect, Search } from '@/components'
+import { Container, Modal, MultiSelect, Search } from '@/components'
 import useTitle from '@/hooks/useTitle'
 
 interface FormValues {
@@ -55,7 +55,7 @@ const ManajemenRole = () => {
   }
 
   return (
-    <section className="container bg-white py-5 min-h-[calc(100vh-40px-96px)] relative">
+    <Container className="relative pt-[34px] pb-[22px] px-7">
       <div className="flex items-center mb-[18px]">
         <Search placeholder="Search" className="w-[398px] py-[23px]" />
         <Button className="w-fit py-6 px-4 ml-auto bg-primary" onClick={() => setIsShow(true)}>
@@ -136,7 +136,7 @@ const ManajemenRole = () => {
           <Button className="rounded-lg">Tambah Data</Button>
         </Modal.Footer>
       </Modal>
-    </section>
+    </Container>
   )
 }
 
