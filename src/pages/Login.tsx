@@ -1,8 +1,11 @@
+import { loginFn } from '@/api/auth.api'
 import { BgLogin, Logo } from '@/assets'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import Spinner from '@/components/ui/spinner'
 import useTitle from '@/hooks/useTitle'
+import { useLogin } from '@/store/server'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
@@ -13,14 +16,17 @@ interface FormValues {
 
 export default function Login() {
   useTitle('Login ')
-
+  const { mutate: Login, isLoading, status } = useLogin();
   const forms = useForm<FormValues>({
     mode: 'onTouched'
   })
 
   const onSubmit = async (values: FormValues) => {
-    console.log(values)
+
+    Login(values)
+
   }
+  // console.log(status);
 
   return (
     <main className="py-14 px-36 flex flex-row items-start justify-between h-screen">
@@ -42,7 +48,7 @@ export default function Login() {
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
                       <FormControl>
-                        <Input {...field} type="email" placeholder="Example@email.com" />
+                        <InputWithError field={field} status={status} />
                       </FormControl>
                     </FormItem>
                   )}
@@ -62,7 +68,12 @@ export default function Login() {
                 <Link to="/forgot-password" className="text-[#1E4AE9] text-right text-sm hover:underline font-medium">
                   Lupa Kata Sandi?
                 </Link>
-                <Button className="py-6 text-[17px] font-normal">Masuk</Button>
+                <Button className="py-6 text-[17px] font-normal">
+                  {
+                    isLoading ? <Spinner /> : 'Masuk'
+                  }
+
+                </Button>
               </form>
             </Form>
           </div>
@@ -71,5 +82,14 @@ export default function Login() {
       </section>
       <img src={BgLogin} alt="bg" className="shadow-2xl h-full object-cover rounded-3xl" />
     </main>
+  )
+}
+
+const InputWithError = ({ field, status }: any) => {
+  return (
+    <>
+      <Input {...field} type="email" placeholder="Example@email.com" />
+      {status == 'error' ? <p className="text-red-700"> Username Atau Password Salah</p> : null}
+    </>
   )
 }
