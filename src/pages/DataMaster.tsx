@@ -1,9 +1,9 @@
-import { Search } from '@/components'
-import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import useTitle from '@/hooks/useTitle'
-import { HiOutlineExclamationCircle, HiPlus } from 'react-icons/hi2'
+import { Search } from "@/components"
+import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { HiOutlineExclamationCircle, HiPlus } from "react-icons/hi2"
+import { Link } from "react-router-dom"
 const TableDataMaster = () => {
   useTitle('Data Master  ')
   return (
@@ -31,9 +31,11 @@ const TableDataMaster = () => {
             <TableCell className="">2023</TableCell>
             <TableCell className="">DTKS</TableCell>
             <TableCell className="">
-              <Button variant="base" size="icon">
-                <HiOutlineExclamationCircle className="h-7 w-7" />
-              </Button>
+              <Link to="/data-master/info-datamaster">
+                <Button variant="base" size="icon">
+                  <HiOutlineExclamationCircle className="h-7 w-7" />
+                </Button>
+              </Link>
             </TableCell>
           </TableRow>
           <TableRow className="text-center">
@@ -45,9 +47,11 @@ const TableDataMaster = () => {
             <TableCell className="">2023</TableCell>
             <TableCell className="">DTKS</TableCell>
             <TableCell className="">
-              <Button variant="base" size="icon">
-                <HiOutlineExclamationCircle className="h-7 w-7" />
-              </Button>
+              <Link to="/data-master/info-datamaster">
+                <Button variant="base" size="icon">
+                  <HiOutlineExclamationCircle className="h-7 w-7" />
+                </Button>
+              </Link>
             </TableCell>
           </TableRow>
           <TableRow className="text-center">
@@ -59,9 +63,11 @@ const TableDataMaster = () => {
             <TableCell className="">2023</TableCell>
             <TableCell className="">DTKS</TableCell>
             <TableCell className="">
-              <Button variant="base" size="icon">
-                <HiOutlineExclamationCircle className="h-7 w-7" />
-              </Button>
+              <Link to="/data-master/info-datamaster">
+                <Button variant="base" size="icon">
+                  <HiOutlineExclamationCircle className="h-7 w-7" />
+                </Button>
+              </Link>
             </TableCell>
           </TableRow>
           <TableRow className="text-center">
@@ -73,9 +79,11 @@ const TableDataMaster = () => {
             <TableCell className="">2023</TableCell>
             <TableCell className="">DTKS</TableCell>
             <TableCell className="">
-              <Button variant="base" size="icon">
-                <HiOutlineExclamationCircle className="h-7 w-7" />
-              </Button>
+              <Link to="/data-master/info-datamaster">
+                <Button variant="base" size="icon">
+                  <HiOutlineExclamationCircle className="h-7 w-7" />
+                </Button>
+              </Link>
             </TableCell>
           </TableRow>
           <TableRow className="text-center">
@@ -87,9 +95,11 @@ const TableDataMaster = () => {
             <TableCell className="">2023</TableCell>
             <TableCell className="">DTKS</TableCell>
             <TableCell className="">
-              <Button variant="base" size="icon">
-                <HiOutlineExclamationCircle className="h-7 w-7" />
-              </Button>
+              <Link to="/data-master/info-datamaster">
+                <Button variant="base" size="icon">
+                  <HiOutlineExclamationCircle className="h-7 w-7" />
+                </Button>
+              </Link>
             </TableCell>
           </TableRow>
           <TableRow className="text-center">
@@ -101,9 +111,11 @@ const TableDataMaster = () => {
             <TableCell className="">2023</TableCell>
             <TableCell className="">DTKS</TableCell>
             <TableCell className="">
-              <Button variant="base" size="icon">
-                <HiOutlineExclamationCircle className="h-7 w-7" />
-              </Button>
+              <Link to="/data-master/info-datamaster">
+                <Button variant="base" size="icon">
+                  <HiOutlineExclamationCircle className="h-7 w-7" />
+                </Button>
+              </Link>
             </TableCell>
           </TableRow>
         </TableBody>

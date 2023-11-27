@@ -20,7 +20,8 @@ import {
   Pkh,
   Djpm,
   Veteran,
-  Pokmas
+  Pokmas,
+  InfoDataMaster
 } from './pages'
 import { DashboardLayout, Alert } from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
@@ -74,6 +75,7 @@ export default function App() {
           <Route path="/Veteran" element={<Veteran />} />
           <Route path="/cek-data-dukcapil" element={<CekDataDukcapil />} />
           <Route path="/pokmas" element={<Pokmas />} />
+          <Route path="/data-master/info-datamaster" element={<InfoDataMaster />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
