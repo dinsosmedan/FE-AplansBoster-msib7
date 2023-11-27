@@ -20,8 +20,8 @@ import {
   Pkh,
   Djpm,
   Veteran,
-  Pokmas,
-  InfoDataMaster
+  Pokmas
+  // InfoDataMaster
 } from './pages'
 import { DashboardLayout, Alert } from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
@@ -35,6 +35,7 @@ import DataPenerimaRehabsos from './pages/DataPenerima/DataPenerimaRehabsos'
 import DataPenerimaDayasos from './pages/DataPenerima/DataPenerimaDayasos'
 import { useAlert } from './store/client'
 import { type AlertOptions } from './components/organisms/Alert'
+import { Toaster } from './components/ui/toaster'
 
 export default function App() {
   const { alertOptions, handleClose, handleSubmit } = useAlert()
@@ -46,6 +47,7 @@ export default function App() {
         onClose={handleClose}
         {...(alertOptions as AlertOptions)}
       />
+      <Toaster />
       <Routes>
         <Route path="/" element={<DashboardLayout />}>
           <Route index element={<Home />} />

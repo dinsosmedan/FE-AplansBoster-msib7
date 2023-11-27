@@ -1,26 +1,50 @@
-import { BgLogin, Logo } from '@/assets'
-import { Button } from '@/components/ui/button'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import useTitle from '@/hooks/useTitle'
-import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Button } from '@/components/ui/button'
+import { useToast } from '@/components/ui/use-toast'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 
-interface FormValues {
-  email: string
-  password: string
-}
+import { Link } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+import { useTitle } from '@/hooks'
+import { BgLogin, Logo } from '@/assets'
+import { useLogin } from '@/store/server'
+
+import { type AxiosError } from 'axios'
+import { type IErrorResponse } from '@/lib/types/user.type'
+import { type LoginInput, loginValidation } from '@/lib/validations/auth.validation'
 
 export default function Login() {
-  useTitle('Login ')
+  useTitle('Login')
+  const { toast } = useToast()
+  const { mutate: Login, isLoading } = useLogin()
 
-  const forms = useForm<FormValues>({
-    mode: 'onTouched'
+  const forms = useForm<LoginInput>({
+    mode: 'onTouched',
+    resolver: yupResolver(loginValidation),
+    defaultValues: {
+      email: '',
+      password: ''
+    }
   })
 
-  const onSubmit = async (values: FormValues) => {
-    console.log(values)
+  const onSubmit = async (values: LoginInput) => {
+    Login(values, {
+      onError: (error: AxiosError) => {
+        const errorResponse = error.response?.data as IErrorResponse
+
+        if (errorResponse !== undefined) {
+          toast({
+            variant: 'destructive',
+            title: errorResponse.message,
+            description: 'There was a problem with your request.'
+          })
+        }
+      }
+    })
   }
+  // console.log(status);
 
   return (
     <main className="py-14 px-36 flex flex-row items-start justify-between h-screen">
@@ -44,6 +68,7 @@ export default function Login() {
                       <FormControl>
                         <Input {...field} type="email" placeholder="Example@email.com" />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -54,15 +79,19 @@ export default function Login() {
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">Kata Sandi</FormLabel>
                       <FormControl>
-                        <Input {...field} type="password" placeholder="At least 8 characters" />
+                        <Input {...field} type="password" placeholder="At least 8 characters" autoComplete="on" />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
+
                 <Link to="/forgot-password" className="text-[#1E4AE9] text-right text-sm hover:underline font-medium">
                   Lupa Kata Sandi?
                 </Link>
-                <Button className="py-6 text-[17px] font-normal">Masuk</Button>
+                <Button className="py-6 text-[17px] font-normal" loading={isLoading}>
+                  Masuk
+                </Button>
               </form>
             </Form>
           </div>

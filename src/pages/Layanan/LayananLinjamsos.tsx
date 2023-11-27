@@ -1,7 +1,7 @@
 import { CardLink, Container } from '@/components'
 import useTitle from '@/hooks/useTitle'
 // import { Link } from 'react-router-dom'
-    import { HiPlus } from 'react-icons/hi2'
+import { HiPlus } from 'react-icons/hi2'
 
 const LayananLinjamsos = () => {
   useTitle('Layanan / Linjamsos ')
@@ -48,10 +48,7 @@ const LayananLinjamsos = () => {
           </CardLink.Footer>
         </CardLink>
         <CardLink className="w-full rounded-2xl">
-          <CardLink.Header
-            className="h-[185px] flex-col"
-            title="Program Keluarga Harapan (PKH)"
-            circlePosition="top">
+          <CardLink.Header className="h-[185px] flex-col" title="Program Keluarga Harapan (PKH)" circlePosition="top">
             <p className="pt-11 text-white text-base italic font-inter ">Family Home Program</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">

@@ -8,11 +8,7 @@ interface CardLayananProps {
 }
 
 export default function CardLinkSub({ children }: CardLayananProps) {
-  return (
-    <div className="w-[385px] flex flex-col rounded-[20px] border border-primary overflow-hidden">
-      {children}
-    </div>
-  )
+  return <div className="w-[385px] flex flex-col rounded-[20px] border border-primary overflow-hidden">{children}</div>
 }
 
 interface CardLinkSubHeaderProps {
@@ -34,13 +30,12 @@ interface CardLinkSubFooterProps {
 }
 
 const Footer = ({ url }: CardLinkSubFooterProps) => {
-
   return (
     <>
       <Link to={url}>
         <div className="bg-white flex p-5  gap-3 justify-center items-center text-lg text-primary text-center">
           <LucidePlus className="text-xl" />
-          <p className='font-bold' >Input Data</p>
+          <p className="font-bold">Input Data</p>
         </div>
       </Link>
     </>

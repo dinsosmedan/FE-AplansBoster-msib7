@@ -1,7 +1,7 @@
 import { CardLink, Container } from '@/components'
 import useTitle from '@/hooks/useTitle'
 
-export default function DataPenerima () {
+export default function DataPenerima() {
   useTitle('Data Penerima  ')
 
   return (
