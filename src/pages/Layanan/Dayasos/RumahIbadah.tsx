@@ -5,14 +5,15 @@ import { Container } from '@/components'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
+import { useToast } from '@/components/ui/use-toast'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
-import useTitle from '@/hooks/useTitle'
+import { useTitle } from '@/hooks'
 import { worshipPlaceValidation, type worshipPlaceFields } from '@/lib/validations/dayasos.validation'
+
 import { useGetKecamatan, useGetKelurahan } from '@/store/server'
 import { useCreateWorshipPlace } from '@/store/server/useDayasos'
-import { useToast } from '@/components/ui/use-toast'
 
 export const JENIS_RUMAH_IBADAH = [
   'MESJID',
