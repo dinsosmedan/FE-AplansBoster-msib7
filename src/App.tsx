@@ -20,7 +20,8 @@ import {
   Pkh,
   Djpm,
   Veteran,
-  Pokmas
+  Pokmas,
+  InfoDataMaster
 } from './pages'
 import { DashboardLayout, Alert } from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'

@@ -41,5 +41,6 @@ export {
   Djpm,
   Veteran,
   CekDataDukcapil,
-  Pokmas
+  Pokmas,
+  InfoDataMaster,
 }
