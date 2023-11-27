@@ -56,6 +56,16 @@ const DataRumahIbadah = () => {
     idKelurahan: kelurahan
   })
 
+  React.useEffect(() => {
+    if (nama !== '' || kecamatan !== '' || kelurahan !== '' || status !== '' || jenisrumahibadah !== '') {
+      forms.setValue('nama', nama)
+      forms.setValue('jenisrumahibadah', jenisrumahibadah)
+      forms.setValue('status', status)
+      forms.setValue('kecamatan', kecamatan)
+      forms.setValue('kelurahan', kelurahan)
+    }
+  }, [nama, kecamatan, kelurahan, status, jenisrumahibadah])
+
   const onSubmit = async (values: FormValues) => {
     console.log(values)
 
