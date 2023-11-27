@@ -7,7 +7,7 @@ const LayananRehabsos = () => {
   useTitle('Layanan Rehabsos ')
 
   return (
-    <Container className="px-[120px]">
+    <Container className="px-[160px]">
       <h1 className="font-bold text-2xl ">REHABSOS</h1>
       <div className="grid grid-cols-2 gap-x-[85px] gap-y-[45px] mt-10">
         <CardLink className="w-full rounded-2xl">
