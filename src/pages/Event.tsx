@@ -6,8 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import useTitle from '@/hooks/useTitle'
 
-const DataDTKS = () => {
-  useTitle('Data DTKS')
+const Event = () => {
+  useTitle('Event')
 
   interface FormValues {
     nik: string
@@ -345,4 +345,4 @@ const DataDTKS = () => {
     </div>
   )
 }
-export default DataDTKS
+export default Event

@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { HiOutlineExclamationCircle, HiPlus } from "react-icons/hi2"
 import { Link } from "react-router-dom"
 const TableDataMaster = () => {
+  useTitle('Data Master  ')
   return (
     <>
       <Table>
@@ -193,7 +194,6 @@ const DataMaster = () => {
             </SelectContent>
           </Select>
         </div>
-
       </div>
       <TableDataMaster />
     </div>

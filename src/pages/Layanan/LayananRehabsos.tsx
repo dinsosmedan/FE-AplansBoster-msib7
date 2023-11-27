@@ -4,15 +4,15 @@ import useTitle from '@/hooks/useTitle'
 import { HiPlus } from 'react-icons/hi2'
 
 const LayananRehabsos = () => {
-  useTitle('Layanan Rehabsos ')
+  useTitle('Layanan / Rehabsos ')
 
   return (
-    <Container className="px-[160px]">
+    <Container className="px-[120px]">
       <h1 className="font-bold text-2xl ">REHABSOS</h1>
       <div className="grid grid-cols-2 gap-x-[85px] gap-y-[45px] mt-10">
         <CardLink className="w-full rounded-2xl">
           <CardLink.Header className="h-[185px] flex-col" title="Anak Anak" circlePosition="bottom">
-            <p className="pt-11 text-white text-base">Children</p>
+            <p className="pt-11 text-white text-base italic font-inter">Children</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-1 items-center">
@@ -23,7 +23,7 @@ const LayananRehabsos = () => {
         </CardLink>
         <CardLink className="w-full rounded-2xl">
           <CardLink.Header className="h-[185px] flex-col" title="Disabilitas" circlePosition="bottom">
-            <p className="pt-11 text-white text-base">Disability</p>
+            <p className="pt-11 text-white text-base italic font-inter">Disability</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-1 items-center">
@@ -34,7 +34,7 @@ const LayananRehabsos = () => {
         </CardLink>
         <CardLink className="w-full rounded-2xl">
           <CardLink.Header className="h-[185px] flex-col" title="Korban Perdagangan Orang" circlePosition="bottom">
-            <p className="pt-11 text-white text-base">People Trade</p>
+            <p className="pt-11 text-white text-base italic font-inter">People Trade</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-1 items-center">
@@ -45,7 +45,7 @@ const LayananRehabsos = () => {
         </CardLink>
         <CardLink className="w-full rounded-2xl">
           <CardLink.Header className="h-[185px] flex-col" title="Orang Lanjut Usia" circlePosition="bottom">
-            <p className="pt-11 text-white text-base">The Elderly</p>
+            <p className="pt-11 text-white text-base italic font-inter">The Elderly</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-1 items-center">
@@ -55,8 +55,8 @@ const LayananRehabsos = () => {
           </CardLink.Footer>
         </CardLink>
         <CardLink className="w-full rounded-2xl">
-          <CardLink.Header className="h-[185px] flex-col" title="Rehabilitasi Sosial" circlePosition="bottom">
-            <p className="pt-11 text-white text-base">Social Rehabilitation</p>
+          <CardLink.Header className="h-[185px] flex-col" title="Rehabilitasi Sosial" circlePosition="top">
+            <p className="pt-11 text-white text-base italic font-inter">Social Rehabilitation</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-1 items-center">
@@ -71,7 +71,7 @@ const LayananRehabsos = () => {
             title="Tanda Daftar/Izin Operasional LKS"
             circlePosition="bottom"
           >
-            {/* <p className="pt-11 text-white text-base">Children</p> */}
+            {/* <p className="pt-11 text-white text-base italic font-inter">Children</p> */}
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-1 items-center">
@@ -82,7 +82,7 @@ const LayananRehabsos = () => {
         </CardLink>
         <CardLink className="w-full rounded-2xl">
           <CardLink.Header className="h-[185px] flex-col" title="Tuna Sosial" circlePosition="bottom">
-            <p className="pt-11 text-white text-base">Socially Impaired</p>
+            <p className="pt-11 text-white text-base italic font-inter">Socially Impaired</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-1 items-center">

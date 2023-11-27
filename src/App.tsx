@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 
 import {
-  DataDTKS,
+  Event,
   DataMaster,
   DataPenerima,
   ForgotPassword,
@@ -58,7 +58,7 @@ export default function App() {
           <Route path="/data-penerima/linjamsos" element={<DataPenerimaLinjamsos />} />
           <Route path="/data-penerima/rehabsos" element={<DataPenerimaRehabsos />} />
           <Route path="/data-penerima/dayasos" element={<DataPenerimaDayasos />} />
-          <Route path="/data-dtks" element={<DataDTKS />} />
+          <Route path="/event" element={<Event />} />
           <Route path="/data-master" element={<DataMaster />} />
           <Route path="/manajemen-role" element={<ManajemenRole />} />
           <Route path="/manajemen-user" element={<ManajemenUser />} />

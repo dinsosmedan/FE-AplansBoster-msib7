@@ -5,7 +5,7 @@ import { Search } from '@/components'
 import { Button } from '@/components/ui/button'
 
 const CekDataDukcapil = () => {
-  useTitle('Cek Riwayat Bansos ')
+  useTitle('Cek Data Dukcapil ')
 
   return (
     <>
