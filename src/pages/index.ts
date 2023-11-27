@@ -19,6 +19,7 @@ import Djpm from './Djpm'
 import Veteran from './Veteran'
 import CekDataDukcapil from './CekDataDukcapil'
 import Pokmas from './Pokmas'
+import InfoDataMaster from './InfoDataMaster'
 
 export {
   Home,
@@ -41,5 +42,6 @@ export {
   Djpm,
   Veteran,
   CekDataDukcapil,
-  Pokmas
+  Pokmas,
+  InfoDataMaster,
 }
