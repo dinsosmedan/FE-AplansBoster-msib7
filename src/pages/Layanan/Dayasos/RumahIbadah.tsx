@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea'
 import useTitle from '@/hooks/useTitle'
 
 const Ri = () => {
-  useTitle('Profiling Masyarakat ')
+  useTitle('Rumah Ibadah ')
 
   interface FormValues {
     namarumahIbadah: string
@@ -85,7 +85,7 @@ const Ri = () => {
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nama Penanggung JAwab</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">Nama Penanggung Jawab</FormLabel>
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Nama Penanggung Jawab" />
                     </FormControl>

@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import useTitle from '@/hooks/useTitle'
-import { HiArrowUpTray } from 'react-icons/hi2'
 import { HiPlus } from 'react-icons/hi'
 
 const Pokmas = () => {
@@ -480,71 +479,6 @@ const Pokmas = () => {
             <HiPlus className="w-6 h-6 text-white" />
             <p className="font-bold text-sm text-white">Tambah Anggota</p>
           </Button>
-          <div className="w-full text-center">
-            <p className="text-2xl font-bold">Berkas Pokmas</p>
-          </div>
-          <div className="grid grid-cols-2 gap-5">
-            <div className="flex h-[105px] border-dashed border-2 border-primary rounded-md">
-              <div className="m-auto flex flex-col justify-center items-center">
-                <HiArrowUpTray className="h-[30px] w-[30px] text-primary" />
-                <p className="font-bold text-base">Surat Permohonan</p>
-              </div>
-            </div>
-            <div className="flex h-[105px] border-dashed border-2 border-primary rounded-md">
-              <div className="m-auto flex flex-col justify-center items-center">
-                <HiArrowUpTray className="h-[30px] w-[30px] text-primary" />
-                <p className="font-bold text-base">Rancangan Anggaran Biaya</p>
-              </div>
-            </div>
-            <div className="flex h-[105px] border-dashed border-2 border-primary rounded-md">
-              <div className="m-auto flex flex-col justify-center items-center">
-                <HiArrowUpTray className="h-[30px] w-[30px] text-primary" />
-                <p className="font-bold text-base">Data Umum</p>
-              </div>
-            </div>
-            <div className="flex h-[105px] border-dashed border-2 border-primary rounded-md">
-              <div className="m-auto flex flex-col justify-center items-center">
-                <HiArrowUpTray className="h-[30px] w-[30px] text-primary" />
-                <p className="font-bold text-base">Susunan Pengurus</p>
-              </div>
-            </div>
-            <div className="flex h-[105px] border-dashed border-2 border-primary rounded-md">
-              <div className="m-auto flex flex-col justify-center items-center">
-                <HiArrowUpTray className="h-[30px] w-[30px] text-primary" />
-                <p className="font-bold text-base">Dokumen Pendirian Organisasi</p>
-              </div>
-            </div>
-            <div className="flex h-[105px] border-dashed border-2 border-primary rounded-md">
-              <div className="m-auto flex flex-col justify-center items-center">
-                <HiArrowUpTray className="h-[30px] w-[30px] text-primary" />
-                <p className="font-bold text-base">Surat Penunjukan/Pengangkatan Sebagai Pengurus</p>
-              </div>
-            </div>
-            <div className="flex h-[105px] border-dashed border-2 border-primary rounded-md">
-              <div className="m-auto flex flex-col justify-center items-center">
-                <HiArrowUpTray className="h-[30px] w-[30px] text-primary" />
-                <p className="font-bold text-base">Surat Keterangan Domisili Organisasi</p>
-              </div>
-            </div>
-            <div className="flex h-[105px] border-dashed border-2 border-primary rounded-md">
-              <div className="m-auto flex flex-col justify-center items-center">
-                <HiArrowUpTray className="h-[30px] w-[30px] text-primary" />
-                <p className="font-bold text-base">NPWP Organisasi</p>
-              </div>
-            </div>
-            <div className="flex h-[105px] border-dashed border-2 border-primary rounded-md">
-              <div className="m-auto flex flex-col justify-center items-center">
-                <HiArrowUpTray className="h-[30px] w-[30px] text-primary" />
-                <p className="font-bold text-base">Denah tempat/ domisili kelompok masyarakat</p>
-              </div>
-            </div>
-            <div className="flex h-[105px] border-dashed border-2 border-primary rounded-md">
-              <div className="m-auto flex flex-col justify-center items-center">
-                <HiArrowUpTray className="h-[30px] w-[30px] text-primary" />
-                <p className="font-bold text-base">Buku Rekening Bank Sumut</p>
-              </div>
-            </div>
-          </div>
           <div className="flex justify-end gap-5">
             <Button variant="cancel">Cancel</Button>
             <Button>Submit</Button>
