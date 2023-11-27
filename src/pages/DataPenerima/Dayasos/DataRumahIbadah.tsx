@@ -1,32 +1,77 @@
-import Container from '@/components/atoms/Container'
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
-import useTitle from '@/hooks/useTitle'
-import { useForm } from 'react-hook-form'
-import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Button } from '@/components/ui/button'
-import { HiMagnifyingGlass } from 'react-icons/hi2'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import Pagination from '../../../components/atoms/Pagination'
 import * as React from 'react'
+import { useForm } from 'react-hook-form'
+import { HiMagnifyingGlass } from 'react-icons/hi2'
+
+import { Container, Pagination } from '@/components'
+import { useCreateParams, useGetParams, useTitle } from '@/hooks'
+import { JENIS_RUMAH_IBADAH } from '@/pages/Layanan/Dayasos/RumahIbadah'
+
+import { useGetWorshipPlaces } from '@/store/server/useDayasos'
+import { useGetKecamatan, useGetKelurahan } from '@/store/server'
+
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
+interface FormValues {
+  nama: string
+  jenisrumahibadah: string
+  status: string
+  kecamatan: string
+  kelurahan: string
+}
 
 const DataRumahIbadah = () => {
   useTitle('Data Penerima / Dayasos / Rumah Ibadah (RI) ')
+  const createParams = useCreateParams()
+  const { nama, kecamatan, kelurahan, status, jenisrumahibadah } = useGetParams([
+    'nama',
+    'jenisrumahibadah',
+    'status',
+    'kecamatan',
+    'kelurahan'
+  ])
 
-  interface FormValues {
-    nama: string
-    jenisrumahibadah: string
-    status: string
-    kecamatan: string
-    kelurahan: string
-  }
   const forms = useForm<FormValues>({
-    mode: 'onTouched'
+    defaultValues: {
+      nama: '',
+      jenisrumahibadah: '',
+      status: '',
+      kecamatan: '',
+      kelurahan: ''
+    }
   })
+
   const [currentPage, setCurrentPage] = React.useState(1)
+  const areaLevel3 = forms.watch('kecamatan')
+
+  const { data: listKecamatan } = useGetKecamatan()
+  const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
+  const { data, isSuccess } = useGetWorshipPlaces({
+    page: currentPage,
+    name: nama,
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan
+  })
+
+  React.useEffect(() => {
+    if (nama !== '' || kecamatan !== '' || kelurahan !== '' || status !== '' || jenisrumahibadah !== '') {
+      forms.setValue('nama', nama)
+      forms.setValue('jenisrumahibadah', jenisrumahibadah)
+      forms.setValue('status', status)
+      forms.setValue('kecamatan', kecamatan)
+      forms.setValue('kelurahan', kelurahan)
+    }
+  }, [nama, kecamatan, kelurahan, status, jenisrumahibadah])
 
   const onSubmit = async (values: FormValues) => {
     console.log(values)
+
+    Object.keys(values).forEach((key) => {
+      createParams({ key, value: values[key as keyof FormValues] })
+    })
   }
 
   return (
@@ -60,9 +105,11 @@ const DataRumahIbadah = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                          {JENIS_RUMAH_IBADAH.map((item, index) => (
+                            <SelectItem key={index} value={item}>
+                              {item}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -82,9 +129,8 @@ const DataRumahIbadah = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                          <SelectItem value="aktif">Aktif</SelectItem>
+                          <SelectItem value="tidak aktif">Tidak Aktif</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -104,9 +150,11 @@ const DataRumahIbadah = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                          {listKecamatan?.map((item, index) => (
+                            <SelectItem key={index} value={item.id}>
+                              {item.name}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -119,16 +167,22 @@ const DataRumahIbadah = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        disabled={areaLevel3 === '' || kecamatan === ''}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Kelurahan" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                          {listKelurahan?.map((item, index) => (
+                            <SelectItem key={index} value={item.id}>
+                              {item.name}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -197,8 +251,8 @@ const DataRumahIbadah = () => {
         <Pagination
           className="px-5 py-5 flex justify-end"
           currentPage={currentPage}
-          totalCount={100}
-          pageSize={10}
+          totalCount={500}
+          pageSize={30}
           onPageChange={(page) => setCurrentPage(page)}
         />
       </Container>

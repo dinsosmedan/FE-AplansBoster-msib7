@@ -1,46 +1,78 @@
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+import { Container } from '@/components'
+import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import useTitle from '@/hooks/useTitle'
+import { useToast } from '@/components/ui/use-toast'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
+import { useTitle } from '@/hooks'
+import { worshipPlaceValidation, type worshipPlaceFields } from '@/lib/validations/dayasos.validation'
+
+import { useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { useCreateWorshipPlace } from '@/store/server/useDayasos'
+
+export const JENIS_RUMAH_IBADAH = [
+  'MESJID',
+  'MUSHOLLA',
+  'GEREJA',
+  'GEREJA KATOLIK',
+  'KUIL BUDHA',
+  'KUIL HINDU',
+  'KONG HU CHU'
+]
 
 const Ri = () => {
+  const { toast } = useToast()
   useTitle('Rumah Ibadah ')
 
-  interface FormValues {
-    namarumahIbadah: string
-    jenisrumahIbadah: string
-    namapenanggungJawab: string
-    noTelepon: string
-    kota: string
-    kecamatan: string
-    kelurahan: string
-    alamatLengkap: string
-    status: string
-    keterangan: string
-  }
-
-  const forms = useForm<FormValues>({
-    mode: 'onTouched'
+  const forms = useForm<worshipPlaceFields>({
+    mode: 'onTouched',
+    resolver: yupResolver(worshipPlaceValidation),
+    defaultValues: {
+      name: '',
+      type: '',
+      picName: '',
+      picPhoneNumber: '',
+      areaLevel3: '',
+      areaLevel4: '',
+      address: '',
+      status: '',
+      note: ''
+    }
   })
 
-  const onSubmit = async (values: FormValues) => {
+  const areaLevel3 = forms.watch('areaLevel3')
+  const { data: kecamatan } = useGetKecamatan()
+  const { data: kelurahan } = useGetKelurahan(areaLevel3)
+  const { mutate: storeWorshipPlace, isLoading } = useCreateWorshipPlace()
+
+  const onSubmit = (values: worshipPlaceFields) => {
     console.log(values)
+
+    storeWorshipPlace(values, {
+      onSuccess: () => {
+        forms.reset()
+        toast({
+          title: 'Proses Berhasil!!',
+          description: 'Data Rumah Ibadah Berhasil Ditambahkan'
+        })
+      }
+    })
   }
 
   return (
-    <div className="container bg-white py-5">
-      <div className="w-full text-center">
-        <p className="text-2xl font-bold">Data Rumah Ibadah</p>
-      </div>
-      <Form {...forms}>
-        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="flex flex-row gap-4 pt-5">
-            <div className="w-6/12">
+    <Container className="py-10">
+      <section className="w-9/12 mx-auto">
+        <p className="text-2xl font-bold text-center mb-6">Data Rumah Ibadah</p>
+        <Form {...forms}>
+          <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col">
+            <div className="grid grid-cols-2 gap-x-8 gap-y-5">
               <FormField
-                name="namarumahIbadah"
+                name="name"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -48,13 +80,12 @@ const Ri = () => {
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Nama Rumah Ibadah" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
-            </div>
-            <div className="w-6/12">
               <FormField
-                name="jenisrumahIbadah"
+                name="type"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -67,21 +98,20 @@ const Ri = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                          {JENIS_RUMAH_IBADAH.map((item, index) => (
+                            <SelectItem value={item} key={index}>
+                              {item}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
-            </div>
-          </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-6/12">
               <FormField
-                name="namapenanggungJawab"
+                name="picName"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -89,13 +119,12 @@ const Ri = () => {
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Nama Penanggung Jawab" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
-            </div>
-            <div className="w-6/12">
               <FormField
-                name="noTelepon"
+                name="picPhoneNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -103,43 +132,15 @@ const Ri = () => {
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan No. Telepon " />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-          </div>
-          <div className="w-full text-center">
-            <p className="text-2xl font-bold">Alamat</p>
-          </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-4/12">
+            <p className="text-2xl font-bold text-center mb-5 mt-12">Alamat</p>
+            <div className="grid grid-cols-2 gap-x-8 gap-y-5">
               <FormField
-                name="kota"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Kota/Kabupaten</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kota/Kabupaten" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-4/12">
-              <FormField
-                name="kecamatan"
+                name="areaLevel3"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -152,61 +153,62 @@ const Ri = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                          {kecamatan?.map((item, index) => (
+                            <SelectItem value={item.id} key={index}>
+                              {item.name}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
-            </div>
-            <div className="w-4/12">
               <FormField
-                name="kelurahan"
+                name="areaLevel4"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} defaultValue={field.value} disabled={areaLevel3 === ''}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Kelurahan" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                          {kelurahan?.map((item, index) => (
+                            <SelectItem value={item.id} key={index}>
+                              {item.name}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-          </div>
-          <div>
-            <FormField
-              name="alamatLengkap"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
-                  <FormControl>
-                    <Textarea {...field} placeholder="Masukkan Alamat Lengkap Masyarakat." />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="w-full text-center">
-            <p className="text-2xl font-bold">Lainnya</p>
-          </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-6/12">
+            <div className="mt-5">
+              <FormField
+                name="address"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} placeholder="Masukkan Alamat Lengkap Masyarakat." />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <p className="text-2xl font-bold text-center mb-5 mt-12">Lainnya</p>
+            <div className="grid grid-cols-2 gap-x-8 gap-y-5">
               <FormField
                 name="status"
                 control={forms.control}
@@ -221,19 +223,17 @@ const Ri = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                          <SelectItem value="aktif">Aktif</SelectItem>
+                          <SelectItem value="tidak aktif">Tidak Aktif</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
-            </div>
-            <div className="w-6/12">
               <FormField
-                name="keterangan"
+                name="note"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -241,18 +241,23 @@ const Ri = () => {
                     <FormControl>
                       <Input {...field} type="text" placeholder="Keterangan" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-          </div>
-          <div className="flex justify-end gap-5">
-            <Button variant="cancel">Cancel</Button>
-            <Button>Submit</Button>
-          </div>
-        </form>
-      </Form>
-    </div>
+            <div className="flex justify-end gap-4 mt-8">
+              <Button variant="cancel" className="font-bold" onClick={() => forms.reset()}>
+                Cancel
+              </Button>
+              <Button className="font-bold" loading={isLoading}>
+                Submit
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </section>
+    </Container>
   )
 }
 
