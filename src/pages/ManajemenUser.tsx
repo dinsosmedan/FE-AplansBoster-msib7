@@ -96,7 +96,7 @@ const ManajemenUser = () => {
       </Table>
 
       <Pagination
-        className="absolute bottom-5 right-5"
+        className="px-5 py-5 flex justify-end"
         currentPage={currentPage}
         totalCount={100}
         pageSize={10}

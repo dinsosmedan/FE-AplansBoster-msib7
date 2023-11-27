@@ -19,6 +19,13 @@ import Veteran from './Layanan/Dayasos/Veteran'
 import CekDataDukcapil from './CekDataDukcapil'
 import Pokmas from './Layanan/Dayasos/Pokmas'
 import Event from './Event'
+import DataDjp from './DataPenerima/Dayasos/DataDjp'
+import DataPokmas from './DataPenerima/Dayasos/DataPokmas'
+import DataKube from './DataPenerima/Dayasos/DataKube'
+import DataRumahIbadah from './DataPenerima/Dayasos/DataRumahIbadah'
+import DataVeteran from './DataPenerima/Dayasos/DataVeteran'
+import DataBltbbm from './DataPenerima/Dayasos/DataBltbbm'
+import DataHibah from './DataPenerima/Dayasos/DataHibah'
 
 export {
   Home,
@@ -42,5 +49,12 @@ export {
   Veteran,
   CekDataDukcapil,
   Pokmas,
-  InfoDataMaster
+  DataDjp,
+  DataPokmas,
+  DataKube,
+  DataRumahIbadah,
+  DataVeteran,
+  DataBltbbm,
+  DataHibah
+  // InfoDataMaster
 }

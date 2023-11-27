@@ -20,7 +20,10 @@ import {
   Pkh,
   Djpm,
   Veteran,
-  Pokmas
+  Pokmas,
+  DataDjp,
+  DataVeteran,
+  DataBltbbm
   // InfoDataMaster
 } from './pages'
 import { DashboardLayout, Alert } from './components'
@@ -35,6 +38,10 @@ import DataPenerimaRehabsos from './pages/DataPenerima/DataPenerimaRehabsos'
 import DataPenerimaDayasos from './pages/DataPenerima/DataPenerimaDayasos'
 import { useAlert } from './store/client'
 import { type AlertOptions } from './components/organisms/Alert'
+import DataPokmas from './pages/DataPenerima/Dayasos/DataPokmas'
+import DataKube from './pages/DataPenerima/Dayasos/DataKube'
+import DataRumahIbadah from './pages/DataPenerima/Dayasos/DataRumahIbadah'
+import DataHibah from './pages/DataPenerima/Dayasos/DataHibah'
 import { Toaster } from './components/ui/toaster'
 
 export default function App() {
@@ -83,6 +90,16 @@ export default function App() {
             <Route path="pokmas" element={<Pokmas />} />
             <Route path="veteran" element={<Veteran />} />
             <Route path="kube" element={<Kube />} />
+          </Route>
+          <Route path="/data-penerima/dayasos">
+            <Route index element={<DataPenerimaDayasos />} />
+            <Route path="dataDjp" element={<DataDjp />} />
+            <Route path="dataPokmas" element={<DataPokmas />} />
+            <Route path="dataKube" element={<DataKube />} />
+            <Route path="dataRumahIbadah" element={<DataRumahIbadah />} />
+            <Route path="dataVeteran" element={<DataVeteran />} />
+            <Route path="dataBltbbm" element={<DataBltbbm />} />
+            <Route path="dataHibah" element={<DataHibah />} />
           </Route>
         </Route>
         <Route path="/login" element={<Login />} />
