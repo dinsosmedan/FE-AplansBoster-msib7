@@ -4,7 +4,7 @@ import useTitle from '@/hooks/useTitle'
 import { HiEye } from 'react-icons/hi2'
 
 const DataPenerimaDayasos = () => {
-  useTitle('Data Penerima Dayasos ')
+  useTitle('Data Penerima / Dayasos ')
 
   return (
     <Container className="px-[120px]">

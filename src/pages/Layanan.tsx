@@ -2,7 +2,7 @@ import { CardLink, Container } from '@/components'
 import useTitle from '@/hooks/useTitle'
 
 export default function DataPenerima() {
-  useTitle('Data Penerima  ')
+  useTitle('Layanan')
 
   return (
     <Container className="flex justify-center">
