@@ -15,7 +15,6 @@ export const useLogin = () => {
 
       storeToken(data.data.access_token)
       navigate('/')
-
     },
     onError: (error: AxiosError) => {
       if (error.response?.status === 401) {

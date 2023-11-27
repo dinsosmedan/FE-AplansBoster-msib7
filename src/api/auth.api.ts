@@ -6,7 +6,7 @@ import axios from 'axios'
 const baseURL = 'https://api.aplansboster.dinas.social/api/v1'
 const apiPublic = axios.create({
   baseURL: ENV.apiUrl || baseURL,
-  headers: { 'Accept': 'application/json' }
+  headers: { Accept: 'application/json' }
 })
 
 apiPublic.defaults.headers.post['Content-Type'] = 'application/json'

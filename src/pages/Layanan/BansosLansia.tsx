@@ -7,7 +7,6 @@ import { Textarea } from '@/components/ui/textarea'
 import useTitle from '@/hooks/useTitle'
 
 const BansosLansia = () => {
-
   useTitle('Layanan Bansos Lansia')
 
   interface FormValues {

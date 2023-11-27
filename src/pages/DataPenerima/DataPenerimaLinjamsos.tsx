@@ -33,7 +33,11 @@ const DataPenerimaLinjamsos = () => {
           </CardLink.Footer>
         </CardLink>
         <CardLink className="w-full rounded-2xl">
-          <CardLink.Header className="h-[185px] flex-col px-4" title="Penanganan Kelompok Rentan" circlePosition="bottom">
+          <CardLink.Header
+            className="h-[185px] flex-col px-4"
+            title="Penanganan Kelompok Rentan"
+            circlePosition="bottom"
+          >
             <p className="pt-11 text-white text-base italic font-inter">Vulnerable Group Handling</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
@@ -44,10 +48,7 @@ const DataPenerimaLinjamsos = () => {
           </CardLink.Footer>
         </CardLink>
         <CardLink className="w-full rounded-2xl">
-          <CardLink.Header
-            className="h-[185px] flex-col"
-            title="Program Keluarga Harapan (PKH)"
-            circlePosition="top">
+          <CardLink.Header className="h-[185px] flex-col" title="Program Keluarga Harapan (PKH)" circlePosition="top">
             <p className="pt-11 text-white text-base italic font-inter">Family Home Program</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
@@ -61,7 +62,8 @@ const DataPenerimaLinjamsos = () => {
           <CardLink.Header
             className="h-[185px] flex-col px-5"
             title="Surat Keterangan Tidak Mampu (SKTM)"
-            circlePosition="bottom">
+            circlePosition="bottom"
+          >
             <p className="pt-11 text-white text-base italic font-inter">Indigency Certificate</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">

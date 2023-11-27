@@ -42,5 +42,5 @@ export {
   Veteran,
   CekDataDukcapil,
   Pokmas,
-  InfoDataMaster,
+  InfoDataMaster
 }
