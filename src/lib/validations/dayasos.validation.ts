@@ -96,3 +96,5 @@ export const hibahValidation = Yup.object({
   note: Yup.string().max(255, 'Catatan maksimal 255 karakter'),
   budgetYear: Yup.string().matches(/^\d{4}$/, 'Format tahun tidak valid. Harap masukkan tahun dengan format YYYY')
 })
+
+export type hibahFields = Yup.InferType<typeof hibahValidation>
