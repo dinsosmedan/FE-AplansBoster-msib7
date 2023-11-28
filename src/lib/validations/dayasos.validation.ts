@@ -47,8 +47,52 @@ export const djpmValidation = Yup.object({
   bankAccountName: Yup.string().required('Nama Rekening Bank wajib diisi').max(255, 'Nama Rekening Bank maksimal 255 karakter'),
   bankBranchName: Yup.string().required('Kantor Cabang Bank wajib diisi').max(255, 'Kantor Cabang Bank maksimal 255 karakter'),
   status: Yup.string().required('Status wajib diisi').max(255, 'Status maksimal 255 karakter'),
-  budgetYear:  Yup.string().matches(/^\d{4}$/, 'Format tahun tidak valid. Harap masukkan tahun dengan format YYYY'),
+  budgetYear: Yup.string().matches(/^\d{4}$/, 'Format tahun tidak valid. Harap masukkan tahun dengan format YYYY'),
   assistanceAmount: Yup.number()
 })
 
 export type djpmFields = Yup.InferType<typeof djpmValidation>
+
+export const hibahValidation = Yup.object({
+  name: Yup.string().required('Nama Hibah wajib diisi').max(255, 'Nama Hibah maksimal 255 karakter'),
+  addres: Yup.string().required('Alamat wajib diisi').max(255, 'Alamat maksimal 255 karakter'),
+  areaLevel3: Yup.string(),
+  areaLevel4: Yup.string(),
+  chairmanName: Yup.string().max(255, 'Nama Ketua maksimal 255 karakter'),
+  chairmanIdentityNumber: Yup.object().shape({
+  sixteenDigitString: Yup.string()
+    .length(16, 'Harus tepat 16 digit')
+    .matches(/^[0-9]+$/, 'Harus berisi hanya angka')
+    .required('Required')
+  }),
+  secretaryName: Yup.string().max(255, 'Nama Sekretaris maksimal 255 karakter'),
+  secretaryIdentityNumber: Yup.object().shape({
+  sixteenDigitString: Yup.string()
+    .length(16, 'Harus tepat 16 digit')
+    .matches(/^[0-9]+$/, 'Harus berisi hanya angka')
+    .required('Required')
+  }),
+  treasurerName: Yup.string().max(255, 'Nama Bendahara maksimal 255 karakter'),
+  treasureidentityNumber: Yup.object().shape({
+  sixteenDigitString: Yup.string()
+    .length(16, 'Harus tepat 16 digit')
+    .matches(/^[0-9]+$/, 'Harus berisi hanya angka')
+    .required('Required')
+  }),
+  contactNumber: Yup.string()
+  .matches(phoneRegExp, 'Nomor telepon tidak valid')
+  .min(7, 'Nomor telepon minimal 7 karakter')
+  .max(20, 'Nomor telepon maksimal 20 karakter'),
+  bankAccountNumber: Yup.number()
+  .min(1, 'Nomor rekening minimal 1 karakter')
+  .max(32, 'Nomor rekening maksimal 32 karakter'),
+  bankName: Yup.string().max(255, 'Nama Bank maksimal 255 karakter'),
+  bankAccountName: Yup.string().max(255, 'Nama Rekening Bank maksimal 255 karakter'),
+  bankAccountAddress: Yup.string().max(255, 'Alamat Bank maksimal 255 karakter'),
+  requestedAmount: Yup.number(),
+  aprrovedAmount: Yup.number(),
+  firstDisbursementAmount: Yup.number(),
+  secondDisbursementAmount: Yup.number(),
+  note: Yup.string().max(255, 'Catatan maksimal 255 karakter'),
+  budgetYear: Yup.string().matches(/^\d{4}$/, 'Format tahun tidak valid. Harap masukkan tahun dengan format YYYY')
+})
