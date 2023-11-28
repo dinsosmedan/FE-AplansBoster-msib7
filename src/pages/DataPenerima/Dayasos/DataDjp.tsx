@@ -20,14 +20,14 @@ const DataDjp = () => {
     kecamatan: string
     batch: string
   }
-   const forms = useForm<FormValues>({
+  const forms = useForm<FormValues>({
     mode: 'onTouched'
   })
-    const [currentPage, setCurrentPage] = React.useState(1)
+  const [currentPage, setCurrentPage] = React.useState(1)
 
-   const onSubmit = async (values: FormValues) => {
-     console.log(values)
-   }
+  const onSubmit = async (values: FormValues) => {
+    console.log(values)
+  }
 
   return (
     <div>

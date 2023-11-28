@@ -1,3 +1,15 @@
+export interface IRole {
+  name: string
+}
+
+export interface IUser {
+  data: {
+    id: string
+    name: string
+    email: string
+    role: IRole
+  }
+}
 export interface IAuthResponse {
   message: string
   data: {
