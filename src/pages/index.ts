@@ -12,7 +12,7 @@ import Kube from './Layanan/Dayasos/Kube'
 import Hibah from './Layanan/Dayasos/Hibah'
 import Djp from './Layanan/Dayasos/Djp'
 import Ri from './Layanan/Dayasos/RumahIbadah'
-import Bbp from './Bbp'
+import Bbp from './Layanan/Linjamsos/Bbp'
 import Pkh from './Pkh'
 import Djpm from './Djpm'
 import Veteran from './Layanan/Dayasos/Veteran'
@@ -26,6 +26,8 @@ import DataRumahIbadah from './DataPenerima/Dayasos/DataRumahIbadah'
 import DataVeteran from './DataPenerima/Dayasos/DataVeteran'
 import DataBltbbm from './DataPenerima/Dayasos/DataBltbbm'
 import DataHibah from './DataPenerima/Dayasos/DataHibah'
+import Pkr from './Layanan/Linjamsos/Pkr'
+import Sktm from './Layanan/Linjamsos/Sktm'
 
 export {
   Home,
@@ -55,6 +57,7 @@ export {
   DataRumahIbadah,
   DataVeteran,
   DataBltbbm,
-  DataHibah
-  // InfoDataMaster
+  DataHibah,
+  Pkr,
+  Sktm
 }

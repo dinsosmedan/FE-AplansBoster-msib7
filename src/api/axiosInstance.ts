@@ -3,6 +3,7 @@ import { useToken } from '@/store/client'
 import ENV from '@/lib/environment'
 
 const api = axios.create({
+  withCredentials: true,
   baseURL: ENV.apiUrl,
   headers: {
     Accept: 'application/json'
