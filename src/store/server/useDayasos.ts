@@ -1,4 +1,11 @@
-import { getWorshipPlacesFn, storeVeteranFn, storeDjpm, storeWorshipPlaceFn, type WorshipPlaceQuery } from '@/api/dayasos.api'
+import {
+  getServiceFunds,
+  getWorshipPlacesFn,
+  storeDjpm,
+  storeVeteranFn,
+  storeWorshipPlaceFn,
+  type WorshipPlaceQuery
+} from '@/api/dayasos.api'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
 export const useGetWorshipPlaces = ({ page, idKecamatan, idKelurahan, name }: WorshipPlaceQuery) => {
@@ -35,4 +42,15 @@ export const useCreateVeteran = () => {
       void queryClient.invalidateQueries('veterans')
     }
   })
+}
+
+export const useGetServiceFunds = ({ page, idKecamatan, idKelurahan, name }: WorshipPlaceQuery) => {
+  return useQuery(
+    ['service-funds', page, idKecamatan, idKelurahan, name],
+    async () => await getServiceFunds({ page, idKecamatan, idKelurahan, name }),
+    {
+      keepPreviousData: true,
+      staleTime: 5000
+    }
+  )
 }

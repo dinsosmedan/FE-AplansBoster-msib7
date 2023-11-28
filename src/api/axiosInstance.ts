@@ -3,7 +3,6 @@ import { useToken } from '@/store/client'
 import ENV from '@/lib/environment'
 
 const api = axios.create({
-  // withCredentials: true,
   baseURL: ENV.apiUrl,
   headers: {
     Accept: 'application/json'
@@ -27,9 +26,9 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response?.status === 401) {
+    if (error.response.status === 401) {
       useToken.getState().removeToken()
-      window.location.href = '/'
+      window.location.href = '/login'
     }
     return await Promise.reject(error)
   }
