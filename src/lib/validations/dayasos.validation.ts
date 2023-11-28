@@ -66,19 +66,15 @@ export const hibahValidation = Yup.object({
     .required('Required')
   }),
   secretaryName: Yup.string().max(255, 'Nama Sekretaris maksimal 255 karakter'),
-  secretaryIdentityNumber: Yup.object().shape({
-  sixteenDigitString: Yup.string()
+  secretaryIdentityNumber: Yup.string()
     .length(16, 'Harus tepat 16 digit')
     .matches(/^[0-9]+$/, 'Harus berisi hanya angka')
-    .required('Required')
-  }),
+    .required('Required'),
   treasurerName: Yup.string().max(255, 'Nama Bendahara maksimal 255 karakter'),
-  treasureidentityNumber: Yup.object().shape({
-  sixteenDigitString: Yup.string()
+  treasurerIdentityNumber: Yup.string()
     .length(16, 'Harus tepat 16 digit')
     .matches(/^[0-9]+$/, 'Harus berisi hanya angka')
-    .required('Required')
-  }),
+    .required('Required'),
   contactNumber: Yup.string()
   .matches(phoneRegExp, 'Nomor telepon tidak valid')
   .min(7, 'Nomor telepon minimal 7 karakter')
