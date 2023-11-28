@@ -1,14 +1,14 @@
-import { Modal, Search } from "@/components"
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { useTitle } from "@/hooks"
-import React from "react"
-import { useForm } from "react-hook-form"
-import { HiOutlineExclamationCircle, HiPlus } from "react-icons/hi2"
-import { Link } from "react-router-dom"
+import { Modal, Search } from '@/components'
+import { Button } from '@/components/ui/button'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { useTitle } from '@/hooks'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { HiOutlineExclamationCircle, HiPlus } from 'react-icons/hi2'
+import { Link } from 'react-router-dom'
 
 const TableDataMaster = () => {
   return (
@@ -128,33 +128,37 @@ const TableDataMaster = () => {
     </>
   )
 }
+
+interface FormValues {
+  nik: number
+  noKk: number
+  nama: string
+  alamat: string
+  kota: string
+  kecamatan: string
+  kelurahan: string
+  agama: string
+  tempatLahir: string
+  tanggalLahir: string
+  jenisKelamin: string
+  pendidikanTerakhir: string
+  pekerjaan: string
+  golonganDarah: string
+  statusKawin: string
+  kewarganegaraan: string
+  namaIbu: string
+  namaBapak: string
+  statusDtks: string
+}
+
 const DataMaster = () => {
   useTitle('Data Master  ')
-  interface FormValues {
-    nik: number,
-    noKk: number,
-    nama: string,
-    alamat: string,
-    kota: string,
-    kecamatan: string,
-    kelurahan: string,
-    agama: string,
-    tempatLahir: string,
-    tanggalLahir: string,
-    jenisKelamin: string,
-    pendidikanTerakhir: string,
-    pekerjaan: string,
-    golonganDarah: string,
-    statusKawin: string,
-    kewarganegaraan: string,
-    namaIbu: string,
-    namaBapak: string,
-    statusDtks: string
-  }
+
   const [isShow, setIsShow] = React.useState(false)
   const formsCreate = useForm<FormValues>({
-    mode: 'onTouched',
+    mode: 'onTouched'
   })
+
   const onSubmit = async (values: any) => {
     console.log(values)
   }
@@ -231,7 +235,7 @@ const DataMaster = () => {
         </div>
       </div>
       <TableDataMaster />
-      <Modal isShow={isShow} className="md:max-w-4xl max-h-[calc(100vh-50px)] overflow-y-auto">
+      <Modal isShow={isShow} className="md:max-w-4xl max-h-[calc(100vh-50px)] overflow-y-auto scroll-custom">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Tambah Role</h3>
           <p className="text-sm text-[#A1A1A1]">Masukkan Data Role Baru</p>
@@ -259,7 +263,6 @@ const DataMaster = () => {
               </div>
             </div>
             <div className="flex-row flex-wrap grid grid-cols-2 gap-3">
-
               <FormField
                 name="noKk"
                 control={formsCreate.control}
@@ -272,7 +275,6 @@ const DataMaster = () => {
                   </FormItem>
                 )}
               />
-
 
               <FormField
                 name="nama"
@@ -287,7 +289,6 @@ const DataMaster = () => {
                 )}
               />
 
-
               <FormField
                 name="alamat"
                 control={formsCreate.control}
@@ -300,7 +301,6 @@ const DataMaster = () => {
                   </FormItem>
                 )}
               />
-
 
               <FormField
                 name="kota"
@@ -325,7 +325,6 @@ const DataMaster = () => {
                   </FormItem>
                 )}
               />
-
 
               <FormField
                 name="kecamatan"
@@ -572,7 +571,6 @@ const DataMaster = () => {
                   </FormItem>
                 )}
               />
-
             </div>
           </form>
         </Form>
@@ -580,7 +578,9 @@ const DataMaster = () => {
           <Button variant="outline" className="rounded-lg text-primary border-primary" onClick={() => setIsShow(false)}>
             Cancel
           </Button>
-          <Button className="rounded-lg" type="submit">Tambah Data</Button>
+          <Button className="rounded-lg" type="submit">
+            Tambah Data
+          </Button>
         </Modal.Footer>
       </Modal>
     </div>

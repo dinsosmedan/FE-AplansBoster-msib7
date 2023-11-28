@@ -10,10 +10,7 @@ export const useLogin = () => {
 
   return useMutation(loginFn, {
     onSuccess: (data) => {
-      //
-      // console.log(data.data);
-
-      storeToken(data.data.access_token)
+      storeToken(data.data.accessToken)
       navigate('/')
     },
     onError: (error: AxiosError) => {
