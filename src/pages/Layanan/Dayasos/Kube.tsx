@@ -13,7 +13,19 @@ const Kube = () => {
   useTitle('Kelompok Usaha Bersama (KUBE)')
 
   const forms = useForm<kubeFields>({
-    mode: 'onTouched'
+    mode: 'onTouched',
+    defaultValues: {
+      businessName: '',
+      businessType: '',
+      businessAddress: '',
+      areaLevel3: '',
+      areaLevel4: '',
+      assistanceAmount: 0,
+      budgetYear: '',
+      status: '',
+      note: '',
+      members: [{ beneficiary: '', position: '' }]
+    }
   })
 
   const onSubmit = async (values: kubeFields) => {
@@ -30,7 +42,7 @@ const Kube = () => {
           <div className="flex flex-row gap-4 pt-5">
             <div className="w-4/12">
               <FormField
-                name="nama"
+                name="businessName"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -44,7 +56,7 @@ const Kube = () => {
             </div>
             <div className="w-4/12">
               <FormField
-                name="jenisUsaha"
+                name="businessType"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -56,7 +68,7 @@ const Kube = () => {
                 )}
               />
             </div>
-            <div className="w-4/12">
+            {/* <div className="w-4/12">
               <FormField
                 name="batch"
                 control={forms.control}
@@ -69,13 +81,13 @@ const Kube = () => {
                   </FormItem>
                 )}
               />
-            </div>
+            </div> */}
           </div>
           <div className="w-full text-center">
             <p className="text-2xl font-bold">Alamat KUBE</p>
           </div>
           <div className="flex flex-row gap-4">
-            <div className="w-4/12">
+            {/* <div className="w-4/12">
               <FormField
                 name="kota"
                 control={forms.control}
@@ -99,10 +111,10 @@ const Kube = () => {
                   </FormItem>
                 )}
               />
-            </div>
+            </div> */}
             <div className="w-4/12">
               <FormField
-                name="kecamatan"
+                name="areaLevel3"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -127,7 +139,7 @@ const Kube = () => {
             </div>
             <div className="w-4/12">
               <FormField
-                name="kelurahan"
+                name="areaLevel4"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -153,7 +165,7 @@ const Kube = () => {
           </div>
           <div>
             <FormField
-              name="alamatLengkap"
+              name="businessAddress"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
@@ -169,7 +181,7 @@ const Kube = () => {
             <p className="text-2xl font-bold">Data Pengurus</p>
           </div>
           <div className="flex flex-row gap-4">
-            <div className="w-4/12">
+            {/* <div className="w-4/12">
               <FormField
                 name="nik"
                 control={forms.control}
@@ -182,8 +194,8 @@ const Kube = () => {
                   </FormItem>
                 )}
               />
-            </div>
-            <div className="w-4/12">
+            </div> */}
+            {/* <div className="w-4/12">
               <FormField
                 name="namaPengurus"
                 control={forms.control}
@@ -196,10 +208,10 @@ const Kube = () => {
                   </FormItem>
                 )}
               />
-            </div>
+            </div> */}
             <div className="w-4/12">
               <FormField
-                name="jabatan"
+                name="members.0.position"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -236,7 +248,7 @@ const Kube = () => {
           <div className="flex flex-row gap-4">
             <div className="w-4/12">
               <FormField
-                name="tahunAnggaran"
+                name="budgetYear"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -250,7 +262,7 @@ const Kube = () => {
             </div>
             <div className="w-4/12">
               <FormField
-                name="statusVerifikasi"
+                name="status"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -275,7 +287,7 @@ const Kube = () => {
             </div>
             <div className="w-4/12">
               <FormField
-                name="keterangan"
+                name="note"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
