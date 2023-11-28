@@ -43,12 +43,40 @@ export const djpmValidation = Yup.object({
   serviceType: Yup.string().required('Jenis Layanan wajib diisi'),
   dutyPlace: Yup.string().required('Tempat Tugas wajib diisi').max(255, 'Tempat Tugas maksimal 255 karakter'),
   dutyAddress: Yup.string().required('Alamat Tugas wajib diisi').max(255, 'Alamat Tugas maksimal 255 karakter'),
-  bankAccountNumber: Yup.string().required('No Rekening Bank wajib diisi').max(255, 'No Rekening Bank maksimal 255 karakter'),
-  bankAccountName: Yup.string().required('Nama Rekening Bank wajib diisi').max(255, 'Nama Rekening Bank maksimal 255 karakter'),
-  bankBranchName: Yup.string().required('Kantor Cabang Bank wajib diisi').max(255, 'Kantor Cabang Bank maksimal 255 karakter'),
+  bankAccountNumber: Yup.string()
+    .required('No Rekening Bank wajib diisi')
+    .max(255, 'No Rekening Bank maksimal 255 karakter'),
+  bankAccountName: Yup.string()
+    .required('Nama Rekening Bank wajib diisi')
+    .max(255, 'Nama Rekening Bank maksimal 255 karakter'),
+  bankBranchName: Yup.string()
+    .required('Kantor Cabang Bank wajib diisi')
+    .max(255, 'Kantor Cabang Bank maksimal 255 karakter'),
   status: Yup.string().required('Status wajib diisi').max(255, 'Status maksimal 255 karakter'),
-  budgetYear:  Yup.string().matches(/^\d{4}$/, 'Format tahun tidak valid. Harap masukkan tahun dengan format YYYY'),
+  budgetYear: Yup.string().matches(/^\d{4}$/, 'Format tahun tidak valid. Harap masukkan tahun dengan format YYYY'),
   assistanceAmount: Yup.number()
 })
 
 export type djpmFields = Yup.InferType<typeof djpmValidation>
+
+export const kubeValidation = Yup.object({
+  businessName: Yup.string().required('Nama Usaha wajib diisi').max(255, 'Nama Usaha maksimal 255 karakter'),
+  businessType: Yup.string().required('Jenis Usaha wajib diisi').max(255, 'Jenis Usaha maksimal 255 karakter'),
+  businessAddress: Yup.string().required('Alamat Usaha wajib diisi').max(255, 'Alamat Usaha maksimal 255 karakter'),
+  areaLevel3: Yup.string().required('Kecamatan wajib diisi'),
+  areaLevel4: Yup.string().required('Kelurahan wajib diisi'),
+  assistanceAmount: Yup.number().required('Jumlah Bantuan wajib diisi'),
+  budgetYear: Yup.string()
+    .matches(/^\d{4}$/, 'Format tahun tidak valid. Harap masukkan tahun dengan format YYYY')
+    .required('Tahun Anggaran wajib diisi'),
+  status: Yup.string().required('Status wajib diisi').max(255, 'Status maksimal 255 karakter'),
+  note: Yup.string().required('Keterangan wajib diisi').max(255, 'Catatan maksimal 255 karakter'),
+  members: Yup.array().of(
+    Yup.object().shape({
+      beneficiary: Yup.string().required('Penerima manfaat wajib diisi'),
+      position: Yup.string().required('Jabatan wajib diisi')
+    })
+  )
+})
+
+export type kubeFields = Yup.InferType<typeof kubeValidation>
