@@ -107,7 +107,7 @@ export default function App() {
             <Route path="data-kube" element={<DataKube />} />
             <Route path="data-rumahibadah" element={<DataRumahIbadah />} />
             <Route path="data-veteran" element={<DataVeteran />} />
-            <Route path="data=bltbbm" element={<DataBltbbm />} />
+            <Route path="data-bltbbm" element={<DataBltbbm />} />
             <Route path="data-hibah" element={<DataHibah />} />
           </Route>
         </Route>

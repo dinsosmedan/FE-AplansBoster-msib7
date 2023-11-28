@@ -52,3 +52,19 @@ export interface IMeta {
   hasNext: boolean
   hasPrevious: boolean
 }
+
+export interface IVeteran {
+  success: boolean
+  message: string
+  data: Array<{
+    id: string
+    beneficiary: IBeneficary
+    veteranIdentityNumber: string
+    veteranUnit: string
+    uniformSize: null|string
+    isActive: string
+    createdAt: string
+    updatedAt: string
+  }>
+  meta: IMeta
+}
