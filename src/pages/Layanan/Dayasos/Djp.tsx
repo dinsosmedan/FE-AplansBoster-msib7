@@ -61,9 +61,9 @@ const Djp = () => {
     const { noHp: phoneNumber, jenisLayanan: serviceType, tempatTugas: dutyPlace, alamatTugas: dutyAddress, noRekening: bankAccountNumber, namaRekening: bankAccountName, kantorCabang: bankBranchName, statusPencairan: status, tahunAnggaran: budgetYear } = values
 
     const data = { beneficiary: id_masyarakat, phoneNumber, serviceType, dutyPlace, dutyAddress, bankAccountNumber, bankAccountName, bankBranchName, status, budgetYear }
-    console.log(data);
+    // console.log(data);
 
-    // saveDjpm(data)
+    saveDjpm(data)
   }
   return (
     <div className="container bg-white py-5">
