@@ -1,4 +1,4 @@
-import { getWorshipPlacesFn, storeWorshipPlaceFn, type WorshipPlaceQuery } from '@/api/dayasos.api'
+import { getWorshipPlacesFn, storeDjpm, storeWorshipPlaceFn, type WorshipPlaceQuery } from '@/api/dayasos.api'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
 export const useGetWorshipPlaces = ({ page, idKecamatan, idKelurahan, name }: WorshipPlaceQuery) => {
@@ -17,6 +17,14 @@ export const useCreateWorshipPlace = () => {
   return useMutation(storeWorshipPlaceFn, {
     onSuccess: () => {
       void queryClient.invalidateQueries('worship-places')
+    }
+  })
+}
+export const useCreateDjpm = () => {
+  const queryClient = useQueryClient()
+  return useMutation(storeDjpm, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('create-djpm')
     }
   })
 }
