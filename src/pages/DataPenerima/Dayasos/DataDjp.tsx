@@ -216,7 +216,7 @@ const DataDjp = () => {
           )}
         </TableBody>
       </Table>
-      {serviceFunds?.meta.total > 30 ? (
+      {(serviceFunds?.meta?.total as number) > 30 ? (
         <Pagination
           className="px-5 py-5 flex justify-end"
           currentPage={page !== '' ? parseInt(page) : 1}
