@@ -15,7 +15,7 @@ export default function Header() {
   const { alert } = useAlert()
 
   const title = useTitleHeader((state) => state.title)
-  const { data: user, isLoading } = useGetMe()
+  const { data: user, isLoading, isSuccess } = useGetMe()
   const { mutate: logout, isLoading: isLoadingLogout } = useLogout()
   const handleLogout = () => {
     void alert({
@@ -39,24 +39,28 @@ export default function Header() {
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <div className="flex items-center gap-4">
-                <img
-                  src="https://source.unsplash.com/random/900×700/?man"
-                  alt="profile"
-                  className="w-12 h-12 object-cover rounded-[14px]"
-                />
-                <div className="flex flex-col">
-                  <p className="font-bold">{user?.data.name}</p>
-                  <p className="text-sm text-[#8F8F8F]">{user?.data.role.name}</p>
+              {Boolean(isSuccess) && (
+                <div className="flex items-center gap-4">
+                  <img
+                    src="https://source.unsplash.com/random/900×700/?man"
+                    alt="profile"
+                    className="w-12 h-12 object-cover rounded-[14px]"
+                  />
+                  <div className="flex flex-col">
+                    <p className="font-bold">{user?.data.name}</p>
+                    <p className="text-sm text-[#8F8F8F]">{user?.data.role.name}</p>
+                  </div>
                 </div>
-              </div>
+              )}
             </DropdownMenuTrigger>
             <DropdownMenuContent className="mr-5">
               <DropdownMenuItem>
                 <DropdownMenuLabel className="text-primary  w-[170px]">Pengaturan</DropdownMenuLabel>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <DropdownMenuLabel className="text-primary" onClick={handleLogout}>Keluar</DropdownMenuLabel>
+                <DropdownMenuLabel className="text-primary" onClick={handleLogout}>
+                  Keluar
+                </DropdownMenuLabel>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

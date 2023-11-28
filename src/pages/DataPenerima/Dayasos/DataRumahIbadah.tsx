@@ -49,7 +49,7 @@ const DataRumahIbadah = () => {
 
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
-  const { data, isSuccess } = useGetWorshipPlaces({
+  const { data: worshipPlaces, refetch } = useGetWorshipPlaces({
     page: currentPage,
     name: nama,
     idKecamatan: kecamatan,
@@ -67,11 +67,11 @@ const DataRumahIbadah = () => {
   }, [nama, kecamatan, kelurahan, status, jenisrumahibadah])
 
   const onSubmit = async (values: FormValues) => {
-    console.log(values)
-
     Object.keys(values).forEach((key) => {
       createParams({ key, value: values[key as keyof FormValues] })
     })
+
+    await refetch()
   }
 
   return (
@@ -170,7 +170,7 @@ const DataRumahIbadah = () => {
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
-                        disabled={areaLevel3 === '' || kecamatan === ''}
+                        disabled={areaLevel3 === '' && kecamatan === ''}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -191,7 +191,7 @@ const DataRumahIbadah = () => {
               />
             </div>
             <div className="w-[140px] h-[50px] ml-auto rounded-xl">
-              <Button className="py-6">
+              <Button className="py-6" loading={}>
                 <HiMagnifyingGlass className="w-6 h-6 py" />
                 <p className="font-bold text-sm text-white ml-3">Cari Data</p>
               </Button>
