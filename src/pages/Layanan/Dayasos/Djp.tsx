@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea'
 import useTitle from '@/hooks/useTitle'
 import { storeDjpm } from '@/api/dayasos.api'
 import { useCreateDjpm } from '@/store/server/useDayasos'
+import { useMutateBeneficaryByNIK } from '@/store/server'
 
 const Djp = () => {
   useTitle('Dana Jasa Pelayanan Masyarakat')
@@ -41,18 +42,19 @@ const Djp = () => {
   const formsCari = useForm<FormValues>({
     mode: 'onTouched'
   })
-  const { mutate: save, isLoading } = useCreateDjpm()
+
+  const { mutate: saveDjpm, isLoading } = useCreateDjpm()
+  // const { data: beneficiary, refetch, isLoading, isError } = useGetBeneficaryByNIK(NIK, false)
+  const { mutate: cariNik, isLoading: isLoadingCari } = useMutateBeneficaryByNIK()
 
   const onSubmitCari = async (values: FormValues) => {
-    console.log(values);
-
+    cariNik(values.nik)
   }
   const onSubmit = async (values: FormValues) => {
-    // const { nik, noHp ,jenisLayanan}
     const { nik: beneficiary, noHp: phoneNumber, jenisLayanan: serviceType, tempatTugas: dutyPlace, alamatTugas: dutyAddress, noRekening: bankAccountNumber, namaRekening: bankAccountName, kantorCabang: bankBranchName, statusPencairan: status, tahunAnggaran: budgetYear } = values
-    // console.log()
+
     const data = { beneficiary, phoneNumber, serviceType, dutyPlace, dutyAddress, bankAccountNumber, bankAccountName, bankBranchName, status, budgetYear }
-    save(data)
+    saveDjpm(data)
   }
 
   return (
@@ -78,15 +80,15 @@ const Djp = () => {
               />
             </div>
             <div className="w-1/12 flex items-end justify-end">
-              <Button className="w-full">Cari</Button>
+              <Button className="w-full" loading={isLoadingCari}>Cari</Button>
             </div>
           </div>
 
-          <div className="w-full text-center">
-            <p className="text-2xl font-bold">Data Bank</p>
-          </div>
         </form>
       </Form>
+      <div className="w-full text-center my-5">
+        <p className="text-2xl font-bold">Data Bank</p>
+      </div>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="flex flex-row gap-4">

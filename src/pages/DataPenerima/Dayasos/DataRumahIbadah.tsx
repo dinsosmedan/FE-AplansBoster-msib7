@@ -49,7 +49,7 @@ const DataRumahIbadah = () => {
 
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
-  const { data, isSuccess } = useGetWorshipPlaces({
+  const { refetch } = useGetWorshipPlaces({
     page: currentPage,
     name: nama,
     idKecamatan: kecamatan,
@@ -67,11 +67,11 @@ const DataRumahIbadah = () => {
   }, [nama, kecamatan, kelurahan, status, jenisrumahibadah])
 
   const onSubmit = async (values: FormValues) => {
-    console.log(values)
-
     Object.keys(values).forEach((key) => {
       createParams({ key, value: values[key as keyof FormValues] })
     })
+
+    await refetch()
   }
 
   return (
@@ -170,7 +170,7 @@ const DataRumahIbadah = () => {
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
-                        disabled={areaLevel3 === '' || kecamatan === ''}
+                        disabled={areaLevel3 === '' && kecamatan === ''}
                       >
                         <FormControl>
                           <SelectTrigger>

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/components/ui/use-toast'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 import { useTitle } from '@/hooks'
 import { worshipPlaceValidation, type worshipPlaceFields } from '@/lib/validations/dayasos.validation'
@@ -46,8 +46,8 @@ const Ri = () => {
   })
 
   const areaLevel3 = forms.watch('areaLevel3')
-  const { data: kecamatan } = useGetKecamatan()
-  const { data: kelurahan } = useGetKelurahan(areaLevel3)
+  const { data: kecamatan, isSuccess: isSuccessKecamatan } = useGetKecamatan()
+  const { data: kelurahan, isSuccess: isSuccessKelurahan } = useGetKelurahan(areaLevel3)
   const { mutate: storeWorshipPlace, isLoading } = useCreateWorshipPlace()
 
   const onSubmit = (values: worshipPlaceFields) => {
@@ -153,11 +153,14 @@ const Ri = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {kecamatan?.map((item, index) => (
-                            <SelectItem value={item.id} key={index}>
-                              {item.name}
-                            </SelectItem>
-                          ))}
+                          <SelectGroup>
+                            {isSuccessKecamatan &&
+                              kecamatan.map((item, index) => (
+                                <SelectItem value={item.id} key={index}>
+                                  {item.name}
+                                </SelectItem>
+                              ))}
+                          </SelectGroup>
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -179,11 +182,14 @@ const Ri = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {kelurahan?.map((item, index) => (
-                            <SelectItem value={item.id} key={index}>
-                              {item.name}
-                            </SelectItem>
-                          ))}
+                          <SelectGroup>
+                            {isSuccessKelurahan &&
+                              kelurahan?.map((item, index) => (
+                                <SelectItem value={item.id} key={index}>
+                                  {item.name}
+                                </SelectItem>
+                              ))}
+                          </SelectGroup>
                         </SelectContent>
                       </Select>
                     </FormControl>
