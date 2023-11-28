@@ -14,10 +14,10 @@ const LayananLinjamsos = () => {
           <CardLink.Header className="h-[185px] flex-col" title="Bantuan Biaya Pendidikan" circlePosition="bottom">
             <p className="pt-11 text-white text-base italic font-inter ">Education Financial Aid</p>
           </CardLink.Header>
-          <CardLink.Footer href="/layanan/rehabsos">
+          <CardLink.Footer href="/layanan/linjamsos/Bbp">
             <div className="flex gap-1 items-center">
               <HiPlus className="h-[30px] w-[30px] text-primary" />
-              <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
+              <p className="text-[25px] text-primary text-center font-bold ">Input Data</p>
             </div>
           </CardLink.Footer>
         </CardLink>
@@ -28,7 +28,7 @@ const LayananLinjamsos = () => {
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-1 items-center">
               <HiPlus className="h-[30px] w-[30px] text-primary" />
-              <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
+              <p className="text-[25px] text-primary text-center font-bold ">Input Data</p>
             </div>
           </CardLink.Footer>
         </CardLink>
@@ -40,10 +40,10 @@ const LayananLinjamsos = () => {
           >
             <p className="pt-11 text-white text-base italic font-inter">Vulnerable Group Handling</p>
           </CardLink.Header>
-          <CardLink.Footer href="/layanan/rehabsos">
+          <CardLink.Footer href="/layanan/linjamsos/Pkr">
             <div className="flex gap-1 items-center">
               <HiPlus className="h-[30px] w-[30px] text-primary" />
-              <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
+              <p className="text-[25px] text-primary text-center font-bold ">Input Data</p>
             </div>
           </CardLink.Footer>
         </CardLink>
@@ -54,7 +54,7 @@ const LayananLinjamsos = () => {
           <CardLink.Footer href="/layanan/rehabsos">
             <div className="flex gap-1 items-center">
               <HiPlus className="h-[30px] w-[30px] text-primary" />
-              <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
+              <p className="text-[25px] text-primary text-center font-bold ">Input Data</p>
             </div>
           </CardLink.Footer>
         </CardLink>
@@ -66,10 +66,10 @@ const LayananLinjamsos = () => {
           >
             <p className="pt-11 text-white text-base italic font-inter">Indigency Certificate</p>
           </CardLink.Header>
-          <CardLink.Footer href="/layanan/rehabsos">
+          <CardLink.Footer href="/layanan/linjamsos/Sktm">
             <div className="flex gap-1 items-center">
               <HiPlus className="h-[30px] w-[30px] text-primary" />
-              <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
+              <p className="text-[25px] text-primary text-center font-bold ">Input Data</p>
             </div>
           </CardLink.Footer>
         </CardLink>
