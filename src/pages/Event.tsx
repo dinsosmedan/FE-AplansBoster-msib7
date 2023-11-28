@@ -1,136 +1,106 @@
+import { Container, Modal, Pagination, Search } from '@/components'
+import { Button } from '@/components/ui/button'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { useTitle } from '@/hooks'
+import { HiOutlinePencilAlt } from 'react-icons/hi'
+import { HiArrowUpTray, HiNewspaper } from 'react-icons/hi2'
+import * as React from 'react'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useForm } from 'react-hook-form'
-import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
-import useTitle from '@/hooks/useTitle'
+import { useForm } from 'react-hook-form'
+import { useAlert } from '@/store/client'
+
+interface FormValues {
+  jenisEvent: string
+  jadwalAwal: string
+  jadwalAkhir: string
+  tahunNotifikasi: string
+  tahunAnggaran: string
+  jumlahPeserta: string
+  batch: string
+}
 
 const Event = () => {
   useTitle('Event')
+const { alert } = useAlert()
 
-  interface FormValues {
-    nik: string
-    noKk: string
-    nama: string
-    tempatLahir: string
-    tanggalLahir: string
-    statusDtks: string
-    kota: string
-    kecamatan: string
-    kelurahan: string
-    alamatLengkap: string
-    programBansos: string
-    keterangan: string
-    rt: string
-    rw: string
-    statusDisabilitas: string
-    jenisDisabilitas: string
-    rekomendasi: string
-  }
+  const [isShow, setIsShow] = React.useState(false)
+  const [currentPage, setCurrentPage] = React.useState(1)
+  const forms = useForm<FormValues>({ mode: 'onTouched' })
 
-  const forms = useForm<FormValues>({
-    mode: 'onTouched'
-  })
-
-  const onSubmit = async (values: FormValues) => {
+  const onSubmit = async (values: any) => {
     console.log(values)
   }
-
+  const showAlert = () => {
+    void alert({
+      title: 'User ditambahkan',
+      description: 'User berhasil ditambahkan',
+      submitText: 'Oke',
+      variant: 'success'
+    }).then(() => {
+      console.log('oke')
+    })
+  }
   return (
-    <div className="container bg-white py-5">
-      <div className="w-full text-center">
-        <p className="text-2xl font-bold">Data Personal</p>
+    <Container>
+      <div className="flex justify-between py-5 ">
+        <Search placeholder="Search" className="w-[398px] py-[23px]" />
+        <Button className="w-[166px] h-[56px]" onClick={() => setIsShow(true)}>
+          <HiNewspaper className="w-6 h-6" />
+          <p className="text-base ml-3 ">Tambah Event</p>
+        </Button>
       </div>
-      <Form {...forms}>
-        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="flex flex-row justify-between gap-3">
-            <div className="w-11/12">
-              <FormField
-                name="nik"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan NIK Masyarakat" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-1/12 flex items-end justify-end">
-              <Button className="w-full">Cari</Button>
-            </div>
-          </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-4/12">
-              <FormField
-                name="noKk"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">No KK</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan No KK Masyarakat" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-4/12">
-              <FormField
-                name="nama"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama Masyarakat" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-4/12">
-              <FormField
-                name="tempatLahir"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Tempat Lahir</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Tempat Lahir" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="grid gap-4 grid-cols-3">
+      <Table>
+        <TableHeader className="bg-primary">
+          <TableRow>
+            <TableHead className="text-white">No</TableHead>
+            <TableHead className="text-white">Jenis Event</TableHead>
+            <TableHead className="text-white">Jadwal Awal</TableHead>
+            <TableHead className="text-white">Jadwal Akhir</TableHead>
+            <TableHead className="text-white">Jumlah Peserta</TableHead>
+            <TableHead className="text-white">Batch</TableHead>
+            <TableHead className="text-white">Action</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell className="text-center">1</TableCell>
+            <TableCell className="text-center">Bantuan Biaya Pendidikan (BBP)</TableCell>
+            <TableCell className="text-center">16 Juni 2023 12:12</TableCell>
+            <TableCell className="text-center">16 Juni 2023 12:12</TableCell>
+            <TableCell className="text-center">600</TableCell>
+            <TableCell className="text-center">3</TableCell>
+            <TableCell className="flex items-center justify-center">
+              <Button
+                size="icon"
+                variant="base"
+                className="bg-[#959595] text-white hover:bg-[#828282] hover:text-white"
+              >
+                <HiOutlinePencilAlt className="text-lg" />
+              </Button>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+      <Modal isShow={isShow} className="md:max-w-3xl max-h-[calc(100vh-50px)] overflow-y-auto">
+        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Tambah Event</h3>
+          <p className="text-sm text-[#A1A1A1]">Tambah Data Event</p>
+        </Modal.Header>
+        <Form {...forms}>
+          <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-3">
             <FormField
-              name="tanggalLahir"
+              name="jenisEvent"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Tanggal Lahir</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Tanggal Lahir" />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="statusDtks"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Status DTKS</FormLabel>
+                  <FormLabel className="font-semibold dark:text-white">Jenis Event</FormLabel>
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Pilih Status DTKS" />
+                          <SelectValue placeholder="Pilih Jenis Event" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -143,206 +113,143 @@ const Event = () => {
                 </FormItem>
               )}
             />
-          </div>
-          <div className="w-full text-center">
-            <p className="text-2xl font-bold">Alamat</p>
-          </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-4/12">
+            <div className="grid grid-cols-2 gap-3">
               <FormField
-                name="kota"
+                name="jadwalAwal"
                 control={forms.control}
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Kota/Kabupaten</FormLabel>
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Jadwal Awal</FormLabel>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kota/Kabupaten" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Input {...field} placeholder="Pilih Jadwal Awal" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="jadwalAkhir"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Jadwal Akhir</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Pilih Jadwal Akhir" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="tahunNotifikasi"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Tanggal Notifikasi</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="0/100" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="tahunAnggaran"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Tahun Anggaran</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Masukkan Tahun Anggaran" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="jumlahPeserta"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Jumlah Peserta</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="0/100" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="batch"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Masukkan Batch</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Masukkan Batch" />
                     </FormControl>
                   </FormItem>
                 )}
               />
             </div>
-            <div className="w-4/12">
-              <FormField
-                name="nama"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kecamatan" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-4/12">
-              <FormField
-                name="kelurahan"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kelurahan" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+          </form>
+        </Form>
+        <div className="w-full text-center">
+          <p className="text-2xl font-bold">Berkas BBP</p>
+        </div>
+        <div className="grid gap-5">
+          <div className="flex h-[105px] border-dashed border-2 border-primary rounded-md">
+            <div className="m-auto flex flex-col justify-center items-center">
+              <HiArrowUpTray className="h-6 w-6 text-primary" />
+              <p className="font-bold text-base text-center px-[50px]">Pengummuman Beasiswa Gel II</p>
             </div>
           </div>
-          <div className="grid gap-4 grid-cols-3">
-            <FormField
-              name="rt"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">RT</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan RT" />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="rw"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">RW</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan RW" />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
-          <div>
-            <FormField
-              name="alamatLengkap"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
-                  <FormControl>
-                    <Textarea {...field} placeholder="Masukkan Alamat Lengkap Masyarakat." />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="w-full text-center">
-            <p className="text-2xl font-bold">Lainnya</p>
-          </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-4/12">
-              <FormField
-                name="statusDisabilitas"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Status Disabilitas</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Status Disabilitas" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-4/12">
-              <FormField
-                name="jenisDisabilitas"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Jenis Disabilitas</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Jenis Disabilitas" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-4/12">
-              <FormField
-                name="rekomendasi"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Rekomendasi</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Rekomendasi" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+          <div className="flex h-[105px] border-dashed border-2 border-primary rounded-md">
+            <div className="m-auto flex flex-col justify-center items-center">
+              <HiArrowUpTray className="h-6 w-6 text-primary" />
+              <p className="font-bold text-base text-center text px-[50px]">
+                Biodata Mahasiswa Calon Penerima Bantuan Biaya Pendidikan
+              </p>
             </div>
           </div>
-          <div>
-            <FormField
-              name="keterangan"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Keterangan</FormLabel>
-                  <FormControl>
-                    <Textarea {...field} placeholder="Masukkan Keterangan." />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+          <div className="flex h-[105px] border-dashed border-2 border-primary rounded-md">
+            <div className="m-auto flex flex-col justify-center items-center">
+              <HiArrowUpTray className="h-6 w-6 text-primary" />
+              <p className="font-bold text-base text-center px-[50px]">
+                Template Surat Permohonan Ditujukan Kepada Bapak Wali Kota Medan Cq. Kepala Dinas Sosial Kota Medan
+              </p>
+            </div>
           </div>
-          <div className="flex justify-end gap-5">
-            <Button variant="cancel">Cancel</Button>
-            <Button>Submit</Button>
+          <div className="flex h-[105px] border-dashed border-2 border-primary rounded-md">
+            <div className="m-auto flex flex-col justify-center items-center">
+              <HiArrowUpTray className="h-6 w-6 text-primary" />
+              <p className="font-bold text-base text-center px-[50px]">
+                Template Surat Pernyataan Tidak Menerima Beasiswa/Bantuan Biaya Pendidikan Dari Sumber Lain
+              </p>
+            </div>
           </div>
-        </form>
-      </Form>
-    </div>
+          <div className="flex h-[105px] border-dashed border-2 border-primary rounded-md">
+            <div className="m-auto flex flex-col justify-center items-center">
+              <HiArrowUpTray className="h-6 w-6 text-primary" />
+              <p className="font-bold text-base text-center">
+                Template Surat Pernyataan Tidak Berstatus Sebagai Aparatur Sipil Negara (ASN)
+              </p>
+            </div>
+          </div>
+        </div>
+        <Modal.Footer>
+          <Button variant="outline" className="rounded-lg text-primary border-primary" onClick={() => setIsShow(false)}>
+            Cancel
+          </Button>
+          <Button className="rounded-lg" type="submit" onClick={showAlert}>
+            Tambah Data
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Pagination
+        className="px-5 py-5 flex justify-end"
+        currentPage={currentPage}
+        totalCount={100}
+        pageSize={10}
+        onPageChange={(page) => setCurrentPage(page)}
+      />
+    </Container>
   )
 }
+
 export default Event

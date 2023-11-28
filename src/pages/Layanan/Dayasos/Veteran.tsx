@@ -50,8 +50,6 @@ const Veteran = () => {
     }
   }, [isError])
 
-  console.log({ beneficiary })
-
   const onSubmit = async (values: veteranFields) => {
     console.log(values)
   }

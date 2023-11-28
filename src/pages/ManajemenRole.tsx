@@ -89,7 +89,6 @@ const ManajemenRole = () => {
           </TableRow>
         </TableBody>
       </Table>
-
       <Modal isShow={isShow}>
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Tambah Role</h3>
