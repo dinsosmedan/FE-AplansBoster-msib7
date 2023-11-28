@@ -34,7 +34,7 @@ export const useLogout = () => {
   })
 }
 export const useGetMe = () => {
-  return useQuery('user', getMeFn, {
+  return useQuery('user', async () => await getMeFn(), {
     onSuccess: (data) => {
       useUserInfo.getState().storeUserInfo(data)
     }
