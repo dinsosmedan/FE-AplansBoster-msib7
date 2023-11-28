@@ -4,7 +4,6 @@ import ENV from '@/lib/environment'
 
 const api = axios.create({
   baseURL: ENV.apiUrl,
-  withCredentials: true,
   headers: {
     Accept: 'application/json'
   }
@@ -27,7 +26,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       useToken.getState().removeToken()
       window.location.href = '/'
     }

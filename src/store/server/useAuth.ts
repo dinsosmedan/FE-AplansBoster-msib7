@@ -2,9 +2,8 @@ import { getMeFn, loginFn, logoutFn } from '@/api/auth.api'
 import { type AxiosError } from 'axios'
 import { useMutation, useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
-import { useToken } from '../client'
+import { useToken, useUserInfo } from '../client'
 import { toast } from '@/components/ui/use-toast'
-import { useUserInfo } from './useUserInfo'
 
 export const useLogin = () => {
   const navigate = useNavigate()
