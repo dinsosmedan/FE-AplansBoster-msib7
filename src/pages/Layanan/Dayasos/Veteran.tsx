@@ -33,7 +33,7 @@ const Veteran = () => {
 
   React.useEffect(() => {
     if (!isLoading && beneficiary != null) {
-      forms.setValue('beneficiary', beneficiary?.data.id)
+      forms.setValue('beneficiary', beneficiary?.id)
       toast({
         title: 'NIK terdaftar',
         description: 'NIK terdaftar, silahkan isi form berikut'
@@ -73,7 +73,7 @@ const Veteran = () => {
                   />
                 </FormControl>
               </FormItem>
-              <div className="w-fit flex items-end justify-end" onClick={async () => refetch()}>
+              <div className="w-fit flex items-end justify-end" onClick={async () => await refetch()}>
                 <Button className="w-full" loading={isLoading}>
                   Cari
                 </Button>
