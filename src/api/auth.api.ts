@@ -17,7 +17,7 @@ export const loginFn = async (fields: LoginInput): Promise<IAuthResponse> => {
   return response.data
 }
 export const logoutFn = async (): Promise<IAuthResponse> => {
-  const response = await apiPublic.post('/auth/logout')
+  const response = await api.post('/auth/logout')
   return response.data
 }
 export const getMeFn = async (): Promise<IUser> => {
