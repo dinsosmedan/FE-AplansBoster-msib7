@@ -8,10 +8,14 @@ import useTitle from '@/hooks/useTitle'
 import { storeDjpm } from '@/api/dayasos.api'
 import { useCreateDjpm } from '@/store/server/useDayasos'
 import { useMutateBeneficaryByNIK } from '@/store/server'
+import { useHiddenFormDjpm } from '@/store/client/useHiddenFormDjpm'
 
 const Djp = () => {
+
   useTitle('Dana Jasa Pelayanan Masyarakat')
 
+  const id_masyarakat = useHiddenFormDjpm((state) => state.id_masyarakat)
+  // console.log(id_masyarakat);
   interface FormValues {
     nik: string
     noKk: string
@@ -31,6 +35,7 @@ const Djp = () => {
     namaRekening: string
     kantorCabang: string
     nominalBantuan: string
+    hidden_id_masyarakat_input: string
     tahunAnggaran: number
     noHp: string
     jenisKelamin: string
@@ -51,12 +56,15 @@ const Djp = () => {
     cariNik(values.nik)
   }
   const onSubmit = async (values: FormValues) => {
-    const { nik: beneficiary, noHp: phoneNumber, jenisLayanan: serviceType, tempatTugas: dutyPlace, alamatTugas: dutyAddress, noRekening: bankAccountNumber, namaRekening: bankAccountName, kantorCabang: bankBranchName, statusPencairan: status, tahunAnggaran: budgetYear } = values
+    // console.log(values);
 
-    const data = { beneficiary, phoneNumber, serviceType, dutyPlace, dutyAddress, bankAccountNumber, bankAccountName, bankBranchName, status, budgetYear }
-    saveDjpm(data)
+    const { noHp: phoneNumber, jenisLayanan: serviceType, tempatTugas: dutyPlace, alamatTugas: dutyAddress, noRekening: bankAccountNumber, namaRekening: bankAccountName, kantorCabang: bankBranchName, statusPencairan: status, tahunAnggaran: budgetYear } = values
+
+    const data = { beneficiary: id_masyarakat, phoneNumber, serviceType, dutyPlace, dutyAddress, bankAccountNumber, bankAccountName, bankBranchName, status, budgetYear }
+    console.log(data);
+
+    // saveDjpm(data)
   }
-
   return (
     <div className="container bg-white py-5">
       <div className="w-full text-center">
@@ -93,6 +101,18 @@ const Djp = () => {
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="flex flex-row gap-4">
             <div className="w-4/12">
+              <input type="hidden" value={id_masyarakat} name='hidden_id_masyarakat_input' />
+              <FormField
+                name="hidden_id_masyarakat_input"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input {...field} type="hidden" value={id_masyarakat} placeholder="Masukkan No" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
               <FormField
                 name="noRekening"
                 control={forms.control}
@@ -100,7 +120,7 @@ const Djp = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">No. Rekening Bank Sumut</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan No. Rekening" />
+                      <Input {...field} type="number" placeholder="Masukkan No. Rekening" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -254,7 +274,10 @@ const Djp = () => {
           </div>
           <div className="flex justify-end gap-5">
             <Button variant="cancel">Cancel</Button>
-            <Button>Submit</Button>
+            <div className={` ${id_masyarakat.length == 0 ? 'hidden' : ''}`}>
+
+              <Button loading={isLoading}>Submit</Button>
+            </div>
           </div>
         </form>
       </Form>

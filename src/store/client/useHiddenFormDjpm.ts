@@ -1,11 +1,11 @@
 import { create } from 'zustand'
 
 interface showHeaderStore {
-  show: boolean
-  setshow: (show: boolean) => void
+  id_masyarakat: string
+  setid_masyarakat: (id_masyarakat: string) => void
 }
 
 export const useHiddenFormDjpm = create<showHeaderStore>((set) => ({
-  show: false,
-  setshow: (show) => set({ show })
+  id_masyarakat: '',
+  setid_masyarakat: (id_masyarakat) => set({ id_masyarakat })
 }))
