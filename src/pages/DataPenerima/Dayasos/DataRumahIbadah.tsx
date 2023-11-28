@@ -49,7 +49,7 @@ const DataRumahIbadah = () => {
 
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
-  const { data: worshipPlaces, refetch } = useGetWorshipPlaces({
+  const { refetch } = useGetWorshipPlaces({
     page: currentPage,
     name: nama,
     idKecamatan: kecamatan,

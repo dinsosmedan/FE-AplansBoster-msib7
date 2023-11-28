@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import * as React from 'react'
@@ -72,7 +73,7 @@ const Veteran = () => {
                   />
                 </FormControl>
               </FormItem>
-              <div className="w-fit flex items-end justify-end" onClick={async () => await refetch()}>
+              <div className="w-fit flex items-end justify-end" onClick={async () => refetch()}>
                 <Button className="w-full" loading={isLoading}>
                   Cari
                 </Button>

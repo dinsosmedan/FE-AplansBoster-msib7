@@ -23,7 +23,9 @@ import {
   Pokmas,
   DataDjp,
   DataVeteran,
-  DataBltbbm
+  DataBltbbm,
+  Pkr,
+  Sktm
   // InfoDataMaster
 } from './pages'
 import { DashboardLayout, Alert, ProtectedAuth, ProtectedRoute } from './components'
@@ -82,6 +84,12 @@ export default function App() {
             <Route path="/Pkh" element={<Pkh />} />
             <Route path="/Djpm" element={<Djpm />} />
             <Route path="/cek-data-dukcapil" element={<CekDataDukcapil />} />
+            <Route path="/layanan/linjamsos">
+              <Route index element={<LayananLinjamsos />} />
+              <Route path="Bbp" element={<Bbp />} />
+              <Route path="Pkr" element={<Pkr/>} />
+              <Route path="Sktm" element={<Sktm/>} />
+            </Route>
             <Route path="/layanan/dayasos">
               <Route index element={<LayananDayasos />} />
               <Route path="djp" element={<Djp />} />
