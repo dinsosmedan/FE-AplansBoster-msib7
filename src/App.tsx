@@ -112,10 +112,11 @@ export default function App() {
             </Route>
           </Route>
         </Route>
-        <Route element={<ProtectedAuth />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-        </Route>
+        {/* </Route> */}
+        {/* <Route element={<ProtectedAuth />}> */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        {/* </Route> */}
       </Routes>
     </>
   )

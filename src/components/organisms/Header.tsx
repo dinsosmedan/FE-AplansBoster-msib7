@@ -15,9 +15,9 @@ import { Skeleton } from '../ui/skeleton'
 
 export default function Header() {
   const { alert } = useAlert()
-
   const title = useTitleHeader((state) => state.title)
-  const { data: user, isLoading } = useGetMe()
+
+  // const { data: user, isLoading } = useGetMe()
   const { mutate: logout } = useLogout()
   const handleLogout = () => {
     void alert({
@@ -38,7 +38,7 @@ export default function Header() {
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <div className="flex items-center gap-4">
+              {/* <div className="flex items-center gap-4">
                 {isLoading ? (
                   <>
                     <Skeleton className="w-12 h-12 rounded-[14px]" />
@@ -60,7 +60,7 @@ export default function Header() {
                     </div>
                   </>
                 )}
-              </div>
+              </div> */}
             </DropdownMenuTrigger>
             <DropdownMenuContent className="mr-5">
               <DropdownMenuItem>

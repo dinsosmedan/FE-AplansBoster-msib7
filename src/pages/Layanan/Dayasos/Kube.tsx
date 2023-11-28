@@ -6,36 +6,34 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import useTitle from '@/hooks/useTitle'
 import { HiPlus } from 'react-icons/hi'
+import { Container } from '@/components'
+import { type kubeFields } from '@/lib/validations/dayasos.validation'
 
 const Kube = () => {
   useTitle('Kelompok Usaha Bersama (KUBE)')
 
-  interface FormValues {
-    nama: string
-    jenisUsaha: string
-    batch: string
-    kota: string
-    kecamatan: string
-    kelurahan: string
-    alamatLengkap: string
-    nik: string
-    namaPengurus: string
-    jabatan: string
-    tahunAnggaran: string
-    statusVerifikasi: string
-    keterangan: string
-  }
-
-  const forms = useForm<FormValues>({
-    mode: 'onTouched'
+  const forms = useForm<kubeFields>({
+    mode: 'onTouched',
+    defaultValues: {
+      businessName: '',
+      businessType: '',
+      businessAddress: '',
+      areaLevel3: '',
+      areaLevel4: '',
+      assistanceAmount: 0,
+      budgetYear: '',
+      status: '',
+      note: '',
+      members: [{ beneficiary: '', position: '' }]
+    }
   })
 
-  const onSubmit = async (values: FormValues) => {
+  const onSubmit = async (values: kubeFields) => {
     console.log(values)
   }
 
   return (
-    <div className="container bg-white py-5">
+    <Container className="py-10">
       <div className="w-full text-center">
         <p className="text-2xl font-bold">Data Kelompok Usaha Bersama</p>
       </div>
@@ -44,7 +42,7 @@ const Kube = () => {
           <div className="flex flex-row gap-4 pt-5">
             <div className="w-4/12">
               <FormField
-                name="nama"
+                name="businessName"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -58,7 +56,7 @@ const Kube = () => {
             </div>
             <div className="w-4/12">
               <FormField
-                name="jenisUsaha"
+                name="businessType"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -70,7 +68,7 @@ const Kube = () => {
                 )}
               />
             </div>
-            <div className="w-4/12">
+            {/* <div className="w-4/12">
               <FormField
                 name="batch"
                 control={forms.control}
@@ -83,13 +81,13 @@ const Kube = () => {
                   </FormItem>
                 )}
               />
-            </div>
+            </div> */}
           </div>
           <div className="w-full text-center">
             <p className="text-2xl font-bold">Alamat KUBE</p>
           </div>
           <div className="flex flex-row gap-4">
-            <div className="w-4/12">
+            {/* <div className="w-4/12">
               <FormField
                 name="kota"
                 control={forms.control}
@@ -113,10 +111,10 @@ const Kube = () => {
                   </FormItem>
                 )}
               />
-            </div>
+            </div> */}
             <div className="w-4/12">
               <FormField
-                name="kecamatan"
+                name="areaLevel3"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -141,7 +139,7 @@ const Kube = () => {
             </div>
             <div className="w-4/12">
               <FormField
-                name="kelurahan"
+                name="areaLevel4"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -167,7 +165,7 @@ const Kube = () => {
           </div>
           <div>
             <FormField
-              name="alamatLengkap"
+              name="businessAddress"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
@@ -183,7 +181,7 @@ const Kube = () => {
             <p className="text-2xl font-bold">Data Pengurus</p>
           </div>
           <div className="flex flex-row gap-4">
-            <div className="w-4/12">
+            {/* <div className="w-4/12">
               <FormField
                 name="nik"
                 control={forms.control}
@@ -196,8 +194,8 @@ const Kube = () => {
                   </FormItem>
                 )}
               />
-            </div>
-            <div className="w-4/12">
+            </div> */}
+            {/* <div className="w-4/12">
               <FormField
                 name="namaPengurus"
                 control={forms.control}
@@ -210,10 +208,10 @@ const Kube = () => {
                   </FormItem>
                 )}
               />
-            </div>
+            </div> */}
             <div className="w-4/12">
               <FormField
-                name="jabatan"
+                name="members.0.position"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -250,7 +248,7 @@ const Kube = () => {
           <div className="flex flex-row gap-4">
             <div className="w-4/12">
               <FormField
-                name="tahunAnggaran"
+                name="budgetYear"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -264,7 +262,7 @@ const Kube = () => {
             </div>
             <div className="w-4/12">
               <FormField
-                name="statusVerifikasi"
+                name="status"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -289,7 +287,7 @@ const Kube = () => {
             </div>
             <div className="w-4/12">
               <FormField
-                name="keterangan"
+                name="note"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -308,7 +306,7 @@ const Kube = () => {
           </div>
         </form>
       </Form>
-    </div>
+    </Container>
   )
 }
 
