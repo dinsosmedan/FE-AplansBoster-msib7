@@ -8,24 +8,56 @@ import { HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
+import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
+import { useGetVeteran } from '@/store/server'
+import { Loading } from '@/components'
 
 const DataVeteran = () => {
   useTitle('Data Penerima / Dayasos / Veteran ')
+  const createParams = useCreateParams()
+  const { nama, page } = useGetParams(['nama', 'page'])
+  const [isLoadingPage, setIsLoadingPage] = React.useState(false)
 
   interface FormValues {
-    nama: string
-    nik: string
-    npv: string
+    q: string
   }
   const forms = useForm<FormValues>({
-    mode: 'onTouched'
+    defaultValues: {
+      q: '',
+      // batch: ''
+    }
   })
-  const [currentPage, setCurrentPage] = React.useState(1)
+
+  const {
+    data: veterans,
+    refetch,
+    isFetching,
+    isLoading
+  } = useGetVeteran({
+    page: parseInt(page) ?? 1,
+    name: nama
+  })
+  useDisableBodyScroll(isFetching)
 
   const onSubmit = async (values: FormValues) => {
-    console.log(values)
+    Object.keys(values).forEach((key) => {
+      if (values[key as keyof FormValues] !== '') {
+        createParams({ key, value: values[key as keyof FormValues] })
+      }
+    })
+    await refetch()
   }
+  React.useEffect(() => {
+    if (isFetching) {
+      setIsLoadingPage(true)
+    } else {
+      setIsLoadingPage(false)
+    }
+  }, [isLoadingPage, isFetching])
 
+  if (isLoading) {
+    return <Loading />
+  }
   return (
     <div>
       <Container>
@@ -34,7 +66,7 @@ const DataVeteran = () => {
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
             <div className="grid grid-cols-3 gap-x-10 gap-y-5 pt-10">
               <FormField
-                name="nama"
+                name="q"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -44,28 +76,7 @@ const DataVeteran = () => {
                   </FormItem>
                 )}
               />
-              <FormField
-                name="nik"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan NIK" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="npv"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan npv" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+
             </div>
             <div className="w-[140px] h-[50px] ml-auto rounded-xl">
               <Button className="py-6">
@@ -87,47 +98,35 @@ const DataVeteran = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="text-center">1271092350010008</TableCell>
-              <TableCell className="text-center">Oza Kristen</TableCell>
-              <TableCell className="text-center">Perempuan</TableCell>
-              <TableCell className="text-center">1945</TableCell>
-              <TableCell className="text-center">Medan</TableCell>
-              <TableCell className="text-center">40 / 22</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="text-center">1271092350010008</TableCell>
-              <TableCell className="text-center">Oza Kristen</TableCell>
-              <TableCell className="text-center">Perempuan</TableCell>
-              <TableCell className="text-center">1945</TableCell>
-              <TableCell className="text-center">Medan</TableCell>
-              <TableCell className="text-center">40 / 22</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="text-center">1271092350010008</TableCell>
-              <TableCell className="text-center">Oza Kristen</TableCell>
-              <TableCell className="text-center">Perempuan</TableCell>
-              <TableCell className="text-center">1945</TableCell>
-              <TableCell className="text-center">Medan</TableCell>
-              <TableCell className="text-center">40 / 22</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="text-center">1271092350010008</TableCell>
-              <TableCell className="text-center">Oza Kristen</TableCell>
-              <TableCell className="text-center">Perempuan</TableCell>
-              <TableCell className="text-center">1945</TableCell>
-              <TableCell className="text-center">Medan</TableCell>
-              <TableCell className="text-center">40 / 22</TableCell>
-            </TableRow>
+            {veterans?.data?.length !== 0 ? (
+              veterans?.data.map((veteran) => (
+                <TableRow key={veteran.id}>
+                  <TableCell className="text-center">{veteran.beneficiary.name}</TableCell>
+                  <TableCell className="text-center">{veteran.beneficiary.identityNumber}</TableCell>
+                  <TableCell className="text-center">{veteran.isActive}</TableCell>
+                  <TableCell className="text-center">{veteran.veteranUnit}</TableCell>
+                  <TableCell className="text-center">{veteran.veteranUnit}</TableCell>
+                  <TableCell className="text-center">{veteran.uniformSize}</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center">
+                  Tidak ada data
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
-        <Pagination
-          className="px-5 py-5 flex justify-end"
-          currentPage={currentPage}
-          totalCount={100}
-          pageSize={10}
-          onPageChange={(page) => setCurrentPage(page)}
-        />
+        {(veterans?.meta?.total as number) > 30 ? (
+          <Pagination
+            className="px-5 py-5 flex justify-end"
+            currentPage={page !== '' ? parseInt(page) : 1}
+            totalCount={veterans?.meta.total as number}
+            pageSize={30}
+            onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
+          />
+        ) : null}
       </Container>
     </div>
   )
