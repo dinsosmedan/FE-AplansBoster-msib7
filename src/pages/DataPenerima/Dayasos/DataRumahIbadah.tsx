@@ -191,7 +191,7 @@ const DataRumahIbadah = () => {
               />
             </div>
             <div className="w-[140px] h-[50px] ml-auto rounded-xl">
-              <Button className="py-6" loading={}>
+              <Button className="py-6">
                 <HiMagnifyingGlass className="w-6 h-6 py" />
                 <p className="font-bold text-sm text-white ml-3">Cari Data</p>
               </Button>
