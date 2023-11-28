@@ -36,7 +36,7 @@ export type veteranFields = Yup.InferType<typeof veteranValidation>
 
 export const djpmValidation = Yup.object({
   beneficiary: Yup.string().required('Penerima manfaat wajib diisi'),
-  picPhoneNumber: Yup.string()
+  phoneNumber: Yup.string()
     .matches(phoneRegExp, 'Nomor telepon tidak valid')
     .min(7, 'Nomor telepon minimal 7 karakter')
     .max(20, 'Nomor telepon maksimal 20 karakter'),
