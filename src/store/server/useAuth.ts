@@ -1,8 +1,10 @@
-import { loginFn } from '@/api/auth.api'
+import { getMeFn, loginFn, logoutFn } from '@/api/auth.api'
 import { type AxiosError } from 'axios'
-import { useMutation } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { useToken } from '../client'
+import { toast } from '@/components/ui/use-toast'
+import { useUserInfo } from './useUserInfo'
 
 export const useLogin = () => {
   const navigate = useNavigate()
@@ -10,16 +12,30 @@ export const useLogin = () => {
 
   return useMutation(loginFn, {
     onSuccess: (data) => {
-      //
-      // console.log(data.data);
-
-      storeToken(data.data.access_token)
+      storeToken(data.data.accessToken)
       navigate('/')
     },
     onError: (error: AxiosError) => {
       if (error.response?.status === 401) {
         // window.alert('Email or password is incorrect')
-      }
+      }
+    }
+  })
+}
+export const useLogout = () => {
+  return useMutation(logoutFn, {
+    onSuccess: () => {
+      useToken.getState().removeToken()
+      toast({
+        title: 'Successfully logged out',
+      })
+    }
+  })
+}
+export const useGetMe = () => {
+  return useQuery('user', getMeFn, {
+    onSuccess: (data) => {
+      useUserInfo.getState().storeUserInfo(data)
     }
   })
 }
