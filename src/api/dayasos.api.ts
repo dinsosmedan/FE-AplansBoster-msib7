@@ -5,6 +5,9 @@ import { IVeteran, type IServiceFunds, type IWorshipPlace } from '@/lib/types/da
 export const storeWorshipPlaceFn = async (fields: worshipPlaceFields) => {
   await api.post('/worship-place', fields)
 }
+export const storeDjpm = async (fields: any) => {
+  await api.post('/service-fund', fields)
+}
 
 export interface WorshipPlaceQuery {
   page?: number

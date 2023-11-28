@@ -2,6 +2,7 @@ import {
   getServiceFunds,
   getVeteranFn,
   getWorshipPlacesFn,
+  storeDjpm,
   storeVeteranFn,
   storeWorshipPlaceFn,
   VeteranQuery,
@@ -28,7 +29,14 @@ export const useCreateWorshipPlace = () => {
     }
   })
 }
-
+export const useCreateDjpm = () => {
+  const queryClient = useQueryClient()
+  return useMutation(storeDjpm, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('create-djpm')
+    }
+  })
+}
 export const useCreateVeteran = () => {
   const queryClient = useQueryClient()
   return useMutation(storeVeteranFn, {
