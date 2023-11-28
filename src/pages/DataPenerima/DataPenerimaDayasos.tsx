@@ -14,7 +14,7 @@ const DataPenerimaDayasos = () => {
           <CardLink.Header className="h-[185px] flex-col" title="Bansos Dana Jasa Pelayanan (DJP)" circlePosition="top">
             <p className="pt-11 text-white text-base italic font-inter ">Service Fund Assistance</p>
           </CardLink.Header>
-          <CardLink.Footer href="/data-penerima/dayasos/dataDjp">
+          <CardLink.Footer href="/data-penerima/dayasos/data-djp">
             <div className="flex gap-3 items-center">
               <HiEye className="h-[30px] w-[30px] text-primary" />
               <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
@@ -25,7 +25,7 @@ const DataPenerimaDayasos = () => {
           <CardLink.Header className="h-[185px] flex-col px-10" title="Bantuan Langsung Tunai BBM" circlePosition="top">
             <p className="pt-11 text-white text-base italic font-inter">Fuel Cash Assistance</p>
           </CardLink.Header>
-          <CardLink.Footer href="/data-penerima/dayasos/dataBltbbm">
+          <CardLink.Footer href="/data-penerima/dayasos/data-bltbbm">
             <div className="flex gap-3 items-center">
               <HiEye className="h-[30px] w-[30px] text-primary" />
               <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
@@ -51,7 +51,7 @@ const DataPenerimaDayasos = () => {
           >
             <p className="pt-11 text-white text-base italic font-inter">Organization Grant Assistance</p>
           </CardLink.Header>
-          <CardLink.Footer href="/data-penerima/dayasos/dataHibah">
+          <CardLink.Footer href="/data-penerima/dayasos/data-hibah">
             <div className="flex gap-3 items-center">
               <HiEye className="h-[30px] w-[30px] text-primary" />
               <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
@@ -77,7 +77,7 @@ const DataPenerimaDayasos = () => {
           >
             <p className="pt-11 text-white text-base italic font-inter">Community Group</p>
           </CardLink.Header>
-          <CardLink.Footer href="/data-penerima/dayasos/dataPokmas">
+          <CardLink.Footer href="/data-penerima/dayasos/data-pokmas">
             <div className="flex gap-3 items-center">
               <HiEye className="h-[30px] w-[30px] text-primary" />
               <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
@@ -88,7 +88,7 @@ const DataPenerimaDayasos = () => {
           <CardLink.Header className="h-[185px] flex-col" title="Rumah Ibadah" circlePosition="bottom">
             <p className="pt-11 text-white text-base italic font-inter">House of Worship</p>
           </CardLink.Header>
-          <CardLink.Footer href="/data-penerima/dayasos/dataRumahIbadah">
+          <CardLink.Footer href="/data-penerima/dayasos/data-rumahibadah">
             <div className="flex gap-3 items-center">
               <HiEye className="h-[30px] w-[30px] text-primary" />
               <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
@@ -99,7 +99,7 @@ const DataPenerimaDayasos = () => {
           <CardLink.Header className="h-[185px] flex-col" title="Veteran" circlePosition="top">
             <p className="pt-11 text-white text-base italic font-inter">Veteran</p>
           </CardLink.Header>
-          <CardLink.Footer href="/data-penerima/dayasos/dataVeteran">
+          <CardLink.Footer href="/data-penerima/dayasos/data-v    eteran">
             <div className="flex gap-3 items-center">
               <HiEye className="h-[30px] w-[30px] text-primary" />
               <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>

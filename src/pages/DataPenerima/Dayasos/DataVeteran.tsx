@@ -29,10 +29,10 @@ const DataVeteran = () => {
   return (
     <div>
       <Container>
-        <h1 className="font-bold text-[32px] ">Veteran (VET)</h1>
+        <h1 className="font-bold text-2xl ">Veteran (VET)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-            <div className="grid grid-cols-3 gap-x-10 gap-y-5 pt-20">
+            <div className="grid grid-cols-3 gap-x-10 gap-y-5 pt-10">
               <FormField
                 name="nama"
                 control={forms.control}
