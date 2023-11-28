@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 import Container from '@/components/atoms/Container'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import useTitle from '@/hooks/useTitle'
@@ -41,7 +42,8 @@ const DataDjp = () => {
   const {
     data: serviceFunds,
     refetch,
-    isFetching
+    isFetching,
+    isLoading
   } = useGetServiceFunds({
     page: parseInt(page) ?? 1,
     idKecamatan: kecamatan,
@@ -67,6 +69,10 @@ const DataDjp = () => {
       setIsLoadingPage(false)
     }
   }, [isLoadingPage, isFetching])
+
+  if (isLoading) {
+    return <Loading />
+  }
 
   return (
     <Container>
@@ -185,30 +191,40 @@ const DataDjp = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {serviceFunds?.data.map((serviceFund) => (
-            <TableRow key={serviceFund.id}>
-              <TableCell className="text-center">{serviceFund.beneficiary.identityNumber}</TableCell>
-              <TableCell className="text-center">{serviceFund.beneficiary.name}</TableCell>
-              <TableCell className="text-center">{serviceFund.beneficiary.gender}</TableCell>
-              <TableCell className="text-center">
-                {serviceFund.beneficiary.birthPlace} / {serviceFund.beneficiary.birthDate}
+          {serviceFunds?.data?.length !== 0 ? (
+            serviceFunds?.data.map((serviceFund) => (
+              <TableRow key={serviceFund.id}>
+                <TableCell className="text-center">{serviceFund.beneficiary.identityNumber}</TableCell>
+                <TableCell className="text-center">{serviceFund.beneficiary.name}</TableCell>
+                <TableCell className="text-center">{serviceFund.beneficiary.gender}</TableCell>
+                <TableCell className="text-center">
+                  {serviceFund.beneficiary.birthPlace} / {serviceFund.beneficiary.birthDate}
+                </TableCell>
+                <TableCell className="text-center">{serviceFund.beneficiary.address.areaLevel4?.name}</TableCell>
+                <TableCell className="text-center">{serviceFund.beneficiary.address.areaLevel3?.name}</TableCell>
+                <TableCell className="text-center">{serviceFund.serviceType.name}</TableCell>
+                <TableCell className="text-center">10.000.000</TableCell>
+                <TableCell className="text-center">Berhasil</TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={9} className="text-center">
+                Tidak ada data
               </TableCell>
-              <TableCell className="text-center">{serviceFund.beneficiary.address.areaLevel4?.name}</TableCell>
-              <TableCell className="text-center">{serviceFund.beneficiary.address.areaLevel3?.name}</TableCell>
-              <TableCell className="text-center">{serviceFund.serviceType.name}</TableCell>
-              <TableCell className="text-center">10.000.000</TableCell>
-              <TableCell className="text-center">Berhasil</TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
-      <Pagination
-        className="px-5 py-5 flex justify-end"
-        currentPage={page !== '' ? parseInt(page) : 1}
-        totalCount={serviceFunds?.meta.total as number}
-        pageSize={30}
-        onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
-      />
+      {serviceFunds?.meta.total > 30 ? (
+        <Pagination
+          className="px-5 py-5 flex justify-end"
+          currentPage={page !== '' ? parseInt(page) : 1}
+          totalCount={serviceFunds?.meta.total as number}
+          pageSize={30}
+          onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
+        />
+      ) : null}
     </Container>
   )
 }
