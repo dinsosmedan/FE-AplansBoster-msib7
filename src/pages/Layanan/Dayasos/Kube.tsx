@@ -6,36 +6,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import useTitle from '@/hooks/useTitle'
 import { HiPlus } from 'react-icons/hi'
+import { Container } from '@/components'
+import { type kubeFields } from '@/lib/validations/dayasos.validation'
 
 const Kube = () => {
   useTitle('Kelompok Usaha Bersama (KUBE)')
 
-  interface FormValues {
-    nama: string
-    jenisUsaha: string
-    batch: string
-    kota: string
-    kecamatan: string
-    kelurahan: string
-    alamatLengkap: string
-    nik: string
-    namaPengurus: string
-    jabatan: string
-    tahunAnggaran: string
-    statusVerifikasi: string
-    keterangan: string
-  }
-
-  const forms = useForm<FormValues>({
+  const forms = useForm<kubeFields>({
     mode: 'onTouched'
   })
 
-  const onSubmit = async (values: FormValues) => {
+  const onSubmit = async (values: kubeFields) => {
     console.log(values)
   }
 
   return (
-    <div className="container bg-white py-5">
+    <Container className="py-10">
       <div className="w-full text-center">
         <p className="text-2xl font-bold">Data Kelompok Usaha Bersama</p>
       </div>
@@ -308,7 +294,7 @@ const Kube = () => {
           </div>
         </form>
       </Form>
-    </div>
+    </Container>
   )
 }
 
