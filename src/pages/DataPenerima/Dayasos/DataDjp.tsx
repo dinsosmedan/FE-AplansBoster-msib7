@@ -32,7 +32,7 @@ const DataDjp = () => {
   return (
     <div>
       <Container>
-        <h1 className="font-bold text-[32px] ">Dana Jasa Pelayanan Masyarakat (DJPM)</h1>
+        <h1 className="font-bold text-2xl ">Dana Jasa Pelayanan Masyarakat (DJPM)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
             <div className="grid grid-cols-3 gap-x-10 gap-y-5 pt-10">

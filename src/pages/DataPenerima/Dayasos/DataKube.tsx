@@ -33,7 +33,7 @@ const DataKube = () => {
   return (
     <div>
       <Container>
-        <h1 className="font-bold text-[32px] ">Kelompok Usaha Bersama (Kube)</h1>
+        <h1 className="font-bold text-2xl ">Kelompok Usaha Bersama (Kube)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
             <div className="grid grid-cols-3 gap-x-10 gap-y-5 pt-10">
