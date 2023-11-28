@@ -6,7 +6,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 
 export default function Search({ className, ...props }: InputProps) {
   return (
-    <div className="relative flex items-center w-full">
+    <div className="relative flex items-center flex-1">
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
         <HiOutlineMagnifyingGlass size="1em" className="text-xl text-[#8897AD]" />
       </div>

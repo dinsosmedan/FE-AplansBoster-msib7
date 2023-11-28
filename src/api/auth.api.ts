@@ -1,5 +1,5 @@
 import ENV from '@/lib/environment'
-import { IUser, type IAuthResponse } from '@/lib/types/user.type'
+import { type IUser, type IAuthResponse } from '@/lib/types/user.type'
 import { type LoginInput } from '@/lib/validations/auth.validation'
 import axios from 'axios'
 import api from './axiosInstance'

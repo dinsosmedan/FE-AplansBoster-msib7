@@ -17,4 +17,25 @@ body {
   .no-scroll::-webkit-scrollbar {
     display: none;
   }
+
+  .scroll-custom::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  /* Track */
+  .scroll-custom::-webkit-scrollbar-track {
+    @apply bg-black/10;
+    /* box-shadow: inset 0 0 5px; */
+    /* border-radius: 10px; */
+  }
+
+  /* Handle */
+  .scroll-custom::-webkit-scrollbar-thumb {
+    @apply rounded-2xl bg-black/30;
+  }
+
+  /* Handle on hover */
+  .scroll-custom::-webkit-scrollbar-thumb:hover {
+    @apply bg-black/40;
+  }
 }

@@ -7,9 +7,11 @@ interface TokenStore {
 }
 
 export const useToken = create<TokenStore>((set) => ({
-  token: JSON.parse(localStorage.getItem('access-token') ?? '""') ?? '',
+  token: JSON.parse(localStorage.getItem('access-token') ?? '""'),
   storeToken: (token) => {
     localStorage.setItem('access-token', JSON.stringify(token))
+    console.log('token', token)
+
     set({ token })
   },
   removeToken: () => {

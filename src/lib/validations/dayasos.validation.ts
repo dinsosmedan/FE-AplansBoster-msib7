@@ -20,3 +20,16 @@ export const worshipPlaceValidation = Yup.object({
 })
 
 export type worshipPlaceFields = Yup.InferType<typeof worshipPlaceValidation>
+
+export const veteranValidation = Yup.object({
+  beneficiary: Yup.string().required('Penerima manfaat wajib diisi'),
+  veteranIdentityNumber: Yup.string().max(50, 'NPV maksimal 50 karakter'),
+  veteranUnit: Yup.string().max(255, 'Satuan Veteran maksimal 255 karakter'),
+  uniformSize: Yup.string().max(255, 'Ukuran Seragam Veteran maksimal 255 karakter'),
+  isActive: Yup.boolean(),
+  areaLevel3: Yup.string(),
+  areaLevel4: Yup.string(),
+  address: Yup.string().required('Alamat wajib diisi').max(255, 'Alamat maksimal 255 karakter')
+})
+
+export type veteranFields = Yup.InferType<typeof veteranValidation>

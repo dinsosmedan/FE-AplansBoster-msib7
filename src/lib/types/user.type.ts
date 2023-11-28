@@ -3,7 +3,7 @@ export interface IRole {
 }
 
 export interface IUser {
-  data:{
+  data: {
     id: string
     name: string
     email: string
@@ -21,5 +21,5 @@ export interface IAuthResponse {
 
 export interface IErrorResponse {
   message: string
-  errors: Record<string, string[]>
+  errors: Record<string, string[]>
 }

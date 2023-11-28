@@ -1,5 +1,4 @@
-
-import { IUser } from '@/lib/types/user.type'
+import { type IUser } from '@/lib/types/user.type'
 import { create } from 'zustand'
 
 interface UserInfoStore {

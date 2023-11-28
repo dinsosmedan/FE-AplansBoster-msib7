@@ -18,16 +18,16 @@ export const useLogin = () => {
     onError: (error: AxiosError) => {
       if (error.response?.status === 401) {
         // window.alert('Email or password is incorrect')
-      }
-    }
-  })
+      }
+    }
+  })
 }
 export const useLogout = () => {
   return useMutation(logoutFn, {
     onSuccess: () => {
       useToken.getState().removeToken()
       toast({
-        title: 'Successfully logged out',
+        title: 'Successfully logged out'
       })
     }
   })
