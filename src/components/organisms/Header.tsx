@@ -8,12 +8,25 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { useTitleHeader } from '@/store/client/useTitleHeader'
-import { useGetMe } from '@/store/server'
+import { useGetMe, useLogout } from '@/store/server'
 import { Loading } from '..'
+import { useAlert } from '@/store/client'
 export default function Header() {
+  const { alert } = useAlert()
+
   const title = useTitleHeader((state) => state.title)
   const { data: user, isLoading } = useGetMe()
-  if (isLoading) {
+  const { mutate: logout, isLoading: isLoadingLogout } = useLogout()
+  const handleLogout = () => {
+    void alert({
+      title: 'Logout',
+      description: 'Yakin untuk Logout?',
+      submitText: 'Oke',
+      variant: 'danger'
+    }).then(() => logout())
+  }
+
+  if (isLoading || isLoadingLogout) {
     return <Loading />
   }
   return (
@@ -43,7 +56,7 @@ export default function Header() {
                 <DropdownMenuLabel className="text-primary  w-[170px]">Pengaturan</DropdownMenuLabel>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <DropdownMenuLabel className="text-primary">Keluar</DropdownMenuLabel>
+                <DropdownMenuLabel className="text-primary" onClick={handleLogout}>Keluar</DropdownMenuLabel>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

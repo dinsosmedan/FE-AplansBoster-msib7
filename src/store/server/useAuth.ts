@@ -23,12 +23,14 @@ export const useLogin = () => {
   })
 }
 export const useLogout = () => {
+  const navigate = useNavigate()
   return useMutation(logoutFn, {
     onSuccess: () => {
       useToken.getState().removeToken()
       toast({
         title: 'Successfully logged out'
       })
+      navigate('/login')
     }
   })
 }
