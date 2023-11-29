@@ -50,17 +50,18 @@ const Kube = () => {
   const { mutate: createKube, isLoading: isLoadingCreate } = useCreateKube()
 
   React.useEffect(() => {
-    if (NIK !== '') {
-      void refetch()
-      if (isError) {
-        toast({
-          title: 'NIK tidak terdaftar',
-          description: 'Maaf NIK tidak terdaftar silahkan daftarkan NIK pada menu Data Master',
-          variant: 'destructive'
-        })
-      }
+    if (NIK !== '') void refetch()
+  }, [NIK])
+
+  React.useEffect(() => {
+    if (isError) {
+      toast({
+        title: 'NIK tidak terdaftar',
+        description: 'Maaf NIK tidak terdaftar silahkan daftarkan NIK pada menu Data Master',
+        variant: 'destructive'
+      })
     }
-  }, [NIK, isError])
+  }, [isError])
 
   React.useEffect(() => {
     if (beneficiary != null) {
@@ -73,8 +74,6 @@ const Kube = () => {
   }, [beneficiary])
 
   const onSubmit = async (values: kubeFields) => {
-    console.log(JSON.stringify(values))
-
     const newData = {
       ...values,
       members: values?.members?.map((member) => {
@@ -84,9 +83,7 @@ const Kube = () => {
     }
 
     createKube(newData, {
-      onSuccess: () => {
-        forms.reset()
-      }
+      onSuccess: () => forms.reset()
     })
   }
 
@@ -174,7 +171,7 @@ const Kube = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={areaLevel3 === ''}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Kelurahan" />

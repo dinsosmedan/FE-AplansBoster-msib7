@@ -129,6 +129,7 @@ export const pokmasValidation = Yup.object({
   communityName: Yup.string().required('Nama Pokmas wajib diisi').max(255, 'Nama Pokmas maksimal 255 karakter'),
   communityAddress: Yup.string().max(255, 'Alamat Pokmas maksimal 255 karakter'),
   communityActivityCode: Yup.string().max(255, 'Kode Kegiatan Pokmas maksimal 255 karakter'),
+  communityActivityTypeDescription: Yup.string().max(255, 'Jenis Kegiatan Pokmas maksimal 255 karakter'),
   communityAssistanceType: Yup.string().max(255, 'Jenis Bantuan Pokmas maksimal 255 karakter'),
   areaLevel3: Yup.string().required('Kecamatan wajib diisi'),
   areaLevel4: Yup.string().required('Kelurahan wajib diisi'),
@@ -151,7 +152,9 @@ export const pokmasValidation = Yup.object({
     })
   ),
   statusDisimbursement: Yup.string().max(50, 'Status Pencairan maksimal 255 karakter'),
-  note: Yup.string().max(255, 'Catatan maksimal 255 karakter')
+  note: Yup.string().max(255, 'Catatan maksimal 255 karakter'),
+  executionDate: Yup.string(),
+  executionPlace: Yup.string().max(255, 'Tempat Pelaksanaan maksimal 255 karakter')
 })
 
 export type pokmasFields = Yup.InferType<typeof pokmasValidation>
