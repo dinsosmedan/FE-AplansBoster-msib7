@@ -68,23 +68,23 @@ export interface IOrganizationGrantAssistance {
     address: IAddress
     chairmanName: string
     chairmanIdentityNumber: string
-     secretaryName: string
-     secretaryIdentityNumber: string
-     treasurerName: string
-     treasurerIdentityNumber: string
-     contactNumber: string
-     bankAccountNumber: string
-     bankName: string
-     bankAccountName: string
-     bankAccountAddress: string
-     requestedAmount: number
-     aprrovedAmount: number
-     firstDisbursementAmount: number
-     secondDisbursementAmount: number
-     budgetYear: string
-     note: string
-     createdAt: string
-     updatedAt: string
+    secretaryName: string
+    secretaryIdentityNumber: string
+    treasurerName: string
+    treasurerIdentityNumber: string
+    contactNumber: string
+    bankAccountNumber: string
+    bankName: string
+    bankAccountName: string
+    bankAccountAddress: string
+    requestedAmount: number
+    aprrovedAmount: number
+    firstDisbursementAmount: number
+    secondDisbursementAmount: number
+    budgetYear: string
+    note: string
+    createdAt: string
+    updatedAt: string
   }>
   meta: IMeta
 }
@@ -99,6 +99,59 @@ export interface IVeteran {
     veteranUnit: string
     uniformSize: null | string
     isActive: string
+    createdAt: string
+    updatedAt: string
+  }>
+  meta: IMeta
+}
+export interface IBusinessAddress {
+  fullAddress: string
+  areaLevel3: IArea | null
+  areaLevel4: IArea | null
+}
+export interface ICommunityGroups {
+  success: boolean
+  message: string
+  data: Array<{
+    id: string
+    productId: string
+    address: IAddress
+    communityName: string
+    communityActivityCode: string
+    communityActivityTypeDescription: string
+    communityAssistanceType: string
+    requestedRabAmount: number
+    requestedBansosAmount: number
+    approvedFundAmount: number
+    executionDate: string | null
+    executionPlace: string | null
+    applicationYear: string
+    membersCount: number
+    members: Array<{
+      id: string
+      beneficiaryId: string
+      position: string
+    }>
+    statusDisimbursement: string | null
+    note: string
+    createdAt: string
+    updatedAt: string
+  }>
+  meta: IMeta
+}
+export interface IBusinessGroup {
+  success: boolean
+  message: string
+  data: Array<{
+    id: string
+    businessName: string
+    businessType: string
+    businessAddress: IBusinessAddress
+    membersCount: number
+    assistanceAmount: number
+    budgetYear: string
+    status: string
+    note: string
     createdAt: string
     updatedAt: string
   }>

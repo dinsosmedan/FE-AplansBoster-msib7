@@ -8,12 +8,16 @@ import {
   storeServiceFundFn,
   getOrganizationGrantAssistance,
   getVeteranFn,
-  type OrganizationGrantAssistanceQuery,
   storeDjpm,
   storeVeteranFn,
   storeWorshipPlaceFn,
+  getCommunityGroupsFn,
+  getBusinessGroupFn,
+  type OrganizationGrantAssistanceQuery,
   type VeteranQuery,
-  type WorshipPlaceQuery
+  type WorshipPlaceQuery,
+  type CommunityGroupQuery,
+  type BusinessGroupQuery
 } from '@/api/dayasos.api'
 import { useToast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -174,4 +178,33 @@ export const useGetVeteran = ({ page, q }: VeteranQuery) => {
     keepPreviousData: true,
     staleTime: 5000
   })
+}
+
+export const useGetCommunityGroups = ({
+  page,
+  q,
+  idKecamatan,
+  idKelurahan,
+  code,
+  status,
+  year
+}: CommunityGroupQuery) => {
+  return useQuery(
+    ['community-groups', page, q, idKecamatan, idKelurahan, code, status, year],
+    async () => await getCommunityGroupsFn({ page, q, idKecamatan, idKelurahan, code, status, year }),
+    {
+      keepPreviousData: true,
+      staleTime: 5000
+    }
+  )
+}
+export const useGetBusinessGroup = ({ page, q, idKecamatan, idKelurahan, year }: BusinessGroupQuery) => {
+  return useQuery(
+    ['business-groups', page, q, idKecamatan, idKelurahan, year],
+    async () => await getBusinessGroupFn({ page, q, idKecamatan, idKelurahan, year }),
+    {
+      keepPreviousData: true,
+      staleTime: 5000
+    }
+  )
 }
