@@ -10,7 +10,9 @@ import {
   type VeteranQuery,
   type WorshipPlaceQuery,
   CommunityGroupQuery,
-  getCommunityGroupsFn
+  getCommunityGroupsFn,
+  getBusinessGroupFn,
+  BusinessGroupQuery
 } from '@/api/dayasos.api'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
@@ -91,6 +93,16 @@ export const useGetCommunityGroups = ({
   return useQuery(
     ['community-groups', page, q, idKecamatan, idKelurahan, code, status, year],
     async () => await getCommunityGroupsFn({ page, q, idKecamatan, idKelurahan, code, status, year }),
+    {
+      keepPreviousData: true,
+      staleTime: 5000
+    }
+  )
+}
+export const useGetBusinessGroup = ({ page, q, idKecamatan, idKelurahan, year }: BusinessGroupQuery) => {
+  return useQuery(
+    ['business-groups', page, q, idKecamatan, idKelurahan, year],
+    async () => await getBusinessGroupFn({ page, q, idKecamatan, idKelurahan, year }),
     {
       keepPreviousData: true,
       staleTime: 5000

@@ -104,6 +104,11 @@ export interface IVeteran {
   }>
   meta: IMeta
 }
+export interface IBusinessAddress {
+  fullAddress: string
+  areaLevel3: IArea | null
+  areaLevel4: IArea | null
+}
 export interface ICommunityGroups {
   success: boolean
   message: string
@@ -128,6 +133,24 @@ export interface ICommunityGroups {
       position: string
     }>
     statusDisimbursement: string | null
+    note: string
+    createdAt: string
+    updatedAt: string
+  }>
+  meta: IMeta
+}
+export interface IBusinessGroup {
+  success: boolean
+  message: string
+  data: Array<{
+    id: string
+    businessName: string
+    businessType: string
+    businessAddress: IBusinessAddress
+    membersCount: number
+    assistanceAmount: number
+    budgetYear: string
+    status: string
     note: string
     createdAt: string
     updatedAt: string

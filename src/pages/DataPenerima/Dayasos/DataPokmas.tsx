@@ -51,9 +51,8 @@ const DataPokmas = () => {
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
     q: q,
-    code: code, status: status, year
+    code: code, status: status, year: year
   })
-  console.log(communityGroup)
   useDisableBodyScroll(isFetching)
   const onSubmit = async (values: FormValues) => {
     Object.keys(values).forEach((key) => {
