@@ -80,7 +80,7 @@ export const getOrganizationGrantAssistance = async ({
 }
 
 export const getVeteranFn = async ({ page, q }: VeteranQuery): Promise<IVeteran> => {
-  const response = await api.get(`/veteran/?page=${page}&q=${q}`)
+  const response = await api.get(`/veteran/?page=${page}&q=${q}&limit=10`)
   return response.data
 }
 export const getCommunityGroupsFn = async ({
