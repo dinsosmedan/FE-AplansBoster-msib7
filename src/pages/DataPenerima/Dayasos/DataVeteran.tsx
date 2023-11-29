@@ -15,7 +15,7 @@ import { Loading } from '@/components'
 const DataVeteran = () => {
   useTitle('Data Penerima / Dayasos / Veteran ')
   const createParams = useCreateParams()
-  const { nama, page } = useGetParams(['nama', 'page'])
+  const { q, page } = useGetParams(['q', 'page'])
   const [isLoadingPage, setIsLoadingPage] = React.useState(false)
 
   interface FormValues {
@@ -35,18 +35,24 @@ const DataVeteran = () => {
     isLoading
   } = useGetVeteran({
     page: parseInt(page) ?? 1,
-    name: nama
+    q: q
   })
   useDisableBodyScroll(isFetching)
 
   const onSubmit = async (values: FormValues) => {
-    Object.keys(values).forEach((key) => {
-      if (values[key as keyof FormValues] !== '') {
-        createParams({ key, value: values[key as keyof FormValues] })
-      }
-    })
-    await refetch()
-  }
+    if (values.q !== '') {
+      createParams({
+        key: 'q',
+        value: values.q !== '' ? values.q : ''
+      });
+      createParams({ key: 'page', value: '' }); // Set page to empty string when searching
+    } else {
+      createParams({ key: 'q', value: '' }); // Set q to empty string if the search query is empty
+    }
+    await refetch();
+  };
+
+
   React.useEffect(() => {
     if (isFetching) {
       setIsLoadingPage(true)
@@ -117,12 +123,12 @@ const DataVeteran = () => {
             )}
           </TableBody>
         </Table>
-        {(veterans?.meta?.total as number) > 30 ? (
+        {(veterans?.meta?.total as number) > 10 ? (
           <Pagination
             className="px-5 py-5 flex justify-end"
             currentPage={page !== '' ? parseInt(page) : 1}
             totalCount={veterans?.meta.total as number}
-            pageSize={30}
+            pageSize={10}
             onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
           />
         ) : null}

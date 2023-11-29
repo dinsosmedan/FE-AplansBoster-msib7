@@ -24,7 +24,7 @@ export interface OrganizationGrantAssistanceQuery {
 
 export interface VeteranQuery {
   page?: number
-  name?: string
+  q?: string
 }
 
 export const getWorshipPlacesFn = async ({
@@ -68,10 +68,10 @@ export const getOrganizationGrantAssistance = async ({
 
 export const getVeteranFn = async ({
   page,
-  name
+  q
 }: VeteranQuery): Promise<IVeteran> => {
   const response = await api.get(
-    `/veteran/?page=${page}&q=${name}`
+    `/veteran/?page=${page}&q=${q}&limit=10`
   )
   return response.data
 }
