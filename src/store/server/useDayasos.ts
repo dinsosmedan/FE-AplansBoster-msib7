@@ -8,7 +8,9 @@ import {
   storeVeteranFn,
   storeWorshipPlaceFn,
   type VeteranQuery,
-  type WorshipPlaceQuery
+  type WorshipPlaceQuery,
+  CommunityGroupQuery,
+  getCommunityGroupsFn
 } from '@/api/dayasos.api'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
@@ -69,11 +71,26 @@ export const useGetOrganizationGrantAssistance = ({ page, budgetYear, name }: Or
     }
   )
 }
-    
+
 export const useGetVeteran = ({ page, q }: VeteranQuery) => {
+  return useQuery(['veterans', page, q], async () => await getVeteranFn({ page, q }), {
+    keepPreviousData: true,
+    staleTime: 5000
+  })
+}
+
+export const useGetCommunityGroups = ({
+  page,
+  q,
+  idKecamatan,
+  idKelurahan,
+  code,
+  status,
+  year
+}: CommunityGroupQuery) => {
   return useQuery(
-    ['veterans', page, q],
-    async () => await getVeteranFn({ page, q }),
+    ['community-groups', page, q, idKecamatan, idKelurahan, code, status, year],
+    async () => await getCommunityGroupsFn({ page, q, idKecamatan, idKelurahan, code, status, year }),
     {
       keepPreviousData: true,
       staleTime: 5000
