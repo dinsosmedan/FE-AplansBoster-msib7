@@ -1,11 +1,16 @@
+import SectionDataDtks from '@/components/section/dashboard/DataDtks'
+import SectionDayasos from '@/components/section/dashboard/Dayasos'
+import SectionLinjamsos from '@/components/section/dashboard/Linjamsos'
 import useTitle from '@/hooks/useTitle'
 
 const Home = () => {
   useTitle('Dashboard')
   return (
-    <div>
-      <h1>Home</h1>
-    </div>
+    <>
+      <SectionDataDtks />
+      <SectionDayasos />
+      <SectionLinjamsos />
+    </>
   )
 }
 
