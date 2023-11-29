@@ -26,10 +26,7 @@ export const veteranValidation = Yup.object({
   veteranIdentityNumber: Yup.string().max(50, 'NPV maksimal 50 karakter'),
   veteranUnit: Yup.string().max(255, 'Satuan Veteran maksimal 255 karakter'),
   uniformSize: Yup.string().max(255, 'Ukuran Seragam Veteran maksimal 255 karakter'),
-  isActive: Yup.boolean(),
-  areaLevel3: Yup.string(),
-  areaLevel4: Yup.string(),
-  address: Yup.string().required('Alamat wajib diisi').max(255, 'Alamat maksimal 255 karakter')
+  isActive: Yup.boolean()
 })
 
 export type veteranFields = Yup.InferType<typeof veteranValidation>
@@ -39,7 +36,8 @@ export const djpmValidation = Yup.object({
   phoneNumber: Yup.string()
     .matches(phoneRegExp, 'Nomor telepon tidak valid')
     .min(7, 'Nomor telepon minimal 7 karakter')
-    .max(20, 'Nomor telepon maksimal 20 karakter'),
+    .max(20, 'Nomor telepon maksimal 20 karakter')
+    .required('Nomor Telepon wajib diisi'),
   serviceType: Yup.string().required('Jenis Layanan wajib diisi'),
   dutyPlace: Yup.string().required('Tempat Tugas wajib diisi').max(255, 'Tempat Tugas maksimal 255 karakter'),
   dutyAddress: Yup.string().required('Alamat Tugas wajib diisi').max(255, 'Alamat Tugas maksimal 255 karakter'),
@@ -73,6 +71,7 @@ export const kubeValidation = Yup.object({
   note: Yup.string().required('Keterangan wajib diisi').max(255, 'Catatan maksimal 255 karakter'),
   members: Yup.array().of(
     Yup.object().shape({
+      nik: Yup.string(),
       beneficiary: Yup.string().required('Penerima manfaat wajib diisi'),
       position: Yup.string().required('Jabatan wajib diisi')
     })
@@ -83,21 +82,19 @@ export type kubeFields = Yup.InferType<typeof kubeValidation>
 
 export const hibahValidation = Yup.object({
   name: Yup.string().required('Nama Hibah wajib diisi').max(255, 'Nama Hibah maksimal 255 karakter'),
-  addres: Yup.string().required('Alamat wajib diisi').max(255, 'Alamat maksimal 255 karakter'),
+  address: Yup.string().required('Alamat wajib diisi').max(255, 'Alamat maksimal 255 karakter'),
   areaLevel3: Yup.string(),
   areaLevel4: Yup.string(),
   chairmanName: Yup.string().max(255, 'Nama Ketua maksimal 255 karakter'),
-  chairmanIdentityNumber: Yup.object().shape({
-    sixteenDigitString: Yup.string()
-      .length(16, 'Harus tepat 16 digit')
-      .matches(/^[0-9]+$/, 'Harus berisi hanya angka')
-      .required('Required')
-  }),
+  chairmanIdentityNumber: Yup.string()
+    .length(16, 'Harus tepat 16 digit')
+    .matches(/^[0-9]+$/, 'Harus berisi hanya angka')
+    .required('NIK Ketua wajib diisi'),
   secretaryName: Yup.string().max(255, 'Nama Sekretaris maksimal 255 karakter'),
   secretaryIdentityNumber: Yup.string()
     .length(16, 'Harus tepat 16 digit')
     .matches(/^[0-9]+$/, 'Harus berisi hanya angka')
-    .required('Required'),
+    .required('NIK Sekretaris wajib diisi'),
   treasurerName: Yup.string().max(255, 'Nama Bendahara maksimal 255 karakter'),
   treasurerIdentityNumber: Yup.string()
     .length(16, 'Harus tepat 16 digit')
@@ -107,14 +104,14 @@ export const hibahValidation = Yup.object({
     .matches(phoneRegExp, 'Nomor telepon tidak valid')
     .min(7, 'Nomor telepon minimal 7 karakter')
     .max(20, 'Nomor telepon maksimal 20 karakter'),
-  bankAccountNumber: Yup.number()
+  bankAccountNumber: Yup.string()
     .min(1, 'Nomor rekening minimal 1 karakter')
     .max(32, 'Nomor rekening maksimal 32 karakter'),
   bankName: Yup.string().max(255, 'Nama Bank maksimal 255 karakter'),
   bankAccountName: Yup.string().max(255, 'Nama Rekening Bank maksimal 255 karakter'),
   bankAccountAddress: Yup.string().max(255, 'Alamat Bank maksimal 255 karakter'),
   requestedAmount: Yup.number(),
-  aprrovedAmount: Yup.number(),
+  approvedAmount: Yup.number(),
   firstDisbursementAmount: Yup.number(),
   secondDisbursementAmount: Yup.number(),
   note: Yup.string().max(255, 'Catatan maksimal 255 karakter'),
@@ -122,3 +119,42 @@ export const hibahValidation = Yup.object({
 })
 
 export type hibahFields = Yup.InferType<typeof hibahValidation>
+
+export const pokmasValidation = Yup.object({
+  applicantPhoneNumber: Yup.string()
+    .matches(phoneRegExp, 'Nomor telepon tidak valid')
+    .min(7, 'Nomor telepon minimal 7 karakter')
+    .max(20, 'Nomor telepon maksimal 20 karakter')
+    .required('Nomor Telepon wajib diisi'),
+  communityName: Yup.string().required('Nama Pokmas wajib diisi').max(255, 'Nama Pokmas maksimal 255 karakter'),
+  communityAddress: Yup.string().max(255, 'Alamat Pokmas maksimal 255 karakter'),
+  communityActivityCode: Yup.string().max(255, 'Kode Kegiatan Pokmas maksimal 255 karakter'),
+  communityActivityTypeDescription: Yup.string().max(255, 'Jenis Kegiatan Pokmas maksimal 255 karakter'),
+  communityAssistanceType: Yup.string().max(255, 'Jenis Bantuan Pokmas maksimal 255 karakter'),
+  areaLevel3: Yup.string().required('Kecamatan wajib diisi'),
+  areaLevel4: Yup.string().required('Kelurahan wajib diisi'),
+  requestedRabAmount: Yup.number(),
+  requestedBansosAmount: Yup.number(),
+  approvedFundAmount: Yup.number(),
+  applicationYear: Yup.string().matches(/^\d{4}$/, 'Format tahun tidak valid. Harap masukkan tahun dengan format YYYY'),
+  bankName: Yup.string().max(255, 'Nama Bank maksimal 255 karakter').required('Nama Bank wajib diisi'),
+  bankAccName: Yup.string().max(255, 'Nama Rekening Bank maksimal 255 karakter'),
+  bankAccNumber: Yup.string()
+    .required('Nomor Rekening Bank wajib diisi')
+    .max(18, 'Nomor Rekening Bank maksimal 18 karakter')
+    .min(8, 'Nomor Rekening Bank minimal 8 karakter'),
+  bankAccAddress: Yup.string().max(255, 'Alamat Bank maksimal 255 karakter'),
+  members: Yup.array().of(
+    Yup.object().shape({
+      nik: Yup.string(),
+      beneficiary: Yup.string().required('Penerima manfaat wajib diisi'),
+      position: Yup.string().required('Jabatan wajib diisi')
+    })
+  ),
+  statusDisimbursement: Yup.string().max(50, 'Status Pencairan maksimal 255 karakter'),
+  note: Yup.string().max(255, 'Catatan maksimal 255 karakter'),
+  executionDate: Yup.string(),
+  executionPlace: Yup.string().max(255, 'Tempat Pelaksanaan maksimal 255 karakter')
+})
+
+export type pokmasFields = Yup.InferType<typeof pokmasValidation>

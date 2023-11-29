@@ -1,19 +1,29 @@
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import useTitle from '@/hooks/useTitle'
 import { HiPlus } from 'react-icons/hi'
 import { Container } from '@/components'
-import { type kubeFields } from '@/lib/validations/dayasos.validation'
+import { kubeValidation, type kubeFields } from '@/lib/validations/dayasos.validation'
+import { useCreateKube, useGetBeneficaryByNIK, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { HiTrash } from 'react-icons/hi2'
+import { cn } from '@/lib/utils'
+import * as React from 'react'
+import { useToast } from '@/components/ui/use-toast'
 
 const Kube = () => {
   useTitle('Kelompok Usaha Bersama (KUBE)')
+  const { toast } = useToast()
+  const [NIK, setNIK] = React.useState('')
+  const [index, setIndex] = React.useState(0)
 
   const forms = useForm<kubeFields>({
     mode: 'onTouched',
+    resolver: yupResolver(kubeValidation),
     defaultValues: {
       businessName: '',
       businessType: '',
@@ -24,12 +34,65 @@ const Kube = () => {
       budgetYear: '',
       status: '',
       note: '',
-      members: [{ beneficiary: '', position: '' }]
+      members: [{ beneficiary: '', position: '', nik: '' }]
     }
   })
 
+  const { fields, append, remove } = useFieldArray({
+    control: forms.control,
+    name: 'members'
+  })
+
+  const areaLevel3 = forms.watch('areaLevel3')
+  const { data: kecamatan } = useGetKecamatan()
+  const { data: kelurahan } = useGetKelurahan(areaLevel3 ?? '')
+  const { data: beneficiary, refetch, isFetching, isError } = useGetBeneficaryByNIK(NIK, false)
+  const { mutate: createKube, isLoading: isLoadingCreate } = useCreateKube()
+
+  React.useEffect(() => {
+    if (NIK !== '') void refetch()
+  }, [NIK])
+
+  React.useEffect(() => {
+    if (isError) {
+      toast({
+        title: 'NIK tidak terdaftar',
+        description: 'Maaf NIK tidak terdaftar silahkan daftarkan NIK pada menu Data Master',
+        variant: 'destructive'
+      })
+    }
+  }, [isError])
+
+  React.useEffect(() => {
+    if (beneficiary != null) {
+      forms.setValue(`members.${index}.beneficiary`, beneficiary?.id)
+      toast({
+        title: 'NIK terdaftar',
+        description: 'NIK terdaftar, silahkan isi form berikut'
+      })
+    }
+  }, [beneficiary])
+
   const onSubmit = async (values: kubeFields) => {
-    console.log(values)
+    const newData = {
+      ...values,
+      members: values?.members?.map((member) => {
+        const { nik, ...newMember } = member
+        return newMember
+      })
+    }
+
+    createKube(newData, {
+      onSuccess: () => forms.reset()
+    })
+  }
+
+  const handleFetchNik = async (index: number) => {
+    const nik = forms.getValues(`members.${index}.nik`)
+    if (nik != null) {
+      setNIK(nik)
+      setIndex(index)
+    }
   }
 
   return (
@@ -40,7 +103,7 @@ const Kube = () => {
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="flex flex-row gap-4 pt-5">
-            <div className="w-4/12">
+            <div className="w-6/12">
               <FormField
                 name="businessName"
                 control={forms.control}
@@ -50,11 +113,12 @@ const Kube = () => {
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Nama Kelompok Masyarakat" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <div className="w-4/12">
+            <div className="w-6/12">
               <FormField
                 name="businessType"
                 control={forms.control}
@@ -64,100 +128,64 @@ const Kube = () => {
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Jenis Usaha" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            {/* <div className="w-4/12">
-              <FormField
-                name="batch"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Batch</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Batch" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div> */}
           </div>
           <div className="w-full text-center">
             <p className="text-2xl font-bold">Alamat KUBE</p>
           </div>
           <div className="flex flex-row gap-4">
-            {/* <div className="w-4/12">
-              <FormField
-                name="kota"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Kota/Kabupaten</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kota/Kabupaten" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div> */}
-            <div className="w-4/12">
+            <div className="w-6/12">
               <FormField
                 name="areaLevel3"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kecamatan" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Kecamatan" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {kecamatan?.map((item, index) => (
+                          <SelectItem value={item.id} key={index}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <div className="w-4/12">
+            <div className="w-6/12">
               <FormField
                 name="areaLevel4"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kelurahan" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
+                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={areaLevel3 === ''}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Kelurahan" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {kelurahan?.map((item, index) => (
+                          <SelectItem value={item.id} key={index}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -173,6 +201,7 @@ const Kube = () => {
                   <FormControl>
                     <Textarea {...field} placeholder="Masukkan Alamat Lengkap Masyarakat." />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -180,43 +209,35 @@ const Kube = () => {
           <div className="w-full text-center">
             <p className="text-2xl font-bold">Data Pengurus</p>
           </div>
-          <div className="flex flex-row gap-4">
-            {/* <div className="w-4/12">
+          {fields.map((field, index) => (
+            <div className="flex flex-row gap-4" key={field.id}>
               <FormField
-                name="nik"
+                name={`members.${index}.beneficiary`}
                 control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan NIK" />
-                    </FormControl>
-                  </FormItem>
-                )}
+                render={({ field }) => <Input {...field} type="text" hidden className="hidden" />}
               />
-            </div> */}
-            {/* <div className="w-4/12">
-              <FormField
-                name="namaPengurus"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nama Pengurus</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama Pengurus" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div> */}
-            <div className="w-4/12">
-              <FormField
-                name="members.0.position"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Jabatan</FormLabel>
-                    <FormControl>
+              <div className="w-6/12">
+                <FormField
+                  name={`members.${index}.nik`}
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="text" placeholder="Masukkan NIK" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="w-6/12">
+                <FormField
+                  name={`members.${index}.position`}
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold dark:text-white">Jabatan</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
@@ -224,24 +245,45 @@ const Kube = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                          <SelectItem value="Ketua">Ketua</SelectItem>
+                          <SelectItem value="Anggota">Anggota</SelectItem>
                         </SelectContent>
                       </Select>
-                    </FormControl>
-                  </FormItem>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className={cn('flex items-end justify-end gap-2', index > 0 ? 'w-auto' : 'w-[11%]')}>
+                <Button
+                  className="w-full"
+                  type="button"
+                  onClick={async () => await handleFetchNik(index)}
+                  loading={isFetching}
+                >
+                  Cari
+                </Button>
+                {index > 0 && (
+                  <Button
+                    className="w-full bg-white border border-zinc-500 hover:bg-zinc-200"
+                    type="button"
+                    onClick={() => remove(index)}
+                  >
+                    <HiTrash className="text-lg text-zinc-800" />
+                  </Button>
                 )}
-              />
+              </div>
             </div>
-            <div className="w-1/12 flex items-end justify-end">
-              <Button className="w-full">Cari</Button>
-            </div>
-          </div>
-          <Button className="bg-primary flex w-fit mx-auto rounded-xl py-6 gap-2 ">
+          ))}
+          <Button
+            className="bg-primary flex w-fit mx-auto rounded-xl py-6 gap-2"
+            type="button"
+            onClick={() => append({ beneficiary: '', position: '', nik: '' })}
+          >
             <HiPlus className="w-6 h-6 text-white" />
             <p className="font-bold text-sm text-white">Tambah Anggota</p>
           </Button>
+
           <div className="w-full text-center">
             <p className="text-2xl font-bold">Bantuan</p>
           </div>
@@ -256,6 +298,7 @@ const Kube = () => {
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Tahun Anggaran" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -267,20 +310,18 @@ const Kube = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Status Verifikasi</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Status Verifikasi" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Status Verifikasi" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="aktif">Aktif</SelectItem>
+                        <SelectItem value="tidak aktif">Tidak Aktif</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -295,14 +336,19 @@ const Kube = () => {
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Keterangan" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
           </div>
-          <div className="flex justify-end gap-5">
-            <Button variant="cancel">Cancel</Button>
-            <Button>Submit</Button>
+          <div className="flex justify-end gap-4 mt-8">
+            <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
+              Cancel
+            </Button>
+            <Button className="font-bold" type="submit" loading={isLoadingCreate}>
+              Submit
+            </Button>
           </div>
         </form>
       </Form>

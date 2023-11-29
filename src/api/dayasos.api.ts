@@ -1,16 +1,25 @@
-import { type veteranFields, type worshipPlaceFields } from '@/lib/validations/dayasos.validation'
+import {
+  type hibahFields,
+  type djpmFields,
+  type veteranFields,
+  type worshipPlaceFields,
+  type kubeFields,
+  type pokmasFields
+} from '@/lib/validations/dayasos.validation'
 import api from './axiosInstance'
 import {
   type IOrganizationGrantAssistance,
+  type IServiceType,
   type IServiceFunds,
   type IWorshipPlace,
   type IVeteran,
-  ICommunityGroups,
-  IBusinessGroup
+  type ICommunityGroups,
+  type IBusinessGroup
 } from '@/lib/types/dayasos.type'
 
 export const storeWorshipPlaceFn = async (fields: worshipPlaceFields) => {
-  await api.post('/worship-place', fields)
+  const response = await api.post('/worship-place', fields)
+  return response.data
 }
 export const storeDjpm = async (fields: any) => {
   await api.post('/service-fund', fields)
@@ -65,7 +74,7 @@ export const storeVeteranFn = async (fields: veteranFields) => {
   await api.post('veteran', fields)
 }
 
-export const getServiceFunds = async ({
+export const getServiceFundsFn = async ({
   page,
   idKecamatan,
   idKelurahan,
@@ -75,6 +84,27 @@ export const getServiceFunds = async ({
     `/service-fund/?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${name}`
   )
   return response.data
+}
+
+export const getServiceTypesFn = async (): Promise<IServiceType[]> => {
+  const response = await api.get('/service-fund/types')
+  return response.data?.data
+}
+
+export const storeServiceFundFn = async (fields: djpmFields) => {
+  await api.post('/service-fund', fields)
+}
+
+export const storeOrganizationGrantAssistanceFn = async (fields: hibahFields) => {
+  await api.post('/organization-grant-assistance', fields)
+}
+
+export const storeKubeFn = async (fields: kubeFields) => {
+  await api.post('/joint-business-group', fields)
+}
+
+export const storePokmasFn = async (fields: pokmasFields) => {
+  await api.post('community-group', fields)
 }
 
 export const getOrganizationGrantAssistance = async ({

@@ -1,40 +1,71 @@
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import useTitle from '@/hooks/useTitle'
+import { hibahValidation, type hibahFields } from '@/lib/validations/dayasos.validation'
+import { useCreateHibah, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { type AxiosError } from 'axios'
+import { type IErrorResponse } from '@/lib/types/user.type'
+import { useToast } from '@/components/ui/use-toast'
 
 const Hibah = () => {
   useTitle('Bansos Hibah Organisasi/Lembaga (BHO)')
-  interface FormValues {
-    namaLembaga: string
-    noLembaga: string
-    kota: string
-    kecamatan: string
-    kelurahan: string
-    alamatLengkap: string
-    nikKetua: string
-    namaKetua: string
-    nikSekretaris: string
-    namaSekretaris: string
-    nikBendahara: string
-    namaBendahara: string
-    noRekening: string
-    namaBank: string
-    alamatRekening: string
-    jumlahBantuan: string
-    tahun: string
-    keterangan: string
-  }
+  const { toast } = useToast()
 
-  const forms = useForm<FormValues>({
-    mode: 'onTouched'
+  const forms = useForm<hibahFields>({
+    mode: 'onTouched',
+    resolver: yupResolver(hibahValidation),
+    defaultValues: {
+      name: '',
+      contactNumber: '',
+      areaLevel3: '',
+      areaLevel4: '',
+      address: '',
+      chairmanIdentityNumber: '',
+      chairmanName: '',
+      secretaryIdentityNumber: '',
+      secretaryName: '',
+      treasurerIdentityNumber: '',
+      treasurerName: '',
+      bankAccountNumber: '',
+      bankName: '',
+      bankAccountAddress: '',
+      approvedAmount: '',
+      budgetYear: '',
+      note: ''
+    }
   })
 
-  const onSubmit = async (values: FormValues) => {
-    console.log(values)
+  const areaLevel3 = forms.watch('areaLevel3')
+  const { data: kecamatan } = useGetKecamatan()
+  const { data: kelurahan } = useGetKelurahan(areaLevel3 ?? '')
+  const { mutate: createHibah, isLoading } = useCreateHibah()
+
+  const onSubmit = async (values: hibahFields) => {
+    createHibah(values, {
+      onError: (error: AxiosError) => {
+        const errorResponse = error.response?.data as IErrorResponse
+
+        if (errorResponse !== undefined) {
+          toast({
+            variant: 'destructive',
+            title: errorResponse.message ?? 'Gagal',
+            description: 'Terjadi masalah dengan permintaan Anda.'
+          })
+        }
+      },
+      onSuccess: () => {
+        toast({
+          title: 'Berhasil',
+          description: 'Data DJPM berhasil ditambahkan'
+        })
+        forms.reset()
+      }
+    })
   }
 
   return (
@@ -47,7 +78,7 @@ const Hibah = () => {
           <div className="flex flex-row gap-4 pt-5">
             <div className="w-6/12">
               <FormField
-                name="namaLembaga"
+                name="name"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -55,20 +86,22 @@ const Hibah = () => {
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Nama Pemohon" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
             <div className="w-6/12">
               <FormField
-                name="noLembaga"
+                name="contactNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">No. Telepon Lembaga/Organisasi</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan No. Telepon Pemohon " />
+                      <Input {...field} type="number" placeholder="Masukkan No. Telepon Pemohon " />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -78,77 +111,54 @@ const Hibah = () => {
             <p className="text-2xl font-bold">Alamat</p>
           </div>
           <div className="flex flex-row gap-4">
-            <div className="w-4/12">
+            <div className="w-6/12">
               <FormField
-                name="kota"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Kota/Kabupaten</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kota/Kabupaten" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-4/12">
-              <FormField
-                name="kecamatan"
+                name="areaLevel3"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kecamatan" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Kecamatan" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {kecamatan?.map((item, index) => (
+                          <SelectItem value={item.id} key={index}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <div className="w-4/12">
+            <div className="w-6/12">
               <FormField
-                name="kelurahan"
+                name="areaLevel4"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kelurahan" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
+                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={areaLevel3 === ''}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Kelurahan" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {kelurahan?.map((item, index) => (
+                          <SelectItem value={item.id} key={index}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -156,7 +166,7 @@ const Hibah = () => {
           </div>
           <div>
             <FormField
-              name="alamatLengkap"
+              name="address"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
@@ -164,6 +174,7 @@ const Hibah = () => {
                   <FormControl>
                     <Textarea {...field} placeholder="Masukkan Alamat Lengkap Masyarakat." />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -174,21 +185,22 @@ const Hibah = () => {
           <div className="flex flex-row gap-4">
             <div className="w-6/12">
               <FormField
-                name="nikKetua"
+                name="chairmanIdentityNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">NIK Ketua</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan NIK Ketua" />
+                      <Input {...field} type="number" placeholder="Masukkan NIK Ketua" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
             <div className="w-6/12">
               <FormField
-                name="namaKetua"
+                name="chairmanName"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -196,6 +208,7 @@ const Hibah = () => {
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Nama Ketua " />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -204,21 +217,22 @@ const Hibah = () => {
           <div className="flex flex-row gap-4">
             <div className="w-6/12">
               <FormField
-                name="nikSekretaris"
+                name="secretaryIdentityNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nama Sekretaris</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama Sekretaris" />
+                      <Input {...field} type="number" placeholder="Masukkan Nama Sekretaris" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
             <div className="w-6/12">
               <FormField
-                name="namaSekretaris"
+                name="secretaryName"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -226,6 +240,7 @@ const Hibah = () => {
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Nama Sekretaris " />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -234,21 +249,22 @@ const Hibah = () => {
           <div className="flex flex-row gap-4">
             <div className="w-6/12">
               <FormField
-                name="nikBendahara"
+                name="treasurerIdentityNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">NIK Bendahara</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan NIK Bendahara" />
+                      <Input {...field} type="number" placeholder="Masukkan NIK Bendahara" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
             <div className="w-6/12">
               <FormField
-                name="namaBendahara"
+                name="treasurerName"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -256,6 +272,7 @@ const Hibah = () => {
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Nama Bendahara " />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -267,21 +284,22 @@ const Hibah = () => {
           <div className="flex flex-row gap-4">
             <div className="w-6/12">
               <FormField
-                name="noRekening"
+                name="bankAccountNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">No. Rekening</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan No. Rekening " />
+                      <Input {...field} type="number" placeholder="Masukkan No. Rekening " />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
             <div className="w-6/12">
               <FormField
-                name="namaBank"
+                name="bankName"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -289,6 +307,7 @@ const Hibah = () => {
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Nama Bank" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -297,7 +316,7 @@ const Hibah = () => {
           <div className="flex flex-row gap-4">
             <div className="w-6/12">
               <FormField
-                name="alamatRekening"
+                name="bankAccountAddress"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -305,20 +324,22 @@ const Hibah = () => {
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Alamat Rekening" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
             <div className="w-6/12">
               <FormField
-                name="jumlahBantuan"
+                name="approvedAmount"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Jumlah Bantuan</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Jumlah Bantuan " />
+                      <Input {...field} type="number" placeholder="Masukkan Jumlah Bantuan " />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -327,21 +348,22 @@ const Hibah = () => {
           <div className="flex flex-row gap-4">
             <div className="w-6/12">
               <FormField
-                name="tahun"
+                name="budgetYear"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Tahun</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">Tahun Anggaran</FormLabel>
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Tahun Anggaran" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
             <div className="w-6/12">
               <FormField
-                name="keterangan"
+                name="note"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -349,14 +371,19 @@ const Hibah = () => {
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Keterangan " />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
           </div>
-          <div className="flex justify-end gap-5">
-            <Button variant="cancel">Cancel</Button>
-            <Button>Submit</Button>
+          <div className="flex justify-end gap-4 mt-8">
+            <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
+              Cancel
+            </Button>
+            <Button className="font-bold" loading={isLoading} type="submit">
+              Submit
+            </Button>
           </div>
         </form>
       </Form>

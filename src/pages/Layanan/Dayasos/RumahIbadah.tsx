@@ -14,6 +14,8 @@ import { worshipPlaceValidation, type worshipPlaceFields } from '@/lib/validatio
 
 import { useGetKecamatan, useGetKelurahan } from '@/store/server'
 import { useCreateWorshipPlace } from '@/store/server/useDayasos'
+import { type AxiosError } from 'axios'
+import { type IErrorResponse } from '@/lib/types/user.type'
 
 export const JENIS_RUMAH_IBADAH = [
   'MESJID',
@@ -51,15 +53,24 @@ const Ri = () => {
   const { mutate: storeWorshipPlace, isLoading } = useCreateWorshipPlace()
 
   const onSubmit = (values: worshipPlaceFields) => {
-    console.log(values)
-
     storeWorshipPlace(values, {
       onSuccess: () => {
         forms.reset()
         toast({
-          title: 'Proses Berhasil!!',
+          title: 'Proses Berhasil',
           description: 'Data Rumah Ibadah Berhasil Ditambahkan'
         })
+      },
+      onError: (error: AxiosError) => {
+        const errorResponse = error.response?.data as IErrorResponse
+
+        if (errorResponse !== undefined) {
+          toast({
+            variant: 'destructive',
+            title: errorResponse.message ?? 'Gagal',
+            description: 'Terjadi masalah dengan permintaan Anda.'
+          })
+        }
       }
     })
   }
@@ -90,22 +101,20 @@ const Ri = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Jenis Rumah Ibadah</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Jenis Rumah Ibadah" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {JENIS_RUMAH_IBADAH.map((item, index) => (
-                            <SelectItem value={item} key={index}>
-                              {item}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Jenis Rumah Ibadah" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {JENIS_RUMAH_IBADAH.map((item, index) => (
+                          <SelectItem value={item} key={index}>
+                            {item}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -130,7 +139,7 @@ const Ri = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">No. Telepon</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan No. Telepon " />
+                      <Input {...field} type="number" placeholder="Masukkan No. Telepon " />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -145,25 +154,23 @@ const Ri = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kecamatan" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectGroup>
-                            {isSuccessKecamatan &&
-                              kecamatan.map((item, index) => (
-                                <SelectItem value={item.id} key={index}>
-                                  {item.name}
-                                </SelectItem>
-                              ))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Kecamatan" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectGroup>
+                          {isSuccessKecamatan &&
+                            kecamatan.map((item, index) => (
+                              <SelectItem value={item.id} key={index}>
+                                {item.name}
+                              </SelectItem>
+                            ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -174,25 +181,23 @@ const Ri = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value} disabled={areaLevel3 === ''}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kelurahan" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectGroup>
-                            {isSuccessKelurahan &&
-                              kelurahan?.map((item, index) => (
-                                <SelectItem value={item.id} key={index}>
-                                  {item.name}
-                                </SelectItem>
-                              ))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
+                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={areaLevel3 === ''}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Kelurahan" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectGroup>
+                          {isSuccessKelurahan &&
+                            kelurahan?.map((item, index) => (
+                              <SelectItem value={item.id} key={index}>
+                                {item.name}
+                              </SelectItem>
+                            ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -253,7 +258,7 @@ const Ri = () => {
               />
             </div>
             <div className="flex justify-end gap-4 mt-8">
-              <Button variant="cancel" className="font-bold" onClick={() => forms.reset()}>
+              <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
                 Cancel
               </Button>
               <Button className="font-bold" loading={isLoading}>

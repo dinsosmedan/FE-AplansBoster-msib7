@@ -92,7 +92,7 @@ export default function App() {
           </Route>
           <Route path="/layanan/dayasos">
             <Route index element={<LayananDayasos />} />
-            <Route path="djp" element={<Djp />} />
+            <Route path="djp" element={<Djpm />} />
             <Route path="bpnt" element={<Bpnt />} />
             <Route path="hibah" element={<Hibah />} />
             <Route path="ri" element={<Ri />} />
