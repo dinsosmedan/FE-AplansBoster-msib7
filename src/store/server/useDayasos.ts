@@ -7,7 +7,7 @@ import {
   storeDjpm,
   storeVeteranFn,
   storeWorshipPlaceFn,
-  VeteranQuery,
+  type VeteranQuery,
   type WorshipPlaceQuery
 } from '@/api/dayasos.api'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
@@ -69,7 +69,7 @@ export const useGetOrganizationGrantAssistance = ({ page, budgetYear, name }: Or
     }
   )
 }
-    
+
 export const useGetVeteran = ({ page, name }: VeteranQuery) => {
   return useQuery(
     ['veterans', page, name],

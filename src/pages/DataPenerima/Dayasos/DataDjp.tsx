@@ -23,7 +23,7 @@ interface FormValues {
 const DataDjp = () => {
   useTitle('Data Penerima / Dayasos / DJPM ')
   const createParams = useCreateParams()
-  const { nama, kecamatan, kelurahan, page } = useGetParams(['nama', 'kecamatan', 'kelurahan', 'page'])
+  const { q, kecamatan, kelurahan, page } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page'])
 
   const forms = useForm<FormValues>({
     defaultValues: {
@@ -48,7 +48,7 @@ const DataDjp = () => {
     page: parseInt(page) ?? 1,
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
-    name: nama
+    name: q
   })
 
   useDisableBodyScroll(isFetching)
