@@ -5,7 +5,8 @@ import {
   type IServiceFunds,
   type IWorshipPlace,
   type IVeteran,
-  ICommunityGroups
+  ICommunityGroups,
+  IBusinessGroup
 } from '@/lib/types/dayasos.type'
 
 export const storeWorshipPlaceFn = async (fields: worshipPlaceFields) => {
@@ -41,7 +42,13 @@ export interface CommunityGroupQuery {
   code?: string
   year?: string
 }
-
+export interface BusinessGroupQuery {
+  page?: number
+  q?: string
+  idKecamatan?: string
+  idKelurahan?: string
+  year?: string
+}
 export const getWorshipPlacesFn = async ({
   page,
   idKecamatan,
@@ -94,6 +101,19 @@ export const getCommunityGroupsFn = async ({
 }: CommunityGroupQuery): Promise<ICommunityGroups> => {
   const response = await api.get(
     `/community-group/?q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&application_year=${year}&status=${status}&community_activity_code=${code}&page=${page}&limit=10`
+  )
+  return response.data
+}
+
+export const getBusinessGroupFn = async ({
+  page,
+  q,
+  idKecamatan,
+  idKelurahan,
+  year
+}: BusinessGroupQuery): Promise<IBusinessGroup> => {
+  const response = await api.get(
+    `/joint-business-group/?q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&budget_year=${year}&page=${page}&limit=10`
   )
   return response.data
 }
