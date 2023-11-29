@@ -23,7 +23,7 @@ const DataVeteran = () => {
   }
   const forms = useForm<FormValues>({
     defaultValues: {
-      q: '',
+      q: ''
       // batch: ''
     }
   })
@@ -82,7 +82,6 @@ const DataVeteran = () => {
                   </FormItem>
                 )}
               />
-
             </div>
             <div className="w-[140px] h-[50px] ml-auto rounded-xl">
               <Button className="py-6">

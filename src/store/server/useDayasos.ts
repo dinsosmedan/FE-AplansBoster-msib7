@@ -7,7 +7,7 @@ import {
   storeDjpm,
   storeVeteranFn,
   storeWorshipPlaceFn,
-  VeteranQuery,
+  type VeteranQuery,
   type WorshipPlaceQuery
 } from '@/api/dayasos.api'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
