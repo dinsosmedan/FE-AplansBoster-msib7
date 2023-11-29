@@ -9,24 +9,63 @@ import { HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
+import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
+import { useGetOrganizationGrantAssistance } from './../../../store/server/useDayasos'
+import { Loading } from '@/components'
 
 const DataHibah = () => {
   useTitle('Data Penerima / Dayasos / Bansos Hibah Organisasi/Lembaga (BHO) ')
+  const createParams = useCreateParams()
+  const { nama, budgetYear, page } = useGetParams(['nama', 'budgetYear', 'page'])
 
   interface FormValues {
-    nik: string
-    nama: string
-    tahun: string
+    q: string
+    budgetYear: string
   }
+
+  const [isLoadingPage, setIsLoadingPage] = React.useState(false)
+
   const forms = useForm<FormValues>({
-    mode: 'onTouched'
+    defaultValues: {
+      q: '',
+      budgetYear: ''
+      // batch: ''
+    }
   })
-  const [currentPage, setCurrentPage] = React.useState(1)
+
+  const {
+    data: organizationGrantAssistance,
+    refetch,
+    isFetching,
+    isLoading
+  } = useGetOrganizationGrantAssistance({
+    page: parseInt(page) ?? 1,
+    name: nama,
+    budgetYear
+  })
+
+  useDisableBodyScroll(isFetching)
 
   const onSubmit = async (values: FormValues) => {
-    console.log(values)
+    Object.keys(values).forEach((key) => {
+      if (values[key as keyof FormValues] !== '') {
+        createParams({ key, value: values[key as keyof FormValues] })
+      }
+    })
+    await refetch()
   }
 
+  React.useEffect(() => {
+    if (isFetching) {
+      setIsLoadingPage(true)
+    } else {
+      setIsLoadingPage(false)
+    }
+  }, [isLoadingPage, isFetching])
+
+  if (isLoading) {
+    return <Loading />
+  }
   return (
     <div>
       <Container>
@@ -35,7 +74,7 @@ const DataHibah = () => {
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
             <div className="grid grid-cols-3 gap-x-10 gap-y-5 pt-10">
               <FormField
-                name="nik"
+                name="q"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -46,18 +85,7 @@ const DataHibah = () => {
                 )}
               />
               <FormField
-                name="nama"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan NIK " />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="tahun"
+                name="budgetYear"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -100,51 +128,40 @@ const DataHibah = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="text-center">1271092350010008</TableCell>
-              <TableCell className="text-center">Oza Kristen</TableCell>
-              <TableCell className="text-center">Perempuan</TableCell>
-              <TableCell className="text-center">1945</TableCell>
-              <TableCell className="text-center">Medan</TableCell>
-              <TableCell className="text-center">Medan</TableCell>
-              <TableCell className="text-center">Santunan</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="text-center">1271092350010008</TableCell>
-              <TableCell className="text-center">Oza Kristen</TableCell>
-              <TableCell className="text-center">Perempuan</TableCell>
-              <TableCell className="text-center">1945</TableCell>
-              <TableCell className="text-center">Medan</TableCell>
-              <TableCell className="text-center">Medan</TableCell>
-              <TableCell className="text-center">Santunan</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="text-center">1271092350010008</TableCell>
-              <TableCell className="text-center">Oza Kristen</TableCell>
-              <TableCell className="text-center">Perempuan</TableCell>
-              <TableCell className="text-center">1945</TableCell>
-              <TableCell className="text-center">Medan</TableCell>
-              <TableCell className="text-center">Medan</TableCell>
-              <TableCell className="text-center">Santunan</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="text-center">1271092350010008</TableCell>
-              <TableCell className="text-center">Oza Kristen</TableCell>
-              <TableCell className="text-center">Perempuan</TableCell>
-              <TableCell className="text-center">1945</TableCell>
-              <TableCell className="text-center">Medan</TableCell>
-              <TableCell className="text-center">Medan</TableCell>
-              <TableCell className="text-center">Santunan</TableCell>
-            </TableRow>
+            {organizationGrantAssistance?.data?.length !== 0
+? (
+              organizationGrantAssistance?.data.map((item) => (
+                <TableRow key={item.id}>
+                  <TableCell className="text-center">{item.name}</TableCell>
+                  <TableCell className="text-center">{item.chairmanName}</TableCell>
+                  <TableCell className="text-center">{item.chairmanIdentityNumber}</TableCell>
+                  <TableCell className="text-center">{item.address.fullAddress}</TableCell>
+                  <TableCell className="text-center">{item.contactNumber}</TableCell>
+                  <TableCell className="text-center">{item.aprrovedAmount}</TableCell>
+                  <TableCell className="text-center">{item.budgetYear}</TableCell>
+                </TableRow>
+              ))
+            )
+: (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center">
+                  Tidak ada data
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
-        <Pagination
-          className="px-5 py-5 flex justify-end"
-          currentPage={currentPage}
-          totalCount={100}
-          pageSize={10}
-          onPageChange={(page) => setCurrentPage(page)}
-        />
+        {(organizationGrantAssistance?.meta?.total as number) > 30
+? (
+          <Pagination
+            className="px-5 py-5 flex justify-end"
+            currentPage={page !== '' ? parseInt(page) : 1}
+            totalCount={organizationGrantAssistance?.meta.total as number}
+            pageSize={30}
+            onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
+          />
+        )
+: null}
       </Container>
     </div>
   )

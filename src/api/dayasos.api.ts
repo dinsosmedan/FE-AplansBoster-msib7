@@ -1,6 +1,6 @@
 import { type veteranFields, type worshipPlaceFields } from '@/lib/validations/dayasos.validation'
 import api from './axiosInstance'
-import { IVeteran, type IServiceFunds, type IWorshipPlace } from '@/lib/types/dayasos.type'
+import { type IOrganizationGrantAssistance, type IServiceFunds, type IWorshipPlace, type IVeteran } from '@/lib/types/dayasos.type'
 
 export const storeWorshipPlaceFn = async (fields: worshipPlaceFields) => {
   await api.post('/worship-place', fields)
@@ -15,10 +15,18 @@ export interface WorshipPlaceQuery {
   idKelurahan?: string
   name?: string
 }
+
+export interface OrganizationGrantAssistanceQuery {
+  page?: number
+  budgetYear?: string
+  name?: string
+}
+
 export interface VeteranQuery {
   page?: number
   name?: string
 }
+
 export const getWorshipPlacesFn = async ({
   page,
   idKecamatan,
@@ -46,6 +54,18 @@ export const getServiceFunds = async ({
   )
   return response.data
 }
+
+export const getOrganizationGrantAssistance = async ({
+  page,
+  name,
+  budgetYear
+}: OrganizationGrantAssistanceQuery): Promise<IOrganizationGrantAssistance> => {
+  const response = await api.get(
+    /organization-grant-assistance/?page=${page}&q=${name}&budget_year=${budgetYear}
+  )
+  return response.data
+}
+
 export const getVeteranFn = async ({
   page,
   name

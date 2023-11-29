@@ -1,7 +1,9 @@
 import {
+  getOrganizationGrantAssistance,
   getServiceFunds,
   getVeteranFn,
   getWorshipPlacesFn,
+  type OrganizationGrantAssistanceQuery,
   storeDjpm,
   storeVeteranFn,
   storeWorshipPlaceFn,
@@ -56,6 +58,18 @@ export const useGetServiceFunds = ({ page, idKecamatan, idKelurahan, name }: Wor
     }
   )
 }
+
+export const useGetOrganizationGrantAssistance = ({ page, budgetYear, name }: OrganizationGrantAssistanceQuery) => {
+  return useQuery(
+    ['service-funds', page, budgetYear, name],
+    async () => await getOrganizationGrantAssistance({ page, budgetYear, name }),
+    {
+      keepPreviousData: true,
+      staleTime: 5000
+    }
+  )
+}
+    
 export const useGetVeteran = ({ page, name }: VeteranQuery) => {
   return useQuery(
     ['veterans', page, name],

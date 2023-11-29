@@ -21,6 +21,12 @@ interface IServiceType {
   name: string
   code: string
 }
+
+interface IAddress {
+  fullAddress: string
+  areaLevel3: IArea | null
+  areaLevel4: IArea | null
+}
 export interface IServiceFunds {
   success: boolean
   message: string
@@ -53,6 +59,36 @@ export interface IMeta {
   hasPrevious: boolean
 }
 
+export interface IOrganizationGrantAssistance {
+  success: boolean
+  message: string
+  data: Array<{
+    id: string
+    name: string
+    address: IAddress
+    chairmanName: string
+    chairmanIdentityNumber: string
+     secretaryName: string
+     secretaryIdentityNumber: string
+     treasurerName: string
+     treasurerIdentityNumber: string
+     contactNumber: string
+     bankAccountNumber: string
+     bankName: string
+     bankAccountName: string
+     bankAccountAddress: string
+     requestedAmount: number
+     aprrovedAmount: number
+     firstDisbursementAmount: number
+     secondDisbursementAmount: number
+     budgetYear: string
+     note: string
+     createdAt: string
+     updatedAt: string
+  }>
+  meta: IMeta
+}
+
 export interface IVeteran {
   success: boolean
   message: string
@@ -61,7 +97,7 @@ export interface IVeteran {
     beneficiary: IBeneficary
     veteranIdentityNumber: string
     veteranUnit: string
-    uniformSize: null|string
+    uniformSize: null | string
     isActive: string
     createdAt: string
     updatedAt: string
