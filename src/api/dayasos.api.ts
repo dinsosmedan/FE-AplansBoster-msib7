@@ -1,6 +1,12 @@
 import { type veteranFields, type worshipPlaceFields } from '@/lib/validations/dayasos.validation'
 import api from './axiosInstance'
-import { type IOrganizationGrantAssistance, type IServiceFunds, type IWorshipPlace, type IVeteran } from '@/lib/types/dayasos.type'
+import {
+  type IOrganizationGrantAssistance,
+  type IServiceFunds,
+  type IWorshipPlace,
+  type IVeteran,
+  ICommunityGroups
+} from '@/lib/types/dayasos.type'
 
 export const storeWorshipPlaceFn = async (fields: worshipPlaceFields) => {
   await api.post('/worship-place', fields)
@@ -25,6 +31,15 @@ export interface OrganizationGrantAssistanceQuery {
 export interface VeteranQuery {
   page?: number
   name?: string
+}
+export interface CommunityGroupQuery {
+  page?: number
+  q?: string
+  idKecamatan?: string
+  idKelurahan?: string
+  status?: string
+  code?: string
+  year?: string
 }
 
 export const getWorshipPlacesFn = async ({
@@ -60,18 +75,25 @@ export const getOrganizationGrantAssistance = async ({
   name,
   budgetYear
 }: OrganizationGrantAssistanceQuery): Promise<IOrganizationGrantAssistance> => {
-  const response = await api.get(
-    `/organization-grant-assistance/?page=${page}&q=${name}&budget_year=${budgetYear}`
-  )
+  const response = await api.get(`/organization-grant-assistance/?page=${page}&q=${name}&budget_year=${budgetYear}`)
   return response.data
 }
 
-export const getVeteranFn = async ({
+export const getVeteranFn = async ({ page, name }: VeteranQuery): Promise<IVeteran> => {
+  const response = await api.get(`/veteran/?page=${page}&q=${name}`)
+  return response.data
+}
+export const getCommunityGroupsFn = async ({
   page,
-  name
-}: VeteranQuery): Promise<IVeteran> => {
+  q,
+  idKecamatan,
+  idKelurahan,
+  code,
+  status,
+  year
+}: CommunityGroupQuery): Promise<ICommunityGroups> => {
   const response = await api.get(
-    `/veteran/?page=${page}&q=${name}`
+    `/community-group/?q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&application_year=${year}&status=${status}&community_activity_code=${code}&page=${page}&limit=10`
   )
   return response.data
 }
