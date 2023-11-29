@@ -61,7 +61,7 @@ export const getOrganizationGrantAssistance = async ({
   budgetYear
 }: OrganizationGrantAssistanceQuery): Promise<IOrganizationGrantAssistance> => {
   const response = await api.get(
-    /organization-grant-assistance/?page=${page}&q=${name}&budget_year=${budgetYear}
+    `/organization-grant-assistance/?page=${page}&q=${name}&budget_year=${budgetYear}`
   )
   return response.data
 }
