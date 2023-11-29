@@ -12,20 +12,20 @@ import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useGetCommunityGroups, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import { Loading } from '@/components'
-
+interface FormValues {
+  q: string
+  code: string
+  status: string
+  kecamatan: string
+  kelurahan: string
+  year: string
+}
 const DataPokmas = () => {
   useTitle('Data Penerima / Dayasos / Pokmas ')
   const createParams = useCreateParams()
   const { page, q, kecamatan, kelurahan, code, status, year } = useGetParams(['page', 'q', 'kecamatan', 'kelurahan', 'code', 'status', 'year'])
 
-  interface FormValues {
-    q: string
-    code: string
-    status: string
-    kecamatan: string
-    kelurahan: string
-    year: string
-  }
+
   const forms = useForm<FormValues>({
     defaultValues: {
       q: '',
