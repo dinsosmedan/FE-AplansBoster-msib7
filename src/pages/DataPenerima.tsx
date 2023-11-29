@@ -1,32 +1,34 @@
-import { CardLink, Container } from '@/components'
+import { Container } from '@/components'
 import useTitle from '@/hooks/useTitle'
+import CardMain from './../components/organisms/CardMain'
 
 export default function DataPenerima() {
   useTitle('Data Penerima  ')
 
   return (
     <Container className="flex justify-center">
-      <div className="grid grid-cols-2 gap-x-[70px] gap-y-[45px]">
-        <CardLink>
-          <CardLink.Header title="REHABSOS" circlePosition="bottom" />
-          <CardLink.Footer href="/data-penerima/rehabsos">
-            <p className="text-[15px] text-primary text-center">Rehabilitasi Sosial (Social Rehabilitation)</p>
-          </CardLink.Footer>
-        </CardLink>
-        <CardLink>
-          <CardLink.Header title="LINJAMSOS" circlePosition="top" />
-          <CardLink.Footer href="/data-penerima/linjamsos">
-            <p className="text-[15px] text-primary text-center">Rehabilitasi Sosial (Social Rehabilitation)</p>
-          </CardLink.Footer>
-        </CardLink>
-        <CardLink>
-          <CardLink.Header title="DAYASOS" circlePosition="bottom" />
-          <CardLink.Footer href="/data-penerima/dayasos">
-            <p className="text-[15px] text-primary text-center">
-              Pemberdayaan Sosial dan Penanganan Fakir Miskin (Social Empowerment and Poor Handling)
-            </p>
-          </CardLink.Footer>
-        </CardLink>
+      <div className="grid grid-cols-2 gap-x-[70px] gap-y-[45px] ">
+        <CardMain
+          title="REHABSOS"
+          subTitle="Social Rehabilitation"
+          description="Program dan kegiatan Bidang Rehabilitasi Sosial dengan mempedomani rencana umum kota."
+          urlImage="https://source.unsplash.com/random/?medan"
+          href="/data-penerima/rehabsos"
+        />
+        <CardMain
+          title="DAYASOS"
+          subTitle="Social Empowerment and Poor Handling"
+          description="Program dan kegiatan Bidang Pemberdayaan Sosial Dan Penanganan Fakir Miskin dengan mempedomani rencana umum kota."
+          urlImage="https://source.unsplash.com/random/?medan"
+          href="/data-penerima/dayasos"
+        />
+        <CardMain
+          title="LINJAMSOS"
+          subTitle="Social Protection and Security"
+          description="Program dan kegiatan Bidang Perlindungan Dan Jaminan Sosial dengan mempedomani rencana umum kota"
+          urlImage="https://source.unsplash.com/random/?medan"
+          href="/data-penerima/linjamsos"
+        />
       </div>
     </Container>
   )
