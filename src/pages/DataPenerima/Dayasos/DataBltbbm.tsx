@@ -9,71 +9,76 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-
+import { useGetFuelCashAssistance } from '@/store/server'
+import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
+import { Loading } from '@/components'
+interface FormValues {
+  q: string
+}
 const DataBltbbm = () => {
   useTitle('Data Penerima / Dayasos / BLTBBM ')
+  const createParams = useCreateParams()
+  const { page, q } = useGetParams(['page', 'q'])
 
-  interface FormValues {
-    nama: string
-    nik: string
-    jenisAnggota: string
-  }
   const forms = useForm<FormValues>({
-    mode: 'onTouched'
+    defaultValues: {
+      q: '',
+    }
   })
-  const [currentPage, setCurrentPage] = React.useState(1)
+  const [isLoadingPage, setIsLoadingPage] = React.useState(false)
+
+
+  const {
+    data: fuelCashAssistance,
+    refetch,
+    isFetching,
+    isLoading
+  } = useGetFuelCashAssistance({
+    page: parseInt(page) ?? 1,
+    q: q,
+  })
+  console.log(fuelCashAssistance)
+  useDisableBodyScroll(isFetching)
 
   const onSubmit = async (values: FormValues) => {
-    console.log(values)
+    if (values.q !== '') {
+      createParams({
+        key: 'q',
+        value: values.q !== '' ? values.q : ''
+      });
+      createParams({ key: 'page', value: '' }); // Set page to empty string when searching
+    } else {
+      createParams({ key: 'q', value: '' }); // Set q to empty string if the search query is empty
+    }
+    await refetch();
+  };
+  React.useEffect(() => {
+    if (isFetching) {
+      setIsLoadingPage(true)
+    } else {
+      setIsLoadingPage(false)
+    }
+  }, [isLoadingPage, isFetching])
+
+  if (isLoading) {
+    return <Loading />
   }
 
   return (
     <div>
       <Container>
+        {isFetching && <Loading />}
         <h1 className="font-bold text-2xl ">Bantuan Langsung Tunai BBM (BLTBBM)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
             <div className="grid grid-cols-3 gap-x-10 gap-y-5 pt-10">
               <FormField
-                name="nama"
+                name="q"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Nama" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="nik"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan NIK" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="jenisAnggota"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Jenis Keanggotaan" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
                     </FormControl>
                   </FormItem>
                 )}
@@ -90,41 +95,38 @@ const DataBltbbm = () => {
         <Table className="mt-5">
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
-              <TableHead className="text-black">Nama</TableHead>
-              <TableHead className="text-black">NIK</TableHead>
-              <TableHead className="text-black"> Jenis Keanggotaan</TableHead>
+              <TableHead className="text-black text-left font-bold uppercase">Nama</TableHead>
+              <TableHead className="text-black text-left font-bold uppercase">NIK</TableHead>
+              <TableHead className="text-black text-left font-bold uppercase"> Jenis Keanggotaan</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="text-center">1271092350010008</TableCell>
-              <TableCell className="text-center">Oza Kristen</TableCell>
-              <TableCell className="text-center">Perempuan</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="text-center">1271092350010008</TableCell>
-              <TableCell className="text-center">Oza Kristen</TableCell>
-              <TableCell className="text-center">Perempuan</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="text-center">1271092350010008</TableCell>
-              <TableCell className="text-center">Oza Kristen</TableCell>
-              <TableCell className="text-center">Perempuan</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="text-center">1271092350010008</TableCell>
-              <TableCell className="text-center">Oza Kristen</TableCell>
-              <TableCell className="text-center">Perempuan</TableCell>
-            </TableRow>
+            {fuelCashAssistance?.data?.length !== 0 ? (
+              fuelCashAssistance?.data.map((item) => (
+                <TableRow key={item.id}>
+                  <TableCell className="text-left">{item.beneficiary.name}</TableCell>
+                  <TableCell className="text-left">{item.beneficiary.identityNumber}</TableCell>
+                  <TableCell className="text-left">{item.type}</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center">
+                  Tidak ada data
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
-        <Pagination
-          className="px-5 py-5 flex justify-end"
-          currentPage={currentPage}
-          totalCount={100}
-          pageSize={10}
-          onPageChange={(page) => setCurrentPage(page)}
-        />
+        {(fuelCashAssistance?.meta?.total as number) > 10 ? (
+          <Pagination
+            className="px-5 py-5 flex justify-end"
+            currentPage={page !== '' ? parseInt(page) : 1}
+            totalCount={fuelCashAssistance?.meta.total as number}
+            pageSize={30}
+            onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
+          />
+        ) : null}
       </Container>
     </div>
   )
