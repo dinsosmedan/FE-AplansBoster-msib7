@@ -6,8 +6,13 @@ import {
   storeOrganizationGrantAssistanceFn,
   storePokmasFn,
   storeServiceFundFn,
+  getOrganizationGrantAssistance,
+  getVeteranFn,
+  type OrganizationGrantAssistanceQuery,
+  storeDjpm,
   storeVeteranFn,
   storeWorshipPlaceFn,
+  type VeteranQuery,
   type WorshipPlaceQuery
 } from '@/api/dayasos.api'
 import { useToast } from '@/components/ui/use-toast'
@@ -38,7 +43,14 @@ export const useCreateWorshipPlace = () => {
     }
   })
 }
-
+export const useCreateDjpm = () => {
+  const queryClient = useQueryClient()
+  return useMutation(storeDjpm, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('create-djpm')
+    }
+  })
+}
 export const useCreateVeteran = () => {
   const queryClient = useQueryClient()
   return useMutation(storeVeteranFn, {
@@ -143,5 +155,23 @@ export const useCreatePokmas = () => {
         })
       }
     }
+  })
+}
+
+export const useGetOrganizationGrantAssistance = ({ page, budgetYear, name }: OrganizationGrantAssistanceQuery) => {
+  return useQuery(
+    ['service-funds', page, budgetYear, name],
+    async () => await getOrganizationGrantAssistance({ page, budgetYear, name }),
+    {
+      keepPreviousData: true,
+      staleTime: 5000
+    }
+  )
+}
+
+export const useGetVeteran = ({ page, q }: VeteranQuery) => {
+  return useQuery(['veterans', page, q], async () => await getVeteranFn({ page, q }), {
+    keepPreviousData: true,
+    staleTime: 5000
   })
 }

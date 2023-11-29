@@ -102,15 +102,16 @@ export default function App() {
           </Route>
           <Route path="/data-penerima/dayasos">
             <Route index element={<DataPenerimaDayasos />} />
-            <Route path="dataDjp" element={<DataDjp />} />
-            <Route path="dataPokmas" element={<DataPokmas />} />
-            <Route path="dataKube" element={<DataKube />} />
-            <Route path="dataRumahIbadah" element={<DataRumahIbadah />} />
-            <Route path="dataVeteran" element={<DataVeteran />} />
-            <Route path="dataBltbbm" element={<DataBltbbm />} />
-            <Route path="dataHibah" element={<DataHibah />} />
+            <Route path="data-djp" element={<DataDjp />} />
+            <Route path="data-pokmas" element={<DataPokmas />} />
+            <Route path="data-kube" element={<DataKube />} />
+            <Route path="data-rumahibadah" element={<DataRumahIbadah />} />
+            <Route path="data-veteran" element={<DataVeteran />} />
+            <Route path="data-bltbbm" element={<DataBltbbm />} />
+            <Route path="data-hibah" element={<DataHibah />} />
           </Route>
         </Route>
+        {/* </Route> */}
         {/* </Route> */}
         {/* <Route element={<ProtectedAuth />}> */}
         <Route path="/login" element={<Login />} />

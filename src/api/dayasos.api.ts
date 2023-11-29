@@ -7,11 +7,20 @@ import {
   type pokmasFields
 } from '@/lib/validations/dayasos.validation'
 import api from './axiosInstance'
-import { type IServiceType, type IServiceFunds, type IWorshipPlace } from '@/lib/types/dayasos.type'
+import {
+  type IOrganizationGrantAssistance,
+  type IServiceType,
+  type IServiceFunds,
+  type IWorshipPlace,
+  type IVeteran
+} from '@/lib/types/dayasos.type'
 
 export const storeWorshipPlaceFn = async (fields: worshipPlaceFields) => {
   const response = await api.post('/worship-place', fields)
   return response.data
+}
+export const storeDjpm = async (fields: any) => {
+  await api.post('/service-fund', fields)
 }
 
 export interface WorshipPlaceQuery {
@@ -19,6 +28,17 @@ export interface WorshipPlaceQuery {
   idKecamatan?: string
   idKelurahan?: string
   name?: string
+}
+
+export interface OrganizationGrantAssistanceQuery {
+  page?: number
+  budgetYear?: string
+  name?: string
+}
+
+export interface VeteranQuery {
+  page?: number
+  q?: string
 }
 
 export const getWorshipPlacesFn = async ({
@@ -68,4 +88,18 @@ export const storeKubeFn = async (fields: kubeFields) => {
 
 export const storePokmasFn = async (fields: pokmasFields) => {
   await api.post('community-group', fields)
+}
+
+export const getOrganizationGrantAssistance = async ({
+  page,
+  name,
+  budgetYear
+}: OrganizationGrantAssistanceQuery): Promise<IOrganizationGrantAssistance> => {
+  const response = await api.get(`/organization-grant-assistance/?page=${page}&q=${name}&budget_year=${budgetYear}`)
+  return response.data
+}
+
+export const getVeteranFn = async ({ page, q }: VeteranQuery): Promise<IVeteran> => {
+  const response = await api.get(`/veteran/?page=${page}&q=${q}&limit=10`)
+  return response.data
 }
