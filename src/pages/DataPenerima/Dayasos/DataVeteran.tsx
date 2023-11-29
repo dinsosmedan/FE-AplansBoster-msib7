@@ -34,7 +34,6 @@ const DataVeteran = () => {
     isFetching,
     isLoading
   } = useGetVeteran({
-    limit: 10,
     page: parseInt(page) ?? 1,
     q: q
   })

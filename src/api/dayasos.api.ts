@@ -23,7 +23,6 @@ export interface OrganizationGrantAssistanceQuery {
 }
 
 export interface VeteranQuery {
-  limit?: number
   page?: number
   q?: string
 }
@@ -68,12 +67,11 @@ export const getOrganizationGrantAssistance = async ({
 }
 
 export const getVeteranFn = async ({
-  limit,
   page,
   q
 }: VeteranQuery): Promise<IVeteran> => {
   const response = await api.get(
-    `/veteran/?page=${page}&q=${q}&limit=${limit}`
+    `/veteran/?page=${page}&q=${q}&limit=10`
   )
   return response.data
 }
