@@ -22,7 +22,7 @@ export const JENIS_RUMAH_IBADAH = [
   'GEREJA KATOLIK',
   'KUIL BUDHA',
   'KUIL HINDU',
-  'KONG HU CHU'
+  'KONG HU CHU'
 ]
 
 const Ri = () => {

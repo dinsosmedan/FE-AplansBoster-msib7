@@ -88,3 +88,19 @@ export interface IOrganizationGrantAssistance {
   }>
   meta: IMeta
 }
+
+export interface IVeteran {
+  success: boolean
+  message: string
+  data: Array<{
+    id: string
+    beneficiary: IBeneficary
+    veteranIdentityNumber: string
+    veteranUnit: string
+    uniformSize: null | string
+    isActive: string
+    createdAt: string
+    updatedAt: string
+  }>
+  meta: IMeta
+}
