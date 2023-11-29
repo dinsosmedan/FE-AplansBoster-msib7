@@ -12,7 +12,9 @@ import {
   CommunityGroupQuery,
   getCommunityGroupsFn,
   getBusinessGroupFn,
-  BusinessGroupQuery
+  BusinessGroupQuery,
+  getFuelCashAssistanceFn,
+  FuelCashQuery
 } from '@/api/dayasos.api'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
@@ -108,4 +110,10 @@ export const useGetBusinessGroup = ({ page, q, idKecamatan, idKelurahan, year }:
       staleTime: 5000
     }
   )
+}
+export const useGetFuelCashAssistance = ({ page, q }: FuelCashQuery) => {
+  return useQuery(['fuel-cash-assistances', page, q], async () => await getFuelCashAssistanceFn({ page, q }), {
+    keepPreviousData: true,
+    staleTime: 5000
+  })
 }

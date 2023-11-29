@@ -157,3 +157,16 @@ export interface IBusinessGroup {
   }>
   meta: IMeta
 }
+
+export interface IFuelCashAssistance {
+  success: boolean
+  message: string
+  data: Array<{
+    id: string
+    beneficiary: IBeneficary
+    type: string
+    createdAt: string
+    updatedAt: string
+  }>
+  meta: IMeta
+}
