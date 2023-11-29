@@ -23,8 +23,9 @@ export interface OrganizationGrantAssistanceQuery {
 }
 
 export interface VeteranQuery {
+  limit?: number
   page?: number
-  name?: string
+  q?: string
 }
 
 export const getWorshipPlacesFn = async ({
@@ -61,17 +62,18 @@ export const getOrganizationGrantAssistance = async ({
   budgetYear
 }: OrganizationGrantAssistanceQuery): Promise<IOrganizationGrantAssistance> => {
   const response = await api.get(
-    /organization-grant-assistance/?page=${page}&q=${name}&budget_year=${budgetYear}
+    `/organization-grant-assistance/?page=${page}&q=${name}&budget_year=${budgetYear}`
   )
   return response.data
 }
 
 export const getVeteranFn = async ({
+  limit,
   page,
-  name
+  q
 }: VeteranQuery): Promise<IVeteran> => {
   const response = await api.get(
-    `/veteran/?page=${page}&q=${name}`
+    `/veteran/?page=${page}&q=${q}&limit=${limit}`
   )
   return response.data
 }

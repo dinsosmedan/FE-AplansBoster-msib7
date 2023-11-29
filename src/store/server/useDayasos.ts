@@ -70,10 +70,10 @@ export const useGetOrganizationGrantAssistance = ({ page, budgetYear, name }: Or
   )
 }
     
-export const useGetVeteran = ({ page, name }: VeteranQuery) => {
+export const useGetVeteran = ({ limit,page, q }: VeteranQuery) => {
   return useQuery(
-    ['veterans', page, name],
-    async () => await getVeteranFn({ page, name }),
+    ['veterans',limit, page, q],
+    async () => await getVeteranFn({ limit,page, q }),
     {
       keepPreviousData: true,
       staleTime: 5000
