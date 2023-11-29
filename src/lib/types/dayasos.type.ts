@@ -16,7 +16,7 @@ export interface IWorshipPlace {
   updatedAt: string
 }
 
-interface IServiceType {
+export interface IServiceType {
   id: string
   name: string
   code: string

@@ -10,8 +10,10 @@ import { veteranValidation, type veteranFields } from '@/lib/validations/dayasos
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { useGetBeneficaryByNIK } from '@/store/server'
+import { useCreateVeteran, useGetBeneficaryByNIK } from '@/store/server'
 import { useToast } from '@/components/ui/use-toast'
+import { type IErrorResponse } from '@/lib/types/user.type'
+import { type AxiosError } from 'axios'
 
 const Veteran = () => {
   useTitle('Veteran')
@@ -25,11 +27,13 @@ const Veteran = () => {
     defaultValues: {
       veteranIdentityNumber: '',
       veteranUnit: '',
-      uniformSize: ''
+      uniformSize: '',
+      beneficiary: ''
     }
   })
 
   const { data: beneficiary, refetch, isLoading, isError } = useGetBeneficaryByNIK(NIK, false)
+  const { mutate: createVeteran, isLoading: isLoadingCreate } = useCreateVeteran()
 
   React.useEffect(() => {
     if (!isLoading && beneficiary != null) {
@@ -52,7 +56,25 @@ const Veteran = () => {
   }, [isError])
 
   const onSubmit = async (values: veteranFields) => {
-    console.log(values)
+    createVeteran(values, {
+      onError: (error: AxiosError) => {
+        const errorResponse = error.response?.data as IErrorResponse
+        if (errorResponse !== undefined) {
+          toast({
+            variant: 'destructive',
+            title: errorResponse.message ?? 'Gagal',
+            description: 'Terjadi masalah dengan permintaan Anda.'
+          })
+        }
+      },
+      onSuccess: () => {
+        forms.reset()
+        toast({
+          title: 'Berhasil',
+          description: 'Data Veteran berhasil ditambahkan'
+        })
+      }
+    })
   }
 
   return (
@@ -96,7 +118,7 @@ const Veteran = () => {
               <FormField
                 name="beneficiary"
                 control={forms.control}
-                render={({ field }) => <Input {...field} type="text" placeholder="Masukkan NPV" hidden />}
+                render={({ field }) => <Input {...field} type="text" className="hidden" hidden />}
               />
               <FormField
                 name="veteranUnit"
@@ -125,10 +147,18 @@ const Veteran = () => {
             </div>
 
             <div className="flex justify-end gap-4 mt-8">
-              <Button variant="cancel" className="font-bold" onClick={() => forms.reset()}>
+              <Button
+                variant="cancel"
+                className="font-bold"
+                type="button"
+                onClick={() => {
+                  forms.reset()
+                  setNIK('')
+                }}
+              >
                 Cancel
               </Button>
-              <Button className="font-bold" type="submit">
+              <Button className="font-bold" type="submit" loading={isLoadingCreate}>
                 Submit
               </Button>
             </div>
