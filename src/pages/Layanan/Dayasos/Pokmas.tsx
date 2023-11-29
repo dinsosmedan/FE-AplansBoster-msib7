@@ -6,48 +6,24 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import useTitle from '@/hooks/useTitle'
 import { HiPlus } from 'react-icons/hi'
+import { type pokmasFields, pokmasValidation } from '@/lib/validations/dayasos.validation'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Container } from '@/components'
 
 const Pokmas = () => {
   useTitle('Kelompok Masyarakat (Pokmas)')
 
-  interface FormValues {
-    nama: string
-    noHp: string
-    tahunAnggaran: string
-    kota: string
-    kecamatan: string
-    kelurahan: string
-    alamatLengkap: string
-    kodeKegiatan: string
-    jenisKegiatan: string
-    jenisBantuan: string
-    jumlahRAB: string
-    jumlahBansos: string
-    jumlahDisetujui: string
-    jadwalPelaksaaan: string
-    tempatPelaksanaan: string
-    tahunPermohonan: string
-    namaBank: string
-    namaRekening: string
-    nomorRekening: string
-    alamatRekening: string
-    statusPencairan: string
-    keterangan: string
-    nik: string
-    namaPengurus: string
-    jabatan: string
-  }
-
-  const forms = useForm<FormValues>({
-    mode: 'onTouched'
+  const forms = useForm<pokmasFields>({
+    mode: 'onTouched',
+    resolver: yupResolver(pokmasValidation)
   })
 
-  const onSubmit = async (values: FormValues) => {
+  const onSubmit = async (values: pokmasFields) => {
     console.log(values)
   }
 
   return (
-    <div className="container bg-white py-5">
+    <Container className="py-10">
       <div className="w-full text-center">
         <p className="text-2xl font-bold">Data Personal</p>
       </div>
@@ -56,7 +32,7 @@ const Pokmas = () => {
           <div className="flex flex-row gap-4 pt-5">
             <div className="w-4/12">
               <FormField
-                name="nama"
+                name="communityName"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -70,7 +46,7 @@ const Pokmas = () => {
             </div>
             <div className="w-4/12">
               <FormField
-                name="noHp"
+                name="applicantPhoneNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -84,7 +60,7 @@ const Pokmas = () => {
             </div>
             <div className="w-4/12">
               <FormField
-                name="tahunAnggaran"
+                name="applicationYear"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -101,34 +77,9 @@ const Pokmas = () => {
             <p className="text-2xl font-bold">Alamat POKMAS</p>
           </div>
           <div className="flex flex-row gap-4">
-            <div className="w-4/12">
+            <div className="w-6/12">
               <FormField
-                name="kota"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Kota/Kabupaten</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kota/Kabupaten" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-4/12">
-              <FormField
-                name="kecamatan"
+                name="areaLevel3"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -151,9 +102,9 @@ const Pokmas = () => {
                 )}
               />
             </div>
-            <div className="w-4/12">
+            <div className="w-6/12">
               <FormField
-                name="kelurahan"
+                name="areaLevel4"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -179,7 +130,7 @@ const Pokmas = () => {
           </div>
           <div>
             <FormField
-              name="alamatLengkap"
+              name="communityAddress"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
@@ -197,7 +148,7 @@ const Pokmas = () => {
           <div className="flex flex-row gap-4">
             <div className="w-4/12">
               <FormField
-                name="kodeKegiatan"
+                name="communityActivityCode"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -211,7 +162,7 @@ const Pokmas = () => {
             </div>
             <div className="w-4/12">
               <FormField
-                name="jenisKegiatan"
+                name="communityAssistanceType"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -241,7 +192,7 @@ const Pokmas = () => {
           <div className="flex flex-row gap-4">
             <div className="w-4/12">
               <FormField
-                name="jumlahRAB"
+                name="requestedRabAmount"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -255,7 +206,7 @@ const Pokmas = () => {
             </div>
             <div className="w-4/12">
               <FormField
-                name="jumlahBansos"
+                name="requestedBansosAmount"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -269,7 +220,7 @@ const Pokmas = () => {
             </div>
             <div className="w-4/12">
               <FormField
-                name="jumlahDisetujui"
+                name="approvedFundAmount"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -329,7 +280,7 @@ const Pokmas = () => {
           <div className="flex flex-row gap-4">
             <div className="w-4/12">
               <FormField
-                name="namaBank"
+                name="bankName"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -357,7 +308,7 @@ const Pokmas = () => {
             </div>
             <div className="w-4/12">
               <FormField
-                name="nomorRekening"
+                name="bankAccNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -373,7 +324,7 @@ const Pokmas = () => {
           <div className="flex flex-row gap-4">
             <div className="w-4/12">
               <FormField
-                name="alamatRekening"
+                name="bankAccAddress"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -387,7 +338,7 @@ const Pokmas = () => {
             </div>
             <div className="w-4/12">
               <FormField
-                name="statusPencairan"
+                name="status_disimbursement"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -401,7 +352,7 @@ const Pokmas = () => {
             </div>
             <div className="w-4/12">
               <FormField
-                name="keterangan"
+                name="note"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -485,7 +436,7 @@ const Pokmas = () => {
           </div>
         </form>
       </Form>
-    </div>
+    </Container>
   )
 }
 

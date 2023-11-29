@@ -1,7 +1,7 @@
 import { CardLink, Container } from '@/components'
 import useTitle from '@/hooks/useTitle'
 // import { Link } from 'react-router-dom'
-import { HiPlus } from 'react-icons/hi2'
+import { HiEye, HiPlus } from 'react-icons/hi2'
 
 const LayananDayasos = () => {
   useTitle('Layanan / Dayasos ')
@@ -44,10 +44,10 @@ const LayananDayasos = () => {
           <CardLink.Header className="h-[185px] flex-col" title="Bantuan Pangan Non Tunai (BPNT)" circlePosition="top">
             <p className="pt-11 text-white text-base italic font-inter">Joint Business Group</p>
           </CardLink.Header>
-          <CardLink.Footer href="/layanan/dayasos/bpnt">
-            <div className="flex gap-1 items-center">
-              <HiPlus className="h-[30px] w-[30px] text-primary" />
-              <p className="text-[25px] text-primary text-center font-bold ">Input Data</p>
+          <CardLink.Footer href="/layanan/rehabsos">
+            <div className="flex gap-3 items-center">
+              <HiEye className="h-[30px] w-[30px] text-primary" />
+              <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
             </div>
           </CardLink.Footer>
         </CardLink>

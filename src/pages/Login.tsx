@@ -41,6 +41,12 @@ export default function Login() {
             description: 'There was a problem with your request.'
           })
         }
+      },
+      onSuccess: () => {
+        toast({
+          title: 'Login Success',
+          description: 'You have successfully logged in.'
+        })
       }
     })
   }
