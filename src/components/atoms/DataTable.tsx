@@ -14,7 +14,7 @@ import {
 
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { type IService, type IServiceFunds } from '@/lib/types/dayasos.type'
+import { type IServiceFund, type IServiceFunds } from '@/lib/types/dayasos.type'
 import { cn } from '@/lib/utils'
 
 export interface Payment {
@@ -36,7 +36,7 @@ export interface DJPM {
   status: string
 }
 
-export const columns: Array<ColumnDef<IService>> = [
+export const columns: Array<ColumnDef<IServiceFund>> = [
   {
     accessorFn: (row) => row.beneficiary.identityNumber,
     header: 'NIK'

@@ -16,7 +16,8 @@ import {
   type IFuelCashAssistance,
   type ICommunityGroups,
   type IBusinessGroup,
-  type INonCashFoodAssistanceBeneficiary
+  type INonCashFoodAssistanceBeneficiary,
+  type IServiceFund
 } from '@/lib/types/dayasos.type'
 
 export const storeWorshipPlaceFn = async (fields: worshipPlaceFields) => {
@@ -162,7 +163,23 @@ export const getFuelCashAssistanceFn = async ({ page, q }: FuelCashQuery): Promi
   return response.data
 }
 
-export const getNonCashFoodAssistanceBeneficiary = async ({ page }: NonCashFoodAssistanceBeneficiaryQuery): Promise<INonCashFoodAssistanceBeneficiary> => {
+export const getNonCashFoodAssistanceBeneficiary = async ({
+  page
+}: NonCashFoodAssistanceBeneficiaryQuery): Promise<INonCashFoodAssistanceBeneficiary> => {
   const response = await api.get(`/non-cash-food-assistance?page=${page}&limit=30`)
   return response.data
+}
+
+export const showServiceFundFn = async (id: string): Promise<IServiceFund> => {
+  const response = await api.get(`/service-fund/${id}`)
+  return response.data?.data
+}
+
+interface UpdateServiceFundParams {
+  id: string
+  fields: djpmFields
+}
+
+export const updateServiceFundFn = async ({ id, fields }: UpdateServiceFundParams) => {
+  await api.put(`/service-fund/${id}`, fields)
 }

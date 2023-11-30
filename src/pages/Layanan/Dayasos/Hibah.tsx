@@ -8,13 +8,9 @@ import useTitle from '@/hooks/useTitle'
 import { hibahValidation, type hibahFields } from '@/lib/validations/dayasos.validation'
 import { useCreateHibah, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { type AxiosError } from 'axios'
-import { type IErrorResponse } from '@/lib/types/user.type'
-import { useToast } from '@/components/ui/use-toast'
 
 const Hibah = () => {
   useTitle('Bansos Hibah Organisasi/Lembaga (BHO)')
-  const { toast } = useToast()
 
   const forms = useForm<hibahFields>({
     mode: 'onTouched',
@@ -47,24 +43,7 @@ const Hibah = () => {
 
   const onSubmit = async (values: hibahFields) => {
     createHibah(values, {
-      onError: (error: AxiosError) => {
-        const errorResponse = error.response?.data as IErrorResponse
-
-        if (errorResponse !== undefined) {
-          toast({
-            variant: 'destructive',
-            title: errorResponse.message ?? 'Gagal',
-            description: 'Terjadi masalah dengan permintaan Anda.'
-          })
-        }
-      },
-      onSuccess: () => {
-        toast({
-          title: 'Berhasil',
-          description: 'Data DJPM berhasil ditambahkan'
-        })
-        forms.reset()
-      }
+      onSuccess: () => forms.reset()
     })
   }
 

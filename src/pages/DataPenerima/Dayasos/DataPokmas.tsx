@@ -23,8 +23,15 @@ interface FormValues {
 const DataPokmas = () => {
   useTitle('Data Penerima / Dayasos / Pokmas ')
   const createParams = useCreateParams()
-  const { page, q, kecamatan, kelurahan, code, status, year } = useGetParams(['page', 'q', 'kecamatan', 'kelurahan', 'code', 'status', 'year'])
-
+  const { page, q, kecamatan, kelurahan, code, status, year } = useGetParams([
+    'page',
+    'q',
+    'kecamatan',
+    'kelurahan',
+    'code',
+    'status',
+    'year'
+  ])
 
   const forms = useForm<FormValues>({
     defaultValues: {
@@ -50,8 +57,10 @@ const DataPokmas = () => {
     page: parseInt(page) ?? 1,
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
-    q: q,
-    code: code, status: status, year: year
+    q,
+    code,
+    status,
+    year
   })
   useDisableBodyScroll(isFetching)
   const onSubmit = async (values: FormValues) => {

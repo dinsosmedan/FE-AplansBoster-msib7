@@ -28,7 +28,7 @@ interface IAddress {
   areaLevel4: IArea | null
 }
 
-export interface IService {
+export interface IServiceFund {
   id: string
   beneficiary: IBeneficary
   serviceType: IServiceType
@@ -49,7 +49,7 @@ export interface IService {
 export interface IServiceFunds {
   success: boolean
   message: string
-  data: IService[]
+  data: IServiceFund[]
   meta: IMeta
 }
 

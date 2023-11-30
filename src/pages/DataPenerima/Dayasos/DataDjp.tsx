@@ -12,6 +12,8 @@ import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useGetKecamatan, useGetKelurahan, useGetServiceFunds } from '@/store/server'
 import { Loading, Search } from '@/components'
+import { HiOutlinePencilAlt } from 'react-icons/hi'
+import { useNavigate } from 'react-router-dom'
 
 interface FormValues {
   q: string
@@ -22,6 +24,7 @@ interface FormValues {
 
 const DataDjp = () => {
   useTitle('Data Penerima / Dayasos / DJPM ')
+  const navigate = useNavigate()
   const createParams = useCreateParams()
   const { q, kecamatan, kelurahan, page } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page'])
 
@@ -73,8 +76,6 @@ const DataDjp = () => {
   if (isLoading) {
     return <Loading />
   }
-
-  console.log(serviceFunds?.data)
 
   return (
     <Container>
@@ -135,29 +136,6 @@ const DataDjp = () => {
                 </FormItem>
               )}
             />
-
-            {/* <FormField
-              name="batch"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Batch" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                        <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                        <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            /> */}
           </div>
           <div className="flex items-center">
             <FormField
@@ -166,7 +144,12 @@ const DataDjp = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Search {...field} placeholder="Cari berdasarkan NIK atau Nama" className="w-[398px] py-[23px]" />
+                    <Search
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder="Cari berdasarkan NIK atau Nama"
+                      className="w-[398px] py-[23px]"
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -178,46 +161,63 @@ const DataDjp = () => {
           </div>
         </form>
       </Form>
-      <Table className="mt-5">
-        <TableHeader className="bg-zinc-300">
-          <TableRow>
-            <TableHead className="text-black">NIK</TableHead>
-            <TableHead className="text-black">Nama</TableHead>
-            <TableHead className="text-black">Jenis Kelamin</TableHead>
-            <TableHead className="text-black">Tempat/ Tanggal Lahir</TableHead>
-            <TableHead className="text-black">Kelurahan</TableHead>
-            <TableHead className="text-black">Kecamatan</TableHead>
-            <TableHead className="text-black">Jenis Bantuan</TableHead>
-            <TableHead className="text-black">Jumlah Bantuan Disetujui</TableHead>
-            <TableHead className="text-black">Batch</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {serviceFunds?.data?.length !== 0 ? (
-            serviceFunds?.data.map((serviceFund) => (
-              <TableRow key={serviceFund.id}>
-                <TableCell className="text-center">{serviceFund.beneficiary.identityNumber}</TableCell>
-                <TableCell className="text-center">{serviceFund.beneficiary.name}</TableCell>
-                <TableCell className="text-center">{serviceFund.beneficiary.gender}</TableCell>
-                <TableCell className="text-center">
-                  {serviceFund.beneficiary.birthPlace} / {serviceFund.beneficiary.birthDate}
-                </TableCell>
-                <TableCell className="text-center">{serviceFund.beneficiary.address.areaLevel4?.name}</TableCell>
-                <TableCell className="text-center">{serviceFund.beneficiary.address.areaLevel3?.name}</TableCell>
-                <TableCell className="text-center">{serviceFund.serviceType.name}</TableCell>
-                <TableCell className="text-center">{serviceFund?.assistanceAmount ?? '-'}</TableCell>
-                <TableCell className="text-center">{serviceFund?.status ?? '-'}</TableCell>
-              </TableRow>
-            ))
-          ) : (
+      <section className="border rounded-xl mt-5 overflow-hidden">
+        <Table>
+          <TableHeader className="bg-white">
             <TableRow>
-              <TableCell colSpan={9} className="text-center">
-                Tidak ada data
-              </TableCell>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kelamin</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Tempat/ Tanggal Lahir</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Bantuan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah Bantuan Disetujui</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Batch</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Ubah Data</TableHead>
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {serviceFunds?.data?.length !== 0 ? (
+              serviceFunds?.data.map((serviceFund) => (
+                <TableRow key={serviceFund.id}>
+                  <TableCell className="text-center bg-[#F9FAFC]">{serviceFund.beneficiary.identityNumber}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{serviceFund.beneficiary.name}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{serviceFund.beneficiary.gender}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {serviceFund.beneficiary.birthPlace} / {serviceFund.beneficiary.birthDate}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {serviceFund.beneficiary.address.areaLevel4?.name}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {serviceFund.beneficiary.address.areaLevel3?.name}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{serviceFund.serviceType.name}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{serviceFund?.assistanceAmount ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{serviceFund?.status ?? '-'}</TableCell>
+                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                    <Button
+                      size="icon"
+                      variant="base"
+                      className="bg-[#959595] text-white hover:bg-[#828282] hover:text-white"
+                      onClick={() => navigate(`/layanan/dayasos/Djp/${serviceFund.id}`)}
+                    >
+                      <HiOutlinePencilAlt className="text-lg" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center">
+                  Tidak ada data
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </section>
       {(serviceFunds?.meta?.total as number) > 30 ? (
         <Pagination
           className="px-5 py-5 flex justify-end"

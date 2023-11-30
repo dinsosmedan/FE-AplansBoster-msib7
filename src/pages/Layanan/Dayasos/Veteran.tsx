@@ -12,8 +12,6 @@ import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { useCreateVeteran, useGetBeneficaryByNIK } from '@/store/server'
 import { useToast } from '@/components/ui/use-toast'
-import { type IErrorResponse } from '@/lib/types/user.type'
-import { type AxiosError } from 'axios'
 
 const Veteran = () => {
   useTitle('Veteran')
@@ -57,23 +55,7 @@ const Veteran = () => {
 
   const onSubmit = async (values: veteranFields) => {
     createVeteran(values, {
-      onError: (error: AxiosError) => {
-        const errorResponse = error.response?.data as IErrorResponse
-        if (errorResponse !== undefined) {
-          toast({
-            variant: 'destructive',
-            title: errorResponse.message ?? 'Gagal',
-            description: 'Terjadi masalah dengan permintaan Anda.'
-          })
-        }
-      },
-      onSuccess: () => {
-        forms.reset()
-        toast({
-          title: 'Berhasil',
-          description: 'Data Veteran berhasil ditambahkan'
-        })
-      }
+      onSuccess: () => forms.reset()
     })
   }
 

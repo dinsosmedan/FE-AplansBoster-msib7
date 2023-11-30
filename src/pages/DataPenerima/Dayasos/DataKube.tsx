@@ -45,9 +45,12 @@ const DataKube = () => {
     page: parseInt(page) ?? 1,
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
-    q: q, year: year
+    q,
+    year
   })
+
   useDisableBodyScroll(isFetching)
+
   const onSubmit = async (values: FormValues) => {
     Object.keys(values).forEach((key) => {
       if (values[key as keyof FormValues] !== '') {
@@ -116,7 +119,11 @@ const DataKube = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value} disabled={areaLevel3 === '' && kecamatan === ''}>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        disabled={areaLevel3 === '' && kecamatan === ''}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Kelurahan" />
