@@ -32,6 +32,13 @@ export interface WorshipPlaceQuery {
   page?: number
   idKecamatan?: string
   idKelurahan?: string
+  type?: string
+  q?: string
+}
+export interface ServiceFundQuery {
+  page?: number
+  idKecamatan?: string
+  idKelurahan?: string
   name?: string
 }
 
@@ -51,8 +58,8 @@ export interface CommunityGroupQuery {
   idKecamatan?: string
   idKelurahan?: string
   status?: string
-  code?: string
-  year?: string
+  community_activity_code?: string
+  application_year?: string
 }
 export interface BusinessGroupQuery {
   page?: number
@@ -65,16 +72,18 @@ export interface FuelCashQuery {
   page?: number
   q?: string
 }
+
 export const getWorshipPlacesFn = async ({
   page,
   idKecamatan,
   idKelurahan,
-  name
-}: WorshipPlaceQuery): Promise<IWorshipPlace[]> => {
+  q,
+  type
+}: WorshipPlaceQuery): Promise<IWorshipPlace> => {
   const response = await api.get(
-    `/worship-place?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${name}`
+    `/worship-place?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&type=${type}&limit=10`
   )
-  return response.data?.data
+  return response.data
 }
 
 export interface NonCashFoodAssistanceBeneficiaryQuery {
@@ -90,9 +99,9 @@ export const getServiceFundsFn = async ({
   idKecamatan,
   idKelurahan,
   name
-}: WorshipPlaceQuery): Promise<IServiceFunds> => {
+}: ServiceFundQuery): Promise<IServiceFunds> => {
   const response = await api.get(
-    `/service-fund/?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${name}`
+    `/service-fund/?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${name}&limit=10`
   )
   return response.data
 }
@@ -136,12 +145,12 @@ export const getCommunityGroupsFn = async ({
   q,
   idKecamatan,
   idKelurahan,
-  code,
+  community_activity_code,
   status,
-  year
+  application_year
 }: CommunityGroupQuery): Promise<ICommunityGroups> => {
   const response = await api.get(
-    `/community-group/?q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&application_year=${year}&status=${status}&community_activity_code=${code}&page=${page}&limit=10`
+    `/community-group/?q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&application_year=${application_year}&status=${status}&community_activity_code=${community_activity_code}&page=${page}&limit=10`
   )
   return response.data
 }

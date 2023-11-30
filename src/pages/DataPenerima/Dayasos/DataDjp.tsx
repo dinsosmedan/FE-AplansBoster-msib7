@@ -5,7 +5,7 @@ import useTitle from '@/hooks/useTitle'
 import { useForm } from 'react-hook-form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { HiMagnifyingGlass } from 'react-icons/hi2'
+import { HiMagnifyingGlass, HiMiniTrash } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
@@ -55,14 +55,25 @@ const DataDjp = () => {
   })
 
   useDisableBodyScroll(isFetching)
-
+  const handleReset = () => {
+    forms.reset({ q: '', kecamatan: '', kelurahan: '' })
+    createParams({ key: 'q', value: '' })
+    createParams({ key: 'kecamatan', value: '' })
+    createParams({ key: 'kelurahan', value: '' })
+    // Tambahan untuk memastikan reset pada list kelurahan saat kecamatan di-reset
+    forms.setValue('kelurahan', '')
+  }
   const onSubmit = async (values: FormValues) => {
-    Object.keys(values).forEach((key) => {
-      if (values[key as keyof FormValues] !== '') {
-        createParams({ key, value: values[key as keyof FormValues] })
-      }
-    })
-    await refetch()
+    // Dapatkan nilai-nilai yang diisi dari form
+    const { q, kecamatan, kelurahan } = values
+
+    // Pastikan setiap parameter terisi sebelum pengiriman permintaan data
+    if (q || kecamatan || kelurahan) {
+      createParams({ key: 'q', value: q })
+      createParams({ key: 'kecamatan', value: kecamatan })
+      createParams({ key: 'kelurahan', value: kelurahan })
+      await refetch()
+    }
   }
 
   React.useEffect(() => {
@@ -76,7 +87,6 @@ const DataDjp = () => {
   if (isLoading) {
     return <Loading />
   }
-
   return (
     <Container>
       {isFetching && <Loading />}
@@ -90,7 +100,7 @@ const DataDjp = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value || ''}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Kecamatan" />
@@ -137,7 +147,8 @@ const DataDjp = () => {
               )}
             />
           </div>
-          <div className="flex items-center">
+
+          <div className="flex items-center justify-between">
             <FormField
               name="q"
               control={forms.control}
@@ -154,10 +165,16 @@ const DataDjp = () => {
                 </FormItem>
               )}
             />
-            <Button className="w-fit py-6 px-4 ml-auto bg-primary">
-              <HiMagnifyingGlass className="w-6 h-6 text-white" />
-              <p className="text-white font-semibold text-sm pl-2 w-max">Cari Data</p>
-            </Button>
+            <div className="flex gap-3">
+              <Button onClick={handleReset} className="w-fit py-6 px-4 ml-auto bg-primary">
+                <HiMiniTrash className="w-6 h-6 text-white" />
+                <p className="text-white font-semibold text-sm pl-2 w-max">Reset</p>
+              </Button>
+              <Button className="w-fit py-6 px-4 ml-auto bg-primary">
+                <HiMagnifyingGlass className="w-6 h-6 text-white" />
+                <p className="text-white font-semibold text-sm pl-2 w-max">Cari Data</p>
+              </Button>
+            </div>
           </div>
         </form>
       </Form>
@@ -223,7 +240,7 @@ const DataDjp = () => {
           className="px-5 py-5 flex justify-end"
           currentPage={page !== '' ? parseInt(page) : 1}
           totalCount={serviceFunds?.meta.total as number}
-          pageSize={30}
+          pageSize={10}
           onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
         />
       ) : null}

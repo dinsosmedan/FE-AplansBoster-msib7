@@ -2,18 +2,24 @@ import { type IArea } from '@/api/area.api'
 import { type IBeneficary } from './beneficary.type'
 
 export interface IWorshipPlace {
-  id: string
-  name: string
-  type: string
-  address: string
-  areaLevel3: IArea | null
-  areaLevel4: IArea | null
-  picName: string
-  picPhone: string
-  status: null | string
-  note: null | string
-  createdAt: string
-  updatedAt: string
+  success: boolean
+  message: string
+  data: Array<{
+    id: string
+    name: string
+    type: string
+    address: string
+    areaLevel3: IArea | null
+    areaLevel4: IArea | null
+    picName: string
+    picPhone: string
+    status: string
+    note: string
+    year: string
+    createdAt: string
+    updatedAt: string
+  }>
+  meta: IMeta
 }
 
 export interface IServiceType {
