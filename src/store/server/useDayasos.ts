@@ -1,7 +1,6 @@
 import {
   getServiceFundsFn,
   getServiceTypesFn,
-  getWorshipPlacesFn,
   storeKubeFn,
   storeOrganizationGrantAssistanceFn,
   storePokmasFn,
@@ -20,6 +19,8 @@ import {
   type VeteranQuery,
   type WorshipPlaceQuery,
   type CommunityGroupQuery,
+  ServiceFundQuery,
+  getWorshipPlacesFn,
   type NonCashFoodAssistanceBeneficiaryQuery,
   getNonCashFoodAssistanceBeneficiary
 } from '@/api/dayasos.api'
@@ -28,10 +29,10 @@ import { type IErrorResponse } from '@/lib/types/user.type'
 import { type AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
-export const useGetWorshipPlaces = ({ page, idKecamatan, idKelurahan, name }: WorshipPlaceQuery) => {
+export const useGetWorshipPlaces = ({ page, idKecamatan, idKelurahan, type, q }: WorshipPlaceQuery) => {
   return useQuery(
-    ['worship-places', page, idKecamatan, idKelurahan, name],
-    async () => await getWorshipPlacesFn({ page, idKecamatan, idKelurahan, name }),
+    ['worship-places', page, idKecamatan, idKelurahan, type, q],
+    async () => await getWorshipPlacesFn({ page, idKecamatan, idKelurahan, type, q }),
     {
       keepPreviousData: true,
       staleTime: 5000
@@ -71,7 +72,7 @@ export const useCreateVeteran = () => {
   })
 }
 
-export const useGetServiceFunds = ({ page, idKecamatan, idKelurahan, name }: WorshipPlaceQuery) => {
+export const useGetServiceFunds = ({ page, idKecamatan, idKelurahan, name }: ServiceFundQuery) => {
   return useQuery(
     ['service-funds', page, idKecamatan, idKelurahan, name],
     async () => await getServiceFundsFn({ page, idKecamatan, idKelurahan, name }),
@@ -189,13 +190,22 @@ export const useGetCommunityGroups = ({
   q,
   idKecamatan,
   idKelurahan,
-  code,
+  community_activity_code,
   status,
-  year
+  application_year
 }: CommunityGroupQuery) => {
   return useQuery(
-    ['community-groups', page, q, idKecamatan, idKelurahan, code, status, year],
-    async () => await getCommunityGroupsFn({ page, q, idKecamatan, idKelurahan, code, status, year }),
+    ['community-groups', page, q, idKecamatan, idKelurahan, community_activity_code, status, application_year],
+    async () =>
+      await getCommunityGroupsFn({
+        page,
+        q,
+        idKecamatan,
+        idKelurahan,
+        community_activity_code,
+        status,
+        application_year
+      }),
     {
       keepPreviousData: true,
       staleTime: 5000

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { HiMagnifyingGlass } from 'react-icons/hi2'
+import { HiMagnifyingGlass, HiMiniTrash } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
@@ -48,14 +48,58 @@ const DataKube = () => {
     q: q, year: year
   })
   useDisableBodyScroll(isFetching)
+  const handleReset = () => {
+    forms.reset({ q: '', kecamatan: '', kelurahan: '', year: '' });
+    createParams({ key: 'q', value: '' });
+    createParams({ key: 'year', value: '' });
+    createParams({ key: 'kecamatan', value: '' });
+    createParams({ key: 'kelurahan', value: '' });
+    // Tambahan untuk memastikan reset pada list kelurahan saat kecamatan di-reset
+    forms.setValue('kelurahan', '');
+  };
   const onSubmit = async (values: FormValues) => {
-    Object.keys(values).forEach((key) => {
-      if (values[key as keyof FormValues] !== '') {
-        createParams({ key, value: values[key as keyof FormValues] })
-      }
-    })
-    await refetch()
-  }
+    if (values.q !== '') {
+      createParams({
+        key: 'q',
+        value: values.q !== '' ? values.q : ''
+      });
+      createParams({ key: 'page', value: '' }); // Set page to empty string when searching
+    } else {
+      createParams({ key: 'q', value: '' }); // Set q to empty string if the search query is empty
+    }
+
+    if (values.year !== '') {
+      createParams({
+        key: 'year',
+        value: values.year !== '' ? values.year : ''
+      });
+      createParams({ key: 'page', value: '' }); // Set page to empty string when searching
+    } else {
+      createParams({ key: 'year', value: '' }); // Set budgetYear to empty string if it's empty
+    }
+    if (values.kecamatan !== '') {
+      createParams({
+        key: 'kecamatan',
+        value: values.kecamatan !== '' ? values.kecamatan : ''
+      });
+      createParams({ key: 'page', value: '' }); // Set page to empty string when searching
+    } else {
+      createParams({ key: 'kecamatan', value: '' }); // Set budgetYear to empty string if it's empty
+    }
+    if (values.kelurahan !== '') {
+      createParams({
+        key: 'kelurahan',
+        value: values.kelurahan !== '' ? values.kelurahan : ''
+      });
+      createParams({ key: 'page', value: '' }); // Set page to empty string when searching
+    } else {
+      createParams({ key: 'kelurahan', value: '' }); // Set budgetYear to empty string if it's empty
+    }
+
+
+    await refetch();
+  };
+
 
   React.useEffect(() => {
     if (isFetching) {
@@ -71,7 +115,8 @@ const DataKube = () => {
   return (
     <div>
       <Container>
-        <h1 className="font-bold text-2xl ">Kelompok Usaha Bersama (Kube)</h1>
+        {isFetching && <Loading />}
+        <h1 className="font-bold t  ext-2xl ">Kelompok Usaha Bersama (Kube)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
             <div className="grid grid-cols-3 gap-x-10 gap-y-5 pt-10">
@@ -92,7 +137,7 @@ const DataKube = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value || ''}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Kecamatan" />
@@ -140,27 +185,20 @@ const DataKube = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Tahun Anggaran" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Input {...field} type="text" placeholder="Masukkan Tahun Anggaran" />
                     </FormControl>
                   </FormItem>
                 )}
               />
             </div>
-            <div className="w-[140px] h-[50px] ml-auto rounded-xl">
-              <Button className="py-6">
-                <HiMagnifyingGlass className="w-6 h-6 py" />
-                <p className="font-bold text-sm text-white ml-3">Cari Data</p>
+            <div className='flex justify-end gap-3'>
+              <Button onClick={handleReset} className="w-fit py-6 px-4 bg-primary">
+                <HiMiniTrash className="w-6 h-6 text-white" />
+                <p className="text-white font-semibold text-sm pl-2 w-max">Reset</p>
+              </Button>
+              <Button className="w-fit py-6 px-4 bg-primary">
+                <HiMagnifyingGlass className="w-6 h-6 text-white" />
+                <p className="text-white font-semibold text-sm pl-2 w-max">Cari Data</p>
               </Button>
             </div>
           </form>
@@ -168,26 +206,26 @@ const DataKube = () => {
         <Table className="mt-5">
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
-              <TableHead className="text-black">Nomor</TableHead>
-              <TableHead className="text-black">Nama Kelompok Usaha Bersama</TableHead>
-              <TableHead className="text-black">Alamat</TableHead>
-              <TableHead className="text-black">Kecamatan</TableHead>
-              <TableHead className="text-black">Kelurahan</TableHead>
-              <TableHead className="text-black">Jenis</TableHead>
-              <TableHead className="teJxt-black">Tahun Anggaran</TableHead>
+              <TableHead className="text-black text-left font-bold">No.</TableHead>
+              <TableHead className="text-black text-left font-bold">Nama Kelompok Usaha Bersama</TableHead>
+              <TableHead className="text-black text-left font-bold">Alamat</TableHead>
+              <TableHead className="text-black text-left font-bold">Kecamatan</TableHead>
+              <TableHead className="text-black text-left font-bold">Kelurahan</TableHead>
+              <TableHead className="text-black text-left font-bold">Jenis</TableHead>
+              <TableHead className="text-black text-left font-bold">Tahun Anggaran</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {businessGroup?.data?.length !== 0 ? (
               businessGroup?.data.map((item, index) => (
                 <TableRow key={item.id}>
-                  <TableCell className="text-center text-black">{index + 1}</TableCell>
-                  <TableCell className="text-center text-black">{item.businessName}</TableCell>
-                  <TableCell className="text-center text-black">{item.businessAddress?.fullAddress}</TableCell>
-                  <TableCell className="text-center text-black">{item.businessAddress?.areaLevel3?.name}</TableCell>
-                  <TableCell className="text-center text-black">{item.businessAddress?.areaLevel4?.name}</TableCell>
-                  <TableCell className="text-center text-black">{item.businessType}</TableCell>
-                  <TableCell className="text-center text-black">{item.budgetYear}</TableCell>
+                  <TableCell className="text-left text-black">{index + 1}</TableCell>
+                  <TableCell className="text-left text-black">{item.businessName}</TableCell>
+                  <TableCell className="text-left text-black">{item.businessAddress?.fullAddress}</TableCell>
+                  <TableCell className="text-left text-black">{item.businessAddress?.areaLevel3?.name}</TableCell>
+                  <TableCell className="text-left text-black">{item.businessAddress?.areaLevel4?.name}</TableCell>
+                  <TableCell className="text-left text-black">{item.businessType}</TableCell>
+                  <TableCell className="text-left text-black">{item.budgetYear}</TableCell>
                 </TableRow>
               ))
             ) : (

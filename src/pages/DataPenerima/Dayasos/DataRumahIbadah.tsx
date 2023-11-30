@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
-import { HiMagnifyingGlass } from 'react-icons/hi2'
+import { HiMagnifyingGlass, HiMiniTrash } from 'react-icons/hi2'
 
 import { Container, Loading, Pagination } from '@/components'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
@@ -16,9 +16,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 interface FormValues {
-  nama: string
-  jenisrumahibadah: string
-  status: string
+  q: string
+  type: string
   kecamatan: string
   kelurahan: string
 }
@@ -26,25 +25,22 @@ interface FormValues {
 const DataRumahIbadah = () => {
   useTitle('Data Penerima / Dayasos / Rumah Ibadah (RI) ')
   const createParams = useCreateParams()
-  const { page, nama, kecamatan, kelurahan, status, jenisrumahibadah } = useGetParams([
-    'page', 'nama',
-    'jenisrumahibadah',
-    'status',
+  const { page, q, kecamatan, kelurahan, type } = useGetParams([
+    'page', 'q',
+    'type',
     'kecamatan',
     'kelurahan'
   ])
 
   const forms = useForm<FormValues>({
     defaultValues: {
-      nama: '',
-      jenisrumahibadah: '',
-      status: '',
+      q: '',
+      type: '',
       kecamatan: '',
       kelurahan: ''
     }
   })
 
-  const [currentPage, setCurrentPage] = React.useState(1)
   const areaLevel3 = forms.watch('kecamatan')
 
   const { data: listKecamatan } = useGetKecamatan()
@@ -58,28 +54,38 @@ const DataRumahIbadah = () => {
     page: parseInt(page) ?? 1,
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
-    name: nama
+    type: type,
+    q: q
   })
   useDisableBodyScroll(isFetching)
   const [isLoadingPage, setIsLoadingPage] = React.useState(false)
 
-  React.useEffect(() => {
-    if (nama !== '' || kecamatan !== '' || kelurahan !== '' || status !== '' || jenisrumahibadah !== '') {
-      forms.setValue('nama', nama)
-      forms.setValue('jenisrumahibadah', jenisrumahibadah)
-      forms.setValue('status', status)
-      forms.setValue('kecamatan', kecamatan)
-      forms.setValue('kelurahan', kelurahan)
+  const handleReset = () => {
+    forms.reset({ q: '', kecamatan: '', kelurahan: '', type: '' });
+    createParams({ key: 'q', value: '' });
+    createParams({ key: 'type', value: '' });
+    createParams({ key: 'kecamatan', value: '' });
+    createParams({ key: 'kelurahan', value: '' });
+    // Tambahan untuk memastikan reset pada list kelurahan saat kecamatan di-reset
+    forms.setValue('kelurahan', '');
+  };
+  const updateParam = (key: any, value: any) => {
+    if (value !== '') {
+      createParams({ key, value });
+      createParams({ key: 'page', value: '' });
+    } else {
+      createParams({ key, value: '' });
     }
-  }, [nama, kecamatan, kelurahan, status, jenisrumahibadah])
+  };
 
   const onSubmit = async (values: FormValues) => {
-    Object.keys(values).forEach((key) => {
-      createParams({ key, value: values[key as keyof FormValues] })
-    })
+    updateParam('type', values.type);
+    updateParam('kecamatan', values.kecamatan);
+    updateParam('kelurahan', values.kelurahan);
+    updateParam('q', values.q);
 
-    await refetch()
-  }
+    await refetch();
+  };
   React.useEffect(() => {
     if (isFetching) {
       setIsLoadingPage(true)
@@ -98,7 +104,7 @@ const DataRumahIbadah = () => {
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="grid grid-cols-3 gap-x-10 gap-y-5 pt-10">
             <FormField
-              name="nama"
+              name="q"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
@@ -109,7 +115,7 @@ const DataRumahIbadah = () => {
               )}
             />
             <FormField
-              name="jenisrumahibadah"
+              name="type"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
@@ -186,10 +192,14 @@ const DataRumahIbadah = () => {
               )}
             />
           </div>
-          <div className="w-[140px] h-[50px] ml-auto rounded-xl">
-            <Button className="py-6">
-              <HiMagnifyingGlass className="w-6 h-6 py" />
-              <p className="font-bold text-sm text-white ml-3">Cari Data</p>
+          <div className='flex justify-end gap-3'>
+            <Button onClick={handleReset} className="w-fit py-6 px-4 bg-primary">
+              <HiMiniTrash className="w-6 h-6 text-white" />
+              <p className="text-white font-semibold text-sm pl-2 w-max">Reset</p>
+            </Button>
+            <Button className="w-fit py-6 px-4 bg-primary">
+              <HiMagnifyingGlass className="w-6 h-6 text-white" />
+              <p className="text-white font-semibold text-sm pl-2 w-max">Cari Data</p>
             </Button>
           </div>
         </form>
@@ -197,21 +207,23 @@ const DataRumahIbadah = () => {
       <Table className="mt-5">
         <TableHeader className="bg-[#FFFFFF]">
           <TableRow>
+            <TableHead className="text-black">No.</TableHead>
             <TableHead className="text-black">Nama Rumah Ibadah</TableHead>
             <TableHead className="text-black">Jenis Rumah Ibadah</TableHead>
             <TableHead className="text-black">Alamat</TableHead>
             <TableHead className="text-black">Kelurahan</TableHead>
             <TableHead className="text-black">Kecamatan</TableHead>
             <TableHead className="text-black">Nama Penanggung jawab</TableHead>
-            <TableHead className="teJxt-black">Nomor Handphone</TableHead>
-            <TableHead className="teJxt-black">Status</TableHead>
+            <TableHead className="text-black">Nomor Handphone</TableHead>
+            <TableHead className="text-black">Status</TableHead>
             <TableHead className="text-black">Keterangan</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {worshipPlaces?.length !== 0 ? (
-            worshipPlaces?.map((item, index) => (
+          {worshipPlaces?.data.length !== 0 ? (
+            worshipPlaces?.data.map((item, index) => (
               <TableRow key={index}>
+                <TableCell className="text-left">{(worshipPlaces.meta.currentPage - 1) * worshipPlaces.meta.perPage + index + 1}</TableCell>
                 <TableCell className="text-center text-black">{item.name}</TableCell>
                 <TableCell className="text-center text-black">{item.type}</TableCell>
                 <TableCell className="text-center text-black">{item.address}</TableCell>
@@ -232,13 +244,15 @@ const DataRumahIbadah = () => {
           )}
         </TableBody>
       </Table>
-      <Pagination
-        className="px-5 py-5 flex justify-end"
-        currentPage={currentPage}
-        totalCount={500}
-        pageSize={30}
-        onPageChange={(page) => setCurrentPage(page)}
-      />
+      {(worshipPlaces?.meta?.total as number) > 10 ? (
+        <Pagination
+          className="px-5 py-5 flex justify-end"
+          currentPage={page !== '' ? parseInt(page) : 1}
+          totalCount={worshipPlaces?.meta.total as number}
+          pageSize={10}
+          onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
+        />
+      ) : null}
     </Container>
   )
 }

@@ -31,10 +31,14 @@ const DataBltbbm = () => {
     refetch,
     isFetching,
     isLoading
-  } = useGetFuelCashAssistance({ page: parseInt(page) ?? 1, q })
-  console.log(fuelCashAssistance)
+  } = useGetFuelCashAssistance({
+    page: parseInt(page) ?? 1,
+    q: q,
+  })
   useDisableBodyScroll(isFetching)
 
+  useDisableBodyScroll(isFetching)
+  console.log(fuelCashAssistance)
   const onSubmit = async (values: FormValues) => {
     if (values.q !== '') {
       createParams({
@@ -90,6 +94,7 @@ const DataBltbbm = () => {
         <Table className="mt-5">
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
+              <TableHead className="text-black text-left font-bold uppercase">Nomor</TableHead>
               <TableHead className="text-black text-left font-bold uppercase">Nama</TableHead>
               <TableHead className="text-black text-left font-bold uppercase">NIK</TableHead>
               <TableHead className="text-black text-left font-bold uppercase"> Jenis Keanggotaan</TableHead>
@@ -97,8 +102,9 @@ const DataBltbbm = () => {
           </TableHeader>
           <TableBody>
             {fuelCashAssistance?.data?.length !== 0 ? (
-              fuelCashAssistance?.data.map((item) => (
+              fuelCashAssistance?.data.map((item, index) => (
                 <TableRow key={item.id}>
+                  <TableCell className="text-left">{(fuelCashAssistance.meta.currentPage - 1) * fuelCashAssistance.meta.perPage + index + 1}</TableCell>
                   <TableCell className="text-left">{item.beneficiary.name}</TableCell>
                   <TableCell className="text-left">{item.beneficiary.identityNumber}</TableCell>
                   <TableCell className="text-left">{item.type}</TableCell>
