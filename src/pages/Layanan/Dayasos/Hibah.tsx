@@ -6,15 +6,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import useTitle from '@/hooks/useTitle'
 import { hibahValidation, type hibahFields } from '@/lib/validations/dayasos.validation'
-import { useCreateHibah, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { useCreateOrganizationGrantAssistance, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { type AxiosError } from 'axios'
-import { type IErrorResponse } from '@/lib/types/user.type'
-import { useToast } from '@/components/ui/use-toast'
 
 const Hibah = () => {
   useTitle('Bansos Hibah Organisasi/Lembaga (BHO)')
-  const { toast } = useToast()
 
   const forms = useForm<hibahFields>({
     mode: 'onTouched',
@@ -43,28 +39,11 @@ const Hibah = () => {
   const areaLevel3 = forms.watch('areaLevel3')
   const { data: kecamatan } = useGetKecamatan()
   const { data: kelurahan } = useGetKelurahan(areaLevel3 ?? '')
-  const { mutate: createHibah, isLoading } = useCreateHibah()
+  const { mutate: createHibah, isLoading } = useCreateOrganizationGrantAssistance()
 
   const onSubmit = async (values: hibahFields) => {
     createHibah(values, {
-      onError: (error: AxiosError) => {
-        const errorResponse = error.response?.data as IErrorResponse
-
-        if (errorResponse !== undefined) {
-          toast({
-            variant: 'destructive',
-            title: errorResponse.message ?? 'Gagal',
-            description: 'Terjadi masalah dengan permintaan Anda.'
-          })
-        }
-      },
-      onSuccess: () => {
-        toast({
-          title: 'Berhasil',
-          description: 'Data DJPM berhasil ditambahkan'
-        })
-        forms.reset()
-      }
+      onSuccess: () => forms.reset()
     })
   }
 

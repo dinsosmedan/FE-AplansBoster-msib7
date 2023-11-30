@@ -14,7 +14,7 @@ import { useGetCommunityGroups, useGetKecamatan, useGetKelurahan } from '@/store
 import { Loading } from '@/components'
 interface FormValues {
   q: string
-  community_activity_code: string
+  communityActivityCode: string
   status: string
   kecamatan: string
   kelurahan: string
@@ -23,13 +23,20 @@ interface FormValues {
 const DataPokmas = () => {
   useTitle('Data Penerima / Dayasos / Pokmas ')
   const createParams = useCreateParams()
-  const { page, q, kecamatan, kelurahan, community_activity_code, status, application_year } = useGetParams(['page', 'q', 'kecamatan', 'kelurahan', 'community_activity_code', 'status', 'application_year'])
-
+  const {
+    page,
+    q,
+    kecamatan,
+    kelurahan,
+    community_activity_code: communityActivityCode,
+    status,
+    application_year: applicationYear
+  } = useGetParams(['page', 'q', 'kecamatan', 'kelurahan', 'community_activity_code', 'status', 'application_year'])
 
   const forms = useForm<FormValues>({
     defaultValues: {
       q: '',
-      community_activity_code: '',
+      communityActivityCode: '',
       status: '',
       kecamatan: '',
       kelurahan: '',
@@ -50,44 +57,43 @@ const DataPokmas = () => {
     page: parseInt(page) ?? 1,
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
-    q: q,
-    community_activity_code: community_activity_code,
-    status: status,
-    application_year: application_year
+    q,
+    communityActivityCode,
+    status,
+    applicationYear
   })
   useDisableBodyScroll(isFetching)
 
   const handleReset = () => {
-    forms.reset({ q: '', kecamatan: '', kelurahan: '', application_year: '', status: '', community_activity_code: '' });
-    createParams({ key: 'q', value: '' });
-    createParams({ key: 'application_year', value: '' });
-    createParams({ key: 'kecamatan', value: '' });
-    createParams({ key: 'kelurahan', value: '' });
-    createParams({ key: 'status', value: '' });
-    createParams({ key: 'community_activity_code', value: '' });
+    forms.reset({ q: '', kecamatan: '', kelurahan: '', application_year: '', status: '', communityActivityCode: '' })
+    createParams({ key: 'q', value: '' })
+    createParams({ key: 'application_year', value: '' })
+    createParams({ key: 'kecamatan', value: '' })
+    createParams({ key: 'kelurahan', value: '' })
+    createParams({ key: 'status', value: '' })
+    createParams({ key: 'community_activity_code', value: '' })
     // Tambahan untuk memastikan reset pada list kelurahan saat kecamatan di-reset
-    forms.setValue('kelurahan', '');
-  };
+    forms.setValue('kelurahan', '')
+  }
   const updateParam = (key: any, value: any) => {
     if (value !== '') {
-      createParams({ key, value });
-      createParams({ key: 'page', value: '' });
+      createParams({ key, value })
+      createParams({ key: 'page', value: '' })
     } else {
-      createParams({ key, value: '' });
+      createParams({ key, value: '' })
     }
-  };
+  }
 
   const onSubmit = async (values: FormValues) => {
-    updateParam('q', values.q);
-    updateParam('application_year', values.application_year);
-    updateParam('kecamatan', values.kecamatan);
-    updateParam('kelurahan', values.kelurahan);
-    updateParam('status', values.status);
-    updateParam('community_activity_code', values.community_activity_code);
+    updateParam('q', values.q)
+    updateParam('application_year', values.application_year)
+    updateParam('kecamatan', values.kecamatan)
+    updateParam('kelurahan', values.kelurahan)
+    updateParam('status', values.status)
+    updateParam('community_activity_code', values.communityActivityCode)
 
-    await refetch();
-  };
-
+    await refetch()
+  }
 
   React.useEffect(() => {
     if (isFetching) {
@@ -120,7 +126,7 @@ const DataPokmas = () => {
                 )}
               />
               <FormField
-                name="community_activity_code"
+                name="communityActivityCode"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -181,7 +187,11 @@ const DataPokmas = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value} disabled={areaLevel3 === '' && kecamatan === ''}>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        disabled={areaLevel3 === '' && kecamatan === ''}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Kelurahan" />
@@ -211,7 +221,7 @@ const DataPokmas = () => {
                 )}
               />
             </div>
-            <div className='flex justify-end gap-3'>
+            <div className="flex justify-end gap-3">
               <Button onClick={handleReset} className="w-fit py-6 px-4 bg-primary">
                 <HiMiniTrash className="w-6 h-6 text-white" />
                 <p className="text-white font-semibold text-sm pl-2 w-max">Reset</p>
@@ -242,7 +252,9 @@ const DataPokmas = () => {
             {communityGroup?.data?.length !== 0 ? (
               communityGroup?.data.map((item, index) => (
                 <TableRow key={item.id}>
-                  <TableCell className="text-left">{(communityGroup.meta.currentPage - 1) * communityGroup.meta.perPage + index + 1}</TableCell>
+                  <TableCell className="text-left">
+                    {(communityGroup.meta.currentPage - 1) * communityGroup.meta.perPage + index + 1}
+                  </TableCell>
                   <TableCell className="text-center text-black">{item.communityActivityCode}</TableCell>
                   <TableCell className="text-center text-black">{item.communityName}</TableCell>
                   <TableCell className="text-center text-black">{item.address?.areaLevel3?.name}</TableCell>

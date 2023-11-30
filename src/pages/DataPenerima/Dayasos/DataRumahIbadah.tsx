@@ -25,12 +25,7 @@ interface FormValues {
 const DataRumahIbadah = () => {
   useTitle('Data Penerima / Dayasos / Rumah Ibadah (RI) ')
   const createParams = useCreateParams()
-  const { page, q, kecamatan, kelurahan, type } = useGetParams([
-    'page', 'q',
-    'type',
-    'kecamatan',
-    'kelurahan'
-  ])
+  const { page, q, kecamatan, kelurahan, type } = useGetParams(['page', 'q', 'type', 'kecamatan', 'kelurahan'])
 
   const forms = useForm<FormValues>({
     defaultValues: {
@@ -54,38 +49,38 @@ const DataRumahIbadah = () => {
     page: parseInt(page) ?? 1,
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
-    type: type,
-    q: q
+    type,
+    q
   })
   useDisableBodyScroll(isFetching)
   const [isLoadingPage, setIsLoadingPage] = React.useState(false)
 
   const handleReset = () => {
-    forms.reset({ q: '', kecamatan: '', kelurahan: '', type: '' });
-    createParams({ key: 'q', value: '' });
-    createParams({ key: 'type', value: '' });
-    createParams({ key: 'kecamatan', value: '' });
-    createParams({ key: 'kelurahan', value: '' });
+    forms.reset({ q: '', kecamatan: '', kelurahan: '', type: '' })
+    createParams({ key: 'q', value: '' })
+    createParams({ key: 'type', value: '' })
+    createParams({ key: 'kecamatan', value: '' })
+    createParams({ key: 'kelurahan', value: '' })
     // Tambahan untuk memastikan reset pada list kelurahan saat kecamatan di-reset
-    forms.setValue('kelurahan', '');
-  };
+    forms.setValue('kelurahan', '')
+  }
   const updateParam = (key: any, value: any) => {
     if (value !== '') {
-      createParams({ key, value });
-      createParams({ key: 'page', value: '' });
+      createParams({ key, value })
+      createParams({ key: 'page', value: '' })
     } else {
-      createParams({ key, value: '' });
+      createParams({ key, value: '' })
     }
-  };
+  }
 
   const onSubmit = async (values: FormValues) => {
-    updateParam('type', values.type);
-    updateParam('kecamatan', values.kecamatan);
-    updateParam('kelurahan', values.kelurahan);
-    updateParam('q', values.q);
+    updateParam('type', values.type)
+    updateParam('kecamatan', values.kecamatan)
+    updateParam('kelurahan', values.kelurahan)
+    updateParam('q', values.q)
 
-    await refetch();
-  };
+    await refetch()
+  }
   React.useEffect(() => {
     if (isFetching) {
       setIsLoadingPage(true)
@@ -192,7 +187,7 @@ const DataRumahIbadah = () => {
               )}
             />
           </div>
-          <div className='flex justify-end gap-3'>
+          <div className="flex justify-end gap-3">
             <Button onClick={handleReset} className="w-fit py-6 px-4 bg-primary">
               <HiMiniTrash className="w-6 h-6 text-white" />
               <p className="text-white font-semibold text-sm pl-2 w-max">Reset</p>
@@ -223,7 +218,9 @@ const DataRumahIbadah = () => {
           {worshipPlaces?.data.length !== 0 ? (
             worshipPlaces?.data.map((item, index) => (
               <TableRow key={index}>
-                <TableCell className="text-left">{(worshipPlaces.meta.currentPage - 1) * worshipPlaces.meta.perPage + index + 1}</TableCell>
+                <TableCell className="text-left">
+                  {(worshipPlaces.meta.currentPage - 1) * worshipPlaces.meta.perPage + index + 1}
+                </TableCell>
                 <TableCell className="text-center text-black">{item.name}</TableCell>
                 <TableCell className="text-center text-black">{item.type}</TableCell>
                 <TableCell className="text-center text-black">{item.address}</TableCell>

@@ -31,7 +31,6 @@ export const useMutateBeneficaryByNIK = () => {
         variant: 'destructive'
       })
       // </Link>
-
     }
   })
   // return useQuery(['beneficary', nik], async () => await showBeneficaryByNIKFn(nik), {

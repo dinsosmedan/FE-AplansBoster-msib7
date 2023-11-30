@@ -33,26 +33,29 @@ interface IAddress {
   areaLevel3: IArea | null
   areaLevel4: IArea | null
 }
+
+export interface IServiceFund {
+  id: string
+  beneficiary: IBeneficary
+  serviceType: IServiceType
+  dutyPlace: string
+  dutyAddress: string
+  bankName: string
+  bankAccountNumber: string
+  bankAccountName: string
+  bankBranchName: string
+  status: null | string
+  phoneNumber: string
+  budgetYear: string
+  assistanceAmount: null | number
+  createdAt: string
+  updatedAt: string
+}
+
 export interface IServiceFunds {
   success: boolean
   message: string
-  data: Array<{
-    id: string
-    beneficiary: IBeneficary
-    serviceType: IServiceType
-    dutyPlace: string
-    dutyAddress: string
-    bankName: string
-    bankAccountNumber: string
-    bankAccountName: string
-    bankBranchName: string
-    status: null | string
-    phoneNumber: string
-    budgetYear: string
-    assistanceAmount: null | number
-    createdAt: string
-    updatedAt: string
-  }>
+  data: IServiceFund[]
   meta: IMeta
 }
 

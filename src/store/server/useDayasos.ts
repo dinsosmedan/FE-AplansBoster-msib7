@@ -7,7 +7,6 @@ import {
   storeServiceFundFn,
   getOrganizationGrantAssistance,
   getVeteranFn,
-  storeDjpm,
   storeVeteranFn,
   storeWorshipPlaceFn,
   getCommunityGroupsFn,
@@ -19,16 +18,19 @@ import {
   type VeteranQuery,
   type WorshipPlaceQuery,
   type CommunityGroupQuery,
-  ServiceFundQuery,
+  type ServiceFundQuery,
   getWorshipPlacesFn,
   type NonCashFoodAssistanceBeneficiaryQuery,
-  getNonCashFoodAssistanceBeneficiary
+  getNonCashFoodAssistanceBeneficiary,
+  showServiceFundFn,
+  updateServiceFundFn
 } from '@/api/dayasos.api'
 import { useToast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
 import { type AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
+/* RUMAH IBADAH */
 export const useGetWorshipPlaces = ({ page, idKecamatan, idKelurahan, type, q }: WorshipPlaceQuery) => {
   return useQuery(
     ['worship-places', page, idKecamatan, idKelurahan, type, q],
@@ -52,24 +54,10 @@ export const useCreateWorshipPlace = () => {
     }
   })
 }
-export const useCreateDjpm = () => {
-  const queryClient = useQueryClient()
-  return useMutation(storeDjpm, {
-    onSuccess: () => {
-      void queryClient.invalidateQueries('create-djpm')
-    }
-  })
-}
-export const useCreateVeteran = () => {
-  const queryClient = useQueryClient()
-  return useMutation(storeVeteranFn, {
-    onSuccess: () => {
-      void queryClient.invalidateQueries('veterans')
-    },
-    onError: (error: AxiosError) => {
-      console.log(error)
-    }
-  })
+
+/* DJPM */
+export const useGetServiceTypes = () => {
+  return useQuery('service-types', async () => await getServiceTypesFn())
 }
 
 export const useGetServiceFunds = ({ page, idKecamatan, idKelurahan, name }: ServiceFundQuery) => {
@@ -83,48 +71,15 @@ export const useGetServiceFunds = ({ page, idKecamatan, idKelurahan, name }: Ser
   )
 }
 
-export const useGetServiceTypes = () => {
-  return useQuery('service-types', async () => await getServiceTypesFn())
-}
-
 export const useCreateServiceFund = () => {
   const queryClient = useQueryClient()
+  const { toast } = useToast()
   return useMutation(storeServiceFundFn, {
     onSuccess: () => {
       void queryClient.invalidateQueries('service-funds')
-    },
-    onError: (error: AxiosError) => {
-      if (error.response?.status === 422) {
-        // window.alert('Email or password is incorrect')
-      }
-    }
-  })
-}
-
-export const useCreateHibah = () => {
-  const queryClient = useQueryClient()
-  return useMutation(storeOrganizationGrantAssistanceFn, {
-    onSuccess: () => {
-      void queryClient.invalidateQueries('hibah')
-    },
-    onError: (error: AxiosError) => {
-      if (error.response?.status === 422) {
-        // window.alert('Email or password is incorrect')
-      }
-    }
-  })
-}
-
-export const useCreateKube = () => {
-  const queryClient = useQueryClient()
-  const { toast } = useToast()
-
-  return useMutation(storeKubeFn, {
-    onSuccess: () => {
-      void queryClient.invalidateQueries('kube')
       toast({
-        title: 'Proses Berhasil!!',
-        description: 'Data Rumah Ibadah Berhasil Ditambahkan'
+        title: 'Berhasil',
+        description: 'Data DJPM berhasil ditambahkan'
       })
     },
     onError: (error: AxiosError) => {
@@ -141,13 +96,121 @@ export const useCreateKube = () => {
   })
 }
 
-export const useCreatePokmas = () => {
+export const useGetServiceFund = (id?: string) => {
+  return useQuery(['service-fund', id], async () => await showServiceFundFn(id as string), {
+    enabled: !!id
+  })
+}
+
+export const useUpdateServiceFund = () => {
+  const queryClient = useQueryClient()
+  const { toast } = useToast()
+
+  return useMutation(updateServiceFundFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('service-funds')
+      toast({
+        title: 'Proses Berhasil',
+        description: 'Data DJPM Berhasil Diubah'
+      })
+    },
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message ?? 'Gagal',
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
+    }
+  })
+}
+
+/* BANSOS HIBAH */
+export const useCreateOrganizationGrantAssistance = () => {
+  const queryClient = useQueryClient()
+  const { toast } = useToast()
+
+  return useMutation(storeOrganizationGrantAssistanceFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('organization-grant-assistance')
+      toast({
+        title: 'Berhasil',
+        description: 'Data Hibah berhasil ditambahkan'
+      })
+    },
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message ?? 'Gagal',
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
+    }
+  })
+}
+
+export const useGetOrganizationGrantAssistance = ({ page, budgetYear, name }: OrganizationGrantAssistanceQuery) => {
+  return useQuery(
+    ['organization-grant-assistance', page, budgetYear, name],
+    async () => await getOrganizationGrantAssistance({ page, budgetYear, name }),
+    {
+      keepPreviousData: true,
+      staleTime: 5000
+    }
+  )
+}
+
+/* KUBE */
+export const useCreateBusinessGroup = () => {
+  const queryClient = useQueryClient()
+  const { toast } = useToast()
+
+  return useMutation(storeKubeFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('business-group')
+      toast({
+        title: 'Proses Berhasil!!',
+        description: 'Data Kube Berhasil Ditambahkan'
+      })
+    },
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message ?? 'Gagal',
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
+    }
+  })
+}
+
+export const useGetBusinessGroup = ({ page, q, idKecamatan, idKelurahan, year }: BusinessGroupQuery) => {
+  return useQuery(
+    ['business-group', page, q, idKecamatan, idKelurahan, year],
+    async () => await getBusinessGroupFn({ page, q, idKecamatan, idKelurahan, year }),
+    {
+      keepPreviousData: true,
+      staleTime: 5000
+    }
+  )
+}
+
+/* POKMAS */
+export const useCreateCommunityGroups = () => {
   const queryClient = useQueryClient()
   const { toast } = useToast()
 
   return useMutation(storePokmasFn, {
     onSuccess: () => {
-      void queryClient.invalidateQueries('pokmas')
+      void queryClient.invalidateQueries('community-groups')
       toast({
         title: 'Proses Berhasil',
         description: 'Data Pokmas Berhasil Ditambahkan'
@@ -167,44 +230,26 @@ export const useCreatePokmas = () => {
   })
 }
 
-export const useGetOrganizationGrantAssistance = ({ page, budgetYear, name }: OrganizationGrantAssistanceQuery) => {
-  return useQuery(
-    ['service-funds', page, budgetYear, name],
-    async () => await getOrganizationGrantAssistance({ page, budgetYear, name }),
-    {
-      keepPreviousData: true,
-      staleTime: 5000
-    }
-  )
-}
-
-export const useGetVeteran = ({ page, q }: VeteranQuery) => {
-  return useQuery(['veterans', page, q], async () => await getVeteranFn({ page, q }), {
-    keepPreviousData: true,
-    staleTime: 5000
-  })
-}
-
 export const useGetCommunityGroups = ({
   page,
   q,
   idKecamatan,
   idKelurahan,
-  community_activity_code,
+  communityActivityCode,
   status,
-  application_year
+  applicationYear
 }: CommunityGroupQuery) => {
   return useQuery(
-    ['community-groups', page, q, idKecamatan, idKelurahan, community_activity_code, status, application_year],
+    ['community-groups', page, q, idKecamatan, idKelurahan, communityActivityCode, status, applicationYear],
     async () =>
       await getCommunityGroupsFn({
         page,
         q,
         idKecamatan,
         idKelurahan,
-        community_activity_code,
+        communityActivityCode,
         status,
-        application_year
+        applicationYear
       }),
     {
       keepPreviousData: true,
@@ -212,16 +257,40 @@ export const useGetCommunityGroups = ({
     }
   )
 }
-export const useGetBusinessGroup = ({ page, q, idKecamatan, idKelurahan, year }: BusinessGroupQuery) => {
-  return useQuery(
-    ['business-groups', page, q, idKecamatan, idKelurahan, year],
-    async () => await getBusinessGroupFn({ page, q, idKecamatan, idKelurahan, year }),
-    {
-      keepPreviousData: true,
-      staleTime: 5000
-    }
-  )
+
+/* VETERAN */
+export const useGetVeteran = ({ page, q }: VeteranQuery) => {
+  return useQuery(['veterans', page, q], async () => await getVeteranFn({ page, q }), {
+    keepPreviousData: true,
+    staleTime: 5000
+  })
 }
+
+export const useCreateVeteran = () => {
+  const queryClient = useQueryClient()
+  const { toast } = useToast()
+  return useMutation(storeVeteranFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('veterans')
+      toast({
+        title: 'Berhasil',
+        description: 'Data Veteran berhasil ditambahkan'
+      })
+    },
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message ?? 'Gagal',
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
+    }
+  })
+}
+
+/* BANSOS BANTUAN BBM */
 export const useGetFuelCashAssistance = ({ page, q }: FuelCashQuery) => {
   return useQuery(['fuel-cash-assistances', page, q], async () => await getFuelCashAssistanceFn({ page, q }), {
     keepPreviousData: true,
@@ -229,6 +298,7 @@ export const useGetFuelCashAssistance = ({ page, q }: FuelCashQuery) => {
   })
 }
 
+/* BANSOS BANTUAN NON TUNAI */
 export const useGetNonCashFoodAssistanceBeneficiary = ({ page }: NonCashFoodAssistanceBeneficiaryQuery) => {
   return useQuery(['non-cash', page], async () => await getNonCashFoodAssistanceBeneficiary({ page }), {
     keepPreviousData: true,

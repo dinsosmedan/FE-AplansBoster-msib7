@@ -7,15 +7,15 @@ import useTitle from '@/hooks/useTitle'
 import { djpmValidation, type djpmFields } from '@/lib/validations/dayasos.validation'
 import { Container } from '@/components'
 import * as React from 'react'
-import { useCreateServiceFund, useGetBeneficaryByNIK, useGetServiceTypes } from '@/store/server'
+import { useCreateServiceFund, useGetBeneficaryByNIK, useGetServiceFund, useGetServiceTypes } from '@/store/server'
 import { useToast } from '@/components/ui/use-toast'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { type AxiosError } from 'axios'
-import { type IErrorResponse } from '@/lib/types/user.type'
+import { useParams } from 'react-router-dom'
 
 const Djpm = () => {
-  useTitle('Dana Jasa Pelayanan Masyarakat')
   const { toast } = useToast()
+  const { id } = useParams<{ id: string }>()
+  useTitle(`Dana Jasa Pelayanan Masyarakat${id ? '[Ubah Data]' : ''}`)
 
   const [NIK, setNIK] = React.useState('')
 
@@ -32,33 +32,19 @@ const Djpm = () => {
       dutyAddress: '',
       serviceType: '',
       beneficiary: '',
-      phoneNumber: ''
+      phoneNumber: '',
+      dutyPlace: ''
     }
   })
 
   const onSubmit = (values: djpmFields) => {
     createServiceFund(values, {
-      onError: (error: AxiosError) => {
-        const errorResponse = error.response?.data as IErrorResponse
-
-        if (errorResponse !== undefined) {
-          toast({
-            variant: 'destructive',
-            title: errorResponse.message ?? 'Gagal',
-            description: 'Terjadi masalah dengan permintaan Anda.'
-          })
-        }
-      },
-      onSuccess: () => {
-        toast({
-          title: 'Berhasil',
-          description: 'Data DJPM berhasil ditambahkan'
-        })
-      }
+      onSuccess: () => forms.reset()
     })
   }
 
   const { data: beneficiary, refetch, isLoading, isError } = useGetBeneficaryByNIK(NIK, false)
+  const { data: serviceFund, isSuccess } = useGetServiceFund(id)
   const { data: serviceTypes } = useGetServiceTypes()
 
   const { mutate: createServiceFund, isLoading: isLoadingCreate } = useCreateServiceFund()
@@ -93,28 +79,45 @@ const Djpm = () => {
     }
   }, [forms.getValues('beneficiary'), NIK, forms.formState.isSubmitted])
 
+  React.useEffect(() => {
+    if (isSuccess) {
+      forms.setValue('bankAccountNumber', serviceFund?.bankAccountNumber)
+      forms.setValue('bankAccountName', serviceFund?.bankAccountName)
+      forms.setValue('bankBranchName', serviceFund?.bankBranchName)
+      forms.setValue('status', serviceFund?.status as string)
+      forms.setValue('assistanceAmount', serviceFund?.assistanceAmount as number)
+      forms.setValue('budgetYear', serviceFund?.budgetYear)
+      forms.setValue('dutyAddress', serviceFund?.dutyAddress)
+      forms.setValue('dutyPlace', serviceFund?.dutyPlace)
+      forms.setValue('serviceType', '9ab9e901-b996-4170-ae99-5ca29e519c27')
+      forms.setValue('phoneNumber', serviceFund?.phoneNumber)
+    }
+  }, [isSuccess, serviceFund])
+
   return (
     <Container className="py-10">
       <section className="w-full mx-auto">
         <p className="text-2xl font-bold text-center mb-3">Data Personal</p>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col">
-            <div className="flex flex-row justify-between gap-3">
-              <FormItem className="w-full">
-                <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
-                <Input
-                  type="number"
-                  placeholder="Masukkan NIK Masyarakat"
-                  value={NIK}
-                  onChange={(e) => setNIK(e.target.value)}
-                />
-              </FormItem>
-              <div className="w-fit flex items-end justify-end" onClick={async () => await refetch()}>
-                <Button className="w-full" loading={isLoading} type="button">
-                  Cari
-                </Button>
+            {!id && (
+              <div className="flex flex-row justify-between gap-3">
+                <FormItem className="w-full">
+                  <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
+                  <Input
+                    type="number"
+                    placeholder="Masukkan NIK Masyarakat"
+                    value={NIK}
+                    onChange={(e) => setNIK(e.target.value)}
+                  />
+                </FormItem>
+                <div className="w-fit flex items-end justify-end" onClick={async () => await refetch()}>
+                  <Button className="w-full" loading={isLoading} type="button">
+                    Cari
+                  </Button>
+                </div>
               </div>
-            </div>
+            )}
             <FormField
               name="phoneNumber"
               control={forms.control}
@@ -183,7 +186,7 @@ const Djpm = () => {
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Pliih Status Pencairan" />
+                          <SelectValue placeholder="Pilih Status Pencairan" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -281,7 +284,7 @@ const Djpm = () => {
                 Cancel
               </Button>
               <Button className="font-bold" type="submit" loading={isLoadingCreate}>
-                Submit
+                {id ? 'Ubah Data' : 'Submit'}
               </Button>
             </div>
           </form>

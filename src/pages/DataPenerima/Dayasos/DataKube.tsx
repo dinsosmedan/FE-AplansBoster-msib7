@@ -45,61 +45,61 @@ const DataKube = () => {
     page: parseInt(page) ?? 1,
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
-    q: q, year: year
+    q,
+    year
   })
+
   useDisableBodyScroll(isFetching)
   const handleReset = () => {
-    forms.reset({ q: '', kecamatan: '', kelurahan: '', year: '' });
-    createParams({ key: 'q', value: '' });
-    createParams({ key: 'year', value: '' });
-    createParams({ key: 'kecamatan', value: '' });
-    createParams({ key: 'kelurahan', value: '' });
+    forms.reset({ q: '', kecamatan: '', kelurahan: '', year: '' })
+    createParams({ key: 'q', value: '' })
+    createParams({ key: 'year', value: '' })
+    createParams({ key: 'kecamatan', value: '' })
+    createParams({ key: 'kelurahan', value: '' })
     // Tambahan untuk memastikan reset pada list kelurahan saat kecamatan di-reset
-    forms.setValue('kelurahan', '');
-  };
+    forms.setValue('kelurahan', '')
+  }
   const onSubmit = async (values: FormValues) => {
     if (values.q !== '') {
       createParams({
         key: 'q',
         value: values.q !== '' ? values.q : ''
-      });
-      createParams({ key: 'page', value: '' }); // Set page to empty string when searching
+      })
+      createParams({ key: 'page', value: '' }) // Set page to empty string when searching
     } else {
-      createParams({ key: 'q', value: '' }); // Set q to empty string if the search query is empty
+      createParams({ key: 'q', value: '' }) // Set q to empty string if the search query is empty
     }
 
     if (values.year !== '') {
       createParams({
         key: 'year',
         value: values.year !== '' ? values.year : ''
-      });
-      createParams({ key: 'page', value: '' }); // Set page to empty string when searching
+      })
+      createParams({ key: 'page', value: '' }) // Set page to empty string when searching
     } else {
-      createParams({ key: 'year', value: '' }); // Set budgetYear to empty string if it's empty
+      createParams({ key: 'year', value: '' }) // Set budgetYear to empty string if it's empty
     }
     if (values.kecamatan !== '') {
       createParams({
         key: 'kecamatan',
         value: values.kecamatan !== '' ? values.kecamatan : ''
-      });
-      createParams({ key: 'page', value: '' }); // Set page to empty string when searching
+      })
+      createParams({ key: 'page', value: '' }) // Set page to empty string when searching
     } else {
-      createParams({ key: 'kecamatan', value: '' }); // Set budgetYear to empty string if it's empty
+      createParams({ key: 'kecamatan', value: '' }) // Set budgetYear to empty string if it's empty
     }
     if (values.kelurahan !== '') {
       createParams({
         key: 'kelurahan',
         value: values.kelurahan !== '' ? values.kelurahan : ''
-      });
-      createParams({ key: 'page', value: '' }); // Set page to empty string when searching
+      })
+      createParams({ key: 'page', value: '' }) // Set page to empty string when searching
     } else {
-      createParams({ key: 'kelurahan', value: '' }); // Set budgetYear to empty string if it's empty
+      createParams({ key: 'kelurahan', value: '' }) // Set budgetYear to empty string if it's empty
     }
 
-
-    await refetch();
-  };
-
+    await refetch()
+  }
 
   React.useEffect(() => {
     if (isFetching) {
@@ -161,7 +161,11 @@ const DataKube = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value} disabled={areaLevel3 === '' && kecamatan === ''}>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        disabled={areaLevel3 === '' && kecamatan === ''}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Kelurahan" />
@@ -191,7 +195,7 @@ const DataKube = () => {
                 )}
               />
             </div>
-            <div className='flex justify-end gap-3'>
+            <div className="flex justify-end gap-3">
               <Button onClick={handleReset} className="w-fit py-6 px-4 bg-primary">
                 <HiMiniTrash className="w-6 h-6 text-white" />
                 <p className="text-white font-semibold text-sm pl-2 w-max">Reset</p>

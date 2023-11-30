@@ -17,14 +17,15 @@ import {
   Ri,
   Bbp,
   Pkh,
-  Djpm,
+  // Djpm,
   Veteran,
   Pokmas,
   DataDjp,
   DataVeteran,
   DataBltbbm,
   Pkr,
-  Sktm
+  Sktm,
+  Djp
   // InfoDataMaster
 } from './pages'
 import { DashboardLayout, Alert } from './components'
@@ -45,7 +46,7 @@ import DataRumahIbadah from './pages/DataPenerima/Dayasos/DataRumahIbadah'
 import DataHibah from './pages/DataPenerima/Dayasos/DataHibah'
 import { Toaster } from './components/ui/toaster'
 import DataBpnt from './pages/DataPenerima/Dayasos/DataBpnt'
-import DataPkr from './pages/DataPenerima/Linjamsos/DataPkr'
+// import DataPkr from './pages/DataPenerima/Linjamsos/DataPkr'
 
 export default function App() {
   const { alertOptions, handleClose, handleSubmit } = useAlert()
@@ -83,7 +84,7 @@ export default function App() {
           <Route path="/bansos-lansia" element={<BansosLansia />} />
           <Route path="/Bbp" element={<Bbp />} />
           <Route path="/Pkh" element={<Pkh />} />
-          <Route path="/Djpm" element={<Djpm />} />
+          {/* <Route path="/Djpm" element={<Djpm />} /> */}
           <Route path="/cek-data-dukcapil" element={<CekDataDukcapil />} />
           <Route path="/layanan/linjamsos">
             <Route index element={<LayananLinjamsos />} />
@@ -93,7 +94,8 @@ export default function App() {
           </Route>
           <Route path="/layanan/dayasos">
             <Route index element={<LayananDayasos />} />
-            <Route path="djp" element={<Djpm />} />
+            <Route path="djp" element={<Djp />} />
+            <Route path="djp/:id" element={<Djp />} />
             <Route path="bpnt" element={<Bpnt />} />
             <Route path="hibah" element={<Hibah />} />
             <Route path="ri" element={<Ri />} />
@@ -114,7 +116,7 @@ export default function App() {
           </Route>
           <Route path="/data-penerima/linjmamsos">
             <Route index element={<DataPenerimaLinjamsos />} />
-            <Route path="data-pkr" element={<DataPkr />} />
+            {/* <Route path="data-pkr" element={<DataPkr />} /> */}
           </Route>
         </Route>
         {/* </Route> */}

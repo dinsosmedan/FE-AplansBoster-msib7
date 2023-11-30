@@ -9,7 +9,7 @@ import { HiPlus } from 'react-icons/hi'
 import { type pokmasFields, pokmasValidation } from '@/lib/validations/dayasos.validation'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Container } from '@/components'
-import { useCreatePokmas, useGetBeneficaryByNIK, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { useCreateCommunityGroups, useGetBeneficaryByNIK, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import * as React from 'react'
 import { useToast } from '@/components/ui/use-toast'
 import { HiTrash } from 'react-icons/hi2'
@@ -80,7 +80,7 @@ const Pokmas = () => {
   const { data: kecamatan } = useGetKecamatan()
   const { data: kelurahan, isLoading: isLoadingKelurahan } = useGetKelurahan(areaLevel3 ?? '')
   const { data: beneficiary, refetch, isFetching, isError } = useGetBeneficaryByNIK(NIK, false)
-  const { mutate: createPokmas, isLoading: isLoadingCreate } = useCreatePokmas()
+  const { mutate: createPokmas, isLoading: isLoadingCreate } = useCreateCommunityGroups()
 
   React.useEffect(() => {
     if (NIK !== '') void refetch()
@@ -373,7 +373,7 @@ const Pokmas = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Jadwal Pelaksaaan</FormLabel>
                     <FormControl>
-                      <DatePicker onChange={field.onChange} selected={field.value}/>
+                      <DatePicker onChange={field.onChange} selected={field.value} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
