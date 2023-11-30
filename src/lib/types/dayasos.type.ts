@@ -170,3 +170,15 @@ export interface IFuelCashAssistance {
   }>
   meta: IMeta
 }
+export interface INonCashFoodAssistanceBeneficiary {
+  success: boolean
+  message: string
+  data: Array<{
+    id: string
+    beneficiary: IBeneficary
+    type: string
+    createdAt: string
+    updatedAt: string
+  }>
+  meta: IMeta
+}
