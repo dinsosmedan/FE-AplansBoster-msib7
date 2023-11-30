@@ -35,12 +35,12 @@ const SectionLinjamsos = () => {
                 </div>
                 <div className="grid grid-cols-3 gap-5 mt-5">
                     <LongCard props={['Penangan Kelompok Rentan', 'Perkembangan Data PKR']}>
-                        <LongCard.Chart data={[12, 19]} label={['DTKS', 'Non DTKS']} backgroundColor={['#F94144', '#F3722C']} />
+                        <LongCard.Chart data={[2020, 2021, 2022, 2023, 2024]} label={['2020', '2021', '2022', '2023', '2024']} backgroundColor={['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']} />
                     </LongCard>
                     <LongCard props={['Bantuan Biaya Pendidikan', 'Persentasi Data Biaya Pendidikan']}>
-                        <LongCard.Chart data={[20, 5, 13, 13, 22, 15, 12]} isPercent={true} label={['Mesjid', 'Gereja', 'Kuil Hindu', 'Gereja Khatolik', 'Kuil Budha', 'Musholla', 'Kuil Budha']} backgroundColor={['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E', '#2D9CDB', '#DD2153']} />
+                        <LongCard.Chart data={[20, 5, 13]} isPercent={true} label={['Diterima', 'Diterima', 'Prelist']} backgroundColor={['#F94144', '#F3722C', '#F9C74F']} />
                     </LongCard>
-                    <LongCard props={['SKTM', 'Persentasi Data SKTM BErdasarkan DTKS']}>
+                    <LongCard props={['SKTM', 'Persentasi Data SKTM Berdasarkan DTKS']}>
                         <LongCard.Chart data={[30, 15]} isPercent={true} label={['DTKS', 'Non DTKS']} backgroundColor={['#F94144', '#F3722C']} />
                     </LongCard>
 
