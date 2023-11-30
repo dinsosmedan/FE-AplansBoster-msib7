@@ -1,6 +1,7 @@
 import { Container } from '@/components'
 import useTitle from '@/hooks/useTitle'
 import CardMain from './../components/organisms/CardMain'
+import { BgLayananDayasos, BgLayananRehabsos, BgLayananLinjmasos } from '@/assets'
 
 export default function DataPenerima() {
   useTitle('Layanan')
@@ -12,21 +13,21 @@ export default function DataPenerima() {
           title="REHABSOS"
           subTitle="Social Rehabilitation"
           description="Program dan kegiatan Bidang Rehabilitasi Sosial dengan mempedomani rencana umum kota."
-          urlImage="https://source.unsplash.com/random/?medan"
+          urlImage={BgLayananRehabsos}
           href="/layanan/rehabsos"
         />
         <CardMain
           title="DAYASOS"
           subTitle="Social Empowerment and Poor Handling"
           description="Program dan kegiatan Bidang Pemberdayaan Sosial Dan Penanganan Fakir Miskin dengan mempedomani rencana umum kota."
-          urlImage="https://source.unsplash.com/random/?medan"
+          urlImage={BgLayananDayasos}
           href="/layanan/dayasos"
         />
         <CardMain
           title="LINJAMSOS"
           subTitle="Social Protection and Security"
           description="Program dan kegiatan Bidang Perlindungan Dan Jaminan Sosial dengan mempedomani rencana umum kota"
-          urlImage="https://source.unsplash.com/random/?medan"
+          urlImage={BgLayananLinjmasos}
           href="/layanan/linjamsos"
         />
       </div>

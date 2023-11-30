@@ -11,7 +11,7 @@ interface CardMainProps {
 
 export default function CardMain({ title, subTitle, urlImage, description, href }: CardMainProps) {
   return (
-    <div className="w-[385px] bg-primary rounded-lg flex flex-col overflow-hidden group">
+    <div className="w-[385px] bg-primary rounded-lg flex flex-col overflow-hidden group justify-between">
       <div className="ml-4 mt-3">
         <p className="font-extrabold text-white text-2xl">{title}</p>
         <p className="text-base +- text-white/70">{subTitle}</p>
