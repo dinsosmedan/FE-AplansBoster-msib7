@@ -2,8 +2,8 @@ import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { HiMagnifyingGlass } from 'react-icons/hi2'
 
-import { Container, Pagination } from '@/components'
-import { useCreateParams, useGetParams, useTitle } from '@/hooks'
+import { Container, Loading, Pagination } from '@/components'
+import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 import { JENIS_RUMAH_IBADAH } from '@/pages/Layanan/Dayasos/RumahIbadah'
 
 import { useGetWorshipPlaces } from '@/store/server/useDayasos'
@@ -26,8 +26,8 @@ interface FormValues {
 const DataRumahIbadah = () => {
   useTitle('Data Penerima / Dayasos / Rumah Ibadah (RI) ')
   const createParams = useCreateParams()
-  const { nama, kecamatan, kelurahan, status, jenisrumahibadah } = useGetParams([
-    'nama',
+  const { page, nama, kecamatan, kelurahan, status, jenisrumahibadah } = useGetParams([
+    'page', 'nama',
     'jenisrumahibadah',
     'status',
     'kecamatan',
@@ -49,12 +49,19 @@ const DataRumahIbadah = () => {
 
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
-  const { refetch } = useGetWorshipPlaces({
-    page: currentPage,
-    name: nama,
+  const {
+    data: worshipPlaces,
+    refetch,
+    isFetching,
+    isLoading
+  } = useGetWorshipPlaces({
+    page: parseInt(page) ?? 1,
     idKecamatan: kecamatan,
-    idKelurahan: kelurahan
+    idKelurahan: kelurahan,
+    name: nama
   })
+  useDisableBodyScroll(isFetching)
+  const [isLoadingPage, setIsLoadingPage] = React.useState(false)
 
   React.useEffect(() => {
     if (nama !== '' || kecamatan !== '' || kelurahan !== '' || status !== '' || jenisrumahibadah !== '') {
@@ -73,7 +80,17 @@ const DataRumahIbadah = () => {
 
     await refetch()
   }
+  React.useEffect(() => {
+    if (isFetching) {
+      setIsLoadingPage(true)
+    } else {
+      setIsLoadingPage(false)
+    }
+  }, [isLoadingPage, isFetching])
 
+  if (isLoading) {
+    return <Loading />
+  }
   return (
     <Container>
       <h1 className="font-bold text-[32px] ">Rumah Ibadah (RI)</h1>
@@ -115,27 +132,7 @@ const DataRumahIbadah = () => {
                 </FormItem>
               )}
             />
-            <FormField
-              name="status"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Status" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="aktif">Aktif</SelectItem>
-                        <SelectItem value="tidak aktif">Tidak Aktif</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+
             <FormField
               name="kecamatan"
               control={forms.control}
@@ -212,39 +209,27 @@ const DataRumahIbadah = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell className="text-center">GKI SUMUT</TableCell>
-            <TableCell className="text-center">Gereja</TableCell>
-            <TableCell className="text-center">Perempuan</TableCell>
-            <TableCell className="text-center">Jl KL Yos Sudarso Gg. Keluarga No. 30</TableCell>
-            <TableCell className="text-center">Titi Papan</TableCell>
-            <TableCell className="text-center">Albert Luckass</TableCell>
-            <TableCell className="text-center">081390089193</TableCell>
-            <TableCell className="text-center">Aktif</TableCell>
-            <TableCell className="text-center">Renovasi</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="text-center">GKI SUMUT</TableCell>
-            <TableCell className="text-center">Gereja</TableCell>
-            <TableCell className="text-center">Perempuan</TableCell>
-            <TableCell className="text-center">Jl KL Yos Sudarso Gg. Keluarga No. 30</TableCell>
-            <TableCell className="text-center">Titi Papan</TableCell>
-            <TableCell className="text-center">Albert Luckass</TableCell>
-            <TableCell className="text-center">081390089193</TableCell>
-            <TableCell className="text-center">Aktif</TableCell>
-            <TableCell className="text-center">Renovasi</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="text-center">GKI SUMUT</TableCell>
-            <TableCell className="text-center">Gereja</TableCell>
-            <TableCell className="text-center">Perempuan</TableCell>
-            <TableCell className="text-center">Jl KL Yos Sudarso Gg. Keluarga No. 30</TableCell>
-            <TableCell className="text-center">Titi Papan</TableCell>
-            <TableCell className="text-center">Albert Luckass</TableCell>
-            <TableCell className="text-center">081390089193</TableCell>
-            <TableCell className="text-center">Aktif</TableCell>
-            <TableCell className="text-center">Renovasi</TableCell>
-          </TableRow>
+          {worshipPlaces?.length !== 0 ? (
+            worshipPlaces?.map((item, index) => (
+              <TableRow key={index}>
+                <TableCell className="text-center text-black">{item.name}</TableCell>
+                <TableCell className="text-center text-black">{item.type}</TableCell>
+                <TableCell className="text-center text-black">{item.address}</TableCell>
+                <TableCell className="text-center text-black">{item.areaLevel3?.name}</TableCell>
+                <TableCell className="text-center text-black">{item.areaLevel4?.name}</TableCell>
+                <TableCell className="text-center text-black">{item.picName}</TableCell>
+                <TableCell className="text-center text-black">{item.picPhone}</TableCell>
+                <TableCell className="text-center text-black">{item.status}</TableCell>
+                <TableCell className="text-center text-black">{item.note}</TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={9} className="text-center">
+                Tidak ada data
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
       <Pagination

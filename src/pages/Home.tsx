@@ -1,5 +1,6 @@
-import { Container } from '@/components'
-import { DataTableDemo } from '@/components/atoms/DataTable'
+import SectionDataDtks from '@/components/section/dashboard/DataDtks'
+import SectionDayasos from '@/components/section/dashboard/Dayasos'
+import SectionLinjamsos from '@/components/section/dashboard/Linjamsos'
 import useTitle from '@/hooks/useTitle'
 import { useGetServiceFunds } from '@/store/server'
 
@@ -13,9 +14,11 @@ const Home = () => {
   })
 
   return (
-    <Container className="min-h-[calc(100vh+1000px)]">
-      {isSuccess && <DataTableDemo data={serviceFunds?.data} />}
-    </Container>
+    <>
+      <SectionDataDtks />
+      <SectionDayasos />
+      <SectionLinjamsos />
+    </>
   )
 }
 

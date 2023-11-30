@@ -13,8 +13,10 @@ import {
   type IServiceFunds,
   type IWorshipPlace,
   type IVeteran,
+  type IFuelCashAssistance,
   type ICommunityGroups,
-  type IBusinessGroup
+  type IBusinessGroup,
+  type INonCashFoodAssistanceBeneficiary
 } from '@/lib/types/dayasos.type'
 
 export const storeWorshipPlaceFn = async (fields: worshipPlaceFields) => {
@@ -58,6 +60,10 @@ export interface BusinessGroupQuery {
   idKelurahan?: string
   year?: string
 }
+export interface FuelCashQuery {
+  page?: number
+  q?: string
+}
 export const getWorshipPlacesFn = async ({
   page,
   idKecamatan,
@@ -68,6 +74,10 @@ export const getWorshipPlacesFn = async ({
     `/worship-place?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${name}`
   )
   return response.data?.data
+}
+
+export interface NonCashFoodAssistanceBeneficiaryQuery {
+  page?: number
 }
 
 export const storeVeteranFn = async (fields: veteranFields) => {
@@ -145,5 +155,14 @@ export const getBusinessGroupFn = async ({
   const response = await api.get(
     `/joint-business-group/?q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&budget_year=${year}&page=${page}&limit=10`
   )
+  return response.data
+}
+export const getFuelCashAssistanceFn = async ({ page, q }: FuelCashQuery): Promise<IFuelCashAssistance> => {
+  const response = await api.get(`/fuel-cash-assistance?q=${q}&page=${page}&limit=30`)
+  return response.data
+}
+
+export const getNonCashFoodAssistanceBeneficiary = async ({ page }: NonCashFoodAssistanceBeneficiaryQuery): Promise<INonCashFoodAssistanceBeneficiary> => {
+  const response = await api.get(`/non-cash-food-assistance?page=${page}&limit=30`)
   return response.data
 }
