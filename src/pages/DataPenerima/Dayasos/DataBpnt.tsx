@@ -8,7 +8,7 @@ import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { Loading } from '@/components'
 
 const DataBpnt = () => {
-  useTitle('Data Penerima / Dayasos / BLTBBM ')
+  useTitle('Data Penerima / Dayasos / Bantuan Pangan Non Tunai (BPNT) ')
   const createParams = useCreateParams()
   const { page } = useGetParams(['page'])
   const [isLoadingPage, setIsLoadingPage] = React.useState(false)
@@ -40,7 +40,7 @@ const DataBpnt = () => {
     <div>
       <Container>
         {isFetching && <Loading />}
-        <h1 className="font-bold text-2xl ">Bantuan Langsung Tunai BBM (BLTBBM)</h1>
+        <h1 className="font-bold text-2xl "> Bantuan Pangan Non Tunai (BPNT) </h1>
         <Table className="mt-10">
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>

@@ -3,4 +3,10 @@ import LogoMini from './images/logo-minimize.png'
 import BgLogin from './images/login-background.png'
 import BgDukcapil from './images/bg-dukcapil.svg'
 import BgBansos from './images/bg-cekriwayat-bansos.svg'
-export { Logo, BgLogin, LogoMini, BgDukcapil, BgBansos }
+import BgDataRehabsos from './images/bg-data-rehabsos.svg'
+import BgDataDayasos from './images/bg-data-daysos.svg'
+import BgDataLinjmasos from './images/bg-data-linjamsos.svg'
+import BgLayananRehabsos from './images/bg-layanan-rehabsos.svg'
+import BgLayananDayasos from './images/bg-layanan-dayasos.svg'
+import BgLayananLinjmasos from './images/bg-layanan-linjamsos.svg'
+export { Logo, BgLogin, LogoMini, BgDukcapil, BgBansos, BgDataRehabsos, BgDataDayasos, BgDataLinjmasos, BgLayananRehabsos, BgLayananDayasos, BgLayananLinjmasos }
