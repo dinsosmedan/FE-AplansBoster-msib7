@@ -47,7 +47,6 @@ const DataKube = () => {
     idKelurahan: kelurahan,
     q: q, year: year
   })
-  console.log(businessGroup)
   useDisableBodyScroll(isFetching)
   const onSubmit = async (values: FormValues) => {
     Object.keys(values).forEach((key) => {
