@@ -14,7 +14,7 @@ import { useGetCommunityGroups, useGetKecamatan, useGetKelurahan } from '@/store
 import { Loading } from '@/components'
 interface FormValues {
   q: string
-  community_activity_code: string
+  communityActivityCode: string
   status: string
   kecamatan: string
   kelurahan: string
@@ -23,20 +23,20 @@ interface FormValues {
 const DataPokmas = () => {
   useTitle('Data Penerima / Dayasos / Pokmas ')
   const createParams = useCreateParams()
-  const { page, q, kecamatan, kelurahan, community_activity_code, status, application_year } = useGetParams([
-    'page',
-    'q',
-    'kecamatan',
-    'kelurahan',
-    'community_activity_code',
-    'status',
-    'application_year'
-  ])
+  const {
+    page,
+    q,
+    kecamatan,
+    kelurahan,
+    community_activity_code: communityActivityCode,
+    status,
+    application_year: applicationYear
+  } = useGetParams(['page', 'q', 'kecamatan', 'kelurahan', 'community_activity_code', 'status', 'application_year'])
 
   const forms = useForm<FormValues>({
     defaultValues: {
       q: '',
-      community_activity_code: '',
+      communityActivityCode: '',
       status: '',
       kecamatan: '',
       kelurahan: '',
@@ -58,14 +58,14 @@ const DataPokmas = () => {
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
     q,
-    community_activity_code,
+    communityActivityCode,
     status,
-    application_year
+    applicationYear
   })
   useDisableBodyScroll(isFetching)
 
   const handleReset = () => {
-    forms.reset({ q: '', kecamatan: '', kelurahan: '', application_year: '', status: '', community_activity_code: '' })
+    forms.reset({ q: '', kecamatan: '', kelurahan: '', application_year: '', status: '', communityActivityCode: '' })
     createParams({ key: 'q', value: '' })
     createParams({ key: 'application_year', value: '' })
     createParams({ key: 'kecamatan', value: '' })
@@ -90,7 +90,7 @@ const DataPokmas = () => {
     updateParam('kecamatan', values.kecamatan)
     updateParam('kelurahan', values.kelurahan)
     updateParam('status', values.status)
-    updateParam('community_activity_code', values.community_activity_code)
+    updateParam('community_activity_code', values.communityActivityCode)
 
     await refetch()
   }
@@ -126,7 +126,7 @@ const DataPokmas = () => {
                 )}
               />
               <FormField
-                name="community_activity_code"
+                name="communityActivityCode"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>

@@ -35,7 +35,7 @@ const DataVeteran = () => {
     isLoading
   } = useGetVeteran({
     page: parseInt(page) ?? 1,
-    q: q
+    q
   })
   useDisableBodyScroll(isFetching)
 
@@ -44,14 +44,13 @@ const DataVeteran = () => {
       createParams({
         key: 'q',
         value: values.q !== '' ? values.q : ''
-      });
-      createParams({ key: 'page', value: '' }); // Set page to empty string when searching
+      })
+      createParams({ key: 'page', value: '' }) // Set page to empty string when searching
     } else {
-      createParams({ key: 'q', value: '' }); // Set q to empty string if the search query is empty
+      createParams({ key: 'q', value: '' }) // Set q to empty string if the search query is empty
     }
-    await refetch();
-  };
-
+    await refetch()
+  }
 
   React.useEffect(() => {
     if (isFetching) {

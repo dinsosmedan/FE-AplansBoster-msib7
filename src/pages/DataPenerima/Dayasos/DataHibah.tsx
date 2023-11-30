@@ -49,24 +49,23 @@ const DataHibah = () => {
       createParams({
         key: 'q',
         value: values.q !== '' ? values.q : ''
-      });
-      createParams({ key: 'page', value: '' }); // Set page to empty string when searching
+      })
+      createParams({ key: 'page', value: '' }) // Set page to empty string when searching
     } else {
-      createParams({ key: 'q', value: '' }); // Set q to empty string if the search query is empty
+      createParams({ key: 'q', value: '' }) // Set q to empty string if the search query is empty
     }
 
     if (values.budgetYear !== '') {
       createParams({
         key: 'budgetYear',
         value: values.budgetYear !== '' ? values.budgetYear : ''
-      });
+      })
     } else {
-      createParams({ key: 'budgetYear', value: '' }); // Set budgetYear to empty string if it's empty
+      createParams({ key: 'budgetYear', value: '' }) // Set budgetYear to empty string if it's empty
     }
 
-    await refetch();
-  };
-
+    await refetch()
+  }
 
   React.useEffect(() => {
     if (isFetching) {

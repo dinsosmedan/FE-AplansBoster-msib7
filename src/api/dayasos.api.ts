@@ -58,8 +58,8 @@ export interface CommunityGroupQuery {
   idKecamatan?: string
   idKelurahan?: string
   status?: string
-  community_activity_code?: string
-  application_year?: string
+  communityActivityCode?: string
+  applicationYear?: string
 }
 export interface BusinessGroupQuery {
   page?: number
@@ -145,12 +145,12 @@ export const getCommunityGroupsFn = async ({
   q,
   idKecamatan,
   idKelurahan,
-  community_activity_code,
+  communityActivityCode,
   status,
-  application_year
+  applicationYear
 }: CommunityGroupQuery): Promise<ICommunityGroups> => {
   const response = await api.get(
-    `/community-group/?q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&application_year=${application_year}&status=${status}&community_activity_code=${community_activity_code}&page=${page}&limit=10`
+    `/community-group/?q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&application_year=${applicationYear}&status=${status}&community_activity_code=${communityActivityCode}&page=${page}&limit=10`
   )
   return response.data
 }

@@ -33,7 +33,7 @@ const DataBltbbm = () => {
     isLoading
   } = useGetFuelCashAssistance({
     page: parseInt(page) ?? 1,
-    q: q,
+    q
   })
   useDisableBodyScroll(isFetching)
 
@@ -104,7 +104,9 @@ const DataBltbbm = () => {
             {fuelCashAssistance?.data?.length !== 0 ? (
               fuelCashAssistance?.data.map((item, index) => (
                 <TableRow key={item.id}>
-                  <TableCell className="text-left">{(fuelCashAssistance.meta.currentPage - 1) * fuelCashAssistance.meta.perPage + index + 1}</TableCell>
+                  <TableCell className="text-left">
+                    {(fuelCashAssistance.meta.currentPage - 1) * fuelCashAssistance.meta.perPage + index + 1}
+                  </TableCell>
                   <TableCell className="text-left">{item.beneficiary.name}</TableCell>
                   <TableCell className="text-left">{item.beneficiary.identityNumber}</TableCell>
                   <TableCell className="text-left">{item.type}</TableCell>

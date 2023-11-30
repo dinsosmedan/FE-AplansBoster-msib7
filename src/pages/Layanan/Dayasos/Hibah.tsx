@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import useTitle from '@/hooks/useTitle'
 import { hibahValidation, type hibahFields } from '@/lib/validations/dayasos.validation'
-import { useCreateHibah, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { useCreateOrganizationGrantAssistance, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 const Hibah = () => {
@@ -39,7 +39,7 @@ const Hibah = () => {
   const areaLevel3 = forms.watch('areaLevel3')
   const { data: kecamatan } = useGetKecamatan()
   const { data: kelurahan } = useGetKelurahan(areaLevel3 ?? '')
-  const { mutate: createHibah, isLoading } = useCreateHibah()
+  const { mutate: createHibah, isLoading } = useCreateOrganizationGrantAssistance()
 
   const onSubmit = async (values: hibahFields) => {
     createHibah(values, {

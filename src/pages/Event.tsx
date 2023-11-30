@@ -23,7 +23,7 @@ interface FormValues {
 
 const Event = () => {
   useTitle('Event')
-const { alert } = useAlert()
+  const { alert } = useAlert()
 
   const [isShow, setIsShow] = React.useState(false)
   const [currentPage, setCurrentPage] = React.useState(1)

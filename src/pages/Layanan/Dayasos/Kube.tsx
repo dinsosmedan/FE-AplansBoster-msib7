@@ -8,7 +8,7 @@ import useTitle from '@/hooks/useTitle'
 import { HiPlus } from 'react-icons/hi'
 import { Container } from '@/components'
 import { kubeValidation, type kubeFields } from '@/lib/validations/dayasos.validation'
-import { useCreateKube, useGetBeneficaryByNIK, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { useCreateBusinessGroup, useGetBeneficaryByNIK, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { HiTrash } from 'react-icons/hi2'
 import { cn } from '@/lib/utils'
@@ -47,7 +47,7 @@ const Kube = () => {
   const { data: kecamatan } = useGetKecamatan()
   const { data: kelurahan } = useGetKelurahan(areaLevel3 ?? '')
   const { data: beneficiary, refetch, isFetching, isError } = useGetBeneficaryByNIK(NIK, false)
-  const { mutate: createKube, isLoading: isLoadingCreate } = useCreateKube()
+  const { mutate: createKube, isLoading: isLoadingCreate } = useCreateBusinessGroup()
 
   React.useEffect(() => {
     if (NIK !== '') void refetch()

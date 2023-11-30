@@ -23,14 +23,14 @@ import {
   type NonCashFoodAssistanceBeneficiaryQuery,
   getNonCashFoodAssistanceBeneficiary,
   showServiceFundFn,
-  updateServiceFundFn,
-  storeDjpm
+  updateServiceFundFn
 } from '@/api/dayasos.api'
 import { useToast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
 import { type AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
+/* RUMAH IBADAH */
 export const useGetWorshipPlaces = ({ page, idKecamatan, idKelurahan, type, q }: WorshipPlaceQuery) => {
   return useQuery(
     ['worship-places', page, idKecamatan, idKelurahan, type, q],
@@ -55,6 +55,7 @@ export const useCreateWorshipPlace = () => {
   })
 }
 
+/* DJPM */
 export const useGetServiceTypes = () => {
   return useQuery('service-types', async () => await getServiceTypesFn())
 }
@@ -95,13 +96,45 @@ export const useCreateServiceFund = () => {
   })
 }
 
-export const useCreateHibah = () => {
+export const useGetServiceFund = (id?: string) => {
+  return useQuery(['service-fund', id], async () => await showServiceFundFn(id as string), {
+    enabled: !!id
+  })
+}
+
+export const useUpdateServiceFund = () => {
+  const queryClient = useQueryClient()
+  const { toast } = useToast()
+
+  return useMutation(updateServiceFundFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('service-funds')
+      toast({
+        title: 'Proses Berhasil',
+        description: 'Data DJPM Berhasil Diubah'
+      })
+    },
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message ?? 'Gagal',
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
+    }
+  })
+}
+
+/* BANSOS HIBAH */
+export const useCreateOrganizationGrantAssistance = () => {
   const queryClient = useQueryClient()
   const { toast } = useToast()
 
   return useMutation(storeOrganizationGrantAssistanceFn, {
     onSuccess: () => {
-      void queryClient.invalidateQueries('hibah')
+      void queryClient.invalidateQueries('organization-grant-assistance')
       toast({
         title: 'Berhasil',
         description: 'Data Hibah berhasil ditambahkan'
@@ -123,7 +156,7 @@ export const useCreateHibah = () => {
 
 export const useGetOrganizationGrantAssistance = ({ page, budgetYear, name }: OrganizationGrantAssistanceQuery) => {
   return useQuery(
-    ['hibah', page, budgetYear, name],
+    ['organization-grant-assistance', page, budgetYear, name],
     async () => await getOrganizationGrantAssistance({ page, budgetYear, name }),
     {
       keepPreviousData: true,
@@ -132,13 +165,14 @@ export const useGetOrganizationGrantAssistance = ({ page, budgetYear, name }: Or
   )
 }
 
-export const useCreateKube = () => {
+/* KUBE */
+export const useCreateBusinessGroup = () => {
   const queryClient = useQueryClient()
   const { toast } = useToast()
 
   return useMutation(storeKubeFn, {
     onSuccess: () => {
-      void queryClient.invalidateQueries('kube')
+      void queryClient.invalidateQueries('business-group')
       toast({
         title: 'Proses Berhasil!!',
         description: 'Data Kube Berhasil Ditambahkan'
@@ -160,7 +194,7 @@ export const useCreateKube = () => {
 
 export const useGetBusinessGroup = ({ page, q, idKecamatan, idKelurahan, year }: BusinessGroupQuery) => {
   return useQuery(
-    ['kube', page, q, idKecamatan, idKelurahan, year],
+    ['business-group', page, q, idKecamatan, idKelurahan, year],
     async () => await getBusinessGroupFn({ page, q, idKecamatan, idKelurahan, year }),
     {
       keepPreviousData: true,
@@ -169,13 +203,14 @@ export const useGetBusinessGroup = ({ page, q, idKecamatan, idKelurahan, year }:
   )
 }
 
-export const useCreatePokmas = () => {
+/* POKMAS */
+export const useCreateCommunityGroups = () => {
   const queryClient = useQueryClient()
   const { toast } = useToast()
 
   return useMutation(storePokmasFn, {
     onSuccess: () => {
-      void queryClient.invalidateQueries('pokmas')
+      void queryClient.invalidateQueries('community-groups')
       toast({
         title: 'Proses Berhasil',
         description: 'Data Pokmas Berhasil Ditambahkan'
@@ -195,6 +230,35 @@ export const useCreatePokmas = () => {
   })
 }
 
+export const useGetCommunityGroups = ({
+  page,
+  q,
+  idKecamatan,
+  idKelurahan,
+  communityActivityCode,
+  status,
+  applicationYear
+}: CommunityGroupQuery) => {
+  return useQuery(
+    ['community-groups', page, q, idKecamatan, idKelurahan, communityActivityCode, status, applicationYear],
+    async () =>
+      await getCommunityGroupsFn({
+        page,
+        q,
+        idKecamatan,
+        idKelurahan,
+        communityActivityCode,
+        status,
+        applicationYear
+      }),
+    {
+      keepPreviousData: true,
+      staleTime: 5000
+    }
+  )
+}
+
+/* VETERAN */
 export const useGetVeteran = ({ page, q }: VeteranQuery) => {
   return useQuery(['veterans', page, q], async () => await getVeteranFn({ page, q }), {
     keepPreviousData: true,
@@ -226,34 +290,7 @@ export const useCreateVeteran = () => {
   })
 }
 
-export const useGetCommunityGroups = ({
-  page,
-  q,
-  idKecamatan,
-  idKelurahan,
-  community_activity_code,
-  status,
-  application_year
-}: CommunityGroupQuery) => {
-  return useQuery(
-    ['community-groups', page, q, idKecamatan, idKelurahan, community_activity_code, status, application_year],
-    async () =>
-      await getCommunityGroupsFn({
-        page,
-        q,
-        idKecamatan,
-        idKelurahan,
-        community_activity_code,
-        status,
-        application_year
-      }),
-    {
-      keepPreviousData: true,
-      staleTime: 5000
-    }
-  )
-}
-
+/* BANSOS BANTUAN BBM */
 export const useGetFuelCashAssistance = ({ page, q }: FuelCashQuery) => {
   return useQuery(['fuel-cash-assistances', page, q], async () => await getFuelCashAssistanceFn({ page, q }), {
     keepPreviousData: true,
@@ -261,49 +298,10 @@ export const useGetFuelCashAssistance = ({ page, q }: FuelCashQuery) => {
   })
 }
 
+/* BANSOS BANTUAN NON TUNAI */
 export const useGetNonCashFoodAssistanceBeneficiary = ({ page }: NonCashFoodAssistanceBeneficiaryQuery) => {
   return useQuery(['non-cash', page], async () => await getNonCashFoodAssistanceBeneficiary({ page }), {
     keepPreviousData: true,
     staleTime: 5000
-  })
-}
-
-export const useGetServiceFund = (id?: string) => {
-  return useQuery(['service-fund', id], async () => await showServiceFundFn(id as string), {
-    enabled: !!id
-  })
-}
-
-export const useUpdateServiceFund = () => {
-  const queryClient = useQueryClient()
-  const { toast } = useToast()
-
-  return useMutation(updateServiceFundFn, {
-    onSuccess: () => {
-      void queryClient.invalidateQueries('service-funds')
-      toast({
-        title: 'Proses Berhasil',
-        description: 'Data Pokmas Berhasil Ditambahkan'
-      })
-    },
-    onError: (error: AxiosError) => {
-      const errorResponse = error.response?.data as IErrorResponse
-      if (errorResponse !== undefined) {
-        toast({
-          variant: 'destructive',
-          title: errorResponse.message ?? 'Gagal',
-          description: 'Terjadi masalah dengan permintaan Anda.'
-        })
-      }
-    }
-  })
-}
-
-export const useCreateDjpm = () => {
-  const queryClient = useQueryClient()
-  return useMutation(storeDjpm, {
-    onSuccess: () => {
-      void queryClient.invalidateQueries('create-djpm')
-    }
   })
 }
