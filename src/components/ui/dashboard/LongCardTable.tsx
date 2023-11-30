@@ -1,5 +1,3 @@
-import { PieChart } from "lucide-react"
-import { useState } from "react";
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import "chartjs-plugin-datalabels";
@@ -66,17 +64,17 @@ export const UserData = [
 //         }
 //     }
 // };
-const options = {
-    plugins: {
-        legend: {
-            position: 'bottom'
-        },
-        datalabels: {
-            display: true,
-            color: "white"
-        }
-    }
-};
+// const options = {
+//     plugins: {
+//         legend: {
+//             position: 'bottom'
+//         },
+//         datalabels: {
+//             display: true,
+//             color: "white"
+//         }
+//     }
+// };
 const LongCardTable = ({ props }: any) => {
     const [title, description] = props
 

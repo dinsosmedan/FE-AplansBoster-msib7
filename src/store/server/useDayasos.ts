@@ -12,15 +12,17 @@ import {
   storeWorshipPlaceFn,
   getCommunityGroupsFn,
   getBusinessGroupFn,
-  BusinessGroupQuery,
+  type BusinessGroupQuery,
   getFuelCashAssistanceFn,
-  FuelCashQuery,
+  type FuelCashQuery,
   type OrganizationGrantAssistanceQuery,
   type VeteranQuery,
   type WorshipPlaceQuery,
   type CommunityGroupQuery,
   ServiceFundQuery,
-  getWorshipPlacesFn
+  getWorshipPlacesFn,
+  type NonCashFoodAssistanceBeneficiaryQuery,
+  getNonCashFoodAssistanceBeneficiary
 } from '@/api/dayasos.api'
 import { useToast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -222,6 +224,13 @@ export const useGetBusinessGroup = ({ page, q, idKecamatan, idKelurahan, year }:
 }
 export const useGetFuelCashAssistance = ({ page, q }: FuelCashQuery) => {
   return useQuery(['fuel-cash-assistances', page, q], async () => await getFuelCashAssistanceFn({ page, q }), {
+    keepPreviousData: true,
+    staleTime: 5000
+  })
+}
+
+export const useGetNonCashFoodAssistanceBeneficiary = ({ page }: NonCashFoodAssistanceBeneficiaryQuery) => {
+  return useQuery(['non-cash', page], async () => await getNonCashFoodAssistanceBeneficiary({ page }), {
     keepPreviousData: true,
     staleTime: 5000
   })

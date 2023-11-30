@@ -9,9 +9,8 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { useTitleHeader } from '@/store/client/useTitleHeader'
-import { useGetMe, useLogout } from '@/store/server'
+import { useLogout } from '@/store/server'
 import { useAlert } from '@/store/client'
-import { Skeleton } from '../ui/skeleton'
 
 export default function Header() {
   const { alert } = useAlert()

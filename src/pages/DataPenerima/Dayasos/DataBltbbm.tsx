@@ -21,11 +21,10 @@ const DataBltbbm = () => {
 
   const forms = useForm<FormValues>({
     defaultValues: {
-      q: '',
+      q: ''
     }
   })
   const [isLoadingPage, setIsLoadingPage] = React.useState(false)
-
 
   const {
     data: fuelCashAssistance,
@@ -36,6 +35,7 @@ const DataBltbbm = () => {
     page: parseInt(page) ?? 1,
     q: q,
   })
+  useDisableBodyScroll(isFetching)
 
   useDisableBodyScroll(isFetching)
   console.log(fuelCashAssistance)
@@ -44,13 +44,13 @@ const DataBltbbm = () => {
       createParams({
         key: 'q',
         value: values.q !== '' ? values.q : ''
-      });
-      createParams({ key: 'page', value: '' }); // Set page to empty string when searching
+      })
+      createParams({ key: 'page', value: '' }) // Set page to empty string when searching
     } else {
-      createParams({ key: 'q', value: '' }); // Set q to empty string if the search query is empty
+      createParams({ key: 'q', value: '' }) // Set q to empty string if the search query is empty
     }
-    await refetch();
-  };
+    await refetch()
+  }
   React.useEffect(() => {
     if (isFetching) {
       setIsLoadingPage(true)

@@ -14,6 +14,7 @@ import * as React from 'react'
 import { useToast } from '@/components/ui/use-toast'
 import { HiTrash } from 'react-icons/hi2'
 import { cn } from '@/lib/utils'
+import DatePicker from './../../../components/atoms/DatePicker'
 
 const COMMUNITY_ACTIVITY_CODE = [
   { label: 'Muslim', value: 'COMMUNITY_ACTIVITY_CODE_1' },
@@ -48,9 +49,9 @@ const Pokmas = () => {
       communityAssistanceType: '',
       areaLevel3: '',
       areaLevel4: '',
-      requestedRabAmount: '',
-      requestedBansosAmount: '',
-      approvedFundAmount: '',
+      // requestedRabAmount: '',
+      // requestedBansosAmount: '',
+      // approvedFundAmount: '',
       applicationYear: '',
       bankName: '',
       bankAccName: '',
@@ -372,7 +373,7 @@ const Pokmas = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Jadwal Pelaksaaan</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Jadwal Pelaksaaan" />
+                      <DatePicker onChange={field.onChange} selected={field.value}/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

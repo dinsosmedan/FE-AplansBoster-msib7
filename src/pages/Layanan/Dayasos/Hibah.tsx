@@ -34,7 +34,7 @@ const Hibah = () => {
       bankAccountNumber: '',
       bankName: '',
       bankAccountAddress: '',
-      approvedAmount: '',
+      // approvedAmount: '' | 0,
       budgetYear: '',
       note: ''
     }

@@ -40,22 +40,17 @@ const DataVeteran = () => {
   useDisableBodyScroll(isFetching)
 
   const onSubmit = async (values: FormValues) => {
-    const queryParams = {};
-
     if (values.q !== '') {
-      queryParams['q'] = values.q;
-      queryParams['page'] = ''; // Set page to empty string when searching
+      createParams({
+        key: 'q',
+        value: values.q !== '' ? values.q : ''
+      });
+      createParams({ key: 'page', value: '' }); // Set page to empty string when searching
     } else {
-      queryParams['q'] = ''; // Set q to empty string if the search query is empty
+      createParams({ key: 'q', value: '' }); // Set q to empty string if the search query is empty
     }
-
-    Object.keys(queryParams).forEach((key) => {
-      createParams({ key, value: queryParams[key] });
-    });
-
     await refetch();
   };
-
 
 
   React.useEffect(() => {

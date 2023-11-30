@@ -14,7 +14,6 @@ import {
   Bpnt,
   Kube,
   Hibah,
-  Djp,
   Ri,
   Bbp,
   Pkh,
@@ -28,7 +27,7 @@ import {
   Sktm
   // InfoDataMaster
 } from './pages'
-import { DashboardLayout, Alert, ProtectedAuth, ProtectedRoute } from './components'
+import { DashboardLayout, Alert } from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
 import LayananRehabsos from './pages/Layanan/LayananRehabsos'
 import LayananLinjamsos from './pages/Layanan/LayananLinjamsos'
@@ -45,6 +44,8 @@ import DataKube from './pages/DataPenerima/Dayasos/DataKube'
 import DataRumahIbadah from './pages/DataPenerima/Dayasos/DataRumahIbadah'
 import DataHibah from './pages/DataPenerima/Dayasos/DataHibah'
 import { Toaster } from './components/ui/toaster'
+import DataBpnt from './pages/DataPenerima/Dayasos/DataBpnt'
+import DataPkr from './pages/DataPenerima/Linjamsos/DataPkr'
 
 export default function App() {
   const { alertOptions, handleClose, handleSubmit } = useAlert()
@@ -109,6 +110,11 @@ export default function App() {
             <Route path="data-veteran" element={<DataVeteran />} />
             <Route path="data-bltbbm" element={<DataBltbbm />} />
             <Route path="data-hibah" element={<DataHibah />} />
+            <Route path="data-bpnt" element={<DataBpnt />} />
+          </Route>
+          <Route path="/data-penerima/linjmamsos">
+            <Route index element={<DataPenerimaLinjamsos />} />
+            <Route path="data-pkr" element={<DataPkr />} />
           </Route>
         </Route>
         {/* </Route> */}
