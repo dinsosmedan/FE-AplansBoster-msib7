@@ -3,16 +3,18 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import useTitle from '@/hooks/useTitle'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
-import { HiMagnifyingGlass, HiOutlineArrowUpOnSquare } from 'react-icons/hi2'
+import { HiMagnifyingGlass, HiMiniTrash, HiOutlineArrowUpOnSquare } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useGetOrganizationGrantAssistance } from './../../../store/server/useDayasos'
+import { useDeleteOrganizationGrantAssistance, useGetOrganizationGrantAssistance } from './../../../store/server/useDayasos'
 import { Loading, Search } from '@/components'
+import { useAlert } from '@/store/client'
 
 const DataHibah = () => {
   useTitle('Data Penerima / Dayasos / Bansos Hibah Organisasi/Lembaga (BHO) ')
+  const { alert } = useAlert()
   const createParams = useCreateParams()
   const { q, budgetYear, page } = useGetParams(['q', 'budgetYear', 'page'])
 
@@ -66,7 +68,17 @@ const DataHibah = () => {
 
     await refetch()
   }
-
+  const { mutateAsync: deleteOrganizationGrantAssistance } = useDeleteOrganizationGrantAssistance()
+  const handleDelete = (id: string) => {
+    void alert({
+      title: 'Hapus Data DJPM',
+      description: 'Apakah kamu yakin ingin menghapus data ini?',
+      variant: 'danger',
+      submitText: 'Delete'
+    }).then(async() => {
+      await deleteOrganizationGrantAssistance(id)
+    })
+  }
   React.useEffect(() => {
     if (isFetching) {
       setIsLoadingPage(true)
@@ -122,29 +134,41 @@ const DataHibah = () => {
           </div>
         </form>
       </Form>
+      <section className="border rounded-xl mt-5 overflow-hidden">
       <Table className="mt-5">
         <TableHeader className="bg-[#FFFFFF]">
           <TableRow>
-            <TableHead className="text-black">Nama Lembaga</TableHead>
-            <TableHead className="text-black">Nama Ketua</TableHead>
-            <TableHead className="text-black">NIK</TableHead>
-            <TableHead className="text-black">Alamat</TableHead>
-            <TableHead className="text-black">Nomor Handphone</TableHead>
-            <TableHead className="text-black">Jumlah Bantuan</TableHead>
-            <TableHead className="text-black">Tahun</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Lembaga</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Ketua</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Handphone</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah Bantuan</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {organizationGrantAssistance?.data?.length !== 0 ? (
-            organizationGrantAssistance?.data.map((item) => (
+            organizationGrantAssistance?.data.map((item, index) => (
               <TableRow key={item.id}>
-                <TableCell className="text-center">{item.name}</TableCell>
-                <TableCell className="text-center">{item.chairmanName}</TableCell>
-                <TableCell className="text-center">{item.chairmanIdentityNumber}</TableCell>
-                <TableCell className="text-center">{item.address.fullAddress}</TableCell>
-                <TableCell className="text-center">{item.contactNumber}</TableCell>
-                <TableCell className="text-center">{item.aprrovedAmount}</TableCell>
-                <TableCell className="text-center">{item.budgetYear}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{(organizationGrantAssistance.meta.currentPage - 1) * organizationGrantAssistance.meta.perPage + index + 1}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{item.name}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{item.chairmanName}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{item.chairmanIdentityNumber}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{item.address.fullAddress}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{item.contactNumber}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{item.aprrovedAmount}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{item.budgetYear}</TableCell>
+                <TableCell className="bg-[#F9FAFC]"><Button
+                      size="icon"
+                      variant="default"
+                      className=" text-white hover:text-white"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      <HiMiniTrash className="text-lg" />
+                    </Button></TableCell>
               </TableRow>
             ))
           ) : (
@@ -156,6 +180,7 @@ const DataHibah = () => {
           )}
         </TableBody>
       </Table>
+      </section>
       {(organizationGrantAssistance?.meta?.total as number) > 30 ? (
         <Pagination
           className="px-5 py-5 flex justify-end"

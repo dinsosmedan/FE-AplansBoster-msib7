@@ -6,7 +6,7 @@ import { Container, Loading, Pagination } from '@/components'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 import { JENIS_RUMAH_IBADAH } from '@/pages/Layanan/Dayasos/RumahIbadah'
 
-import { useGetWorshipPlaces } from '@/store/server/useDayasos'
+import { useDeleteWorshipPlace, useGetWorshipPlaces } from '@/store/server/useDayasos'
 import { useGetKecamatan, useGetKelurahan } from '@/store/server'
 
 import { Input } from '@/components/ui/input'
@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { useAlert } from '@/store/client'
 
 interface FormValues {
   q: string
@@ -24,6 +25,7 @@ interface FormValues {
 
 const DataRumahIbadah = () => {
   useTitle('Data Penerima / Dayasos / Rumah Ibadah (RI) ')
+  const { alert } = useAlert()
   const createParams = useCreateParams()
   const { page, q, kecamatan, kelurahan, type } = useGetParams(['page', 'q', 'type', 'kecamatan', 'kelurahan'])
 
@@ -80,6 +82,17 @@ const DataRumahIbadah = () => {
     updateParam('q', values.q)
 
     await refetch()
+  }
+  const { mutateAsync: deleteWorshipPlace } = useDeleteWorshipPlace()
+  const handleDelete = (id: string) => {
+    void alert({
+      title: 'Hapus Data DJPM',
+      description: 'Apakah kamu yakin ingin menghapus data ini?',
+      variant: 'danger',
+      submitText: 'Delete'
+    }).then(async() => {
+      await deleteWorshipPlace(id)
+    })
   }
   React.useEffect(() => {
     if (isFetching) {
@@ -199,19 +212,22 @@ const DataRumahIbadah = () => {
           </div>
         </form>
       </Form>
+      <section className="border rounded-xl mt-5 overflow-hidden">
       <Table className="mt-5">
         <TableHeader className="bg-[#FFFFFF]">
           <TableRow>
-            <TableHead className="text-black">No.</TableHead>
-            <TableHead className="text-black">Nama Rumah Ibadah</TableHead>
-            <TableHead className="text-black">Jenis Rumah Ibadah</TableHead>
-            <TableHead className="text-black">Alamat</TableHead>
-            <TableHead className="text-black">Kelurahan</TableHead>
-            <TableHead className="text-black">Kecamatan</TableHead>
-            <TableHead className="text-black">Nama Penanggung jawab</TableHead>
-            <TableHead className="text-black">Nomor Handphone</TableHead>
-            <TableHead className="text-black">Status</TableHead>
-            <TableHead className="text-black">Keterangan</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Rumah Ibadah</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Rumah Ibadah</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Penanggung jawab</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Handphone</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Status</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Keterangan</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
+
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -221,15 +237,23 @@ const DataRumahIbadah = () => {
                 <TableCell className="text-left">
                   {(worshipPlaces.meta.currentPage - 1) * worshipPlaces.meta.perPage + index + 1}
                 </TableCell>
-                <TableCell className="text-center text-black">{item.name}</TableCell>
-                <TableCell className="text-center text-black">{item.type}</TableCell>
-                <TableCell className="text-center text-black">{item.address}</TableCell>
-                <TableCell className="text-center text-black">{item.areaLevel3?.name}</TableCell>
-                <TableCell className="text-center text-black">{item.areaLevel4?.name}</TableCell>
-                <TableCell className="text-center text-black">{item.picName}</TableCell>
-                <TableCell className="text-center text-black">{item.picPhone}</TableCell>
-                <TableCell className="text-center text-black">{item.status}</TableCell>
-                <TableCell className="text-center text-black">{item.note}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{item.name}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{item.type}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{item.address}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{item.areaLevel3?.name}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{item.areaLevel4?.name}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{item.picName}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{item.picPhone}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{item.status}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{item.note}</TableCell>
+                <TableCell className="bg-[#F9FAFC]"><Button
+                      size="icon"
+                      variant="default"
+                      className=" text-white hover:text-white"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      <HiMiniTrash className="text-lg" />
+                    </Button></TableCell>
               </TableRow>
             ))
           ) : (
@@ -241,6 +265,7 @@ const DataRumahIbadah = () => {
           )}
         </TableBody>
       </Table>
+      </section>
       {(worshipPlaces?.meta?.total as number) > 10 ? (
         <Pagination
           className="px-5 py-5 flex justify-end"

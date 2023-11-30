@@ -37,8 +37,6 @@ const DataBltbbm = () => {
   })
   useDisableBodyScroll(isFetching)
 
-  useDisableBodyScroll(isFetching)
-  console.log(fuelCashAssistance)
   const onSubmit = async (values: FormValues) => {
     if (values.q !== '') {
       createParams({
@@ -51,6 +49,7 @@ const DataBltbbm = () => {
     }
     await refetch()
   }
+
   React.useEffect(() => {
     if (isFetching) {
       setIsLoadingPage(true)
@@ -91,13 +90,14 @@ const DataBltbbm = () => {
             </div>
           </form>
         </Form>
+      <section className="border rounded-xl mt-5 overflow-hidden">
         <Table className="mt-5">
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
-              <TableHead className="text-black text-left font-bold uppercase">Nomor</TableHead>
-              <TableHead className="text-black text-left font-bold uppercase">Nama</TableHead>
-              <TableHead className="text-black text-left font-bold uppercase">NIK</TableHead>
-              <TableHead className="text-black text-left font-bold uppercase"> Jenis Keanggotaan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]"> Jenis Keanggotaan</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -107,9 +107,9 @@ const DataBltbbm = () => {
                   <TableCell className="text-left">
                     {(fuelCashAssistance.meta.currentPage - 1) * fuelCashAssistance.meta.perPage + index + 1}
                   </TableCell>
-                  <TableCell className="text-left">{item.beneficiary.name}</TableCell>
-                  <TableCell className="text-left">{item.beneficiary.identityNumber}</TableCell>
-                  <TableCell className="text-left">{item.type}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.identityNumber}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.type}</TableCell>
                 </TableRow>
               ))
             ) : (
@@ -121,6 +121,7 @@ const DataBltbbm = () => {
             )}
           </TableBody>
         </Table>
+        </section>
         {(fuelCashAssistance?.meta?.total as number) > 10 ? (
           <Pagination
             className="px-5 py-5 flex justify-end"

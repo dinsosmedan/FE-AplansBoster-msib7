@@ -192,3 +192,24 @@ interface UpdateServiceFundParams {
 export const updateServiceFundFn = async ({ id, fields }: UpdateServiceFundParams) => {
   await api.put(`/service-fund/${id}`, fields)
 }
+export const deleteServiceFundFn = async (id: string) => {
+  await api.delete(`/service-fund/${id}`)
+}
+export const deleteOrganizationGrantAssistanceFn = async (id: string) => {
+  await api.delete(`/organization-grant-assistance/${id}`)
+}
+export const deleteWorshipPlaceFn = async (id: string) => {
+  await api.delete(`/worship-place/${id}`)
+}
+export const deleteBusinessGroupFn = async (id: string) => {
+  await api.delete(`/joint-business-group/${id}`)
+}
+export const deleteCommunityGroupsFn = async (id: string) => {
+  await api.delete(`/community-group/${id}`)
+}
+export const deleteVeteranFn = async (id: string) => {
+  await api.delete(`/veteran/${id}`)
+}
+export const deleteFuelCashAssistanceFn = async (id: string) => {
+  await api.delete(`/fuel-cash-assistance/${id}`)
+}

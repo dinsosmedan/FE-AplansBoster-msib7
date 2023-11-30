@@ -4,16 +4,18 @@ import useTitle from '@/hooks/useTitle'
 import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { HiMagnifyingGlass } from 'react-icons/hi2'
+import { HiMagnifyingGlass, HiMiniTrash } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useGetVeteran } from '@/store/server'
+import { useDeleteVeteran, useGetVeteran } from '@/store/server'
 import { Loading } from '@/components'
+import { useAlert } from '@/store/client'
 
 const DataVeteran = () => {
   useTitle('Data Penerima / Dayasos / Veteran ')
+  const { alert } = useAlert()
   const createParams = useCreateParams()
   const { q, page } = useGetParams(['q', 'page'])
   const [isLoadingPage, setIsLoadingPage] = React.useState(false)
@@ -51,7 +53,17 @@ const DataVeteran = () => {
     }
     await refetch()
   }
-
+  const { mutateAsync: deleteVeteran } = useDeleteVeteran()
+  const handleDelete = (id: string) => {
+    void alert({
+      title: 'Hapus Data Veteran',
+      description: 'Apakah kamu yakin ingin menghapus data ini?',
+      variant: 'danger',
+      submitText: 'Delete'
+    }).then(async() => {
+      await deleteVeteran(id)
+    })
+  }
   React.useEffect(() => {
     if (isFetching) {
       setIsLoadingPage(true)
@@ -90,27 +102,41 @@ const DataVeteran = () => {
             </div>
           </form>
         </Form>
+      <section className="border rounded-xl mt-5 overflow-hidden">
         <Table className="mt-5">
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
-              <TableHead className="text-black">Nama</TableHead>
-              <TableHead className="text-black">NIK</TableHead>
-              <TableHead className="text-black"> Jenis Keanggotaan</TableHead>
-              <TableHead className="text-black">NPV</TableHead>
-              <TableHead className="text-black">Satuan</TableHead>
-              <TableHead className="text-black">Ukuran Baju / Celana</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]"> Jenis Keanggotaan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">NPV</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Satuan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Ukuran Baju / Celana</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {veterans?.data?.length !== 0 ? (
-              veterans?.data.map((veteran) => (
+              veterans?.data.map((veteran, index) => (
                 <TableRow key={veteran.id}>
-                  <TableCell className="text-center">{veteran.beneficiary.name}</TableCell>
-                  <TableCell className="text-center">{veteran.beneficiary.identityNumber}</TableCell>
-                  <TableCell className="text-center">{veteran.isActive}</TableCell>
-                  <TableCell className="text-center">{veteran.veteranUnit}</TableCell>
-                  <TableCell className="text-center">{veteran.veteranUnit}</TableCell>
-                  <TableCell className="text-center">{veteran.uniformSize}</TableCell>
+                  <TableCell className="text-left bg-[#F9FAFC]">
+                    {(veterans.meta.currentPage - 1) * veterans.meta.perPage + index + 1}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{veteran.beneficiary.name}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{veteran.beneficiary.identityNumber}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{veteran.isActive}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{veteran.veteranUnit}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{veteran.veteranUnit}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{veteran.uniformSize}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]"><Button
+                      size="icon"
+                      variant="default"
+                      className=" text-white hover:text-white"
+                      onClick={() => handleDelete(veteran.id)}
+                    >
+                      <HiMiniTrash className="text-lg" />
+                    </Button></TableCell>
                 </TableRow>
               ))
             ) : (
@@ -122,6 +148,7 @@ const DataVeteran = () => {
             )}
           </TableBody>
         </Table>
+        </section>
         {(veterans?.meta?.total as number) > 10 ? (
           <Pagination
             className="px-5 py-5 flex justify-end"
