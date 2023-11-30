@@ -74,6 +74,8 @@ const DataDjp = () => {
     return <Loading />
   }
 
+  console.log(serviceFunds?.data)
+
   return (
     <Container>
       {isFetching && <Loading />}
@@ -203,8 +205,8 @@ const DataDjp = () => {
                 <TableCell className="text-center">{serviceFund.beneficiary.address.areaLevel4?.name}</TableCell>
                 <TableCell className="text-center">{serviceFund.beneficiary.address.areaLevel3?.name}</TableCell>
                 <TableCell className="text-center">{serviceFund.serviceType.name}</TableCell>
-                <TableCell className="text-center">10.000.000</TableCell>
-                <TableCell className="text-center">Berhasil</TableCell>
+                <TableCell className="text-center">{serviceFund?.assistanceAmount ?? '-'}</TableCell>
+                <TableCell className="text-center">{serviceFund?.status ?? '-'}</TableCell>
               </TableRow>
             ))
           ) : (

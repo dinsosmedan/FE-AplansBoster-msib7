@@ -41,6 +41,7 @@
     "@typescript-eslint/indent": "off",
     "@typescript-eslint/consistent-type-assertions": "off",
     "@typescript-eslint/no-confusing-void-expression": "off",
-    "multiline-ternary": "off"
+    "multiline-ternary": "off",
+    "@typescript-eslint/strict-boolean-expressions": "off"
   }
 }
