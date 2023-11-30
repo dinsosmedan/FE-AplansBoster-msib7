@@ -66,17 +66,17 @@ export const UserData = [
 //         }
 //     }
 // };
-const options = {
-    plugins: {
-        legend: {
-            position: 'bottom'
-        },
-        datalabels: {
-            display: true,
-            color: "white"
-        }
-    }
-};
+// const options = {
+//     plugins: {
+//         legend: {
+//             position: 'bottom'
+//         },
+//         datalabels: {
+//             display: true,
+//             color: "white"
+//         }
+//     }
+// };
 
 // export default function CardLink({ children, className }: CardLayananProps) {
 //     return (

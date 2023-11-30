@@ -1,7 +1,6 @@
 import { showBeneficaryByNIKFn } from '@/api/beneficary.api'
-import { toast, useToast } from '@/components/ui/use-toast'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { Link } from 'react-router-dom'
+import { useToast } from '@/components/ui/use-toast'
+import { useMutation, useQuery } from 'react-query'
 import { useHiddenFormDjpm } from '../client/useHiddenFormDjpm'
 
 export const useGetBeneficaryByNIK = (nik: string, enabled: boolean) => {

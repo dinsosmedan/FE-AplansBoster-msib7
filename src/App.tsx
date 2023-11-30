@@ -14,7 +14,6 @@ import {
   Bpnt,
   Kube,
   Hibah,
-  Djp,
   Ri,
   Bbp,
   Pkh,
@@ -28,7 +27,7 @@ import {
   Sktm
   // InfoDataMaster
 } from './pages'
-import { DashboardLayout, Alert, ProtectedAuth, ProtectedRoute } from './components'
+import { DashboardLayout, Alert } from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
 import LayananRehabsos from './pages/Layanan/LayananRehabsos'
 import LayananLinjamsos from './pages/Layanan/LayananLinjamsos'
