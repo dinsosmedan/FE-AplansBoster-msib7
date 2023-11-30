@@ -45,6 +45,7 @@ import DataKube from './pages/DataPenerima/Dayasos/DataKube'
 import DataRumahIbadah from './pages/DataPenerima/Dayasos/DataRumahIbadah'
 import DataHibah from './pages/DataPenerima/Dayasos/DataHibah'
 import { Toaster } from './components/ui/toaster'
+import DataBpnt from './pages/DataPenerima/Dayasos/DataBpnt'
 
 export default function App() {
   const { alertOptions, handleClose, handleSubmit } = useAlert()
@@ -109,6 +110,7 @@ export default function App() {
             <Route path="data-veteran" element={<DataVeteran />} />
             <Route path="data-bltbbm" element={<DataBltbbm />} />
             <Route path="data-hibah" element={<DataHibah />} />
+            <Route path="data-bpnt" element={<DataBpnt/>} />
           </Route>
         </Route>
         {/* </Route> */}
