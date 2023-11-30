@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { HiMagnifyingGlass } from 'react-icons/hi2'
+import { HiMagnifyingGlass, HiMiniTrash } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
@@ -14,26 +14,26 @@ import { useGetCommunityGroups, useGetKecamatan, useGetKelurahan } from '@/store
 import { Loading } from '@/components'
 interface FormValues {
   q: string
-  code: string
+  community_activity_code: string
   status: string
   kecamatan: string
   kelurahan: string
-  year: string
+  application_year: string
 }
 const DataPokmas = () => {
   useTitle('Data Penerima / Dayasos / Pokmas ')
   const createParams = useCreateParams()
-  const { page, q, kecamatan, kelurahan, code, status, year } = useGetParams(['page', 'q', 'kecamatan', 'kelurahan', 'code', 'status', 'year'])
+  const { page, q, kecamatan, kelurahan, community_activity_code, status, application_year } = useGetParams(['page', 'q', 'kecamatan', 'kelurahan', 'community_activity_code', 'status', 'application_year'])
 
 
   const forms = useForm<FormValues>({
     defaultValues: {
       q: '',
-      code: '',
+      community_activity_code: '',
       status: '',
       kecamatan: '',
       kelurahan: '',
-      year: ''
+      application_year: ''
     }
   })
   const [isLoadingPage, setIsLoadingPage] = React.useState(false)
@@ -51,17 +51,43 @@ const DataPokmas = () => {
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
     q: q,
-    code: code, status: status, year: year
+    community_activity_code: community_activity_code,
+    status: status,
+    application_year: application_year
   })
   useDisableBodyScroll(isFetching)
+
+  const handleReset = () => {
+    forms.reset({ q: '', kecamatan: '', kelurahan: '', application_year: '', status: '', community_activity_code: '' });
+    createParams({ key: 'q', value: '' });
+    createParams({ key: 'application_year', value: '' });
+    createParams({ key: 'kecamatan', value: '' });
+    createParams({ key: 'kelurahan', value: '' });
+    createParams({ key: 'status', value: '' });
+    createParams({ key: 'community_activity_code', value: '' });
+    // Tambahan untuk memastikan reset pada list kelurahan saat kecamatan di-reset
+    forms.setValue('kelurahan', '');
+  };
+  const updateParam = (key: any, value: any) => {
+    if (value !== '') {
+      createParams({ key, value });
+      createParams({ key: 'page', value: '' });
+    } else {
+      createParams({ key, value: '' });
+    }
+  };
+
   const onSubmit = async (values: FormValues) => {
-    Object.keys(values).forEach((key) => {
-      if (values[key as keyof FormValues] !== '') {
-        createParams({ key, value: values[key as keyof FormValues] })
-      }
-    })
-    await refetch()
-  }
+    updateParam('q', values.q);
+    updateParam('application_year', values.application_year);
+    updateParam('kecamatan', values.kecamatan);
+    updateParam('kelurahan', values.kelurahan);
+    updateParam('status', values.status);
+    updateParam('community_activity_code', values.community_activity_code);
+
+    await refetch();
+  };
+
 
   React.useEffect(() => {
     if (isFetching) {
@@ -77,7 +103,8 @@ const DataPokmas = () => {
   return (
     <div>
       <Container>
-        <h1 className="font-bold text-xl ">Data Kelompok Masyarakat (Pokmas)</h1>
+        {isFetching && <Loading />}
+        <h1 className="font-bold text-xl ">Dat a Kelompok Masyarakat (Pokmas)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
             <div className="grid grid-cols-3 gap-x-10 gap-y-5 pt-10">
@@ -93,7 +120,7 @@ const DataPokmas = () => {
                 )}
               />
               <FormField
-                name="code"
+                name="community_activity_code"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -154,7 +181,7 @@ const DataPokmas = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} defaultValue={field.value} disabled={areaLevel3 === '' && kecamatan === ''}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Kelurahan" />
@@ -173,21 +200,25 @@ const DataPokmas = () => {
                 )}
               />
               <FormField
-                name="year"
+                name="application_year"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Tahun Pencairan" />
+                      <Input {...field} type="text" placeholder="Masukkan Tahun" />
                     </FormControl>
                   </FormItem>
                 )}
               />
             </div>
-            <div className="w-[140px] h-[50px] ml-auto rounded-xl">
-              <Button className="py-6">
-                <HiMagnifyingGlass className="w-6 h-6 py" />
-                <p className="font-bold text-sm text-white ml-3">Cari Data</p>
+            <div className='flex justify-end gap-3'>
+              <Button onClick={handleReset} className="w-fit py-6 px-4 bg-primary">
+                <HiMiniTrash className="w-6 h-6 text-white" />
+                <p className="text-white font-semibold text-sm pl-2 w-max">Reset</p>
+              </Button>
+              <Button className="w-fit py-6 px-4 bg-primary">
+                <HiMagnifyingGlass className="w-6 h-6 text-white" />
+                <p className="text-white font-semibold text-sm pl-2 w-max">Cari Data</p>
               </Button>
             </div>
           </form>
@@ -195,6 +226,7 @@ const DataPokmas = () => {
         <Table className="mt-5">
           <TableHeader className="bg-zinc-300">
             <TableRow>
+              <TableHead className="text-black">No.</TableHead>
               <TableHead className="text-black">Kode Kegiatan</TableHead>
               <TableHead className="text-black">Nama Kelompok Masyarakat</TableHead>
               <TableHead className="text-black">Kecamatan</TableHead>
@@ -208,8 +240,9 @@ const DataPokmas = () => {
           </TableHeader>
           <TableBody>
             {communityGroup?.data?.length !== 0 ? (
-              communityGroup?.data.map((item) => (
+              communityGroup?.data.map((item, index) => (
                 <TableRow key={item.id}>
+                  <TableCell className="text-left">{(communityGroup.meta.currentPage - 1) * communityGroup.meta.perPage + index + 1}</TableCell>
                   <TableCell className="text-center text-black">{item.communityActivityCode}</TableCell>
                   <TableCell className="text-center text-black">{item.communityName}</TableCell>
                   <TableCell className="text-center text-black">{item.address?.areaLevel3?.name}</TableCell>
