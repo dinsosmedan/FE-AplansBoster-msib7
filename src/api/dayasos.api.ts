@@ -213,3 +213,23 @@ export const deleteVeteranFn = async (id: string) => {
 export const deleteFuelCashAssistanceFn = async (id: string) => {
   await api.delete(`/fuel-cash-assistance/${id}`)
 }
+
+export const updateCommunityGroupFn = async (id: string, fields: pokmasFields) => {
+  await api.put(`/community-group/${id}`, fields)
+}
+
+export const updateOrganizationGrantAssistance = async (id: string, fields: hibahFields) => {
+  await api.put(`/organization-grant-assistance/${id}`, fields)
+}
+
+export const updateWorshipPlace = async (id: string, fields: worshipPlaceFields) => {
+  await api.put(`/worship-place/${id}`, fields)
+}
+
+export const updateVeteran = async (id: string, fields: veteranFields) => {
+  await api.put(`/veteran/${id}`, fields)
+}
+
+export const updateBusinessGroup = async (id: string, fields: kubeFields) => {
+  await api.put(`/joint-business-group/${id}`, fields)
+}

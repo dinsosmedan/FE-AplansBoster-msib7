@@ -339,6 +339,7 @@ export const useDeleteCommunityGroups = () => {
     }
   })
 }
+
 /* VETERAN */
 export const useGetVeteran = ({ page, q }: VeteranQuery) => {
   return useQuery(['veterans', page, q], async () => await getVeteranFn({ page, q }), {
@@ -407,6 +408,7 @@ export const useDeleteFuelCashAssistance = () => {
     }
   })
 }
+
 /* BANSOS BANTUAN NON TUNAI */
 export const useGetNonCashFoodAssistanceBeneficiary = ({ page }: NonCashFoodAssistanceBeneficiaryQuery) => {
   return useQuery(['non-cash', page], async () => await getNonCashFoodAssistanceBeneficiary({ page }), {
