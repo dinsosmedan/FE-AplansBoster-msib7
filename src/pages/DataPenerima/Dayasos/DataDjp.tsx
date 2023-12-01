@@ -9,7 +9,7 @@ import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useDeleteServiceFund, useGetKecamatan, useGetKelurahan, useGetServiceFunds } from '@/store/server'
+import { useDeleteServiceFund, useGetKecamatan, useGetKelurahan, useGetServiceFunds, useGetServiceTypes } from '@/store/server'
 import { Action, Loading, Title } from '@/components'
 import { useNavigate } from 'react-router-dom'
 import { useAlert } from '@/store/client'
@@ -19,6 +19,7 @@ interface FormValues {
   q: string
   kelurahan: string
   kecamatan: string
+  type: string
 }
 
 const DataDjp = () => {
@@ -27,19 +28,22 @@ const DataDjp = () => {
 
   const navigate = useNavigate()
   const createParams = useCreateParams()
-  const { q, kecamatan, kelurahan, page } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page'])
+  const { q, kecamatan, kelurahan, page, type } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'type'])
 
   const forms = useForm<FormValues>({
     defaultValues: {
       q: '',
       kelurahan: '',
-      kecamatan: ''
+      kecamatan: '',
+      type: ''
     }
   })
 
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
+  const { data: serviceTypes } = useGetServiceTypes()
+
   const {
     data: serviceFunds,
     refetch,
@@ -49,7 +53,8 @@ const DataDjp = () => {
     page: parseInt(page) ?? 1,
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
-    name: q
+    name: q,
+    type
   })
 
   useDisableBodyScroll(isFetching)
@@ -59,13 +64,14 @@ const DataDjp = () => {
   }
   const onSubmit = async (values: FormValues) => {
     // Dapatkan nilai-nilai yang diisi dari form
-    const { q, kecamatan, kelurahan } = values
+    const { q, kecamatan, kelurahan, type } = values
 
     // Pastikan setiap parameter terisi sebelum pengiriman permintaan data
-    if (q || kecamatan || kelurahan) {
+    if (q || kecamatan || kelurahan || type) {
       createParams({ key: 'q', value: q })
       createParams({ key: 'kecamatan', value: kecamatan })
       createParams({ key: 'kelurahan', value: kelurahan })
+      createParams({ key: 'type', value: type })
       await refetch()
     }
   }
@@ -128,7 +134,31 @@ const DataDjp = () => {
                 </FormItem>
               )}
             />
-
+            <FormField
+              name="type"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Jenis Bantuan" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {serviceTypes?.map((item, index) => (
+                          <SelectItem key={index} value={item.id}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                </FormItem>
+              )}
+            />
             <FormField
               name="kelurahan"
               control={forms.control}

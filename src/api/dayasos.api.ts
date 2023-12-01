@@ -42,6 +42,7 @@ export interface ServiceFundQuery {
   idKecamatan?: string
   idKelurahan?: string
   name?: string
+  type: string
 }
 
 export interface OrganizationGrantAssistanceQuery {
@@ -100,11 +101,13 @@ export const getServiceFundsFn = async ({
   page,
   idKecamatan,
   idKelurahan,
-  name
+  name,
+  type
 }: ServiceFundQuery): Promise<IServiceFunds> => {
   const response = await api.get(
-    `/service-fund/?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${name}&limit=10`
+    `/service-fund?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${name}&type=${type}&limit=10`
   )
+  console.log(type)
   return response.data
 }
 
