@@ -4,5 +4,6 @@ import Sidebar from './Sidebar'
 import Modal from './Modal'
 import Alert from './Alert'
 import CardLink from './CardLink'
+import Action from './Action'
 
-export { Header, Footer, Sidebar, Modal, Alert, CardLink }
+export { Header, Footer, Sidebar, Modal, Alert, CardLink, Action }

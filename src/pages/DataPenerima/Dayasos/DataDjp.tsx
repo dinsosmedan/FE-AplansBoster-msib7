@@ -5,13 +5,12 @@ import useTitle from '@/hooks/useTitle'
 import { useForm } from 'react-hook-form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { HiArrowPath, HiMagnifyingGlass, HiMiniTrash } from 'react-icons/hi2'
+import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useDeleteServiceFund, useGetKecamatan, useGetKelurahan, useGetServiceFunds } from '@/store/server'
-import { Loading, Title } from '@/components'
-import { HiOutlinePencilAlt } from 'react-icons/hi'
+import { Action, Loading, Title } from '@/components'
 import { useNavigate } from 'react-router-dom'
 import { useAlert } from '@/store/client'
 import { Input } from '@/components/ui/input'
@@ -196,8 +195,7 @@ const DataDjp = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Bantuan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah Bantuan Disetujui</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Ubah Data</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -222,24 +220,7 @@ const DataDjp = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{serviceFund.serviceType.name}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{serviceFund?.assistanceAmount ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Button
-                      size="icon"
-                      variant="base"
-                      className="bg-[#959595] text-white hover:bg-[#828282] hover:text-white"
-                      onClick={() => navigate(`/layanan/dayasos/Djp/${serviceFund.id}`)}
-                    >
-                      <HiOutlinePencilAlt className="text-lg" />
-                    </Button>
-                  </TableCell>
-                  <TableCell className="bg-[#F9FAFC]">
-                    <Button
-                      size="icon"
-                      variant="default"
-                      className=" text-white hover:text-white"
-                      onClick={() => handleDelete(serviceFund.id)}
-                    >
-                      <HiMiniTrash className="text-lg" />
-                    </Button>
+                  <Action onDelete={() => handleDelete(serviceFund.id)} onEdit={() => navigate(`/layanan/dayasos/Djp/${serviceFund.id}`)}/>
                   </TableCell>
                 </TableRow>
               ))

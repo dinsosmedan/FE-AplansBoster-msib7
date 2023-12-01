@@ -11,7 +11,7 @@ import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useDeleteBusinessGroup, useGetBusinessGroup, useGetKecamatan, useGetKelurahan } from '@/store/server'
-import { Loading } from '@/components'
+import { Action, Loading } from '@/components'
 import { useAlert } from '@/store/client'
 interface FormValues {
   q: string
@@ -230,7 +230,7 @@ const DataKube = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -244,14 +244,9 @@ const DataKube = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{item.businessAddress?.areaLevel4?.name}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.businessType}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.budgetYear}</TableCell>
-                  <TableCell className="bg-[#F9FAFC]"><Button
-                      size="icon"
-                      variant="default"
-                      className=" text-white hover:text-white"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <HiMiniTrash className="text-lg" />
-                    </Button></TableCell>
+                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                  <Action onDelete={() => handleDelete(item.id)} onDetail={() => console.log('detail')} onEdit={() => console.log('detail')}/>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (

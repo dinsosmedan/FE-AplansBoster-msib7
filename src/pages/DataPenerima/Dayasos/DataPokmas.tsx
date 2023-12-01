@@ -11,7 +11,7 @@ import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useDeleteCommunityGroups, useGetCommunityGroups, useGetKecamatan, useGetKelurahan } from '@/store/server'
-import { Loading } from '@/components'
+import { Action, Loading } from '@/components'
 import { useAlert } from '@/store/client'
 interface FormValues {
   q: string
@@ -259,7 +259,7 @@ const DataPokmas = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah Bantuan Disetujui</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Pencairan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Status Pencairan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -278,14 +278,9 @@ const DataPokmas = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{item.approvedFundAmount}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.applicationYear}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.statusDisimbursement}</TableCell>
-                  <TableCell className="bg-[#F9FAFC]"><Button
-                      size="icon"
-                      variant="default"
-                      className=" text-white hover:text-white"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <HiMiniTrash className="text-lg" />
-                    </Button></TableCell>
+                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                  <Action onDelete={() => handleDelete(item.id)} onDetail={() => console.log('detail')} onEdit={() => console.log('detail')}/>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
