@@ -53,3 +53,27 @@ export interface IBeneficary {
   createdAt: string
   updatedAt: string
 }
+
+interface IAssistanceProduct {
+  id: string
+  name: string
+  code: string
+  createdAt: string
+  updatedAt: string
+}
+
+interface IAssistanceDetail {
+  id: string
+  type: string
+  createdAt: string
+  updatedAt: string
+}
+export interface IAssistanceHistory {
+  id: string
+  product: IAssistanceProduct
+  year: string
+  status: string
+  detail: IAssistanceDetail
+  createdAt: string
+  updatedAt: string
+}
