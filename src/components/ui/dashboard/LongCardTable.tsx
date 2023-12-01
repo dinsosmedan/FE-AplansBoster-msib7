@@ -90,7 +90,7 @@ const LongCardTable = ({ props }: any) => {
                 plugins: {
                   tooltip: { callbacks: { label: (item) => `${item.label}: ${item.formattedValue} %` } },
                   legend: { position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle' } },
-                  datalabels: { display: true, color: 'white', formatter: (item) => `${item} %` }
+                  datalabels: { display: true, color: 'white', formatter: (item: string) => `${item} %` }
                 }
               }}
               data={data}
