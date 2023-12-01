@@ -25,8 +25,8 @@ import {
   DataBltbbm,
   Pkr,
   Sktm,
-  Djp
-  // InfoDataMaster
+  Djp,
+  InfoDataMaster
 } from './pages'
 import { DashboardLayout, Alert } from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
@@ -77,7 +77,10 @@ export default function App() {
             <Route path="dayasos" element={<DataPenerimaDayasos />} />
           </Route>
           <Route path="/event" element={<Event />} />
-          <Route path="/data-master" element={<DataMaster />} />
+          <Route path="/data-master">
+          <Route index element={<DataMaster />} />
+          <Route path="info-datamaster" element={<InfoDataMaster />} />
+          </Route>
           <Route path="/manajemen-role" element={<ManajemenRole />} />
           <Route path="/manajemen-user" element={<ManajemenUser />} />
           <Route path="/profiling-masyarakat" element={<ProfilingMasyarakat />} />

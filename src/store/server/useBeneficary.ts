@@ -1,4 +1,4 @@
-import { showBeneficaryByNIKFn } from '@/api/beneficary.api'
+import { type BeneficiaryQuery, getBeneficiaryFn, showBeneficaryByNIKFn } from '@/api/beneficary.api'
 import { useToast } from '@/components/ui/use-toast'
 import { useMutation, useQuery } from 'react-query'
 import { useHiddenFormDjpm } from '../client/useHiddenFormDjpm'
@@ -7,6 +7,23 @@ export const useGetBeneficaryByNIK = (nik: string, enabled: boolean) => {
   return useQuery(['beneficary', nik], async () => await showBeneficaryByNIKFn(nik), {
     enabled
   })
+}
+export const useGetBeneficiary = ({ page, q, idKecamatan, idKelurahan, isDtks }: BeneficiaryQuery) => {
+  return useQuery(
+    ['beneficiary', page, q, idKecamatan, idKelurahan, isDtks],
+    async () =>
+      await getBeneficiaryFn({
+        page,
+        q,
+        idKecamatan,
+        idKelurahan,
+        isDtks
+      }),
+    {
+      keepPreviousData: true,
+      staleTime: 5000
+    }
+  )
 }
 export const useMutateBeneficaryByNIK = () => {
   const { toast } = useToast()
