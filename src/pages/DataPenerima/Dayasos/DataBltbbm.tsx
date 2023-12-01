@@ -10,7 +10,7 @@ import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useGetFuelCashAssistance } from '@/store/server'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { Loading } from '@/components'
+import { Action, Loading } from '@/components'
 interface FormValues {
   q: string
 }
@@ -98,6 +98,7 @@ const DataBltbbm = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]"> Jenis Keanggotaan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -110,6 +111,9 @@ const DataBltbbm = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.identityNumber}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.type}</TableCell>
+                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                  <Action onDetail={() => console.log('detail')}/>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (

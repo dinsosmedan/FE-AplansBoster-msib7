@@ -3,13 +3,13 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import useTitle from '@/hooks/useTitle'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
-import { HiMagnifyingGlass, HiMiniTrash, HiOutlineArrowUpOnSquare } from 'react-icons/hi2'
+import { HiMagnifyingGlass, HiOutlineArrowUpOnSquare } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useDeleteOrganizationGrantAssistance, useGetOrganizationGrantAssistance } from './../../../store/server/useDayasos'
-import { Loading, Search } from '@/components'
+import { Action, Loading, Search } from '@/components'
 import { useAlert } from '@/store/client'
 
 const DataHibah = () => {
@@ -146,7 +146,7 @@ const DataHibah = () => {
             <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Handphone</TableHead>
             <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah Bantuan</TableHead>
             <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -161,14 +161,9 @@ const DataHibah = () => {
                 <TableCell className="text-center bg-[#F9FAFC]">{item.contactNumber}</TableCell>
                 <TableCell className="text-center bg-[#F9FAFC]">{item.aprrovedAmount}</TableCell>
                 <TableCell className="text-center bg-[#F9FAFC]">{item.budgetYear}</TableCell>
-                <TableCell className="bg-[#F9FAFC]"><Button
-                      size="icon"
-                      variant="default"
-                      className=" text-white hover:text-white"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <HiMiniTrash className="text-lg" />
-                    </Button></TableCell>
+                <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                  <Action onDelete={() => handleDelete(item.id)} onDetail={() => console.log('detail')}/>
+                  </TableCell>
               </TableRow>
             ))
           ) : (

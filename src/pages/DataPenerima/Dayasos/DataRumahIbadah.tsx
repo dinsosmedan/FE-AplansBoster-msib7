@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { HiMagnifyingGlass, HiMiniTrash } from 'react-icons/hi2'
 
-import { Container, Loading, Pagination } from '@/components'
+import { Action, Container, Loading, Pagination } from '@/components'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 import { JENIS_RUMAH_IBADAH } from '@/pages/Layanan/Dayasos/RumahIbadah'
 
@@ -226,7 +226,7 @@ const DataRumahIbadah = () => {
             <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Handphone</TableHead>
             <TableHead className="text-[#534D59] font-bold text-[15px]">Status</TableHead>
             <TableHead className="text-[#534D59] font-bold text-[15px]">Keterangan</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
+            <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
 
           </TableRow>
         </TableHeader>
@@ -246,14 +246,9 @@ const DataRumahIbadah = () => {
                 <TableCell className="text-center bg-[#F9FAFC]">{item.picPhone}</TableCell>
                 <TableCell className="text-center bg-[#F9FAFC]">{item.status}</TableCell>
                 <TableCell className="text-center bg-[#F9FAFC]">{item.note}</TableCell>
-                <TableCell className="bg-[#F9FAFC]"><Button
-                      size="icon"
-                      variant="default"
-                      className=" text-white hover:text-white"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <HiMiniTrash className="text-lg" />
-                    </Button></TableCell>
+                <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                  <Action onDelete={() => handleDelete(item.id)} onDetail={() => console.log('detail')} onEdit={() => console.log('detail')}/>
+                  </TableCell>
               </TableRow>
             ))
           ) : (

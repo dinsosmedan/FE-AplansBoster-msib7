@@ -4,13 +4,13 @@ import useTitle from '@/hooks/useTitle'
 import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { HiMagnifyingGlass, HiMiniTrash } from 'react-icons/hi2'
+import { HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useDeleteVeteran, useGetVeteran } from '@/store/server'
-import { Loading } from '@/components'
+import { Action, Loading } from '@/components'
 import { useAlert } from '@/store/client'
 
 const DataVeteran = () => {
@@ -113,7 +113,7 @@ const DataVeteran = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">NPV</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Satuan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Ukuran Baju / Celana</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -129,14 +129,9 @@ const DataVeteran = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{veteran.veteranUnit}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{veteran.veteranUnit}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{veteran.uniformSize}</TableCell>
-                  <TableCell className="bg-[#F9FAFC]"><Button
-                      size="icon"
-                      variant="default"
-                      className=" text-white hover:text-white"
-                      onClick={() => handleDelete(veteran.id)}
-                    >
-                      <HiMiniTrash className="text-lg" />
-                    </Button></TableCell>
+                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                  <Action onDelete={() => handleDelete(veteran.id)} onDetail={() => console.log('detail')} onEdit={() => console.log('detail')}/>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
