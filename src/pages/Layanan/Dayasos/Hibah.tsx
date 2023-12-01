@@ -6,12 +6,21 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import useTitle from '@/hooks/useTitle'
 import { hibahValidation, type hibahFields } from '@/lib/validations/dayasos.validation'
-import { useCreateOrganizationGrantAssistance, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import {
+  useCreateOrganizationGrantAssistance,
+  useGetKecamatan,
+  useGetKelurahan,
+  useGetOrganizationGrantAssistanceById,
+  useUpdateOrganizationGrantAssistance
+} from '@/store/server'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Container } from '@/components'
+import { Container, Loading } from '@/components'
+import { useParams } from 'react-router-dom'
+import * as React from 'react'
 
 const Hibah = () => {
   useTitle('Bansos Hibah Organisasi/Lembaga (BHO)')
+  const { id } = useParams<{ id: string }>()
 
   const forms = useForm<hibahFields>({
     mode: 'onTouched',
@@ -31,7 +40,6 @@ const Hibah = () => {
       bankAccountNumber: '',
       bankName: '',
       bankAccountAddress: '',
-      // approvedAmount: '' | 0,
       budgetYear: '',
       note: ''
     }
@@ -42,10 +50,51 @@ const Hibah = () => {
   const { data: kelurahan } = useGetKelurahan(areaLevel3 ?? '')
   const { mutate: createHibah, isLoading } = useCreateOrganizationGrantAssistance()
 
+  const { data: hibah, isSuccess, isLoading: isLoadingHibah } = useGetOrganizationGrantAssistanceById(id)
+  const { mutate: updateHibah, isLoading: isLoadingUpdate } = useUpdateOrganizationGrantAssistance()
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      forms.reset({
+        name: hibah.name,
+        address: hibah.address.fullAddress,
+        areaLevel3: hibah.address.areaLevel3?.id,
+        areaLevel4: hibah.address.areaLevel4?.id,
+        chairmanName: hibah.chairmanName,
+        chairmanIdentityNumber: hibah.chairmanIdentityNumber,
+        secretaryName: hibah.secretaryName,
+        secretaryIdentityNumber: hibah.secretaryIdentityNumber,
+        treasurerName: hibah.treasurerName,
+        treasurerIdentityNumber: hibah.treasurerIdentityNumber,
+        contactNumber: hibah.contactNumber,
+        bankAccountNumber: hibah.bankAccountNumber,
+        bankName: hibah.bankName,
+        bankAccountName: hibah.bankAccountName,
+        bankAccountAddress: hibah.bankAccountAddress,
+        requestedAmount: hibah.requestedAmount,
+        approvedAmount: hibah.aprrovedAmount,
+        firstDisbursementAmount: hibah.firstDisbursementAmount,
+        secondDisbursementAmount: hibah.secondDisbursementAmount,
+        note: hibah.note,
+        budgetYear: hibah.budgetYear
+      })
+    }
+  }, [isSuccess])
+
   const onSubmit = async (values: hibahFields) => {
-    createHibah(values, {
+    if (!id) {
+      createHibah(values, { onSuccess: () => forms.reset() })
+      return
+    }
+
+    const data = { id, fields: values }
+    updateHibah(data, {
       onSuccess: () => forms.reset()
     })
+  }
+
+  if (isLoadingHibah) {
+    return <Loading />
   }
 
   return (
@@ -361,8 +410,8 @@ const Hibah = () => {
             <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
               Cancel
             </Button>
-            <Button className="font-bold" loading={isLoading} type="submit">
-              Submit
+            <Button className="font-bold" loading={isLoading || isLoadingUpdate} type="submit">
+              {id ? 'Update' : 'Submit'}
             </Button>
           </div>
         </form>

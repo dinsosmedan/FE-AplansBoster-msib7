@@ -1,24 +1,25 @@
 import { type IArea } from '@/api/area.api'
 import { type IBeneficary } from './beneficary.type'
 
+export interface IWorshipPlaceDetail {
+  id: string
+  name: string
+  type: string
+  address: string
+  areaLevel3: IArea | null
+  areaLevel4: IArea | null
+  picName: string
+  picPhone: string
+  status: string
+  note: string
+  year: string
+  createdAt: string
+  updatedAt: string
+}
 export interface IWorshipPlace {
   success: boolean
   message: string
-  data: Array<{
-    id: string
-    name: string
-    type: string
-    address: string
-    areaLevel3: IArea | null
-    areaLevel4: IArea | null
-    picName: string
-    picPhone: string
-    status: string
-    note: string
-    year: string
-    createdAt: string
-    updatedAt: string
-  }>
+  data: IWorshipPlaceDetail[]
   meta: IMeta
 }
 
@@ -129,8 +130,10 @@ export interface ICommunityGroup {
   address: IAddress
   communityName: string
   communityActivityCode: string
+  communityAddress: string | null
   communityActivityTypeDescription: string
   communityAssistanceType: string
+  applicantPhoneNumber: string | null
   requestedRabAmount: number
   requestedBansosAmount: number
   approvedFundAmount: number
@@ -138,6 +141,10 @@ export interface ICommunityGroup {
   executionPlace: string | null
   applicationYear: string
   membersCount: number
+  bankName: string
+  bankAccNumber: string
+  bankAccName: null | string
+  bankAccAddress: string | null
   members: Array<{
     id: string
     beneficiaryId: string
