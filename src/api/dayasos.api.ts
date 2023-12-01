@@ -17,7 +17,9 @@ import {
   type ICommunityGroups,
   type IBusinessGroup,
   type INonCashFoodAssistanceBeneficiary,
-  type IServiceFund
+  type IServiceFund,
+  type ICommunityGroup,
+  type IOrganizationGrantAssistances
 } from '@/lib/types/dayasos.type'
 
 export const storeWorshipPlaceFn = async (fields: worshipPlaceFields) => {
@@ -214,22 +216,72 @@ export const deleteFuelCashAssistanceFn = async (id: string) => {
   await api.delete(`/fuel-cash-assistance/${id}`)
 }
 
-export const updateCommunityGroupFn = async (id: string, fields: pokmasFields) => {
+interface UpdateFuelCashAssistanceParams {
+  id: string
+  fields: pokmasFields
+}
+
+export const updateCommunityGroupFn = async ({ id, fields }: UpdateFuelCashAssistanceParams) => {
   await api.put(`/community-group/${id}`, fields)
 }
 
-export const updateOrganizationGrantAssistance = async (id: string, fields: hibahFields) => {
+export const getCommunityGroupFn = async (id: string): Promise<ICommunityGroup> => {
+  const response = await api.get(`/community-group/${id}`)
+  return response.data?.data
+}
+
+interface UpdateOrganizationGrantAssistanceParams {
+  id: string
+  fields: hibahFields
+}
+
+export const updateOrganizationGrantAssistanceFn = async ({ id, fields }: UpdateOrganizationGrantAssistanceParams) => {
   await api.put(`/organization-grant-assistance/${id}`, fields)
 }
 
-export const updateWorshipPlace = async (id: string, fields: worshipPlaceFields) => {
+export const getOrganizationGrantAssistanceFn = async (id: string): Promise<IOrganizationGrantAssistances> => {
+  const response = await api.get(`/organization-grant-assistance/${id}`)
+  return response.data?.data
+}
+
+interface UpdateWorshipPlaceParams {
+  id: string
+  fields: worshipPlaceFields
+}
+
+export const updateWorshipPlaceFn = async ({ id, fields }: UpdateWorshipPlaceParams) => {
   await api.put(`/worship-place/${id}`, fields)
 }
 
-export const updateVeteran = async (id: string, fields: veteranFields) => {
+export const getWorshipPlaceFn = async (id: string) => {
+  const response = await api.get(`/worship-place/${id}`)
+  return response.data?.data
+}
+
+interface UpdateVeteranParams {
+  id: string
+  fields: veteranFields
+}
+
+export const updateVeteranFn = async ({ id, fields }: UpdateVeteranParams) => {
   await api.put(`/veteran/${id}`, fields)
 }
 
-export const updateBusinessGroup = async (id: string, fields: kubeFields) => {
+export const getDetailVeteranFn = async (id: string) => {
+  const response = await api.get(`/veteran/${id}`)
+  return response.data?.data
+}
+
+interface updateBusinessGroupParams {
+  id: string
+  fields: kubeFields
+}
+
+export const updateBusinessGroupFn = async ({ id, fields }: updateBusinessGroupParams) => {
   await api.put(`/joint-business-group/${id}`, fields)
+}
+
+export const getDetailBusinessGroupFn = async (id: string) => {
+  const response = await api.get(`/joint-business-group/${id}`)
+  return response.data?.data
 }
