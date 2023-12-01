@@ -57,6 +57,12 @@ export const MAIN_MENU = [
     inactiveIcon: HiOutlineFolderOpen
   },
   {
+    link: '/data-dtks',
+    title: 'Data DTKS',
+    activeIcon: HiFolderOpen,
+    inactiveIcon: HiOutlineFolderOpen
+  },
+  {
     link: '/event',
     title: 'Event',
     activeIcon: HiMegaphone,
