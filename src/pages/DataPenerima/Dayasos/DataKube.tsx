@@ -10,8 +10,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useGetBusinessGroup, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { useDeleteBusinessGroup, useGetBusinessGroup, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import { Loading } from '@/components'
+import { useAlert } from '@/store/client'
 interface FormValues {
   q: string
   kelurahan: string
@@ -20,6 +21,7 @@ interface FormValues {
 }
 const DataKube = () => {
   useTitle('Data Penerima / Dayasos / Kube ')
+  const { alert } = useAlert()
   const createParams = useCreateParams()
   const { page, q, kecamatan, kelurahan, year } = useGetParams(['page', 'q', 'kecamatan', 'kelurahan', 'year'])
 
@@ -100,7 +102,17 @@ const DataKube = () => {
 
     await refetch()
   }
-
+  const { mutateAsync: deleteBusinessGroup } = useDeleteBusinessGroup()
+  const handleDelete = (id: string) => {
+    void alert({
+      title: 'Hapus Data DJPM',
+      description: 'Apakah kamu yakin ingin menghapus data ini?',
+      variant: 'danger',
+      submitText: 'Delete'
+    }).then(async() => {
+      await deleteBusinessGroup(id)
+    })
+  }
   React.useEffect(() => {
     if (isFetching) {
       setIsLoadingPage(true)
@@ -207,29 +219,39 @@ const DataKube = () => {
             </div>
           </form>
         </Form>
+      <section className="border rounded-xl mt-5 overflow-hidden">
         <Table className="mt-5">
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
-              <TableHead className="text-black text-left font-bold">No.</TableHead>
-              <TableHead className="text-black text-left font-bold">Nama Kelompok Usaha Bersama</TableHead>
-              <TableHead className="text-black text-left font-bold">Alamat</TableHead>
-              <TableHead className="text-black text-left font-bold">Kecamatan</TableHead>
-              <TableHead className="text-black text-left font-bold">Kelurahan</TableHead>
-              <TableHead className="text-black text-left font-bold">Jenis</TableHead>
-              <TableHead className="text-black text-left font-bold">Tahun Anggaran</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Kelompok Usaha Bersama</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {businessGroup?.data?.length !== 0 ? (
               businessGroup?.data.map((item, index) => (
                 <TableRow key={item.id}>
-                  <TableCell className="text-left text-black">{index + 1}</TableCell>
-                  <TableCell className="text-left text-black">{item.businessName}</TableCell>
-                  <TableCell className="text-left text-black">{item.businessAddress?.fullAddress}</TableCell>
-                  <TableCell className="text-left text-black">{item.businessAddress?.areaLevel3?.name}</TableCell>
-                  <TableCell className="text-left text-black">{item.businessAddress?.areaLevel4?.name}</TableCell>
-                  <TableCell className="text-left text-black">{item.businessType}</TableCell>
-                  <TableCell className="text-left text-black">{item.budgetYear}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{index + 1}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.businessName}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.businessAddress?.fullAddress}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.businessAddress?.areaLevel3?.name}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.businessAddress?.areaLevel4?.name}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.businessType}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.budgetYear}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]"><Button
+                      size="icon"
+                      variant="default"
+                      className=" text-white hover:text-white"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      <HiMiniTrash className="text-lg" />
+                    </Button></TableCell>
                 </TableRow>
               ))
             ) : (
@@ -241,6 +263,7 @@ const DataKube = () => {
             )}
           </TableBody>
         </Table>
+        </section>
         {(businessGroup?.meta?.total as number) > 10 ? (
           <Pagination
             className="px-5 py-5 flex justify-end"

@@ -23,9 +23,16 @@ import {
   type NonCashFoodAssistanceBeneficiaryQuery,
   getNonCashFoodAssistanceBeneficiary,
   showServiceFundFn,
-  updateServiceFundFn
+  updateServiceFundFn,
+  deleteServiceFundFn,
+  deleteOrganizationGrantAssistanceFn,
+  deleteWorshipPlaceFn,
+  deleteBusinessGroupFn,
+  deleteCommunityGroupsFn,
+  deleteVeteranFn,
+  deleteFuelCashAssistanceFn
 } from '@/api/dayasos.api'
-import { useToast } from '@/components/ui/use-toast'
+import { toast, useToast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
 import { type AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
@@ -54,7 +61,21 @@ export const useCreateWorshipPlace = () => {
     }
   })
 }
+export const useDeleteWorshipPlace = () => {
+  const queryClient = useQueryClient()
 
+  return useMutation(deleteWorshipPlaceFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('worship-places')
+      toast({
+        variant: 'destructive',
+        duration: 1500,
+        title: 'Proses Berhasil',
+        description: 'Data Rumah Ibadah Berhasil Dihapus'
+      })
+    }
+  })
+}
 /* DJPM */
 export const useGetServiceTypes = () => {
   return useQuery('service-types', async () => await getServiceTypesFn())
@@ -127,6 +148,22 @@ export const useUpdateServiceFund = () => {
   })
 }
 
+export const useDeleteServiceFund = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(deleteServiceFundFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('service-funds')
+      toast({
+        variant: 'destructive',
+        duration: 1500,
+        title: 'Proses Berhasil',
+        description: 'Data DJPM Berhasil Dihapus'
+      })
+    }
+  })
+}
+
 /* BANSOS HIBAH */
 export const useCreateOrganizationGrantAssistance = () => {
   const queryClient = useQueryClient()
@@ -165,6 +202,22 @@ export const useGetOrganizationGrantAssistance = ({ page, budgetYear, name }: Or
   )
 }
 
+export const useDeleteOrganizationGrantAssistance = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(deleteOrganizationGrantAssistanceFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('organization-grant-assistance')
+      toast({
+        variant: 'destructive',
+        duration: 1500,
+        title: 'Proses Berhasil',
+        description: 'Data Hibah Berhasil Dihapus'
+      })
+    }
+  })
+}
+
 /* KUBE */
 export const useCreateBusinessGroup = () => {
   const queryClient = useQueryClient()
@@ -191,7 +244,21 @@ export const useCreateBusinessGroup = () => {
     }
   })
 }
+export const useDeleteBusinessGroup = () => {
+  const queryClient = useQueryClient()
 
+  return useMutation(deleteBusinessGroupFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('business-group')
+      toast({
+        variant: 'destructive',
+        duration: 1500,
+        title: 'Proses Berhasil',
+        description: 'Data Kube Berhasil Dihapus'
+      })
+    }
+  })
+}
 export const useGetBusinessGroup = ({ page, q, idKecamatan, idKelurahan, year }: BusinessGroupQuery) => {
   return useQuery(
     ['business-group', page, q, idKecamatan, idKelurahan, year],
@@ -257,7 +324,21 @@ export const useGetCommunityGroups = ({
     }
   )
 }
+export const useDeleteCommunityGroups = () => {
+  const queryClient = useQueryClient()
 
+  return useMutation(deleteCommunityGroupsFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('community-groups')
+      toast({
+        variant: 'destructive',
+        duration: 1500,
+        title: 'Proses Berhasil',
+        description: 'Data Pokmas Berhasil Dihapus'
+      })
+    }
+  })
+}
 /* VETERAN */
 export const useGetVeteran = ({ page, q }: VeteranQuery) => {
   return useQuery(['veterans', page, q], async () => await getVeteranFn({ page, q }), {
@@ -289,7 +370,21 @@ export const useCreateVeteran = () => {
     }
   })
 }
+export const useDeleteVeteran = () => {
+  const queryClient = useQueryClient()
 
+  return useMutation(deleteVeteranFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('veterans')
+      toast({
+        variant: 'destructive',
+        duration: 1500,
+        title: 'Proses Berhasil',
+        description: 'Data Veteran Berhasil Dihapus'
+      })
+    }
+  })
+}
 /* BANSOS BANTUAN BBM */
 export const useGetFuelCashAssistance = ({ page, q }: FuelCashQuery) => {
   return useQuery(['fuel-cash-assistances', page, q], async () => await getFuelCashAssistanceFn({ page, q }), {
@@ -297,7 +392,21 @@ export const useGetFuelCashAssistance = ({ page, q }: FuelCashQuery) => {
     staleTime: 5000
   })
 }
+export const useDeleteFuelCashAssistance = () => {
+  const queryClient = useQueryClient()
 
+  return useMutation(deleteFuelCashAssistanceFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('fuel-cash-assistances')
+      toast({
+        variant: 'destructive',
+        duration: 1500,
+        title: 'Proses Berhasil',
+        description: 'Data BLTBBM Berhasil Dihapus'
+      })
+    }
+  })
+}
 /* BANSOS BANTUAN NON TUNAI */
 export const useGetNonCashFoodAssistanceBeneficiary = ({ page }: NonCashFoodAssistanceBeneficiaryQuery) => {
   return useQuery(['non-cash', page], async () => await getNonCashFoodAssistanceBeneficiary({ page }), {

@@ -10,8 +10,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useGetCommunityGroups, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { useDeleteCommunityGroups, useGetCommunityGroups, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import { Loading } from '@/components'
+import { useAlert } from '@/store/client'
 interface FormValues {
   q: string
   communityActivityCode: string
@@ -22,6 +23,7 @@ interface FormValues {
 }
 const DataPokmas = () => {
   useTitle('Data Penerima / Dayasos / Pokmas ')
+  const { alert } = useAlert()
   const createParams = useCreateParams()
   const {
     page,
@@ -94,7 +96,17 @@ const DataPokmas = () => {
 
     await refetch()
   }
-
+  const { mutateAsync: deleteCommunityGroups } = useDeleteCommunityGroups()
+  const handleDelete = (id: string) => {
+    void alert({
+      title: 'Hapus Data DJPM',
+      description: 'Apakah kamu yakin ingin menghapus data ini?',
+      variant: 'danger',
+      submitText: 'Delete'
+    }).then(async() => {
+      await deleteCommunityGroups(id)
+    })
+  }
   React.useEffect(() => {
     if (isFetching) {
       setIsLoadingPage(true)
@@ -233,19 +245,21 @@ const DataPokmas = () => {
             </div>
           </form>
         </Form>
+      <section className="border rounded-xl mt-5 overflow-hidden">
         <Table className="mt-5">
           <TableHeader className="bg-zinc-300">
             <TableRow>
-              <TableHead className="text-black">No.</TableHead>
-              <TableHead className="text-black">Kode Kegiatan</TableHead>
-              <TableHead className="text-black">Nama Kelompok Masyarakat</TableHead>
-              <TableHead className="text-black">Kecamatan</TableHead>
-              <TableHead className="text-black">Kelurahan</TableHead>
-              <TableHead className="text-black">Jenis Kegiatan</TableHead>
-              <TableHead className="text-black">Jenis Bantuan</TableHead>
-              <TableHead className="text-black">Jumlah Bantuan Disetujui</TableHead>
-              <TableHead className="text-black">Tahun Pencairan</TableHead>
-              <TableHead className="text-black">Status Pencairan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Kode Kegiatan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Kelompok Masyarakat</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kegiatan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Bantuan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah Bantuan Disetujui</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Pencairan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Status Pencairan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -255,15 +269,23 @@ const DataPokmas = () => {
                   <TableCell className="text-left">
                     {(communityGroup.meta.currentPage - 1) * communityGroup.meta.perPage + index + 1}
                   </TableCell>
-                  <TableCell className="text-center text-black">{item.communityActivityCode}</TableCell>
-                  <TableCell className="text-center text-black">{item.communityName}</TableCell>
-                  <TableCell className="text-center text-black">{item.address?.areaLevel3?.name}</TableCell>
-                  <TableCell className="text-center text-black">{item.address?.areaLevel4?.name}</TableCell>
-                  <TableCell className="text-center text-black">{item.communityActivityTypeDescription}</TableCell>
-                  <TableCell className="text-center text-black">{item.communityAssistanceType}</TableCell>
-                  <TableCell className="text-center text-black">{item.approvedFundAmount}</TableCell>
-                  <TableCell className="text-center text-black">{item.applicationYear}</TableCell>
-                  <TableCell className="text-center text-black">{item.statusDisimbursement}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.communityActivityCode}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.communityName}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.address?.areaLevel3?.name}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.address?.areaLevel4?.name}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.communityActivityTypeDescription}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.communityAssistanceType}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.approvedFundAmount}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.applicationYear}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.statusDisimbursement}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]"><Button
+                      size="icon"
+                      variant="default"
+                      className=" text-white hover:text-white"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      <HiMiniTrash className="text-lg" />
+                    </Button></TableCell>
                 </TableRow>
               ))
             ) : (
@@ -275,6 +297,7 @@ const DataPokmas = () => {
             )}
           </TableBody>
         </Table>
+        </section>
         {(communityGroup?.meta?.total as number) > 10 ? (
           <Pagination
             className="px-5 py-5 flex justify-end"

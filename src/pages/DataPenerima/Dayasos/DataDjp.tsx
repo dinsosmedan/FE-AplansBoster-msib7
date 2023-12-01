@@ -10,10 +10,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useGetKecamatan, useGetKelurahan, useGetServiceFunds } from '@/store/server'
+import { useDeleteServiceFund, useGetKecamatan, useGetKelurahan, useGetServiceFunds } from '@/store/server'
 import { Loading, Search } from '@/components'
 import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
+import { useAlert } from '@/store/client'
 
 interface FormValues {
   q: string
@@ -24,6 +25,8 @@ interface FormValues {
 
 const DataDjp = () => {
   useTitle('Data Penerima / Dayasos / DJPM ')
+  const { alert } = useAlert()
+
   const navigate = useNavigate()
   const createParams = useCreateParams()
   const { q, kecamatan, kelurahan, page } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page'])
@@ -75,7 +78,17 @@ const DataDjp = () => {
       await refetch()
     }
   }
-
+  const { mutateAsync: deleteServiceFund } = useDeleteServiceFund()
+  const handleDelete = (id: string) => {
+    void alert({
+      title: 'Hapus Data DJPM',
+      description: 'Apakah kamu yakin ingin menghapus data ini?',
+      variant: 'danger',
+      submitText: 'Delete'
+    }).then(async() => {
+      await deleteServiceFund(id)
+    })
+  }
   React.useEffect(() => {
     if (isFetching) {
       setIsLoadingPage(true)
@@ -182,6 +195,7 @@ const DataDjp = () => {
         <Table>
           <TableHeader className="bg-white">
             <TableRow>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kelamin</TableHead>
@@ -190,14 +204,17 @@ const DataDjp = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Bantuan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah Bantuan Disetujui</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Batch</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Ubah Data</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {serviceFunds?.data?.length !== 0 ? (
-              serviceFunds?.data.map((serviceFund) => (
+              serviceFunds?.data.map((serviceFund, index) => (
                 <TableRow key={serviceFund.id}>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {(serviceFunds.meta.currentPage - 1) * serviceFunds.meta.perPage + index + 1}
+                  </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{serviceFund.beneficiary.identityNumber}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{serviceFund.beneficiary.name}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{serviceFund.beneficiary.gender}</TableCell>
@@ -212,7 +229,6 @@ const DataDjp = () => {
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{serviceFund.serviceType.name}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{serviceFund?.assistanceAmount ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{serviceFund?.status ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Button
                       size="icon"
@@ -223,6 +239,14 @@ const DataDjp = () => {
                       <HiOutlinePencilAlt className="text-lg" />
                     </Button>
                   </TableCell>
+                  <TableCell className="bg-[#F9FAFC]"><Button
+                      size="icon"
+                      variant="default"
+                      className=" text-white hover:text-white"
+                      onClick={() => handleDelete(serviceFund.id)}
+                    >
+                      <HiMiniTrash className="text-lg" />
+                    </Button></TableCell>
                 </TableRow>
               ))
             ) : (
