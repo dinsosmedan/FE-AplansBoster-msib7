@@ -190,6 +190,14 @@ interface UpdateServiceFundParams {
   id: string
   fields: djpmFields
 }
+interface UpdateKubeParams {
+  id: string
+  fields: kubeFields
+}
+
+export const updateKubeFn = async ({ id, fields }: UpdateKubeParams) => {
+  await api.put(`/joint-business-group/${id}`, fields)
+}
 
 export const updateServiceFundFn = async ({ id, fields }: UpdateServiceFundParams) => {
   await api.put(`/service-fund/${id}`, fields)

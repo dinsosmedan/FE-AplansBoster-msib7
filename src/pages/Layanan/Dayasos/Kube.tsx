@@ -6,17 +6,21 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import useTitle from '@/hooks/useTitle'
 import { HiPlus } from 'react-icons/hi'
-import { Container } from '@/components'
+import { Container, Loading } from '@/components'
 import { kubeValidation, type kubeFields } from '@/lib/validations/dayasos.validation'
-import { useCreateBusinessGroup, useGetBeneficaryByNIK, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { useCreateBusinessGroup, useGetBeneficaryByNIK, useGetBusinessGroupById, useGetKecamatan, useGetKelurahan, useUpdateJointBusiness } from '@/store/server'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { HiTrash } from 'react-icons/hi2'
 import { cn } from '@/lib/utils'
 import * as React from 'react'
 import { useToast } from '@/components/ui/use-toast'
+import { useParams } from 'react-router-dom'
 
 const Kube = () => {
   useTitle('Kelompok Usaha Bersama (KUBE)')
+  const { id } = useParams<{ id: string }>()
+
+  // console.log(id)
   const { toast } = useToast()
   const [NIK, setNIK] = React.useState('')
   const [index, setIndex] = React.useState(0)
@@ -48,10 +52,36 @@ const Kube = () => {
   const { data: kelurahan } = useGetKelurahan(areaLevel3 ?? '')
   const { data: beneficiary, refetch, isFetching, isError } = useGetBeneficaryByNIK(NIK, false)
   const { mutate: createKube, isLoading: isLoadingCreate } = useCreateBusinessGroup()
+  const { mutate: UpdateJointBusiness, isLoading: isLoadingUpdate } = useUpdateJointBusiness()
+
+  const { data: BusinessGroup, isSuccess, isLoading: isLoadingBusinessGroupById } = useGetBusinessGroupById(id)
 
   React.useEffect(() => {
     if (NIK !== '') void refetch()
   }, [NIK])
+  React.useEffect(() => {
+    if (isSuccess) {
+      // console.log(BusinessGroup.status)
+      // '245e8842-15cd-4ab5-8ef6-3e04892d602d'
+      // console.log(kelurahan)
+      forms.reset({
+        businessName: BusinessGroup?.businessName,
+        businessType: BusinessGroup?.businessType,
+        areaLevel3: BusinessGroup?.businessAddress?.areaLevel3?.id as string,
+        // areaLevel3: 'Medan Belawan',
+        areaLevel4: BusinessGroup?.businessAddress?.areaLevel4?.id as string,
+        // areaLevel4: '245e8842-15cd-4ab5-8ef6-3e04892d602d',
+        budgetYear: BusinessGroup?.budgetYear,
+        note: BusinessGroup?.note,
+        status: BusinessGroup?.status,
+        businessAddress: BusinessGroup?.businessAddress.fullAddress,
+        members: BusinessGroup?.members?.map((member: any) => {
+          // const { id } = member
+          return { beneficiary: member.id, nik: member.identityNumber, position: member.position }
+        })
+      })
+    }
+  }, [isSuccess, BusinessGroup])
 
   React.useEffect(() => {
     if (isError) {
@@ -73,6 +103,7 @@ const Kube = () => {
     }
   }, [beneficiary])
 
+  // console.log(forms.formState.errors)
   const onSubmit = async (values: kubeFields) => {
     const newData = {
       ...values,
@@ -82,9 +113,17 @@ const Kube = () => {
       })
     }
 
-    createKube(newData, {
-      onSuccess: () => forms.reset()
-    })
+    if (!id) {
+      console.log('tes')
+      createKube(newData, {
+        onSuccess: () => forms.reset()
+      })
+      return
+    }
+
+    console.log('tes1')
+    const results: any = { id, fields: newData }
+    UpdateJointBusiness(results, { onSuccess: () => forms.reset() })
   }
 
   const handleFetchNik = async (index: number) => {
@@ -95,6 +134,9 @@ const Kube = () => {
     }
   }
 
+  if (isLoadingUpdate || isLoadingBusinessGroupById) {
+    return <Loading />
+  }
   return (
     <Container className="py-10 px-[47px]">
       <div className="w-full text-center">
@@ -245,8 +287,8 @@ const Kube = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="Ketua">Ketua</SelectItem>
-                          <SelectItem value="Anggota">Anggota</SelectItem>
+                          <SelectItem value="ketua">Ketua</SelectItem>
+                          <SelectItem value="anggota">Anggota</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -346,7 +388,7 @@ const Kube = () => {
             <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
               Cancel
             </Button>
-            <Button className="font-bold" type="submit" loading={isLoadingCreate}>
+            <Button className="font-bold" type="submit" loading={isLoadingCreate || isLoadingUpdate}>
               Submit
             </Button>
           </div>

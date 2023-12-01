@@ -13,6 +13,8 @@ import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useDeleteBusinessGroup, useGetBusinessGroup, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import { Loading } from '@/components'
 import { useAlert } from '@/store/client'
+import { HiOutlinePencilAlt } from 'react-icons/hi'
+import { useNavigate } from 'react-router-dom'
 interface FormValues {
   q: string
   kelurahan: string
@@ -23,6 +25,8 @@ const DataKube = () => {
   useTitle('Data Penerima / Dayasos / Kube ')
   const { alert } = useAlert()
   const createParams = useCreateParams()
+  const navigate = useNavigate()
+
   const { page, q, kecamatan, kelurahan, year } = useGetParams(['page', 'q', 'kecamatan', 'kelurahan', 'year'])
 
   const forms = useForm<FormValues>({
@@ -109,7 +113,7 @@ const DataKube = () => {
       description: 'Apakah kamu yakin ingin menghapus data ini?',
       variant: 'danger',
       submitText: 'Delete'
-    }).then(async() => {
+    }).then(async () => {
       await deleteBusinessGroup(id)
     })
   }
@@ -219,32 +223,43 @@ const DataKube = () => {
             </div>
           </form>
         </Form>
-      <section className="border rounded-xl mt-5 overflow-hidden">
-        <Table className="mt-5">
-          <TableHeader className="bg-[#FFFFFF]">
-            <TableRow>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Kelompok Usaha Bersama</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {businessGroup?.data?.length !== 0 ? (
-              businessGroup?.data.map((item, index) => (
-                <TableRow key={item.id}>
-                  <TableCell className="text-center bg-[#F9FAFC]">{index + 1}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.businessName}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.businessAddress?.fullAddress}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.businessAddress?.areaLevel3?.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.businessAddress?.areaLevel4?.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.businessType}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.budgetYear}</TableCell>
-                  <TableCell className="bg-[#F9FAFC]"><Button
+        <section className="border rounded-xl mt-5 overflow-hidden">
+          <Table className="mt-5">
+            <TableHeader className="bg-[#FFFFFF]">
+              <TableRow>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Kelompok Usaha Bersama</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Ubah Data</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {businessGroup?.data?.length !== 0 ? (
+                businessGroup?.data.map((item, index) => (
+                  <TableRow key={item.id}>
+                    <TableCell className="text-center bg-[#F9FAFC]">{index + 1}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.businessName}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.businessAddress?.fullAddress}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.businessAddress?.areaLevel3?.name}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.businessAddress?.areaLevel4?.name}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.businessType}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.budgetYear}</TableCell>
+                    <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                      <Button
+                        size="icon"
+                        variant="base"
+                        className="bg-[#959595] text-white hover:bg-[#828282] hover:text-white"
+                        onClick={() => navigate(`/layanan/dayasos/kube/${item.id}`)}
+                      >
+                        <HiOutlinePencilAlt className="text-lg" />
+                      </Button>
+                    </TableCell>
+                    <TableCell className="bg-[#F9FAFC]"><Button
                       size="icon"
                       variant="default"
                       className=" text-white hover:text-white"
@@ -252,17 +267,17 @@ const DataKube = () => {
                     >
                       <HiMiniTrash className="text-lg" />
                     </Button></TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={9} className="text-center">
+                    Tidak ada data
+                  </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={9} className="text-center">
-                  Tidak ada data
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              )}
+            </TableBody>
+          </Table>
         </section>
         {(businessGroup?.meta?.total as number) > 10 ? (
           <Pagination

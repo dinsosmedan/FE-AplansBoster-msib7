@@ -66,6 +66,8 @@ const Djpm = () => {
     notRegisteredCondition: forms.getValues('beneficiary') === '' && NIK !== '' && forms.formState.isSubmitted
   })
 
+  // console.log('dasdas')
+
   React.useEffect(() => {
     if (isSuccess) {
       forms.setValue('beneficiary', serviceFund?.beneficiary?.id)

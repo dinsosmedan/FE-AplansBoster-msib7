@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-import { Container } from '@/components'
+import { Container, Loading } from '@/components'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -13,9 +13,11 @@ import { useTitle } from '@/hooks'
 import { worshipPlaceValidation, type worshipPlaceFields } from '@/lib/validations/dayasos.validation'
 
 import { useGetKecamatan, useGetKelurahan } from '@/store/server'
-import { useCreateWorshipPlace } from '@/store/server/useDayasos'
+import { useCreateWorshipPlace, useGetWorshipPlace, useUpdateWorshipPlace } from '@/store/server/useDayasos'
 import { type AxiosError } from 'axios'
 import { type IErrorResponse } from '@/lib/types/user.type'
+import { useParams } from 'react-router-dom'
+import React from 'react'
 
 export const JENIS_RUMAH_IBADAH = [
   'MESJID',
@@ -30,6 +32,7 @@ export const JENIS_RUMAH_IBADAH = [
 const Ri = () => {
   const { toast } = useToast()
   useTitle('Rumah Ibadah ')
+  const { id } = useParams<{ id: string }>()
 
   const forms = useForm<worshipPlaceFields>({
     mode: 'onTouched',
@@ -51,30 +54,59 @@ const Ri = () => {
   const { data: kecamatan, isSuccess: isSuccessKecamatan } = useGetKecamatan()
   const { data: kelurahan, isSuccess: isSuccessKelurahan } = useGetKelurahan(areaLevel3)
   const { mutate: storeWorshipPlace, isLoading } = useCreateWorshipPlace()
+  const { mutate: UpdateWorshipPlace, isLoading: isLoadingUpdate } = useUpdateWorshipPlace()
+  const { data: WorshipPlace, isSuccess, isLoading: isLoadingWorshipPlace } = useGetWorshipPlace(id)
 
   const onSubmit = (values: worshipPlaceFields) => {
-    storeWorshipPlace(values, {
-      onSuccess: () => {
-        forms.reset()
-        toast({
-          title: 'Proses Berhasil',
-          description: 'Data Rumah Ibadah Berhasil Ditambahkan'
-        })
-      },
-      onError: (error: AxiosError) => {
-        const errorResponse = error.response?.data as IErrorResponse
-
-        if (errorResponse !== undefined) {
+    if (!id) {
+      storeWorshipPlace(values, {
+        onSuccess: () => {
+          forms.reset()
           toast({
-            variant: 'destructive',
-            title: errorResponse.message ?? 'Gagal',
-            description: 'Terjadi masalah dengan permintaan Anda.'
+            title: 'Proses Berhasil',
+            description: 'Data Rumah Ibadah Berhasil Ditambahkan'
           })
-        }
-      }
-    })
-  }
+        },
+        onError: (error: AxiosError) => {
+          const errorResponse = error.response?.data as IErrorResponse
 
+          if (errorResponse !== undefined) {
+            toast({
+              variant: 'destructive',
+              title: errorResponse.message ?? 'Gagal',
+              description: 'Terjadi masalah dengan permintaan Anda.'
+            })
+          }
+        }
+      })
+    }
+    // UpdateWorshipPlace
+    console.log('tes1')
+    const results: any = { id, fields: values }
+    UpdateWorshipPlace(results, { onSuccess: () => forms.reset() })
+  }
+  React.useEffect(() => {
+    if (isSuccess) {
+      console.log(WorshipPlace)
+      // '245e8842-15cd-4ab5-8ef6-3e04892d602d'
+      // console.log(kelurahan)
+      forms.reset({
+        name: WorshipPlace?.name,
+        type: WorshipPlace?.type,
+        picName: WorshipPlace?.picName,
+        picPhoneNumber: WorshipPlace?.picPhone,
+        areaLevel3: WorshipPlace?.areaLevel3.id,
+        areaLevel4: WorshipPlace?.areaLevel4.id,
+        address: WorshipPlace?.address,
+        status: WorshipPlace?.status,
+        note: WorshipPlace?.note
+      })
+    }
+  }, [isSuccess, WorshipPlace])
+
+  if (isLoadingUpdate || isLoadingWorshipPlace) {
+    return <Loading />
+  }
   return (
     <Container className="py-10">
       <section className="w-9/12 mx-auto">

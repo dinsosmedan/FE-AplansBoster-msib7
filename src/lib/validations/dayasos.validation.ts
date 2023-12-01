@@ -63,7 +63,8 @@ export const kubeValidation = Yup.object({
   businessAddress: Yup.string().required('Alamat Usaha wajib diisi').max(255, 'Alamat Usaha maksimal 255 karakter'),
   areaLevel3: Yup.string().required('Kecamatan wajib diisi'),
   areaLevel4: Yup.string().required('Kelurahan wajib diisi'),
-  assistanceAmount: Yup.number().required('Jumlah Bantuan wajib diisi'),
+  // assistanceAmount: Yup.number().required('Jumlah Bantuan wajib diisi'),
+  assistanceAmount: Yup.number(),
   budgetYear: Yup.string()
     .matches(/^\d{4}$/, 'Format tahun tidak valid. Harap masukkan tahun dengan format YYYY')
     .required('Tahun Anggaran wajib diisi'),
