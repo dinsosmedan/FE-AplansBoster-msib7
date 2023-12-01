@@ -57,6 +57,12 @@ export const MAIN_MENU = [
     inactiveIcon: HiOutlineFolderOpen
   },
   {
+    link: '/data-dtks',
+    title: 'Data DTKS',
+    activeIcon: HiFolderOpen,
+    inactiveIcon: HiOutlineFolderOpen
+  },
+  {
     link: '/event',
     title: 'Event',
     activeIcon: HiMegaphone,
@@ -92,4 +98,18 @@ export const SUB_MENU_LAYANAN = [
     link: '/layanan/linjamsos',
     title: 'Linjamsos'
   }
+]
+export const COMMUNITY_ACTIVITY_CODE = [
+  { label: 'Muslim', value: 'COMMUNITY_ACTIVITY_CODE_1' },
+  { label: 'Nasrani', value: 'COMMUNITY_ACTIVITY_CODE_2' },
+  { label: 'Hindu', value: 'COMMUNITY_ACTIVITY_CODE_3' },
+  { label: 'Budha', value: 'COMMUNITY_ACTIVITY_CODE_4' },
+  { label: 'Khonghucu', value: 'COMMUNITY_ACTIVITY_CODE_5' },
+  { label: 'Umum', value: 'COMMUNITY_ACTIVITY_CODE_6' }
+]
+
+export const COMMUNITY_ASSISTANCE_TYPE = [
+  { label: 'Paket Sembako', value: 'COMMUNITY_ASSISTANCE_TYPE_1' },
+  { label: 'Santunan', value: 'COMMUNITY_ASSISTANCE_TYPE_2' },
+  { label: 'Sandang', value: 'COMMUNITY_ASSISTANCE_TYPE_3' }
 ]

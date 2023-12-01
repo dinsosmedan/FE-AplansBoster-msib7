@@ -91,7 +91,7 @@ export const useDeleteWorshipPlace = () => {
     onSuccess: () => {
       void queryClient.invalidateQueries('worship-places')
       toast({
-        variant: 'destructive',
+        variant: 'default',
         duration: 1500,
         title: 'Proses Berhasil',
         description: 'Data Rumah Ibadah Berhasil Dihapus'
@@ -137,10 +137,10 @@ export const useGetServiceTypes = () => {
   return useQuery('service-types', async () => await getServiceTypesFn())
 }
 
-export const useGetServiceFunds = ({ page, idKecamatan, idKelurahan, name }: ServiceFundQuery) => {
+export const useGetServiceFunds = ({ page, idKecamatan, idKelurahan, name, type }: ServiceFundQuery) => {
   return useQuery(
-    ['service-funds', page, idKecamatan, idKelurahan, name],
-    async () => await getServiceFundsFn({ page, idKecamatan, idKelurahan, name }),
+    ['service-funds', page, idKecamatan, idKelurahan, name, type],
+    async () => await getServiceFundsFn({ page, idKecamatan, idKelurahan, name, type }),
     {
       keepPreviousData: true,
       staleTime: 5000
@@ -235,7 +235,7 @@ export const useDeleteServiceFund = () => {
     onSuccess: () => {
       void queryClient.invalidateQueries('service-funds')
       toast({
-        variant: 'destructive',
+        variant: 'default',
         duration: 1500,
         title: 'Proses Berhasil',
         description: 'Data DJPM Berhasil Dihapus'
@@ -289,7 +289,7 @@ export const useDeleteOrganizationGrantAssistance = () => {
     onSuccess: () => {
       void queryClient.invalidateQueries('organization-grant-assistance')
       toast({
-        variant: 'destructive',
+        variant: 'default',
         duration: 1500,
         title: 'Proses Berhasil',
         description: 'Data Hibah Berhasil Dihapus'
@@ -366,7 +366,7 @@ export const useDeleteBusinessGroup = () => {
     onSuccess: () => {
       void queryClient.invalidateQueries('business-group')
       toast({
-        variant: 'destructive',
+        variant: 'default',
         duration: 1500,
         title: 'Proses Berhasil',
         description: 'Data Kube Berhasil Dihapus'
@@ -477,7 +477,7 @@ export const useDeleteCommunityGroups = () => {
     onSuccess: () => {
       void queryClient.invalidateQueries('community-groups')
       toast({
-        variant: 'destructive',
+        variant: 'default',
         duration: 1500,
         title: 'Proses Berhasil',
         description: 'Data Pokmas Berhasil Dihapus'
@@ -556,7 +556,7 @@ export const useDeleteVeteran = () => {
     onSuccess: () => {
       void queryClient.invalidateQueries('veterans')
       toast({
-        variant: 'destructive',
+        variant: 'default',
         duration: 1500,
         title: 'Proses Berhasil',
         description: 'Data Veteran Berhasil Dihapus'
@@ -610,7 +610,7 @@ export const useDeleteFuelCashAssistance = () => {
     onSuccess: () => {
       void queryClient.invalidateQueries('fuel-cash-assistances')
       toast({
-        variant: 'destructive',
+        variant: 'default',
         duration: 1500,
         title: 'Proses Berhasil',
         description: 'Data BLTBBM Berhasil Dihapus'

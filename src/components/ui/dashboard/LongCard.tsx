@@ -52,36 +52,6 @@ export const UserData = [
     userLost: 234
   }
 ]
-// const options = {
-//     plugins: {
-//         legend: {
-//             labels: {
-//                 position: 'bottom'
-//             }
-//         }
-//     }
-// };
-// const options = {
-//     plugins: {
-//         legend: {
-//             position: 'bottom'
-//         },
-//         datalabels: {
-//             display: true,
-//             color: "white"
-//         }
-//     }
-// };
-
-// export default function CardLink({ children, className }: CardLayananProps) {
-//     return (
-//       <article
-//         className={cn('w-[385px] h-fit flex flex-col rounded-[20px] border border-primary overflow-hidden', className)}
-//       >
-//         {children}
-//       </article>
-//     )
-//   }
 
 const LongCard = ({ props, children }: any) => {
   const [title, description] = props

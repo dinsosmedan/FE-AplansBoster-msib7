@@ -5,14 +5,15 @@ import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { HiMagnifyingGlass, HiMiniTrash } from 'react-icons/hi2'
+import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useDeleteCommunityGroups, useGetCommunityGroups, useGetKecamatan, useGetKelurahan } from '@/store/server'
-import { Loading } from '@/components'
+import { Action, Loading } from '@/components'
 import { useAlert } from '@/store/client'
+import { useNavigate } from 'react-router-dom'
 interface FormValues {
   q: string
   communityActivityCode: string
@@ -24,6 +25,7 @@ interface FormValues {
 const DataPokmas = () => {
   useTitle('Data Penerima / Dayasos / Pokmas ')
   const { alert } = useAlert()
+  const navigate = useNavigate()
   const createParams = useCreateParams()
   const {
     page,
@@ -67,15 +69,8 @@ const DataPokmas = () => {
   useDisableBodyScroll(isFetching)
 
   const handleReset = () => {
-    forms.reset({ q: '', kecamatan: '', kelurahan: '', application_year: '', status: '', communityActivityCode: '' })
-    createParams({ key: 'q', value: '' })
-    createParams({ key: 'application_year', value: '' })
-    createParams({ key: 'kecamatan', value: '' })
-    createParams({ key: 'kelurahan', value: '' })
-    createParams({ key: 'status', value: '' })
-    createParams({ key: 'community_activity_code', value: '' })
-    // Tambahan untuk memastikan reset pada list kelurahan saat kecamatan di-reset
-    forms.setValue('kelurahan', '')
+    navigate('/data-penerima/dayasos/data-djp')
+    forms.reset()
   }
   const updateParam = (key: any, value: any) => {
     if (value !== '') {
@@ -234,9 +229,9 @@ const DataPokmas = () => {
               />
             </div>
             <div className="flex justify-end gap-3">
-              <Button onClick={handleReset} className="w-fit py-6 px-4 bg-primary">
-                <HiMiniTrash className="w-6 h-6 text-white" />
-                <p className="text-white font-semibold text-sm pl-2 w-max">Reset</p>
+            <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
+                <HiArrowPath className="text-lg" />
+                <span>Reset</span>
               </Button>
               <Button className="w-fit py-6 px-4 bg-primary">
                 <HiMagnifyingGlass className="w-6 h-6 text-white" />
@@ -259,7 +254,7 @@ const DataPokmas = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah Bantuan Disetujui</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Pencairan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Status Pencairan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -278,14 +273,9 @@ const DataPokmas = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{item.approvedFundAmount}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.applicationYear}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.statusDisimbursement}</TableCell>
-                  <TableCell className="bg-[#F9FAFC]"><Button
-                      size="icon"
-                      variant="default"
-                      className=" text-white hover:text-white"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <HiMiniTrash className="text-lg" />
-                    </Button></TableCell>
+                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                  <Action onDelete={() => handleDelete(item.id)} onDetail={() => console.log('detail')} onEdit={() => console.log('detail')}/>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (

@@ -19,7 +19,10 @@ import {
   type INonCashFoodAssistanceBeneficiary,
   type IServiceFund,
   type ICommunityGroup,
-  type IOrganizationGrantAssistances
+  type IOrganizationGrantAssistances,
+  type IVeteranDetail,
+  type IWorshipPlaceDetail,
+  type IBusinessGroupDetail
 } from '@/lib/types/dayasos.type'
 
 export const storeWorshipPlaceFn = async (fields: worshipPlaceFields) => {
@@ -42,6 +45,7 @@ export interface ServiceFundQuery {
   idKecamatan?: string
   idKelurahan?: string
   name?: string
+  type: string
 }
 
 export interface OrganizationGrantAssistanceQuery {
@@ -100,10 +104,11 @@ export const getServiceFundsFn = async ({
   page,
   idKecamatan,
   idKelurahan,
-  name
+  name,
+  type
 }: ServiceFundQuery): Promise<IServiceFunds> => {
   const response = await api.get(
-    `/service-fund/?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${name}&limit=10`
+    `/service-fund?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${name}&type=${type}&limit=10`
   )
   return response.data
 }
@@ -261,7 +266,7 @@ export const updateWorshipPlaceFn = async ({ id, fields }: UpdateWorshipPlacePar
   await api.put(`/worship-place/${id}`, fields)
 }
 
-export const getWorshipPlaceFn = async (id: string) => {
+export const getWorshipPlaceFn = async (id: string): Promise<IWorshipPlaceDetail> => {
   const response = await api.get(`/worship-place/${id}`)
   return response.data?.data
 }
@@ -275,7 +280,7 @@ export const updateVeteranFn = async ({ id, fields }: UpdateVeteranParams) => {
   await api.put(`/veteran/${id}`, fields)
 }
 
-export const getDetailVeteranFn = async (id: string) => {
+export const getDetailVeteranFn = async (id: string): Promise<IVeteranDetail> => {
   const response = await api.get(`/veteran/${id}`)
   return response.data?.data
 }
@@ -289,7 +294,7 @@ export const updateBusinessGroupFn = async ({ id, fields }: updateBusinessGroupP
   await api.put(`/joint-business-group/${id}`, fields)
 }
 
-export const getDetailBusinessGroupFn = async (id: string) => {
+export const getDetailBusinessGroupFn = async (id: string): Promise<IBusinessGroupDetail> => {
   const response = await api.get(`/joint-business-group/${id}`)
   return response.data?.data
 }

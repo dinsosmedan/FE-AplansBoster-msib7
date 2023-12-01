@@ -95,8 +95,8 @@ const Ri = () => {
         type: WorshipPlace?.type,
         picName: WorshipPlace?.picName,
         picPhoneNumber: WorshipPlace?.picPhone,
-        areaLevel3: WorshipPlace?.areaLevel3.id,
-        areaLevel4: WorshipPlace?.areaLevel4.id,
+        areaLevel3: WorshipPlace?.areaLevel3?.id,
+        areaLevel4: WorshipPlace?.areaLevel4?.id,
         address: WorshipPlace?.address,
         status: WorshipPlace?.status,
         note: WorshipPlace?.note

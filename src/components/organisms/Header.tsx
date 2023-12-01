@@ -8,15 +8,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { useTitleHeader } from '@/store/client/useTitleHeader'
 import { useLogout } from '@/store/server'
 import { useAlert } from '@/store/client'
+import { Breadcrumbs } from '..'
 
 export default function Header() {
   const { alert } = useAlert()
-  const title = useTitleHeader((state) => state.title)
 
-  // const { data: user, isLoading } = useGetMe()
   const { mutate: logout } = useLogout()
   const handleLogout = () => {
     void alert({
@@ -30,7 +28,9 @@ export default function Header() {
   return (
     <header className="h-24 flex items-center px-8 z-[20] sticky top-0 bg-white border-b border-[#E9E9E9] text-font">
       <nav className="flex items-center justify-between flex-1">
-        <h2 className="font-bold text-xl text-font/70">{title}</h2>
+        <div>
+          <Breadcrumbs />
+        </div>
         <div className="flex items-center gap-6">
           <Button size="icon" variant="ghost" className="rounded-full">
             <HiBell className="text-2xl text-primary" />

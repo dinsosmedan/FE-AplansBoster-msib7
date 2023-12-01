@@ -122,6 +122,12 @@ export const hibahValidation = Yup.object({
 export type hibahFields = Yup.InferType<typeof hibahValidation>
 
 export const pokmasValidation = Yup.object({
+  executionDate: Yup.date().transform((value) => {
+    return `${value.getFullYear()}-${(value.getMonth() + 1).toString().padStart(2, '0')}-${value
+      .getDate()
+      .toString()
+      .padStart(2, '0')}`
+  }),
   applicantPhoneNumber: Yup.string()
     .matches(phoneRegExp, 'Nomor telepon tidak valid')
     .min(7, 'Nomor telepon minimal 7 karakter')
@@ -154,7 +160,6 @@ export const pokmasValidation = Yup.object({
   ),
   statusDisimbursement: Yup.string().max(50, 'Status Pencairan maksimal 255 karakter'),
   note: Yup.string().max(255, 'Catatan maksimal 255 karakter'),
-  executionDate: Yup.date().required('Tanggal Pelaksanaan wajib diisi'),
   executionPlace: Yup.string().max(255, 'Tempat Pelaksanaan maksimal 255 karakter')
 })
 

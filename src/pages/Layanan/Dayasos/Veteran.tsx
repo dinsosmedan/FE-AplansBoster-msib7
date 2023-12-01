@@ -1,22 +1,21 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import * as React from 'react'
 
-import { useTitle } from '@/hooks'
-import { Container } from '@/components'
+import { useTitle, useToastNik } from '@/hooks'
+import { Container, Loading } from '@/components'
 import { veteranValidation, type veteranFields } from '@/lib/validations/dayasos.validation'
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { useCreateVeteran, useGetBeneficaryByNIK } from '@/store/server'
-import { useToast } from '@/components/ui/use-toast'
+import { useCreateVeteran, useGetBeneficaryByNIK, useGetVeteranById, useUpdateVeteran } from '@/store/server'
+import { useParams } from 'react-router-dom'
 
 const Veteran = () => {
   useTitle('Veteran')
-  const { toast } = useToast()
 
+  const { id } = useParams<{ id: string }>()
   const [NIK, setNIK] = React.useState('')
 
   const forms = useForm<veteranFields>({
@@ -33,30 +32,42 @@ const Veteran = () => {
   const { data: beneficiary, refetch, isLoading, isError } = useGetBeneficaryByNIK(NIK, false)
   const { mutate: createVeteran, isLoading: isLoadingCreate } = useCreateVeteran()
 
-  React.useEffect(() => {
-    if (!isLoading && beneficiary != null) {
-      forms.setValue('beneficiary', beneficiary?.id)
-      toast({
-        title: 'NIK terdaftar',
-        description: 'NIK terdaftar, silahkan isi form berikut'
-      })
-    }
-  }, [isLoading, beneficiary])
+  const { data: veteran, isLoading: isLoadingVeteran, isSuccess } = useGetVeteranById(id)
+  const { mutate: updateVeteran, isLoading: isLoadingUpdate } = useUpdateVeteran()
+
+  useToastNik({
+    successCondition: !isLoading && beneficiary != null,
+    onSuccess: () => forms.setValue('beneficiary', beneficiary?.id as string),
+    notFoundCondition: isError,
+    notRegisteredCondition: forms.getValues('beneficiary') === '' && NIK !== '' && forms.formState.isSubmitted
+  })
 
   React.useEffect(() => {
-    if (isError) {
-      toast({
-        title: 'NIK tidak terdaftar',
-        description: 'Maaf NIK tidak terdaftar silahkan daftarkan NIK pada menu Data Master',
-        variant: 'destructive'
+    if (isSuccess) {
+      forms.reset({
+        beneficiary: veteran.beneficiary.id,
+        veteranIdentityNumber: veteran.veteranIdentityNumber,
+        veteranUnit: veteran.veteranUnit,
+        uniformSize: veteran.uniformSize as string,
+        isActive: Boolean(veteran.isActive)
       })
     }
-  }, [isError])
+  }, [isSuccess])
 
   const onSubmit = async (values: veteranFields) => {
-    createVeteran(values, {
+    if (!id) {
+      createVeteran(values, { onSuccess: () => forms.reset() })
+      return
+    }
+
+    const data = { id, fields: values }
+    updateVeteran(data, {
       onSuccess: () => forms.reset()
     })
+  }
+
+  if (isLoadingVeteran) {
+    return <Loading />
   }
 
   return (
@@ -65,31 +76,33 @@ const Veteran = () => {
         <p className="text-2xl font-bold text-center">Data Veteran</p>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col">
-            <div className="flex flex-row justify-between gap-3">
-              <FormItem className="w-full">
-                <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="Masukkan NIK Masyarakat"
-                    value={NIK}
-                    onChange={(e) => setNIK(e.target.value)}
-                  />
-                </FormControl>
-              </FormItem>
-              <div className="w-fit flex items-end justify-end" onClick={async () => await refetch()}>
-                <Button className="w-full" loading={isLoading} type="button">
-                  Cari
-                </Button>
+            {!id && (
+              <div className="flex flex-row justify-between gap-3">
+                <FormItem className="w-full">
+                  <FormLabel>NIK</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Masukkan NIK Masyarakat"
+                      value={NIK}
+                      onChange={(e) => setNIK(e.target.value)}
+                    />
+                  </FormControl>
+                </FormItem>
+                <div className="w-fit flex items-end justify-end" onClick={async () => await refetch()}>
+                  <Button className="w-full" loading={isLoading} type="button">
+                    Cari
+                  </Button>
+                </div>
               </div>
-            </div>
+            )}
             <div className="grid grid-cols-2 gap-x-8 gap-y-5 mt-5">
               <FormField
                 name="veteranIdentityNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">NPV</FormLabel>
+                    <FormLabel>NPV</FormLabel>
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan NPV" />
                     </FormControl>
@@ -107,7 +120,7 @@ const Veteran = () => {
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Satuan</FormLabel>
+                    <FormLabel>Satuan</FormLabel>
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Satuan" />
                     </FormControl>
@@ -119,7 +132,7 @@ const Veteran = () => {
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Ukuran Baju Celana</FormLabel>
+                    <FormLabel>Ukuran Baju Celana</FormLabel>
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Ukuran Baju Celana " />
                     </FormControl>
@@ -140,8 +153,8 @@ const Veteran = () => {
               >
                 Cancel
               </Button>
-              <Button className="font-bold" type="submit" loading={isLoadingCreate}>
-                Submit
+              <Button className="font-bold" type="submit" loading={isLoadingCreate || isLoadingUpdate}>
+                {id ? 'Update' : 'Submit'}
               </Button>
             </div>
           </form>

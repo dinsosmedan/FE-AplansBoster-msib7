@@ -1,77 +1,44 @@
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useFieldArray, useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import useTitle from '@/hooks/useTitle'
-import { HiPlus } from 'react-icons/hi'
-import { type pokmasFields, pokmasValidation } from '@/lib/validations/dayasos.validation'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
+import * as React from 'react'
+import { useParams } from 'react-router-dom'
+import { HiTrash, HiPlus } from 'react-icons/hi2'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Container } from '@/components'
+import { useFieldArray, useForm } from 'react-hook-form'
+
+import { useToastNik, useTitle } from '@/hooks'
+import { Container, DatePicker } from '@/components'
+
 import {
   useCreateCommunityGroups,
   useGetBeneficaryByNIK,
   useGetCommunityGroup,
   useGetKecamatan,
-  useGetKelurahan
+  useGetKelurahan,
+  useUpdateCommunityGroups
 } from '@/store/server'
-import * as React from 'react'
-import { HiTrash } from 'react-icons/hi2'
+
 import { cn } from '@/lib/utils'
-import DatePicker from './../../../components/atoms/DatePicker'
-import { useToastNik } from '@/hooks'
-import { useParams } from 'react-router-dom'
-
-const COMMUNITY_ACTIVITY_CODE = [
-  { label: 'Muslim', value: 'COMMUNITY_ACTIVITY_CODE_1' },
-  { label: 'Nasrani', value: 'COMMUNITY_ACTIVITY_CODE_2' },
-  { label: 'Hindu', value: 'COMMUNITY_ACTIVITY_CODE_3' },
-  { label: 'Budha', value: 'COMMUNITY_ACTIVITY_CODE_4' },
-  { label: 'Khonghucu', value: 'COMMUNITY_ACTIVITY_CODE_5' },
-  { label: 'Umum', value: 'COMMUNITY_ACTIVITY_CODE_6' }
-]
-
-const COMMUNITY_ASSISTANCE_TYPE = [
-  { label: 'Paket Sembako', value: 'COMMUNITY_ASSISTANCE_TYPE_1' },
-  { label: 'Santunan', value: 'COMMUNITY_ASSISTANCE_TYPE_2' },
-  { label: 'Sandang', value: 'COMMUNITY_ASSISTANCE_TYPE_3' }
-]
+import { formatStringToDate } from '@/lib/formatDate'
+import { POKMAS_DEFAULT_VALUES } from '@/lib/defaultValues'
+import { COMMUNITY_ACTIVITY_CODE, COMMUNITY_ASSISTANCE_TYPE } from '@/lib/data'
+import { type pokmasFields, pokmasValidation } from '@/lib/validations/dayasos.validation'
 
 const Pokmas = () => {
   useTitle('Kelompok Masyarakat (Pokmas)')
   const { id } = useParams<{ id: string }>()
+
   const [NIK, setNIK] = React.useState('')
   const [index, setIndex] = React.useState(0)
 
   const forms = useForm<pokmasFields>({
     mode: 'onTouched',
     resolver: yupResolver(pokmasValidation),
-    defaultValues: {
-      applicantPhoneNumber: '',
-      communityName: '',
-      communityAddress: '',
-      communityActivityCode: '',
-      communityActivityTypeDescription: '',
-      communityAssistanceType: '',
-      areaLevel3: '',
-      areaLevel4: '',
-      applicationYear: '',
-      bankName: '',
-      bankAccName: '',
-      bankAccNumber: '',
-      bankAccAddress: '',
-      statusDisimbursement: '',
-      note: '',
-      executionPlace: '',
-      members: [
-        {
-          nik: '',
-          position: '',
-          beneficiary: ''
-        }
-      ]
-    }
+    defaultValues: POKMAS_DEFAULT_VALUES
   })
 
   const { fields, append, remove } = useFieldArray({
@@ -84,12 +51,14 @@ const Pokmas = () => {
   const { data: kelurahan, isLoading: isLoadingKelurahan } = useGetKelurahan(areaLevel3 ?? '')
   const { data: beneficiary, refetch, isFetching, isError, isLoading } = useGetBeneficaryByNIK(NIK, false)
   const { mutate: createPokmas, isLoading: isLoadingCreate } = useCreateCommunityGroups()
+
   const { data: communityGroup, isSuccess } = useGetCommunityGroup(id)
+  const { mutate: updateCommunityGroup, isLoading: isLoadingUpdate } = useUpdateCommunityGroups()
 
   useToastNik({
     successCondition: !isLoading && beneficiary != null,
     notFoundCondition: isError,
-    notRegisteredCondition: forms.formState.errors && forms.formState.isSubmitted,
+    notRegisteredCondition: Object.keys(forms.formState.errors).length > 0 && forms.formState.isSubmitted,
     onSuccess: () => forms.setValue(`members.${index}.beneficiary`, beneficiary?.id as string)
   })
 
@@ -114,29 +83,49 @@ const Pokmas = () => {
       })
     }
 
-    createPokmas(newData, {
+    if (!id) {
+      return createPokmas(newData, { onSuccess: () => forms.reset() })
+    }
+
+    const data = { id, fields: newData }
+    updateCommunityGroup(data, {
       onSuccess: () => forms.reset()
     })
   }
 
   React.useEffect(() => {
     if (isSuccess) {
-      // forms.setValue('beneficiary', serviceFund?.beneficiary?.id)
-      // forms.setValue('phoneNumber', serviceFund?.phoneNumber)
-      // forms.setValue('serviceType', serviceFund?.serviceType?.id)
-      // forms.setValue('dutyPlace', serviceFund?.dutyPlace)
-      // forms.setValue('dutyAddress', serviceFund?.dutyAddress)
-      // forms.setValue('bankAccountNumber', serviceFund?.bankAccountNumber)
-      // forms.setValue('bankAccountName', serviceFund?.bankAccountName)
-      // forms.setValue('bankBranchName', serviceFund?.bankBranchName)
-      // forms.setValue('status', serviceFund?.status as string)
-      // forms.setValue('budgetYear', serviceFund?.budgetYear)
-      // forms.setValue('assistanceAmount', serviceFund?.assistanceAmount as number)
+      forms.reset({
+        applicantPhoneNumber: communityGroup?.applicantPhoneNumber as string,
+        communityName: communityGroup?.communityName,
+        communityAddress: communityGroup?.communityAddress as string,
+        communityActivityCode: communityGroup?.communityActivityCode,
+        communityActivityTypeDescription: communityGroup.communityActivityTypeDescription,
+        communityAssistanceType: communityGroup?.communityAssistanceType,
+        areaLevel3: communityGroup.address?.areaLevel3?.name,
+        areaLevel4: communityGroup.address?.areaLevel4?.name,
+        requestedRabAmount: communityGroup.requestedRabAmount,
+        requestedBansosAmount: communityGroup.requestedBansosAmount,
+        approvedFundAmount: communityGroup.approvedFundAmount,
+        applicationYear: communityGroup.applicationYear,
+        bankName: communityGroup.bankName,
+        bankAccName: communityGroup?.bankAccName as string,
+        bankAccNumber: communityGroup.bankAccNumber,
+        bankAccAddress: communityGroup.bankAccAddress as string,
+        statusDisimbursement: communityGroup?.statusDisimbursement as string,
+        note: communityGroup?.note,
+        executionDate: formatStringToDate(communityGroup?.executionDate as string),
+        executionPlace: communityGroup?.executionPlace as string,
+        members: communityGroup?.members?.map((member) => {
+          const { id, ...newMember } = member
+          return { ...newMember, nik: member.beneficiaryId }
+        })
+      })
     }
   }, [isSuccess, communityGroup])
 
   return (
-    <Container className="py-10 px-12">
+    <Container className="py-10 px-16">
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-7">
           <p className="text-2xl font-bold text-center">Data Personal</p>
@@ -146,7 +135,7 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Nama Kelompok Masyarakat</FormLabel>
+                  <FormLabel>Nama Kelompok Masyarakat</FormLabel>
                   <FormControl>
                     <Input {...field} type="text" placeholder="Masukkan Nama Kelompok Masyarakat" />
                   </FormControl>
@@ -159,7 +148,7 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">No. HP Pemohon</FormLabel>
+                  <FormLabel>No. HP Pemohon</FormLabel>
                   <FormControl>
                     <Input {...field} type="text" placeholder="Masukkan No. HP Pemohon" />
                   </FormControl>
@@ -175,7 +164,7 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
+                  <FormLabel>Kecamatan</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -199,7 +188,7 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
+                  <FormLabel>Kelurahan</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     value={field.value}
@@ -228,7 +217,7 @@ const Pokmas = () => {
             control={forms.control}
             render={({ field }) => (
               <FormItem className="-mt-3">
-                <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
+                <FormLabel>Alamat Lengkap</FormLabel>
                 <FormControl>
                   <Textarea {...field} placeholder="Masukkan Alamat Lengkap Masyarakat." />
                 </FormControl>
@@ -243,7 +232,7 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Kode Kegiatan</FormLabel>
+                  <FormLabel>Kode Kegiatan</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -267,7 +256,7 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Jenis Kegiatan</FormLabel>
+                  <FormLabel>Jenis Kegiatan</FormLabel>
                   <FormControl>
                     <Input {...field} type="text" placeholder="Masukkan Jenis Kegiatan" />
                   </FormControl>
@@ -280,7 +269,7 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Jenis Bantuan</FormLabel>
+                  <FormLabel>Jenis Bantuan</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -304,7 +293,7 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Jumlah Permohonan RAB</FormLabel>
+                  <FormLabel>Jumlah Permohonan RAB</FormLabel>
                   <FormControl>
                     <Input {...field} type="number" placeholder="Rp. " />
                   </FormControl>
@@ -317,7 +306,7 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Jumlah Permohonan Bansos</FormLabel>
+                  <FormLabel>Jumlah Permohonan Bansos</FormLabel>
                   <FormControl>
                     <Input {...field} type="number" placeholder="Rp. " />
                   </FormControl>
@@ -330,7 +319,7 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Jumlah Dana Disetujui</FormLabel>
+                  <FormLabel>Jumlah Dana Disetujui</FormLabel>
                   <FormControl>
                     <Input {...field} type="number" placeholder="Rp. " />
                   </FormControl>
@@ -343,9 +332,9 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Jadwal Pelaksaaan</FormLabel>
+                  <FormLabel>Jadwal Pelaksaaan</FormLabel>
                   <FormControl>
-                    <DatePicker onChange={field.onChange} selected={field.value} placeholder="dd/mm/yyyy" />
+                    <DatePicker onChange={field.onChange} selected={field.value as Date} placeholder="dd/mm/yyyy" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -356,7 +345,7 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Tempat Pelaksanaan</FormLabel>
+                  <FormLabel>Tempat Pelaksanaan</FormLabel>
                   <FormControl>
                     <Input {...field} type="text" placeholder="Masukkan Tempat Pelaksanaan" />
                   </FormControl>
@@ -370,7 +359,7 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Tahun Permohonan</FormLabel>
+                  <FormLabel>Tahun Permohonan</FormLabel>
                   <FormControl>
                     <Input {...field} type="text" placeholder="Masukkan Tahun Permohonan" />
                   </FormControl>
@@ -383,7 +372,7 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Nama Bank</FormLabel>
+                  <FormLabel>Nama Bank</FormLabel>
                   <FormControl>
                     <Input {...field} type="text" placeholder="Bank Sumut" />
                   </FormControl>
@@ -396,7 +385,7 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Nama Rekening</FormLabel>
+                  <FormLabel>Nama Rekening</FormLabel>
                   <FormControl>
                     <Input {...field} type="text" placeholder="Masukkan Nama Rekening" />
                   </FormControl>
@@ -409,7 +398,7 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Nomor Rekening</FormLabel>
+                  <FormLabel>Nomor Rekening</FormLabel>
                   <FormControl>
                     <Input {...field} type="text" placeholder="Masukkan Nomor Rekening" />
                   </FormControl>
@@ -422,7 +411,7 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Alamat Rekening</FormLabel>
+                  <FormLabel>Alamat Rekening</FormLabel>
                   <FormControl>
                     <Input {...field} type="text" placeholder="Masukkan Alamat Rekening" />
                   </FormControl>
@@ -435,7 +424,7 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Status Pencairan</FormLabel>
+                  <FormLabel>Status Pencairan</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -456,7 +445,7 @@ const Pokmas = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Keterangan</FormLabel>
+                  <FormLabel>Keterangan</FormLabel>
                   <FormControl>
                     <Input {...field} type="text" placeholder="Masukkan Keterangan" />
                   </FormControl>
@@ -478,7 +467,7 @@ const Pokmas = () => {
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
+                    <FormLabel>NIK</FormLabel>
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan NIK" />
                     </FormControl>
@@ -491,7 +480,7 @@ const Pokmas = () => {
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Jabatan</FormLabel>
+                    <FormLabel>Jabatan</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
@@ -541,8 +530,8 @@ const Pokmas = () => {
             <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
               Cancel
             </Button>
-            <Button className="font-bold" type="submit" loading={isLoadingCreate}>
-              Submit
+            <Button className="font-bold" type="submit" loading={isLoadingCreate || isLoadingUpdate}>
+              {id ? 'Update' : 'Submit'}
             </Button>
           </div>
         </form>

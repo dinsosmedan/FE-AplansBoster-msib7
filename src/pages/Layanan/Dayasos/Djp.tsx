@@ -43,12 +43,12 @@ const Djpm = () => {
   })
 
   const onSubmit = (values: djpmFields) => {
-    if (id) {
+    if (!id) {
       createServiceFund(values, { onSuccess: () => forms.reset() })
       return
     }
 
-    const results = { id: id as string, fields: values }
+    const results = { id, fields: values }
     updateServiceFund(results, { onSuccess: () => forms.reset() })
   }
 

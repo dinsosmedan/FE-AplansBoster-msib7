@@ -5,13 +5,12 @@ import useTitle from '@/hooks/useTitle'
 import { useForm } from 'react-hook-form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { HiArrowPath, HiMagnifyingGlass, HiMiniTrash } from 'react-icons/hi2'
+import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useDeleteServiceFund, useGetKecamatan, useGetKelurahan, useGetServiceFunds } from '@/store/server'
-import { Loading, Title } from '@/components'
-import { HiOutlinePencilAlt } from 'react-icons/hi'
+import { useDeleteServiceFund, useGetKecamatan, useGetKelurahan, useGetServiceFunds, useGetServiceTypes } from '@/store/server'
+import { Action, Loading, Title } from '@/components'
 import { useNavigate } from 'react-router-dom'
 import { useAlert } from '@/store/client'
 import { Input } from '@/components/ui/input'
@@ -20,6 +19,7 @@ interface FormValues {
   q: string
   kelurahan: string
   kecamatan: string
+  type: string
 }
 
 const DataDjp = () => {
@@ -28,19 +28,22 @@ const DataDjp = () => {
 
   const navigate = useNavigate()
   const createParams = useCreateParams()
-  const { q, kecamatan, kelurahan, page } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page'])
+  const { q, kecamatan, kelurahan, page, type } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'type'])
 
   const forms = useForm<FormValues>({
     defaultValues: {
       q: '',
       kelurahan: '',
-      kecamatan: ''
+      kecamatan: '',
+      type: ''
     }
   })
 
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
+  const { data: serviceTypes } = useGetServiceTypes()
+
   const {
     data: serviceFunds,
     refetch,
@@ -50,7 +53,8 @@ const DataDjp = () => {
     page: parseInt(page) ?? 1,
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
-    name: q
+    name: q,
+    type
   })
 
   useDisableBodyScroll(isFetching)
@@ -60,13 +64,14 @@ const DataDjp = () => {
   }
   const onSubmit = async (values: FormValues) => {
     // Dapatkan nilai-nilai yang diisi dari form
-    const { q, kecamatan, kelurahan } = values
+    const { q, kecamatan, kelurahan, type } = values
 
     // Pastikan setiap parameter terisi sebelum pengiriman permintaan data
-    if (q || kecamatan || kelurahan) {
+    if (q || kecamatan || kelurahan || type) {
       createParams({ key: 'q', value: q })
       createParams({ key: 'kecamatan', value: kecamatan })
       createParams({ key: 'kelurahan', value: kelurahan })
+      createParams({ key: 'type', value: type })
       await refetch()
     }
   }
@@ -129,7 +134,31 @@ const DataDjp = () => {
                 </FormItem>
               )}
             />
-
+            <FormField
+              name="type"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Jenis Bantuan" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {serviceTypes?.map((item, index) => (
+                          <SelectItem key={index} value={item.id}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                </FormItem>
+              )}
+            />
             <FormField
               name="kelurahan"
               control={forms.control}
@@ -196,8 +225,7 @@ const DataDjp = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Bantuan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah Bantuan Disetujui</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Ubah Data</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -222,24 +250,7 @@ const DataDjp = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{serviceFund.serviceType.name}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{serviceFund?.assistanceAmount ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Button
-                      size="icon"
-                      variant="base"
-                      className="bg-[#959595] text-white hover:bg-[#828282] hover:text-white"
-                      onClick={() => navigate(`/layanan/dayasos/Djp/${serviceFund.id}`)}
-                    >
-                      <HiOutlinePencilAlt className="text-lg" />
-                    </Button>
-                  </TableCell>
-                  <TableCell className="bg-[#F9FAFC]">
-                    <Button
-                      size="icon"
-                      variant="default"
-                      className=" text-white hover:text-white"
-                      onClick={() => handleDelete(serviceFund.id)}
-                    >
-                      <HiMiniTrash className="text-lg" />
-                    </Button>
+                  <Action onDelete={() => handleDelete(serviceFund.id)} onEdit={() => navigate(`/layanan/dayasos/Djp/${serviceFund.id}`)}/>
                   </TableCell>
                 </TableRow>
               ))

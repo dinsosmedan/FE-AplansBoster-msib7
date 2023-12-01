@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
-import { HiMagnifyingGlass, HiMiniTrash } from 'react-icons/hi2'
+import { HiArrowPath, HiMagnifyingGlass, HiMiniTrash } from 'react-icons/hi2'
 
-import { Container, Loading, Pagination } from '@/components'
+import { Action, Container, Loading, Pagination } from '@/components'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 import { JENIS_RUMAH_IBADAH } from '@/pages/Layanan/Dayasos/RumahIbadah'
 
@@ -28,9 +28,9 @@ interface FormValues {
 const DataRumahIbadah = () => {
   useTitle('Data Penerima / Dayasos / Rumah Ibadah (RI) ')
   const { alert } = useAlert()
+  const navigate = useNavigate()
   const createParams = useCreateParams()
   const { page, q, kecamatan, kelurahan, type } = useGetParams(['page', 'q', 'type', 'kecamatan', 'kelurahan'])
-  const navigate = useNavigate()
 
   const forms = useForm<FormValues>({
     defaultValues: {
@@ -61,13 +61,8 @@ const DataRumahIbadah = () => {
   const [isLoadingPage, setIsLoadingPage] = React.useState(false)
 
   const handleReset = () => {
-    forms.reset({ q: '', kecamatan: '', kelurahan: '', type: '' })
-    createParams({ key: 'q', value: '' })
-    createParams({ key: 'type', value: '' })
-    createParams({ key: 'kecamatan', value: '' })
-    createParams({ key: 'kelurahan', value: '' })
-    // Tambahan untuk memastikan reset pada list kelurahan saat kecamatan di-reset
-    forms.setValue('kelurahan', '')
+    navigate('/data-penerima/dayasos/data-djp')
+    forms.reset()
   }
   const updateParam = (key: any, value: any) => {
     if (value !== '') {
@@ -204,9 +199,9 @@ const DataRumahIbadah = () => {
             />
           </div>
           <div className="flex justify-end gap-3">
-            <Button onClick={handleReset} className="w-fit py-6 px-4 bg-primary">
-              <HiMiniTrash className="w-6 h-6 text-white" />
-              <p className="text-white font-semibold text-sm pl-2 w-max">Reset</p>
+            <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
+              <HiArrowPath className="text-lg" />
+              <span>Reset</span>
             </Button>
             <Button className="w-fit py-6 px-4 bg-primary">
               <HiMagnifyingGlass className="w-6 h-6 text-white" />
@@ -231,6 +226,7 @@ const DataRumahIbadah = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Keterangan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Ubah Data</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
 
             </TableRow>
           </TableHeader>
@@ -267,7 +263,11 @@ const DataRumahIbadah = () => {
                     onClick={() => handleDelete(item.id)}
                   >
                     <HiMiniTrash className="text-lg" />
-                  </Button></TableCell>
+                  </Button>
+                  </TableCell>
+                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                    <Action onDelete={() => handleDelete(item.id)} onDetail={() => console.log('detail')} onEdit={() => console.log('detail')} />
+                  </TableCell>
                 </TableRow>
               ))
             ) : (

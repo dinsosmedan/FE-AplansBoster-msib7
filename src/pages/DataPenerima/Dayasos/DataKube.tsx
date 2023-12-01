@@ -5,13 +5,13 @@ import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { HiMagnifyingGlass, HiMiniTrash } from 'react-icons/hi2'
+import { HiArrowPath, HiMagnifyingGlass, HiMiniTrash } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useDeleteBusinessGroup, useGetBusinessGroup, useGetKecamatan, useGetKelurahan } from '@/store/server'
-import { Loading } from '@/components'
+import { Action, Loading } from '@/components'
 import { useAlert } from '@/store/client'
 import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
@@ -24,8 +24,8 @@ interface FormValues {
 const DataKube = () => {
   useTitle('Data Penerima / Dayasos / Kube ')
   const { alert } = useAlert()
-  const createParams = useCreateParams()
   const navigate = useNavigate()
+  const createParams = useCreateParams()
 
   const { page, q, kecamatan, kelurahan, year } = useGetParams(['page', 'q', 'kecamatan', 'kelurahan', 'year'])
 
@@ -57,13 +57,8 @@ const DataKube = () => {
 
   useDisableBodyScroll(isFetching)
   const handleReset = () => {
-    forms.reset({ q: '', kecamatan: '', kelurahan: '', year: '' })
-    createParams({ key: 'q', value: '' })
-    createParams({ key: 'year', value: '' })
-    createParams({ key: 'kecamatan', value: '' })
-    createParams({ key: 'kelurahan', value: '' })
-    // Tambahan untuk memastikan reset pada list kelurahan saat kecamatan di-reset
-    forms.setValue('kelurahan', '')
+    navigate('/data-penerima/dayasos/data-djp')
+    forms.reset()
   }
   const onSubmit = async (values: FormValues) => {
     if (values.q !== '') {
@@ -212,9 +207,9 @@ const DataKube = () => {
               />
             </div>
             <div className="flex justify-end gap-3">
-              <Button onClick={handleReset} className="w-fit py-6 px-4 bg-primary">
-                <HiMiniTrash className="w-6 h-6 text-white" />
-                <p className="text-white font-semibold text-sm pl-2 w-max">Reset</p>
+              <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
+                <HiArrowPath className="text-lg" />
+                <span>Reset</span>
               </Button>
               <Button className="w-fit py-6 px-4 bg-primary">
                 <HiMagnifyingGlass className="w-6 h-6 text-white" />
@@ -236,6 +231,8 @@ const DataKube = () => {
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Ubah Data</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
+
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -266,7 +263,8 @@ const DataKube = () => {
                       onClick={() => handleDelete(item.id)}
                     >
                       <HiMiniTrash className="text-lg" />
-                    </Button></TableCell>
+                    </Button>
+                      <Action onDelete={() => handleDelete(item.id)} onDetail={() => console.log('detail')} onEdit={() => console.log('detail')} /></TableCell>
                   </TableRow>
                 ))
               ) : (
