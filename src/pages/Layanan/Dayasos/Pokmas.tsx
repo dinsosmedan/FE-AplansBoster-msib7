@@ -9,12 +9,19 @@ import { HiPlus } from 'react-icons/hi'
 import { type pokmasFields, pokmasValidation } from '@/lib/validations/dayasos.validation'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Container } from '@/components'
-import { useCreateCommunityGroups, useGetBeneficaryByNIK, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import {
+  useCreateCommunityGroups,
+  useGetBeneficaryByNIK,
+  useGetCommunityGroup,
+  useGetKecamatan,
+  useGetKelurahan
+} from '@/store/server'
 import * as React from 'react'
-import { useToast } from '@/components/ui/use-toast'
 import { HiTrash } from 'react-icons/hi2'
 import { cn } from '@/lib/utils'
 import DatePicker from './../../../components/atoms/DatePicker'
+import { useToastNik } from '@/hooks'
+import { useParams } from 'react-router-dom'
 
 const COMMUNITY_ACTIVITY_CODE = [
   { label: 'Muslim', value: 'COMMUNITY_ACTIVITY_CODE_1' },
@@ -33,7 +40,7 @@ const COMMUNITY_ASSISTANCE_TYPE = [
 
 const Pokmas = () => {
   useTitle('Kelompok Masyarakat (Pokmas)')
-  const { toast } = useToast()
+  const { id } = useParams<{ id: string }>()
   const [NIK, setNIK] = React.useState('')
   const [index, setIndex] = React.useState(0)
 
@@ -75,32 +82,20 @@ const Pokmas = () => {
   const areaLevel3 = forms.watch('areaLevel3')
   const { data: kecamatan } = useGetKecamatan()
   const { data: kelurahan, isLoading: isLoadingKelurahan } = useGetKelurahan(areaLevel3 ?? '')
-  const { data: beneficiary, refetch, isFetching, isError } = useGetBeneficaryByNIK(NIK, false)
+  const { data: beneficiary, refetch, isFetching, isError, isLoading } = useGetBeneficaryByNIK(NIK, false)
   const { mutate: createPokmas, isLoading: isLoadingCreate } = useCreateCommunityGroups()
+  const { data: communityGroup, isSuccess } = useGetCommunityGroup(id)
+
+  useToastNik({
+    successCondition: !isLoading && beneficiary != null,
+    notFoundCondition: isError,
+    notRegisteredCondition: forms.formState.errors && forms.formState.isSubmitted,
+    onSuccess: () => forms.setValue(`members.${index}.beneficiary`, beneficiary?.id as string)
+  })
 
   React.useEffect(() => {
     if (NIK !== '') void refetch()
   }, [NIK])
-
-  React.useEffect(() => {
-    if (isError) {
-      toast({
-        title: 'NIK tidak terdaftar',
-        description: 'Maaf NIK tidak terdaftar silahkan daftarkan NIK pada menu Data Master',
-        variant: 'destructive'
-      })
-    }
-  }, [isError])
-
-  React.useEffect(() => {
-    if (beneficiary != null) {
-      forms.setValue(`members.${index}.beneficiary`, beneficiary?.id)
-      toast({
-        title: 'NIK terdaftar',
-        description: 'NIK terdaftar, silahkan isi form berikut'
-      })
-    }
-  }, [beneficiary])
 
   const handleFetchNik = async (index: number) => {
     const nik = forms.getValues(`members.${index}.nik`)
@@ -111,8 +106,6 @@ const Pokmas = () => {
   }
 
   const onSubmit = async (values: pokmasFields) => {
-    console.log(values)
-
     const newData = {
       ...values,
       members: values?.members?.map((member) => {
@@ -125,6 +118,22 @@ const Pokmas = () => {
       onSuccess: () => forms.reset()
     })
   }
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      // forms.setValue('beneficiary', serviceFund?.beneficiary?.id)
+      // forms.setValue('phoneNumber', serviceFund?.phoneNumber)
+      // forms.setValue('serviceType', serviceFund?.serviceType?.id)
+      // forms.setValue('dutyPlace', serviceFund?.dutyPlace)
+      // forms.setValue('dutyAddress', serviceFund?.dutyAddress)
+      // forms.setValue('bankAccountNumber', serviceFund?.bankAccountNumber)
+      // forms.setValue('bankAccountName', serviceFund?.bankAccountName)
+      // forms.setValue('bankBranchName', serviceFund?.bankBranchName)
+      // forms.setValue('status', serviceFund?.status as string)
+      // forms.setValue('budgetYear', serviceFund?.budgetYear)
+      // forms.setValue('assistanceAmount', serviceFund?.assistanceAmount as number)
+    }
+  }, [isSuccess, communityGroup])
 
   return (
     <Container className="py-10 px-12">
