@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import * as React from 'react'
@@ -80,7 +79,7 @@ const Veteran = () => {
             {!id && (
               <div className="flex flex-row justify-between gap-3">
                 <FormItem className="w-full">
-                  <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
+                  <FormLabel>NIK</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
@@ -103,7 +102,7 @@ const Veteran = () => {
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">NPV</FormLabel>
+                    <FormLabel>NPV</FormLabel>
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan NPV" />
                     </FormControl>
@@ -121,7 +120,7 @@ const Veteran = () => {
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Satuan</FormLabel>
+                    <FormLabel>Satuan</FormLabel>
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Satuan" />
                     </FormControl>
@@ -133,7 +132,7 @@ const Veteran = () => {
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Ukuran Baju Celana</FormLabel>
+                    <FormLabel>Ukuran Baju Celana</FormLabel>
                     <FormControl>
                       <Input {...field} type="text" placeholder="Masukkan Ukuran Baju Celana " />
                     </FormControl>
