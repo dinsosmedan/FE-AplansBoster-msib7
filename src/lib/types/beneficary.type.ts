@@ -1,4 +1,5 @@
 import { type IArea } from '@/api/area.api'
+import { type IMeta } from './dayasos.type'
 
 interface IAddress {
   fullAddress: string
@@ -68,6 +69,7 @@ interface IAssistanceDetail {
   createdAt: string
   updatedAt: string
 }
+
 export interface IAssistanceHistory {
   id: string
   product: IAssistanceProduct
@@ -76,4 +78,9 @@ export interface IAssistanceHistory {
   detail: IAssistanceDetail
   createdAt: string
   updatedAt: string
+}
+
+export interface IAllBeneficary {
+  data: IBeneficary[]
+  meta: IMeta
 }
