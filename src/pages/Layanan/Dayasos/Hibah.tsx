@@ -8,6 +8,7 @@ import useTitle from '@/hooks/useTitle'
 import { hibahValidation, type hibahFields } from '@/lib/validations/dayasos.validation'
 import { useCreateOrganizationGrantAssistance, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Container } from '@/components'
 
 const Hibah = () => {
   useTitle('Bansos Hibah Organisasi/Lembaga (BHO)')
@@ -48,7 +49,7 @@ const Hibah = () => {
   }
 
   return (
-    <div className="container bg-white py-5">
+    <Container className="px-[47px]">
       <div className="w-full text-center">
         <p className="text-2xl font-bold">Data Organisasi/Lembaga</p>
       </div>
@@ -97,7 +98,7 @@ const Hibah = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Kecamatan" />
@@ -123,7 +124,7 @@ const Hibah = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={areaLevel3 === ''}>
+                    <Select onValueChange={field.onChange} value={field.value} disabled={areaLevel3 === ''}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Kelurahan" />
@@ -366,7 +367,7 @@ const Hibah = () => {
           </div>
         </form>
       </Form>
-    </div>
+    </Container>
   )
 }
 

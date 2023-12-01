@@ -101,7 +101,7 @@ const Ri = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Jenis Rumah Ibadah</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Jenis Rumah Ibadah" />
@@ -154,7 +154,7 @@ const Ri = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Kecamatan" />
@@ -181,7 +181,7 @@ const Ri = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={areaLevel3 === ''}>
+                    <Select onValueChange={field.onChange} value={field.value} disabled={areaLevel3 === ''}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Kelurahan" />
@@ -227,7 +227,7 @@ const Ri = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Status</FormLabel>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Status" />

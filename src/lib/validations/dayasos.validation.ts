@@ -153,7 +153,7 @@ export const pokmasValidation = Yup.object({
   ),
   statusDisimbursement: Yup.string().max(50, 'Status Pencairan maksimal 255 karakter'),
   note: Yup.string().max(255, 'Catatan maksimal 255 karakter'),
-  executionDate: Yup.string(),
+  executionDate: Yup.date().required('Tanggal Pelaksanaan wajib diisi'),
   executionPlace: Yup.string().max(255, 'Tempat Pelaksanaan maksimal 255 karakter')
 })
 

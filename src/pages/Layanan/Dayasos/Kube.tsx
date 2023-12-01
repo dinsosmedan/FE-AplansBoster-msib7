@@ -96,7 +96,7 @@ const Kube = () => {
   }
 
   return (
-    <Container className="py-10">
+    <Container className="py-10 px-[47px]">
       <div className="w-full text-center">
         <p className="text-2xl font-bold">Data Kelompok Usaha Bersama</p>
       </div>
@@ -145,7 +145,7 @@ const Kube = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Kecamatan" />
@@ -171,7 +171,7 @@ const Kube = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={areaLevel3 === ''}>
+                    <Select onValueChange={field.onChange} value={field.value} disabled={areaLevel3 === ''}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Kelurahan" />
@@ -238,7 +238,7 @@ const Kube = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">Jabatan</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Jabatan" />
@@ -310,7 +310,7 @@ const Kube = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Status Verifikasi</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Status Verifikasi" />

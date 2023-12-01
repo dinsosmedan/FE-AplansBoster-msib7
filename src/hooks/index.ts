@@ -4,5 +4,6 @@ import useTitle from './useTitle'
 import useGetParams from './useGetParams'
 import useCreateParams from './useCreateParams'
 import useDebounce from './useDebounce'
+import useToastNik from './useToastNik'
 
-export { useDisableBodyScroll, usePagination, useTitle, useGetParams, useCreateParams, useDebounce }
+export { useDisableBodyScroll, usePagination, useTitle, useGetParams, useCreateParams, useDebounce, useToastNik }
