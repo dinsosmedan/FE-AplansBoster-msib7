@@ -103,10 +103,12 @@ export default function App() {
             <Route path="hibah" element={<Hibah />} />
             <Route path="hibah/:id" element={<Hibah />} />
             <Route path="ri" element={<Ri />} />
+            <Route path="ri/:id" element={<Ri />} />
             <Route path="pokmas" element={<Pokmas />} />
             <Route path="veteran" element={<Veteran />} />
             <Route path="veteran/:id" element={<Veteran />} />
             <Route path="kube" element={<Kube />} />
+            <Route path="kube/:id" element={<Kube />} />
           </Route>
           <Route path="/data-penerima/dayasos">
             <Route index element={<DataPenerimaDayasos />} />

@@ -40,7 +40,8 @@ import {
   getOrganizationGrantAssistanceFn,
   getWorshipPlaceFn,
   getDetailVeteranFn,
-  getDetailBusinessGroupFn
+  getDetailBusinessGroupFn,
+  updateKubeFn
 } from '@/api/dayasos.api'
 import { toast, useToast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -71,6 +72,18 @@ export const useCreateWorshipPlace = () => {
     }
   })
 }
+// export const useUpdateWorshipPlace = () => {
+//   const queryClient = useQueryClient()
+//   return useMutation(storeWorshipPlaceFn, {
+//     onSuccess: (data: any) => {
+//       console.log({ worship: data })
+//       void queryClient.invalidateQueries('worship-places')
+//     },
+//     onError: (error: AxiosError) => {
+//       console.log(error)
+//     }
+//   })
+// }
 export const useDeleteWorshipPlace = () => {
   const queryClient = useQueryClient()
 
@@ -176,6 +189,30 @@ export const useUpdateServiceFund = () => {
       toast({
         title: 'Proses Berhasil',
         description: 'Data DJPM Berhasil Diubah'
+      })
+    },
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message ?? 'Gagal',
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
+    }
+  })
+}
+export const useUpdateJointBusiness = () => {
+  const queryClient = useQueryClient()
+  const { toast } = useToast()
+
+  return useMutation(updateKubeFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('join-business')
+      toast({
+        title: 'Proses Berhasil',
+        description: 'Data Kube Berhasil Diubah'
       })
     },
     onError: (error: AxiosError) => {

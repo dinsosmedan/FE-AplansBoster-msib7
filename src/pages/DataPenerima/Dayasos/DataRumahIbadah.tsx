@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
-import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
+import { HiArrowPath, HiMagnifyingGlass, HiMiniTrash } from 'react-icons/hi2'
 
 import { Action, Container, Loading, Pagination } from '@/components'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
@@ -15,6 +15,7 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useAlert } from '@/store/client'
+import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
 
 interface FormValues {
@@ -87,7 +88,7 @@ const DataRumahIbadah = () => {
       description: 'Apakah kamu yakin ingin menghapus data ini?',
       variant: 'danger',
       submitText: 'Delete'
-    }).then(async() => {
+    }).then(async () => {
       await deleteWorshipPlace(id)
     })
   }
@@ -198,10 +199,10 @@ const DataRumahIbadah = () => {
             />
           </div>
           <div className="flex justify-end gap-3">
-          <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
-                <HiArrowPath className="text-lg" />
-                <span>Reset</span>
-              </Button>
+            <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
+              <HiArrowPath className="text-lg" />
+              <span>Reset</span>
+            </Button>
             <Button className="w-fit py-6 px-4 bg-primary">
               <HiMagnifyingGlass className="w-6 h-6 text-white" />
               <p className="text-white font-semibold text-sm pl-2 w-max">Cari Data</p>
@@ -210,53 +211,74 @@ const DataRumahIbadah = () => {
         </form>
       </Form>
       <section className="border rounded-xl mt-5 overflow-hidden">
-      <Table className="mt-5">
-        <TableHeader className="bg-[#FFFFFF]">
-          <TableRow>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Rumah Ibadah</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Rumah Ibadah</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Penanggung jawab</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Handphone</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">Status</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">Keterangan</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
-
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {worshipPlaces?.data.length !== 0 ? (
-            worshipPlaces?.data.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell className="text-left">
-                  {(worshipPlaces.meta.currentPage - 1) * worshipPlaces.meta.perPage + index + 1}
-                </TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]">{item.name}</TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]">{item.type}</TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]">{item.address}</TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]">{item.areaLevel3?.name}</TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]">{item.areaLevel4?.name}</TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]">{item.picName}</TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]">{item.picPhone}</TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]">{item.status}</TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]">{item.note}</TableCell>
-                <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Action onDelete={() => handleDelete(item.id)} onDetail={() => console.log('detail')} onEdit={() => console.log('detail')}/>
-                  </TableCell>
-              </TableRow>
-            ))
-          ) : (
+        <Table className="mt-5">
+          <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
-              <TableCell colSpan={9} className="text-center">
-                Tidak ada data
-              </TableCell>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Rumah Ibadah</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Rumah Ibadah</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Penanggung jawab</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Handphone</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Status</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Keterangan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Ubah Data</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
+
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {worshipPlaces?.data.length !== 0 ? (
+              worshipPlaces?.data.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell className="text-left">
+                    {(worshipPlaces.meta.currentPage - 1) * worshipPlaces.meta.perPage + index + 1}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.name}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.type}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.address}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.areaLevel3?.name}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.areaLevel4?.name}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.picName}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.picPhone}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.status}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.note}</TableCell>
+                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                    <Button
+                      size="icon"
+                      variant="base"
+                      className="bg-[#959595] text-white hover:bg-[#828282] hover:text-white"
+                      onClick={() => navigate(`/layanan/dayasos/ri/${item.id}`)}
+                    >
+                      <HiOutlinePencilAlt className="text-lg" />
+                    </Button>
+                  </TableCell>
+                  <TableCell className="bg-[#F9FAFC]"><Button
+                    size="icon"
+                    variant="default"
+                    className=" text-white hover:text-white"
+                    onClick={() => handleDelete(item.id)}
+                  >
+                    <HiMiniTrash className="text-lg" />
+                  </Button>
+                  </TableCell>
+                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                    <Action onDelete={() => handleDelete(item.id)} onDetail={() => console.log('detail')} onEdit={() => console.log('detail')} />
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center">
+                  Tidak ada data
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </section>
       {(worshipPlaces?.meta?.total as number) > 10 ? (
         <Pagination
