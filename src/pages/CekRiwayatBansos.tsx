@@ -57,23 +57,23 @@ const CekRiwayatBansos = () => {
               <div className="flex flex-col gap-5">
                 <div>
                   <p className="text-base font-bold">No. KK</p>
-                  <p className="text-base ">{beneficary.familyCardNumber}</p>
+                  <p className="text-base ">{beneficary.familyCardNumber ?? '-'}</p>
                 </div>
                 <div>
                   <p className="text-base font-bold">NIK</p>
-                  <p className="text-base ">{beneficary.identityNumber}</p>
+                  <p className="text-base ">{beneficary.identityNumber ?? '-'}</p>
                 </div>
                 <div>
                   <p className="text-base font-bold">Nama</p>
-                  <p className="text-base ">{beneficary.name}</p>
+                  <p className="text-base ">{beneficary.name ?? '-'}</p>
                 </div>
                 <div>
                   <p className="text-base font-bold">Alamat</p>
-                  <p className="text-base ">{beneficary.address.fullAddress}</p>
+                  <p className="text-base ">{beneficary.address.fullAddress ?? '-'}</p>
                 </div>
                 <div>
                   <p className="text-base font-bold">Umur</p>
-                  <p className="text-base ">{beneficary.age}</p>
+                  <p className="text-base ">{beneficary.age ?? '-'}</p>
                 </div>
               </div>
               <div className="flex flex-col gap-5">
@@ -83,11 +83,11 @@ const CekRiwayatBansos = () => {
                 </div>
                 <div>
                   <p className="text-base font-bold">Kecamatan</p>
-                  <p className="text-base ">{beneficary.address.areaLevel3?.name}</p>
+                  <p className="text-base ">{beneficary.address.areaLevel3?.name ?? '-'}</p>
                 </div>
                 <div>
                   <p className="text-base font-bold">Kelurahan</p>
-                  <p className="text-base ">{beneficary.address.areaLevel4?.name}</p>
+                  <p className="text-base ">{beneficary.address.areaLevel4?.name ?? '-'}</p>
                 </div>
                 <div>
                   <p className="text-base font-bold">Agama</p>
@@ -96,14 +96,14 @@ const CekRiwayatBansos = () => {
                 <div>
                   <p className=" w-max text-base font-bold">Tempat, Tanggal Lahir</p>
                   <p className="text-base w-max ">
-                    {beneficary.birthPlace} {beneficary.birthDate}
+                    {beneficary.birthPlace ?? '-'} {beneficary.birthDate ?? '-'}
                   </p>
                 </div>
               </div>
               <div className="flex flex-col gap-5">
                 <div>
                   <p className="text-base font-bold w-max">Jenis Kelamin</p>
-                  <p className="text-base ">{beneficary.gender}</p>
+                  <p className="text-base ">{beneficary.gender ?? '-'}</p>
                 </div>
                 <div>
                   <p className="text-base font-bold w-max">Pendidikan Terakhir</p>
@@ -111,7 +111,7 @@ const CekRiwayatBansos = () => {
                 </div>
                 <div>
                   <p className="text-base font-bold">Pekerjaan</p>
-                  <p className="text-base ">{beneficary.occupation}</p>
+                  <p className="text-base ">{beneficary.occupation ?? '-'}</p>
                 </div>
                 <div>
                   <p className="text-base font-bold w-max">Golongan Darah</p>
@@ -129,11 +129,11 @@ const CekRiwayatBansos = () => {
                 </div>
                 <div>
                   <p className="text-base font-bold w-max">Status Keluarga</p>
-                  <p className="text-base w-max">{beneficary.familyRelationship}</p>
+                  <p className="text-base w-max">{beneficary.familyRelationship ?? '-'}</p>
                 </div>
                 <div>
                   <p className="text-base font-bold w-max">Ibu Kandung</p>
-                  <p className="text-base ">{beneficary.motherName}</p>
+                  <p className="text-base ">{beneficary.motherName ?? '-'}</p>
                 </div>
                 <div>
                   <p className="text-base font-bold w-max">Bapak Kandung</p>
@@ -180,7 +180,7 @@ const TableRiwayatBansos = ({ data }: TableRiwayatBansosProps) => {
         <TableBody>
           {data.map((item, index) => (
             <TableRow key={item.id}>
-              <TableCell className="font-medium"></TableCell>
+              <TableCell className="font-medium">-</TableCell>
               <TableCell>{item.product.name}</TableCell>
               <TableCell>{item.product.code}</TableCell>
               <TableCell>{item.year}</TableCell>

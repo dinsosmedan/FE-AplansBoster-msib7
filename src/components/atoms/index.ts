@@ -6,5 +6,6 @@ import Container from './Container'
 import DatePicker from './DatePicker'
 import Title from './Title'
 import Breadcrumbs from './Breadcrumbs'
+import Password from './Password'
 
-export { Loading, MultiSelect, Search, Pagination, Container, DatePicker, Title, Breadcrumbs }
+export { Loading, MultiSelect, Search, Pagination, Container, DatePicker, Title, Breadcrumbs, Password }
