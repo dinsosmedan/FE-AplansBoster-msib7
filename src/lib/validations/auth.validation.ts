@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 
 export const loginValidation = Yup.object({
-  email: Yup.string().required('Email is required').email('Email is not valid'),
+  identifier: Yup.string().required('Nip is required'),
   password: Yup.string().required('Password is required')
 })
 

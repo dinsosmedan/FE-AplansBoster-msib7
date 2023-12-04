@@ -8,13 +8,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { useLogout } from '@/store/server'
+import { useGetMe, useLogout } from '@/store/server'
 import { useAlert } from '@/store/client'
 import { Breadcrumbs } from '..'
+import { Skeleton } from '../ui/skeleton'
 
 export default function Header() {
   const { alert } = useAlert()
-
+  const { data: user, isLoading } = useGetMe()
   const { mutate: logout } = useLogout()
   const handleLogout = () => {
     void alert({
@@ -37,7 +38,7 @@ export default function Header() {
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger>
-              {/* <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4">
                 {isLoading ? (
                   <>
                     <Skeleton className="w-12 h-12 rounded-[14px]" />
@@ -51,6 +52,7 @@ export default function Header() {
                     <img
                       src="https://source.unsplash.com/random/900×700/?man"
                       alt="profile"
+                      loading='lazy'
                       className="w-12 h-12 object-cover rounded-[14px]"
                     />
                     <div className="flex flex-col">
@@ -59,7 +61,7 @@ export default function Header() {
                     </div>
                   </>
                 )}
-              </div> */}
+              </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="mr-5">
               <DropdownMenuItem>
