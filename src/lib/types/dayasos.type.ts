@@ -183,7 +183,29 @@ export interface IBusinessGroup {
   meta: IMeta
 }
 
+export interface IFuelCashAssistances {
+  success: boolean
+  message: string
+  data: Array<{
+    id: string
+    beneficiary: IBeneficary
+    type: string
+    createdAt: string
+    updatedAt: string
+  }>
+  meta: IMeta
+}
 export interface IFuelCashAssistance {
+  success: boolean
+  message: string
+  id: string
+  beneficiary: IBeneficary
+  type: string
+  createdAt: string
+  updatedAt: string
+  meta: IMeta
+}
+export interface INonCashFoodAssistanceBeneficiarys {
   success: boolean
   message: string
   data: Array<{
@@ -198,12 +220,10 @@ export interface IFuelCashAssistance {
 export interface INonCashFoodAssistanceBeneficiary {
   success: boolean
   message: string
-  data: Array<{
-    id: string
-    beneficiary: IBeneficary
-    type: string
-    createdAt: string
-    updatedAt: string
-  }>
+  id: string
+  beneficiary: IBeneficary
+  type: string
+  createdAt: string
+  updatedAt: string
   meta: IMeta
 }

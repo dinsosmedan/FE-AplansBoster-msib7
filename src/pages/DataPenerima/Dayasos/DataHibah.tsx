@@ -8,13 +8,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useDeleteOrganizationGrantAssistance, useGetOrganizationGrantAssistance } from './../../../store/server/useDayasos'
-import { Action, Loading, Search } from '@/components'
+import { useDeleteOrganizationGrantAssistance, useGetOrganizationGrantAssistance, useGetOrganizationGrantAssistanceById } from './../../../store/server/useDayasos'
+import { Action, Loading, Modal, Search } from '@/components'
 import { useAlert } from '@/store/client'
 
 const DataHibah = () => {
   useTitle('Data Penerima / Dayasos / Bansos Hibah Organisasi/Lembaga (BHO) ')
   const { alert } = useAlert()
+  const [isShow, setIsShow] = React.useState(false)
+  const [selectedId, setSelectedId] = React.useState('')
   const createParams = useCreateParams()
   const { q, budgetYear, page } = useGetParams(['q', 'budgetYear', 'page'])
 
@@ -24,7 +26,10 @@ const DataHibah = () => {
   }
 
   const [isLoadingPage, setIsLoadingPage] = React.useState(false)
-
+  const showDetail = (id: string) => {
+    setSelectedId(id)
+    setIsShow(true)
+  }
   const forms = useForm<FormValues>({
     defaultValues: {
       q: '',
@@ -32,9 +37,10 @@ const DataHibah = () => {
       // batch: ''
     }
   })
+  const { data: organizationGrantAssistance, isLoading: isLoadingOrganization } = useGetOrganizationGrantAssistanceById(selectedId)
 
   const {
-    data: organizationGrantAssistance,
+    data: organizationGrantAssistances,
     refetch,
     isFetching,
     isLoading
@@ -87,7 +93,7 @@ const DataHibah = () => {
     }
   }, [isLoadingPage, isFetching])
 
-  if (isLoading) {
+  if (isLoading && isLoadingOrganization) {
     return <Loading />
   }
   return (
@@ -150,10 +156,10 @@ const DataHibah = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {organizationGrantAssistance?.data?.length !== 0 ? (
-            organizationGrantAssistance?.data.map((item, index) => (
+          {organizationGrantAssistances?.data?.length !== 0 ? (
+            organizationGrantAssistances?.data.map((item, index) => (
               <TableRow key={item.id}>
-                <TableCell className="text-center bg-[#F9FAFC]">{(organizationGrantAssistance.meta.currentPage - 1) * organizationGrantAssistance.meta.perPage + index + 1}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{(organizationGrantAssistances.meta.currentPage - 1) * organizationGrantAssistances.meta.perPage + index + 1}</TableCell>
                 <TableCell className="text-center bg-[#F9FAFC]">{item.name}</TableCell>
                 <TableCell className="text-center bg-[#F9FAFC]">{item.chairmanName}</TableCell>
                 <TableCell className="text-center bg-[#F9FAFC]">{item.chairmanIdentityNumber}</TableCell>
@@ -162,7 +168,7 @@ const DataHibah = () => {
                 <TableCell className="text-center bg-[#F9FAFC]">{item.aprrovedAmount}</TableCell>
                 <TableCell className="text-center bg-[#F9FAFC]">{item.budgetYear}</TableCell>
                 <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Action onDelete={() => handleDelete(item.id)} onDetail={() => console.log('detail')}/>
+                  <Action onDelete={() => handleDelete(item.id)} onDetail={() => showDetail(item.id)}/>
                   </TableCell>
               </TableRow>
             ))
@@ -176,15 +182,100 @@ const DataHibah = () => {
         </TableBody>
       </Table>
       </section>
-      {(organizationGrantAssistance?.meta?.total as number) > 30 ? (
+      {(organizationGrantAssistances?.meta?.total as number) > 30 ? (
         <Pagination
           className="px-5 py-5 flex justify-end"
           currentPage={page !== '' ? parseInt(page) : 1}
-          totalCount={organizationGrantAssistance?.meta.total as number}
+          totalCount={organizationGrantAssistances?.meta.total as number}
           pageSize={30}
           onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
         />
       ) : null}
+      <Modal isShow={isShow} className='md:max-w-4xl'>
+        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+        </Modal.Header>
+        {isLoadingOrganization && <Loading />}
+        <div className='grid grid-cols-3 gap-y-5'>
+          <div>
+              <p className="text-sm font-bold">Nama Lembaga</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.name}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nama Ketua</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.chairmanName}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">NIK Ketua</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.chairmanIdentityNumber}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nama Sekretaris</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.secretaryName}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">NIK Sekretaris</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.secretaryIdentityNumber}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nama Bendahara</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.treasurerName}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">NIK Bendahara</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.treasurerIdentityNumber}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nomor Kontak</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.contactNumber}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kecamatan</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.address.areaLevel3?.name}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kelurahan</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.address.areaLevel4?.name}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Alamat Lengkap</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.address.fullAddress}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nama Rekening</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.bankAccountName}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nomor Rekening</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.bankAccountNumber}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nama Bank</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.bankName}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Anggaran Yang Diminta</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.requestedAmount}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Anggaran Yang disetujui</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.aprrovedAmount}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Pembayaran Pertama</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.firstDisbursementAmount}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Pembayaran Kedua</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.secondDisbursementAmount}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Tahun Anggaran</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.budgetYear}</p>
+            </div>
+          </div>
+      </Modal>
     </Container>
   )
 }

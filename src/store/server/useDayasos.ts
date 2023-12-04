@@ -41,7 +41,9 @@ import {
   getWorshipPlaceFn,
   getDetailVeteranFn,
   getDetailBusinessGroupFn,
-  updateKubeFn
+  updateKubeFn,
+  showFuelCashAssistanceFn,
+  showNonCashFoodAssitanceFn
 } from '@/api/dayasos.api'
 import { toast, useToast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -618,11 +620,20 @@ export const useDeleteFuelCashAssistance = () => {
     }
   })
 }
-
+export const useGetFuelCashAssistanceDetail = (id?: string) => {
+  return useQuery(['fuel-cash-assistances', id], async () => await showFuelCashAssistanceFn(id as string), {
+    enabled: !!id
+  })
+}
 /* BANSOS BANTUAN NON TUNAI */
 export const useGetNonCashFoodAssistanceBeneficiary = ({ page }: NonCashFoodAssistanceBeneficiaryQuery) => {
   return useQuery(['non-cash', page], async () => await getNonCashFoodAssistanceBeneficiary({ page }), {
     keepPreviousData: true,
     staleTime: 5000
+  })
+}
+export const useGetNonCashFoodAssistanceDetail = (id?: string) => {
+  return useQuery(['non-cash', id], async () => await showNonCashFoodAssitanceFn(id as string), {
+    enabled: !!id
   })
 }

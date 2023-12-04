@@ -9,11 +9,12 @@ import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useDeleteServiceFund, useGetKecamatan, useGetKelurahan, useGetServiceFunds, useGetServiceTypes } from '@/store/server'
-import { Action, Loading, Title } from '@/components'
+import { useDeleteServiceFund, useGetKecamatan, useGetKelurahan, useGetServiceFund, useGetServiceFunds, useGetServiceTypes } from '@/store/server'
+import { Action, Loading, Modal, Title } from '@/components'
 import { useNavigate } from 'react-router-dom'
 import { useAlert } from '@/store/client'
 import { Input } from '@/components/ui/input'
+import React from 'react'
 
 interface FormValues {
   q: string
@@ -25,11 +26,11 @@ interface FormValues {
 const DataDjp = () => {
   useTitle('Data Penerima / Dayasos / DJPM ')
   const { alert } = useAlert()
-
+  const [isShow, setIsShow] = React.useState(false)
+  const [selectedId, setSelectedId] = React.useState('')
   const navigate = useNavigate()
   const createParams = useCreateParams()
   const { q, kecamatan, kelurahan, page, type } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'type'])
-
   const forms = useForm<FormValues>({
     defaultValues: {
       q: '',
@@ -43,6 +44,7 @@ const DataDjp = () => {
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
   const { data: serviceTypes } = useGetServiceTypes()
+  const { data: serviceFund, isLoading: isLoadingServiceFund } = useGetServiceFund(selectedId)
 
   const {
     data: serviceFunds,
@@ -86,8 +88,11 @@ const DataDjp = () => {
       await deleteServiceFund(id)
     })
   }
-
-  if (isLoading) {
+  const showDetail = (id: string) => {
+    setSelectedId(id)
+    setIsShow(true)
+  }
+  if (isLoading && isLoadingServiceFund) {
     return <Loading />
   }
 
@@ -230,27 +235,27 @@ const DataDjp = () => {
           </TableHeader>
           <TableBody>
             {serviceFunds?.data?.length !== 0 ? (
-              serviceFunds?.data.map((serviceFund, index) => (
-                <TableRow key={serviceFund.id}>
+              serviceFunds?.data.map((item, index) => (
+                <TableRow key={item.id}>
                   <TableCell className="text-center bg-[#F9FAFC]">
                     {(serviceFunds.meta.currentPage - 1) * serviceFunds.meta.perPage + index + 1}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{serviceFund.beneficiary.identityNumber}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{serviceFund.beneficiary.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{serviceFund.beneficiary.gender}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.identityNumber}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.gender}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
-                    {serviceFund.beneficiary.birthPlace} / {serviceFund.beneficiary.birthDate}
+                    {item.beneficiary.birthPlace} / {item.beneficiary.birthDate}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
-                    {serviceFund.beneficiary.address.areaLevel4?.name}
+                    {item.beneficiary.address.areaLevel4?.name}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
-                    {serviceFund.beneficiary.address.areaLevel3?.name}
+                    {item.beneficiary.address.areaLevel3?.name}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{serviceFund.serviceType.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{serviceFund?.assistanceAmount ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.serviceType.name}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item?.assistanceAmount ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Action onDelete={() => handleDelete(serviceFund.id)} onEdit={() => navigate(`/layanan/dayasos/Djp/${serviceFund.id}`)}/>
+                  <Action onDetail={() => showDetail(item.id)} onDelete={() => handleDelete(item.id)} onEdit={() => navigate(`/layanan/dayasos/Djp/${item.id}`)}/>
                   </TableCell>
                 </TableRow>
               ))
@@ -273,6 +278,75 @@ const DataDjp = () => {
           onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
         />
       ) : null}
+      <Modal isShow={isShow} className='md:max-w-4xl'>
+        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+        </Modal.Header>
+        {isLoadingServiceFund && <Loading />}
+        <div className='grid grid-cols-3 gap-y-5'>
+          <div>
+              <p className="text-sm font-bold">Nama</p>
+              <p className="text-base capitalize">{serviceFund?.beneficiary.name}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">NIK</p>
+              <p className="text-base capitalize">{serviceFund?.beneficiary.identityNumber}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">No. KK</p>
+              <p className="text-base capitalize">{serviceFund?.beneficiary.familyCardNumber}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Jenis Bantuan DJPM</p>
+              <p className="text-base capitalize">{serviceFund?.serviceType.name}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kecamatan</p>
+              <p className="text-base capitalize">{serviceFund?.beneficiary.address.areaLevel3?.name}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kelurahan</p>
+              <p className="text-base capitalize">{serviceFund?.beneficiary.address.areaLevel4?.name}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Alamat Lengkap</p>
+              <p className="text-base capitalize">{serviceFund?.beneficiary.address.fullAddress}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Pekerjaan</p>
+              <p className="text-base capitalize">{serviceFund?.beneficiary.occupation}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
+              <p className="text-base capitalize">{serviceFund?.beneficiary.birthPlace} / {serviceFund?.beneficiary.birthDate}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">No.Telepon</p>
+              <p className="text-base capitalize">{serviceFund?.phoneNumber}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Status DTKS</p>
+              <p className="text-base capitalize">{serviceFund?.beneficiary.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Tahun Anggaran</p>
+              <p className="text-base capitalize">{serviceFund?.budgetYear}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nama Rekening</p>
+              <p className="text-base capitalize">{serviceFund?.bankAccountName}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">No.Rekening</p>
+              <p className="text-base capitalize">{serviceFund?.bankAccountNumber}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nama Bank</p>
+              <p className="text-base capitalize">{serviceFund?.bankBranchName}</p>
+            </div>
+          </div>
+      </Modal>
     </Container>
   )
 }

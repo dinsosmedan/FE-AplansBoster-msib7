@@ -24,7 +24,7 @@ export default function Login() {
     mode: 'onTouched',
     resolver: yupResolver(loginValidation),
     defaultValues: {
-      email: '',
+      identifier: '',
       password: ''
     }
   })
@@ -66,13 +66,13 @@ export default function Login() {
             <Form {...forms}>
               <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
                 <FormField
-                  name="email"
+                  name="identifier"
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
+                      <FormLabel className="font-semibold dark:text-white">NIP</FormLabel>
                       <FormControl>
-                        <Input {...field} type="email" placeholder="Example@email.com" />
+                        <Input {...field} type="text" placeholder="input your NIP" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

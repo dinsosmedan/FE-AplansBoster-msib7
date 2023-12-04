@@ -22,7 +22,9 @@ import {
   type IOrganizationGrantAssistances,
   type IVeteranDetail,
   type IWorshipPlaceDetail,
-  type IBusinessGroupDetail
+  type IBusinessGroupDetail,
+  type IFuelCashAssistances,
+  type INonCashFoodAssistanceBeneficiarys
 } from '@/lib/types/dayasos.type'
 
 export const storeWorshipPlaceFn = async (fields: worshipPlaceFields) => {
@@ -174,14 +176,14 @@ export const getBusinessGroupFn = async ({
   )
   return response.data
 }
-export const getFuelCashAssistanceFn = async ({ page, q }: FuelCashQuery): Promise<IFuelCashAssistance> => {
+export const getFuelCashAssistanceFn = async ({ page, q }: FuelCashQuery): Promise<IFuelCashAssistances> => {
   const response = await api.get(`/fuel-cash-assistance?q=${q}&page=${page}&limit=30`)
   return response.data
 }
 
 export const getNonCashFoodAssistanceBeneficiary = async ({
   page
-}: NonCashFoodAssistanceBeneficiaryQuery): Promise<INonCashFoodAssistanceBeneficiary> => {
+}: NonCashFoodAssistanceBeneficiaryQuery): Promise<INonCashFoodAssistanceBeneficiarys> => {
   const response = await api.get(`/non-cash-food-assistance?page=${page}&limit=30`)
   return response.data
 }
@@ -190,7 +192,18 @@ export const showServiceFundFn = async (id: string): Promise<IServiceFund> => {
   const response = await api.get(`/service-fund/${id}`)
   return response.data?.data
 }
-
+export const showFuelCashAssistanceFn = async (id: string): Promise<IFuelCashAssistance> => {
+  const response = await api.get(`/fuel-cash-assistance/${id}`)
+  return response.data?.data
+}
+export const showNonCashFoodAssitanceFn = async (id: string): Promise<INonCashFoodAssistanceBeneficiary> => {
+  const response = await api.get(`/non-cash-food-assistance/${id}`)
+  return response.data?.data
+}
+export const showBusinessGroupFn = async (id: string): Promise<INonCashFoodAssistanceBeneficiary> => {
+  const response = await api.get(`/joint-business-group/${id}`)
+  return response.data?.data
+}
 interface UpdateServiceFundParams {
   id: string
   fields: djpmFields
