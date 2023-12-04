@@ -10,8 +10,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useDeleteCommunityGroups, useGetCommunityGroups, useGetKecamatan, useGetKelurahan } from '@/store/server'
-import { Action, Loading } from '@/components'
+import { useDeleteCommunityGroups, useGetCommunityGroup, useGetCommunityGroups, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { Action, Loading, Modal } from '@/components'
 import { useAlert } from '@/store/client'
 import { useNavigate } from 'react-router-dom'
 interface FormValues {
@@ -26,6 +26,8 @@ const DataPokmas = () => {
   useTitle('Data Penerima / Dayasos / Pokmas ')
   const { alert } = useAlert()
   const navigate = useNavigate()
+  const [isShow, setIsShow] = React.useState(false)
+  const [selectedId, setSelectedId] = React.useState('')
   const createParams = useCreateParams()
   const {
     page,
@@ -36,6 +38,7 @@ const DataPokmas = () => {
     status,
     application_year: applicationYear
   } = useGetParams(['page', 'q', 'kecamatan', 'kelurahan', 'community_activity_code', 'status', 'application_year'])
+  const { data: communityGroup, isLoading: isLoadingCommunityGroup } = useGetCommunityGroup(selectedId)
 
   const forms = useForm<FormValues>({
     defaultValues: {
@@ -53,7 +56,7 @@ const DataPokmas = () => {
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
 
   const {
-    data: communityGroup,
+    data: communityGroups,
     refetch,
     isFetching,
     isLoading
@@ -67,9 +70,12 @@ const DataPokmas = () => {
     applicationYear
   })
   useDisableBodyScroll(isFetching)
-
+  const showDetail = (id: string) => {
+    setSelectedId(id)
+    setIsShow(true)
+  }
   const handleReset = () => {
-    navigate('/data-penerima/dayasos/data-djp')
+    navigate('/data-penerima/dayasos/data-pokmas')
     forms.reset()
   }
   const updateParam = (key: any, value: any) => {
@@ -117,7 +123,7 @@ const DataPokmas = () => {
     <div>
       <Container>
         {isFetching && <Loading />}
-        <h1 className="font-bold text-xl ">Dat a Kelompok Masyarakat (Pokmas)</h1>
+        <h1 className="font-bold text-xl ">Data Kelompok Masyarakat (Pokmas)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
             <div className="grid grid-cols-3 gap-x-10 gap-y-5 pt-10">
@@ -228,16 +234,27 @@ const DataPokmas = () => {
                 )}
               />
             </div>
-            <div className="flex justify-end gap-3">
-            <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
-                <HiArrowPath className="text-lg" />
-                <span>Reset</span>
-              </Button>
-              <Button className="w-fit py-6 px-4 bg-primary">
-                <HiMagnifyingGlass className="w-6 h-6 text-white" />
-                <p className="text-white font-semibold text-sm pl-2 w-max">Cari Data</p>
-              </Button>
-            </div>
+            <section className="flex items-center justify-between">
+              <Select>
+                <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
+                  <SelectValue placeholder="Export" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value=".clsx">.clsx</SelectItem>
+                  <SelectItem value=".csv">.csv</SelectItem>
+                </SelectContent>
+              </Select>
+              <div className="flex items-center gap-3">
+                <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
+                  <HiArrowPath className="text-lg" />
+                  <span>Reset</span>
+                </Button>
+                <Button className="gap-2 border-none rounded-lg" type="submit">
+                  <HiMagnifyingGlass className="text-lg" />
+                  <span>Cari Data</span>
+                </Button>
+              </div>
+            </section>
           </form>
         </Form>
       <section className="border rounded-xl mt-5 overflow-hidden">
@@ -258,11 +275,11 @@ const DataPokmas = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {communityGroup?.data?.length !== 0 ? (
-              communityGroup?.data.map((item, index) => (
+            {communityGroups?.data?.length !== 0 ? (
+              communityGroups?.data.map((item, index) => (
                 <TableRow key={item.id}>
                   <TableCell className="text-left">
-                    {(communityGroup.meta.currentPage - 1) * communityGroup.meta.perPage + index + 1}
+                    {(communityGroups.meta.currentPage - 1) * communityGroups.meta.perPage + index + 1}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.communityActivityCode}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.communityName}</TableCell>
@@ -274,29 +291,102 @@ const DataPokmas = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{item.applicationYear}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.statusDisimbursement}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Action onDelete={() => handleDelete(item.id)} onDetail={() => console.log('detail')} onEdit={() => console.log('detail')}/>
+                  <Action onDelete={() => handleDelete(item.id)} onDetail={() => showDetail(item.id)} onEdit={() => console.log('detail')}/>
+        </TableCell>
+        </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={9} className="text-center">
+                    Tidak ada data
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={9} className="text-center">
-                  Tidak ada data
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              )}
+            </TableBody>
+          </Table>
         </section>
-        {(communityGroup?.meta?.total as number) > 10 ? (
+        {(communityGroups?.meta?.total as number) > 10 ? (
           <Pagination
             className="px-5 py-5 flex justify-end"
             currentPage={page !== '' ? parseInt(page) : 1}
-            totalCount={communityGroup?.meta.total as number}
+            totalCount={communityGroups?.meta.total as number}
             pageSize={10}
             onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
           />
         ) : null}
+        <Modal isShow={isShow} className='md:max-w-4xl'>
+        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+        </Modal.Header>
+        {isLoadingCommunityGroup && <Loading />}
+        <div className='grid grid-cols-3 gap-y-5'>
+          <div>
+              <p className="text-sm font-bold">Nama Komunitas</p>
+              <p className="text-base capitalize">{communityGroup?.communityName ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kode Aktivitas Komunitas</p>
+              <p className="text-base capitalize">{communityGroup?.communityActivityCode ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Jenis Aktivitas Deskripsi Komunitas</p>
+              <p className="text-base capitalize">{communityGroup?.communityActivityTypeDescription ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Jenis Bantuan Komunitas</p>
+              <p className="text-base capitalize">{communityGroup?.communityAssistanceType ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kecamatan</p>
+              <p className="text-base capitalize">{communityGroup?.address.areaLevel3?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kelurahan</p>
+              <p className="text-base capitalize">{communityGroup?.address.areaLevel4?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Alamat Lengkap</p>
+              <p className="text-base capitalize">{communityGroup?.address.fullAddress ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Bantuan yang diajukan</p>
+              <p className="text-base capitalize">{communityGroup?.requestedRabAmount ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Jumlah Bansos yang diajukan</p>
+              <p className="text-base capitalize">{communityGroup?.requestedBansosAmount ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Alamat Eksekusi</p>
+              <p className="text-base capitalize">{communityGroup?.executionPlace ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Tahun Pengajuan</p>
+              <p className="text-base capitalize">{communityGroup?.applicationYear ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nama Bank</p>
+              <p className="text-base capitalize">{communityGroup?.bankName ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nama Rekening</p>
+              <p className="text-base capitalize">{communityGroup?.bankAccAddress ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Alamat Rekening</p>
+              <p className="text-base capitalize">{communityGroup?.bankAccAddress ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Jumlah Anggota</p>
+              <p className="text-base capitalize">{communityGroup?.membersCount ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Status</p>
+              <p className="text-base capitalize">{communityGroup?.statusDisimbursement ?? '-'}</p>
+            </div>
+          </div>
+      </Modal>
       </Container>
     </div>
   )

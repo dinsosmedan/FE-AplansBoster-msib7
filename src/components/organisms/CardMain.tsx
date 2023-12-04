@@ -14,7 +14,7 @@ export default function CardMain({ title, subTitle, urlImage, description, href 
     <div className="w-[385px] bg-primary rounded-lg flex flex-col overflow-hidden group justify-between">
       <div className="ml-4 mt-3">
         <p className="font-extrabold text-white text-2xl">{title}</p>
-        <p className="text-base +- text-white/70">{subTitle}</p>
+        <p className="text-base text-white/70">{subTitle}</p>
       </div>
       <div className="relative overflow-hidden group my-2">
         <img
@@ -23,7 +23,7 @@ export default function CardMain({ title, subTitle, urlImage, description, href 
           alt=""
         />
       </div>
-      <p className="text-[13px] text-white/70 text-justify mx-5">{description}</p>
+      <p className="text-[13px] text-white/70 text-left mx-5">{description}</p>
       <div className="flex justify-end">
         <Link to={href}>
           <Button

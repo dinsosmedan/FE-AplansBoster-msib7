@@ -285,67 +285,68 @@ const DataDjp = () => {
         </Modal.Header>
         {isLoadingServiceFund && <Loading />}
         <div className='grid grid-cols-3 gap-y-5'>
-          <div>
-              <p className="text-sm font-bold">Nama</p>
-              <p className="text-base capitalize">{serviceFund?.beneficiary.name}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">NIK</p>
-              <p className="text-base capitalize">{serviceFund?.beneficiary.identityNumber}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">No. KK</p>
-              <p className="text-base capitalize">{serviceFund?.beneficiary.familyCardNumber}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Jenis Bantuan DJPM</p>
-              <p className="text-base capitalize">{serviceFund?.serviceType.name}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kecamatan</p>
-              <p className="text-base capitalize">{serviceFund?.beneficiary.address.areaLevel3?.name}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kelurahan</p>
-              <p className="text-base capitalize">{serviceFund?.beneficiary.address.areaLevel4?.name}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Alamat Lengkap</p>
-              <p className="text-base capitalize">{serviceFund?.beneficiary.address.fullAddress}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Pekerjaan</p>
-              <p className="text-base capitalize">{serviceFund?.beneficiary.occupation}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
-              <p className="text-base capitalize">{serviceFund?.beneficiary.birthPlace} / {serviceFund?.beneficiary.birthDate}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">No.Telepon</p>
-              <p className="text-base capitalize">{serviceFund?.phoneNumber}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Status DTKS</p>
-              <p className="text-base capitalize">{serviceFund?.beneficiary.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tahun Anggaran</p>
-              <p className="text-base capitalize">{serviceFund?.budgetYear}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Nama Rekening</p>
-              <p className="text-base capitalize">{serviceFund?.bankAccountName}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">No.Rekening</p>
-              <p className="text-base capitalize">{serviceFund?.bankAccountNumber}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Nama Bank</p>
-              <p className="text-base capitalize">{serviceFund?.bankBranchName}</p>
-            </div>
-          </div>
+  <div>
+    <p className="text-sm font-bold">Nama</p>
+    <p className="text-base capitalize">{serviceFund?.beneficiary.name ?? '-'}</p>
+  </div>
+  <div>
+    <p className="text-sm font-bold">NIK</p>
+    <p className="text-base capitalize">{serviceFund?.beneficiary.identityNumber ?? '-'}</p>
+  </div>
+  <div>
+    <p className="text-sm font-bold">No. KK</p>
+    <p className="text-base capitalize">{serviceFund?.beneficiary.familyCardNumber ?? '-'}</p>
+  </div>
+  <div>
+    <p className="text-sm font-bold">Jenis Bantuan DJPM</p>
+    <p className="text-base capitalize">{serviceFund?.serviceType.name ?? '-'}</p>
+  </div>
+  <div>
+    <p className="text-sm font-bold">Kecamatan</p>
+    <p className="text-base capitalize">{serviceFund?.beneficiary.address.areaLevel3?.name ?? '-'}</p>
+  </div>
+  <div>
+    <p className="text-sm font-bold">Kelurahan</p>
+    <p className="text-base capitalize">{serviceFund?.beneficiary.address.areaLevel4?.name ?? '-'}</p>
+  </div>
+  <div>
+    <p className="text-sm font-bold">Alamat Lengkap</p>
+    <p className="text-base capitalize">{serviceFund?.beneficiary.address.fullAddress ?? '-'}</p>
+  </div>
+  <div>
+    <p className="text-sm font-bold">Pekerjaan</p>
+    <p className="text-base capitalize">{serviceFund?.beneficiary.occupation ?? '-'}</p>
+  </div>
+  <div>
+    <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
+    <p className="text-base capitalize">{serviceFund?.beneficiary.birthPlace} / {serviceFund?.beneficiary.birthDate ?? '-'}</p>
+  </div>
+  <div>
+    <p className="text-sm font-bold">No.Telepon</p>
+    <p className="text-base capitalize">{serviceFund?.phoneNumber ?? '-'}</p>
+  </div>
+  <div>
+    <p className="text-sm font-bold">Status DTKS</p>
+    <p className="text-base capitalize">{serviceFund?.beneficiary.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
+  </div>
+  <div>
+    <p className="text-sm font-bold">Tahun Anggaran</p>
+    <p className="text-base capitalize">{serviceFund?.budgetYear ?? '-'}</p>
+  </div>
+  <div>
+    <p className="text-sm font-bold">Nama Rekening</p>
+    <p className="text-base capitalize">{serviceFund?.bankAccountName ?? '-'}</p>
+  </div>
+  <div>
+    <p className="text-sm font-bold">No.Rekening</p>
+    <p className="text-base capitalize">{serviceFund?.bankAccountNumber ?? '-'}</p>
+  </div>
+  <div>
+    <p className="text-sm font-bold">Nama Bank</p>
+    <p className="text-base capitalize">{serviceFund?.bankBranchName ?? '-'}</p>
+  </div>
+</div>
+
       </Modal>
     </Container>
   )

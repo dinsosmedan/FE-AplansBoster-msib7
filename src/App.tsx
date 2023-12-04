@@ -27,6 +27,9 @@ import {
   Sktm,
   Djp,
   InfoDataMaster,
+  DataPkr,
+  DataUnregister,
+  DataBbp,
   DataDtks
 } from './pages'
 import { DashboardLayout, Alert, ProtectedAuth, ProtectedRoute } from './components'
@@ -116,15 +119,17 @@ export default function App() {
               <Route path="data-djp" element={<DataDjp />} />
               <Route path="data-pokmas" element={<DataPokmas />} />
               <Route path="data-kube" element={<DataKube />} />
-              <Route path="data-rumahibadah" element={<DataRumahIbadah />} />
+              <Route path="data-rumah-ibadah" element={<DataRumahIbadah />} />
               <Route path="data-veteran" element={<DataVeteran />} />
               <Route path="data-bltbbm" element={<DataBltbbm />} />
               <Route path="data-hibah" element={<DataHibah />} />
               <Route path="data-bpnt" element={<DataBpnt />} />
             </Route>
-            <Route path="/data-penerima/linjmamsos">
+            <Route path="/data-penerima/linjamsos">
               <Route index element={<DataPenerimaLinjamsos />} />
-              {/* <Route path="data-pkr" element={<DataPkr />} /> */}
+              <Route path="data-pkr" element={<DataPkr />} />
+              <Route path="data-unregister" element={<DataUnregister />} />
+              <Route path="data-bbp" element={<DataBbp />} />
             </Route>
             <Route path="/data-dtks" element={<DataDtks />} />
           </Route>

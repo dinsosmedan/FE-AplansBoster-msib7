@@ -1,12 +1,11 @@
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
-import { HiArrowPath, HiMagnifyingGlass, HiMiniTrash } from 'react-icons/hi2'
-
-import { Action, Container, Loading, Pagination } from '@/components'
+import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
+import { Action, Container, Loading, Modal, Pagination } from '@/components'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 import { JENIS_RUMAH_IBADAH } from '@/pages/Layanan/Dayasos/RumahIbadah'
 
-import { useDeleteWorshipPlace, useGetWorshipPlaces } from '@/store/server/useDayasos'
+import { useDeleteWorshipPlace, useGetWorshipPlace, useGetWorshipPlaces } from '@/store/server/useDayasos'
 import { useGetKecamatan, useGetKelurahan } from '@/store/server'
 
 import { Input } from '@/components/ui/input'
@@ -15,7 +14,6 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useAlert } from '@/store/client'
-import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
 
 interface FormValues {
@@ -30,7 +28,10 @@ const DataRumahIbadah = () => {
   const { alert } = useAlert()
   const navigate = useNavigate()
   const createParams = useCreateParams()
+  const [isShow, setIsShow] = React.useState(false)
+  const [selectedId, setSelectedId] = React.useState('')
   const { page, q, kecamatan, kelurahan, type } = useGetParams(['page', 'q', 'type', 'kecamatan', 'kelurahan'])
+  const { data: worshipPlace, isLoading: isLoadingWorshipPlace } = useGetWorshipPlace(selectedId)
 
   const forms = useForm<FormValues>({
     defaultValues: {
@@ -42,7 +43,10 @@ const DataRumahIbadah = () => {
   })
 
   const areaLevel3 = forms.watch('kecamatan')
-
+  const showDetail = (id: string) => {
+    setSelectedId(id)
+    setIsShow(true)
+  }
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
   const {
@@ -61,7 +65,7 @@ const DataRumahIbadah = () => {
   const [isLoadingPage, setIsLoadingPage] = React.useState(false)
 
   const handleReset = () => {
-    navigate('/data-penerima/dayasos/data-djp')
+    navigate('/data-penerima/dayasos/data-rumah-ibadah')
     forms.reset()
   }
   const updateParam = (key: any, value: any) => {
@@ -100,7 +104,7 @@ const DataRumahIbadah = () => {
     }
   }, [isLoadingPage, isFetching])
 
-  if (isLoading) {
+  if (isLoading && isLoadingWorshipPlace) {
     return <Loading />
   }
   return (
@@ -144,14 +148,13 @@ const DataRumahIbadah = () => {
                 </FormItem>
               )}
             />
-
             <FormField
               name="kecamatan"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value || ''}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Kecamatan" />
@@ -198,16 +201,27 @@ const DataRumahIbadah = () => {
               )}
             />
           </div>
-          <div className="flex justify-end gap-3">
-            <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
-              <HiArrowPath className="text-lg" />
-              <span>Reset</span>
-            </Button>
-            <Button className="w-fit py-6 px-4 bg-primary">
-              <HiMagnifyingGlass className="w-6 h-6 text-white" />
-              <p className="text-white font-semibold text-sm pl-2 w-max">Cari Data</p>
-            </Button>
-          </div>
+          <section className="flex items-center justify-between">
+            <Select>
+              <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
+                <SelectValue placeholder="Export" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value=".clsx">.clsx</SelectItem>
+                <SelectItem value=".csv">.csv</SelectItem>
+              </SelectContent>
+            </Select>
+            <div className="flex items-center gap-3">
+              <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
+                <HiArrowPath className="text-lg" />
+                <span>Reset</span>
+              </Button>
+              <Button className="gap-2 border-none rounded-lg" type="submit">
+                <HiMagnifyingGlass className="text-lg" />
+                <span>Cari Data</span>
+              </Button>
+            </div>
+          </section>
         </form>
       </Form>
       <section className="border rounded-xl mt-5 overflow-hidden">
@@ -224,10 +238,7 @@ const DataRumahIbadah = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Handphone</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Status</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Keterangan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Ubah Data</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
-
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -247,26 +258,7 @@ const DataRumahIbadah = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{item.status}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.note}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Button
-                      size="icon"
-                      variant="base"
-                      className="bg-[#959595] text-white hover:bg-[#828282] hover:text-white"
-                      onClick={() => navigate(`/layanan/dayasos/ri/${item.id}`)}
-                    >
-                      <HiOutlinePencilAlt className="text-lg" />
-                    </Button>
-                  </TableCell>
-                  <TableCell className="bg-[#F9FAFC]"><Button
-                    size="icon"
-                    variant="default"
-                    className=" text-white hover:text-white"
-                    onClick={() => handleDelete(item.id)}
-                  >
-                    <HiMiniTrash className="text-lg" />
-                  </Button>
-                  </TableCell>
-                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Action onDelete={() => handleDelete(item.id)} onDetail={() => console.log('detail')} onEdit={() => console.log('detail')} />
+                    <Action onDelete={() => handleDelete(item.id)} onDetail={() => showDetail(item.id)} onEdit={() => console.log('detail')} />
                   </TableCell>
                 </TableRow>
               ))
@@ -289,6 +281,55 @@ const DataRumahIbadah = () => {
           onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
         />
       ) : null}
+      <Modal isShow={isShow} className='md:max-w-4xl'>
+        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+        </Modal.Header>
+        {isLoadingWorshipPlace && <Loading />}
+        <div className='grid grid-cols-3 gap-y-5'>
+          <div>
+              <p className="text-sm font-bold">Nama Rumah Ibadah</p>
+              <p className="text-base capitalize">{worshipPlace?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Jenis Rumah Ibadah</p>
+              <p className="text-base capitalize">{worshipPlace?.type ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Alamat Rumah Ibadah</p>
+              <p className="text-base capitalize">{worshipPlace?.address ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kecamatan</p>
+              <p className="text-base capitalize">{worshipPlace?.areaLevel3?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kelurahan</p>
+              <p className="text-base capitalize">{worshipPlace?.areaLevel4?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nama PIC</p>
+              <p className="text-base capitalize">{worshipPlace?.picName ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kontak PIC</p>
+              <p className="text-base capitalize">{worshipPlace?.picPhone ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Tahun</p>
+              <p className="text-base capitalize">{worshipPlace?.year ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Status</p>
+              <p className="text-base capitalize">{worshipPlace?.status ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Keterangan</p>
+              <p className="text-base capitalize">{worshipPlace?.note ?? '-'}</p>
+            </div>
+          </div>
+      </Modal>
     </Container>
   )
 }
