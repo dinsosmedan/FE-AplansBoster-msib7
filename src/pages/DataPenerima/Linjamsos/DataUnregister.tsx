@@ -1,5 +1,5 @@
 import Container from '@/components/atoms/Container'
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import useTitle from '@/hooks/useTitle'
 import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
@@ -9,15 +9,18 @@ import { HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
+import DatePicker from '@/components/atoms/DatePicker'
 
-const DataPkr = () => {
-  useTitle('Data Penerima / Linjamsos / Penanganan Kelompok Rentan (PKR) ')
+const DataUnregister = () => {
+  useTitle('Data Penerima / Unregister) ')
 
   interface FormValues {
-    nik: string
+    nama: string
+    kode: string
+    status: string
+    executionDate: string
     kelurahan: string
-    kecamatan: string
-    batch: string
+    tahun: string
   }
   const forms = useForm<FormValues>({
     mode: 'onTouched'
@@ -31,29 +34,70 @@ const DataPkr = () => {
   return (
     <div>
       <Container>
-        <h1 className="font-bold text-[32px] ">Penanganan Kelompok Rentan (PKR)</h1>
+        <h1 className="font-bold text-[32px] ">Unregister</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-            <div className="flex flex-row justify-between pt-10 items-center gap-5 ">
-              <div className="flex-1 ">
-                <FormField
-                  name="nik"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input {...field} type="number" placeholder="Masukkan NIK Masyarakat" />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <Button>
-                <HiMagnifyingGlass className="w-6 h-6 py" />
-                <p className="font-bold text-sm text-white ml-3 w-max">Cari Data</p>
-              </Button>{' '}
-            </div>
-            <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
+            <div className="grid grid-cols-3 gap-x-5 gap-y-5 mt-5 ">
+              <FormField
+                name="nama"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input {...field} type="text" placeholder="Nama Kelompok Masyarakat" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="kode"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input {...field} type="text" placeholder="Kode Kegiatan" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="status"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Pilih Status Pencarian" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
+                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
+                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="executionDate"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <DatePicker
+                        onChange={field.onChange}
+                        selected={field.value}
+                        placeholder="Tanggal Masuk Rumah Sakit"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 name="kelurahan"
                 control={forms.control}
@@ -77,7 +121,7 @@ const DataPkr = () => {
                 )}
               />
               <FormField
-                name="kecamatan"
+                name="tahun"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -85,29 +129,7 @@ const DataPkr = () => {
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kecamatan" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="batch"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Batch" />
+                            <SelectValue placeholder="Pilih Tahun Pencairan" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -121,6 +143,10 @@ const DataPkr = () => {
                 )}
               />
             </div>
+            <Button className="w-fit py-6 px-4 ml-auto bg-primary">
+              <HiMagnifyingGlass className="w-6 h-6 text-white" />
+              <p className="text-white font-semibold text-sm ml-4 w-max">Cari Data</p>
+            </Button>
             <div className="w-[20%] mb-6">
               <Select>
                 <SelectTrigger className="border-primary bg-white text-primary focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ">
@@ -207,4 +233,4 @@ const DataPkr = () => {
     </div>
   )
 }
-export default DataPkr
+export default DataUnregister

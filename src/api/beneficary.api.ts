@@ -29,3 +29,8 @@ export const showAssistanceHistoryFn = async (nik: string): Promise<IAssistanceH
   const response = await api.get(`/beneficiary/identity-number/${nik}/assistance-histories`)
   return response.data?.data
 }
+
+export const showIdentityCheckFn = async (nik: string): Promise<IBeneficary> => {
+  const response = await api.get(`/identity/check/nik/${nik}`)
+  return response.data?.data
+}

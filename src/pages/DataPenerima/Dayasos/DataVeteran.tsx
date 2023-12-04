@@ -12,6 +12,7 @@ import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useDeleteVeteran, useGetVeteran, useGetVeteranById } from '@/store/server'
 import { Action, Loading, Modal } from '@/components'
 import { useAlert } from '@/store/client'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 const DataVeteran = () => {
   useTitle('Data Penerima / Dayasos / Veteran ')
@@ -66,7 +67,7 @@ const DataVeteran = () => {
       description: 'Apakah kamu yakin ingin menghapus data ini?',
       variant: 'danger',
       submitText: 'Delete'
-    }).then(async() => {
+    }).then(async () => {
       await deleteVeteran(id)
     })
   }
@@ -87,7 +88,7 @@ const DataVeteran = () => {
         <h1 className="font-bold text-2xl ">Veteran (VET)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-            <div className="grid grid-cols-3 gap-x-10 gap-y-5 pt-10">
+            <div className="grid gap-x-10 gap-y-5 pt-10">
               <FormField
                 name="q"
                 control={forms.control}
@@ -100,12 +101,23 @@ const DataVeteran = () => {
                 )}
               />
             </div>
-            <div className="w-[140px] h-[50px] ml-auto rounded-xl">
-              <Button className="py-6">
-                <HiMagnifyingGlass className="w-6 h-6 py" />
-                <p className="font-bold text-sm text-white ml-3">Cari Data</p>
-              </Button>
-            </div>
+            <section className="flex items-center justify-between">
+              <Select>
+                <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
+                  <SelectValue placeholder="Export" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value=".clsx">.clsx</SelectItem>
+                  <SelectItem value=".csv">.csv</SelectItem>
+                </SelectContent>
+              </Select>
+              <div className="flex items-center gap-3">
+                <Button className="gap-2 border-none rounded-lg" type="submit">
+                  <HiMagnifyingGlass className="text-lg" />
+                  <span>Cari Data</span>
+                </Button>
+              </div>
+            </section>
           </form>
         </Form>
       <section className="border rounded-xl mt-5 overflow-hidden">
@@ -137,19 +149,19 @@ const DataVeteran = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{item.uniformSize}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                   <Action onDelete={() => handleDelete(item.id)} onDetail={() => showDetail(item.id)} onEdit={() => console.log('detail')}/>
+          </TableCell>
+          </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={9} className="text-center">
+                    Tidak ada data
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={9} className="text-center">
-                  Tidak ada data
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-        </section>
+              )}
+            </TableBody>
+          </Table>
+          </section>
         {(veterans?.meta?.total as number) > 10 ? (
           <Pagination
             className="px-5 py-5 flex justify-end"

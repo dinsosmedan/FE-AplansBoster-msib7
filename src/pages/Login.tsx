@@ -14,6 +14,7 @@ import { useLogin } from '@/store/server'
 import { type AxiosError } from 'axios'
 import { type IErrorResponse } from '@/lib/types/user.type'
 import { type LoginInput, loginValidation } from '@/lib/validations/auth.validation'
+import { Password } from '@/components'
 
 export default function Login() {
   useTitle('Login')
@@ -85,7 +86,7 @@ export default function Login() {
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">Kata Sandi</FormLabel>
                       <FormControl>
-                        <Input {...field} type="password" placeholder="At least 8 characters" autoComplete="on" />
+                        <Password {...field} placeholder="At least 8 characters" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

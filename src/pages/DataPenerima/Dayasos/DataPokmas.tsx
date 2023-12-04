@@ -75,7 +75,7 @@ const DataPokmas = () => {
     setIsShow(true)
   }
   const handleReset = () => {
-    navigate('/data-penerima/dayasos/data-djp')
+    navigate('/data-penerima/dayasos/data-pokmas')
     forms.reset()
   }
   const updateParam = (key: any, value: any) => {
@@ -123,7 +123,7 @@ const DataPokmas = () => {
     <div>
       <Container>
         {isFetching && <Loading />}
-        <h1 className="font-bold text-xl ">Dat a Kelompok Masyarakat (Pokmas)</h1>
+        <h1 className="font-bold text-xl ">Data Kelompok Masyarakat (Pokmas)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
             <div className="grid grid-cols-3 gap-x-10 gap-y-5 pt-10">
@@ -234,16 +234,27 @@ const DataPokmas = () => {
                 )}
               />
             </div>
-            <div className="flex justify-end gap-3">
-            <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
-                <HiArrowPath className="text-lg" />
-                <span>Reset</span>
-              </Button>
-              <Button className="w-fit py-6 px-4 bg-primary">
-                <HiMagnifyingGlass className="w-6 h-6 text-white" />
-                <p className="text-white font-semibold text-sm pl-2 w-max">Cari Data</p>
-              </Button>
-            </div>
+            <section className="flex items-center justify-between">
+              <Select>
+                <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
+                  <SelectValue placeholder="Export" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value=".clsx">.clsx</SelectItem>
+                  <SelectItem value=".csv">.csv</SelectItem>
+                </SelectContent>
+              </Select>
+              <div className="flex items-center gap-3">
+                <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
+                  <HiArrowPath className="text-lg" />
+                  <span>Reset</span>
+                </Button>
+                <Button className="gap-2 border-none rounded-lg" type="submit">
+                  <HiMagnifyingGlass className="text-lg" />
+                  <span>Cari Data</span>
+                </Button>
+              </div>
+            </section>
           </form>
         </Form>
       <section className="border rounded-xl mt-5 overflow-hidden">
@@ -281,18 +292,18 @@ const DataPokmas = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{item.statusDisimbursement}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                   <Action onDelete={() => handleDelete(item.id)} onDetail={() => showDetail(item.id)} onEdit={() => console.log('detail')}/>
+        </TableCell>
+        </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={9} className="text-center">
+                    Tidak ada data
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={9} className="text-center">
-                  Tidak ada data
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              )}
+            </TableBody>
+          </Table>
         </section>
         {(communityGroups?.meta?.total as number) > 10 ? (
           <Pagination

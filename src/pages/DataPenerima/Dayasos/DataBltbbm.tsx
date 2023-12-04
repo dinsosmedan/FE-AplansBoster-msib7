@@ -11,6 +11,8 @@ import * as React from 'react'
 import { useGetFuelCashAssistance, useGetFuelCashAssistanceDetail } from '@/store/server'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { Action, Loading, Modal } from '@/components'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
 interface FormValues {
   q: string
 }
@@ -74,7 +76,7 @@ const DataBltbbm = () => {
         <h1 className="font-bold text-2xl ">Bantuan Langsung Tunai BBM (BLTBBM)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-            <div className="grid grid-cols-3 gap-x-10 gap-y-5 pt-10">
+            <div className="grid gap-x-10 gap-y-5 pt-10">
               <FormField
                 name="q"
                 control={forms.control}
@@ -87,49 +89,60 @@ const DataBltbbm = () => {
                 )}
               />
             </div>
-            <div className="w-[140px] h-[50px] ml-auto rounded-xl">
-              <Button className="py-6">
-                <HiMagnifyingGlass className="w-6 h-6 py" />
-                <p className="font-bold text-sm text-white ml-3">Cari Data</p>
-              </Button>
-            </div>
+            <section className="flex items-center justify-between">
+              <Select>
+                <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
+                  <SelectValue placeholder="Export" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value=".clsx">.clsx</SelectItem>
+                  <SelectItem value=".csv">.csv</SelectItem>
+                </SelectContent>
+              </Select>
+              <div className="flex items-center gap-3">
+                <Button className="gap-2 border-none rounded-lg" type="submit">
+                  <HiMagnifyingGlass className="text-lg" />
+                  <span>Cari Data</span>
+                </Button>
+              </div>
+            </section>
           </form>
         </Form>
-      <section className="border rounded-xl mt-5 overflow-hidden">
-        <Table className="mt-5">
-          <TableHeader className="bg-[#FFFFFF]">
-            <TableRow>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]"> Jenis Keanggotaan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {fuelCashAssistances?.data?.length !== 0 ? (
-              fuelCashAssistances?.data.map((item, index) => (
-                <TableRow key={item.id}>
-                  <TableCell className="text-left bg-[#F9FAFC]">
-                    {(fuelCashAssistances.meta.currentPage - 1) * fuelCashAssistances.meta.perPage + index + 1}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.identityNumber}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.type}</TableCell>
-                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Action onDetail={() => showDetail(item.id)}/>
+        <section className="border rounded-xl mt-5 overflow-hidden">
+          <Table className="mt-5">
+            <TableHeader className="bg-[#FFFFFF]">
+              <TableRow>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]"> Jenis Keanggotaan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {fuelCashAssistances?.data?.length !== 0 ? (
+                fuelCashAssistances?.data.map((item, index) => (
+                  <TableRow key={item.id}>
+                    <TableCell className="text-left bg-[#F9FAFC]">
+                      {(fuelCashAssistances.meta.currentPage - 1) * fuelCashAssistances.meta.perPage + index + 1}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.identityNumber}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.type}</TableCell>
+                    <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                      <Action onDetail={() => showDetail(item.id)} />
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={9} className="text-center">
+                    Tidak ada data
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={9} className="text-center">
-                  Tidak ada data
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              )}
+            </TableBody>
+          </Table>
         </section>
         {(fuelCashAssistances?.meta?.total as number) > 10 ? (
           <Pagination
@@ -141,13 +154,13 @@ const DataBltbbm = () => {
           />
         ) : null}
       </Container>
-      <Modal isShow={isShow} className='md:max-w-4xl'>
+      <Modal isShow={isShow} className="md:max-w-4xl">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
           <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
         </Modal.Header>
         {isLoadingFuelCashAssistance && <Loading />}
-        <div className='grid grid-cols-3 gap-y-5'>
+        <div className="grid grid-cols-3 gap-y-5">
           <div>
               <p className="text-sm font-bold">Nama</p>
               <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.name ? fuelCashAssistance?.beneficiary.name : '-'}</p>
@@ -192,7 +205,7 @@ const DataBltbbm = () => {
               <p className="text-sm font-bold">Usia</p>
               <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.age ? fuelCashAssistance?.beneficiary.age : '-'}</p>
             </div>
-          </div>
+        </div>
       </Modal>
     </div>
   )

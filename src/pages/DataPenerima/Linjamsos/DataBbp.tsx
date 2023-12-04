@@ -10,8 +10,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 
-const DataPkr = () => {
-  useTitle('Data Penerima / Linjamsos / Penanganan Kelompok Rentan (PKR) ')
+const DataBbp = () => {
+  useTitle('Data Penerima / Linjamsos / BBP ')
 
   interface FormValues {
     nik: string
@@ -31,10 +31,10 @@ const DataPkr = () => {
   return (
     <div>
       <Container>
-        <h1 className="font-bold text-[32px] ">Penanganan Kelompok Rentan (PKR)</h1>
+        <h1 className="font-bold text-[32px] ">Bantuan Biaya Pendidikan (BBP)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-            <div className="flex flex-row justify-between pt-10 items-center gap-5 ">
+            <div className="flex flex-row justify-between mt-5 items-center gap-5 ">
               <div className="flex-1 ">
                 <FormField
                   name="nik"
@@ -42,16 +42,12 @@ const DataPkr = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} type="number" placeholder="Masukkan NIK Masyarakat" />
+                        <Input {...field} type="number" placeholder="Masukkan Nama/ NIK" />
                       </FormControl>
                     </FormItem>
                   )}
                 />
               </div>
-              <Button>
-                <HiMagnifyingGlass className="w-6 h-6 py" />
-                <p className="font-bold text-sm text-white ml-3 w-max">Cari Data</p>
-              </Button>{' '}
             </div>
             <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
               <FormField
@@ -121,6 +117,10 @@ const DataPkr = () => {
                 )}
               />
             </div>
+            <Button className="w-fit py-6 px-4 ml-auto bg-primary">
+              <HiMagnifyingGlass className="w-6 h-6 text-white" />
+              <p className="text-white font-semibold text-sm ml-4 w-max">Cari Data</p>
+            </Button>
             <div className="w-[20%] mb-6">
               <Select>
                 <SelectTrigger className="border-primary bg-white text-primary focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ">
@@ -207,4 +207,4 @@ const DataPkr = () => {
     </div>
   )
 }
-export default DataPkr
+export default DataBbp
