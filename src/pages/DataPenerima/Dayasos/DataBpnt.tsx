@@ -168,58 +168,49 @@ const DataBpnt = () => {
         {isLoadingNonCash && <Loading />}
         <div className="grid grid-cols-3 gap-y-5">
           <div>
-            <p className="text-sm font-bold">Nama</p>
-            <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.name}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">NIK</p>
-            <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.identityNumber}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">No. KK</p>
-            <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.familyCardNumber}</p>
-          </div>
-          <div>
-            z<p className="text-sm font-bold">Kecamatan</p>
-            <p className="text-base capitalize">
-              {NonCashFoodAssistanceBeneficiary?.beneficiary.address.areaLevel3?.name}
-            </p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Kelurahan</p>
-            <p className="text-base capitalize">
-              {NonCashFoodAssistanceBeneficiary?.beneficiary.address.areaLevel4?.name}
-            </p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Alamat Lengkap</p>
-            <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.address.fullAddress}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Pekerjaan</p>
-            <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.occupation}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
-            <p className="text-base capitalize">
-              {NonCashFoodAssistanceBeneficiary?.beneficiary.birthPlace} /{' '}
-              {NonCashFoodAssistanceBeneficiary?.beneficiary.birthDate}
-            </p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Status DTKS</p>
-            <p className="text-base capitalize">
-              {NonCashFoodAssistanceBeneficiary?.beneficiary.isDtks ? 'DTKS' : 'Tidak DTKS'}
-            </p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Jenis Keanggotaan</p>
-            <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.type}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Usia</p>
-            <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.age}</p>
-          </div>
+              <p className="text-sm font-bold">Nama</p>
+              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.name ? NonCashFoodAssistanceBeneficiary?.beneficiary.name : '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">NIK</p>
+              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.identityNumber ? NonCashFoodAssistanceBeneficiary?.beneficiary.identityNumber : '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">No. KK</p>
+              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.familyCardNumber ? NonCashFoodAssistanceBeneficiary?.beneficiary.familyCardNumber : '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kecamatan</p>
+              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.address.areaLevel3?.name ? NonCashFoodAssistanceBeneficiary?.beneficiary.address.areaLevel3?.name : '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kelurahan</p>
+              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.address.areaLevel4?.name ? NonCashFoodAssistanceBeneficiary?.beneficiary.address.areaLevel4?.name : '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Alamat Lengkap</p>
+              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.address.fullAddress ? NonCashFoodAssistanceBeneficiary?.beneficiary.address.fullAddress : '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Pekerjaan</p>
+              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.occupation ? NonCashFoodAssistanceBeneficiary?.beneficiary.occupation : '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
+              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.birthPlace ? NonCashFoodAssistanceBeneficiary?.beneficiary.birthPlace : '-'} / {NonCashFoodAssistanceBeneficiary?.beneficiary.birthDate ? NonCashFoodAssistanceBeneficiary?.beneficiary.birthDate : '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Status DTKS</p>
+              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Jenis Keanggotaan</p>
+              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.type ? NonCashFoodAssistanceBeneficiary?.type : '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Usia</p>
+              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.age ? NonCashFoodAssistanceBeneficiary?.beneficiary.age : '-'}</p>
+            </div>
         </div>
       </Modal>
     </div>

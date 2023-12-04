@@ -9,8 +9,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useDeleteVeteran, useGetVeteran } from '@/store/server'
-import { Action, Loading } from '@/components'
+import { useDeleteVeteran, useGetVeteran, useGetVeteranById } from '@/store/server'
+import { Action, Loading, Modal } from '@/components'
 import { useAlert } from '@/store/client'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
@@ -20,7 +20,8 @@ const DataVeteran = () => {
   const createParams = useCreateParams()
   const { q, page } = useGetParams(['q', 'page'])
   const [isLoadingPage, setIsLoadingPage] = React.useState(false)
-
+  const [isShow, setIsShow] = React.useState(false)
+  const [selectedId, setSelectedId] = React.useState('')
   interface FormValues {
     q: string
   }
@@ -30,6 +31,7 @@ const DataVeteran = () => {
       // batch: ''
     }
   })
+  const { data: veteran, isLoading: isLoadingVeteran } = useGetVeteranById(selectedId)
 
   const {
     data: veterans,
@@ -53,6 +55,10 @@ const DataVeteran = () => {
       createParams({ key: 'q', value: '' }) // Set q to empty string if the search query is empty
     }
     await refetch()
+  }
+  const showDetail = (id: string) => {
+    setSelectedId(id)
+    setIsShow(true)
   }
   const { mutateAsync: deleteVeteran } = useDeleteVeteran()
   const handleDelete = (id: string) => {
@@ -114,41 +120,37 @@ const DataVeteran = () => {
             </section>
           </form>
         </Form>
-        <section className="border rounded-xl mt-5 overflow-hidden">
-          <Table className="mt-5">
-            <TableHeader className="bg-[#FFFFFF]">
-              <TableRow>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]"> Jenis Keanggotaan</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">NPV</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Satuan</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Ukuran Baju / Celana</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {veterans?.data?.length !== 0 ? (
-                veterans?.data.map((veteran, index) => (
-                  <TableRow key={veteran.id}>
-                    <TableCell className="text-left bg-[#F9FAFC]">
-                      {(veterans.meta.currentPage - 1) * veterans.meta.perPage + index + 1}
-                    </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{veteran.beneficiary.name}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{veteran.beneficiary.identityNumber}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{veteran.isActive}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{veteran.veteranUnit}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{veteran.veteranUnit}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{veteran.uniformSize}</TableCell>
-                    <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                      <Action
-                        onDelete={() => handleDelete(veteran.id)}
-                        onDetail={() => console.log('detail')}
-                        onEdit={() => console.log('detail')}
-                      />
-                    </TableCell>
-                  </TableRow>
+      <section className="border rounded-xl mt-5 overflow-hidden">
+        <Table className="mt-5">
+          <TableHeader className="bg-[#FFFFFF]">
+            <TableRow>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]"> Jenis Keanggotaan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">NPV</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Satuan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Ukuran Baju / Celana</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {veterans?.data?.length !== 0 ? (
+              veterans?.data.map((item, index) => (
+                <TableRow key={item.id}>
+                  <TableCell className="text-left bg-[#F9FAFC]">
+                    {(veterans.meta.currentPage - 1) * veterans.meta.perPage + index + 1}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.identityNumber}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.isActive}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.veteranUnit}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.veteranUnit}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.uniformSize}</TableCell>
+                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                  <Action onDelete={() => handleDelete(item.id)} onDetail={() => showDetail(item.id)} onEdit={() => console.log('detail')}/>
+          </TableCell>
+          </TableRow>
                 ))
               ) : (
                 <TableRow>
@@ -159,7 +161,7 @@ const DataVeteran = () => {
               )}
             </TableBody>
           </Table>
-        </section>
+          </section>
         {(veterans?.meta?.total as number) > 10 ? (
           <Pagination
             className="px-5 py-5 flex justify-end"
@@ -169,6 +171,51 @@ const DataVeteran = () => {
             onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
           />
         ) : null}
+        <Modal isShow={isShow} className='md:max-w-4xl'>
+        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+        </Modal.Header>
+        {isLoadingVeteran && <Loading />}
+        <div className='grid grid-cols-3 gap-y-5'>
+          <div>
+              <p className="text-sm font-bold">Nama</p>
+              <p className="text-base capitalize">{veteran?.beneficiary.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">NIK</p>
+              <p className="text-base capitalize">{veteran?.beneficiary.identityNumber ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">No. KK</p>
+              <p className="text-base capitalize">{veteran?.beneficiary.familyCardNumber ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kecamatan</p>
+              <p className="text-base capitalize">{veteran?.beneficiary?.address.areaLevel3?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kelurahan</p>
+              <p className="text-base capitalize">{veteran?.beneficiary?.address.areaLevel4?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Tempat / Tanggal Lahir </p>
+              <p className="text-base capitalize">{veteran?.beneficiary.birthPlace ?? '-'} / {veteran?.beneficiary.birthDate ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Usia</p>
+              <p className="text-base capitalize">{veteran?.beneficiary.age ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Agama</p>
+              <p className="text-base capitalize">{veteran?.beneficiary.religion ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Status DTKS</p>
+              <p className="text-base capitalize">{veteran?.beneficiary.isDtks ? 'DTKS' : 'Tidak DTKS' ?? '-'}</p>
+            </div>
+          </div>
+      </Modal>
       </Container>
     </div>
   )

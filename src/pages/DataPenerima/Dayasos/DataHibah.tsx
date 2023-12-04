@@ -209,81 +209,81 @@ const DataHibah = () => {
         {isLoadingOrganization && <Loading />}
         <div className="grid grid-cols-3 gap-y-5">
           <div>
-            <p className="text-sm font-bold">Nama Lembaga</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.name}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Nama Ketua</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.chairmanName}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">NIK Ketua</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.chairmanIdentityNumber}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Nama Sekretaris</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.secretaryName}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">NIK Sekretaris</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.secretaryIdentityNumber}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Nama Bendahara</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.treasurerName}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">NIK Bendahara</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.treasurerIdentityNumber}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Nomor Kontak</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.contactNumber}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Kecamatan</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.address.areaLevel3?.name}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Kelurahan</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.address.areaLevel4?.name}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Alamat Lengkap</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.address.fullAddress}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Nama Rekening</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.bankAccountName}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Nomor Rekening</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.bankAccountNumber}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Nama Bank</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.bankName}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Anggaran Yang Diminta</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.requestedAmount}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Anggaran Yang disetujui</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.aprrovedAmount}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Pembayaran Pertama</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.firstDisbursementAmount}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Pembayaran Kedua</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.secondDisbursementAmount}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Tahun Anggaran</p>
-            <p className="text-base capitalize">{organizationGrantAssistance?.budgetYear}</p>
-          </div>
+              <p className="text-sm font-bold">Nama Lembaga</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nama Ketua</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.chairmanName ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">NIK Ketua</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.chairmanIdentityNumber ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nama Sekretaris</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.secretaryName ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">NIK Sekretaris</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.secretaryIdentityNumber ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nama Bendahara</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.treasurerName ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">NIK Bendahara</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.treasurerIdentityNumber ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nomor Kontak</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.contactNumber ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kecamatan</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.address.areaLevel3?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kelurahan</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.address.areaLevel4?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Alamat Lengkap</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.address.fullAddress ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nama Rekening</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.bankAccountName ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nomor Rekening</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.bankAccountNumber ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nama Bank</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.bankName ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Anggaran Yang Diminta</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.requestedAmount ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Anggaran Yang disetujui</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.aprrovedAmount ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Pembayaran Pertama</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.firstDisbursementAmount ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Pembayaran Kedua</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.secondDisbursementAmount ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Tahun Anggaran</p>
+              <p className="text-base capitalize">{organizationGrantAssistance?.budgetYear ?? '-'}</p>
+            </div>
         </div>
       </Modal>
     </Container>
