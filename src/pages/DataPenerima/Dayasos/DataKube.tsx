@@ -5,15 +5,14 @@ import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { HiArrowPath, HiMagnifyingGlass, HiMiniTrash } from 'react-icons/hi2'
+import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useDeleteBusinessGroup, useGetBusinessGroup, useGetKecamatan, useGetKelurahan } from '@/store/server'
-import { Action, Loading } from '@/components'
+import { useDeleteBusinessGroup, useGetBusinessGroup, useGetBusinessGroupById, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { Action, Loading, Modal } from '@/components'
 import { useAlert } from '@/store/client'
-import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
 interface FormValues {
   q: string
@@ -26,9 +25,13 @@ const DataKube = () => {
   const { alert } = useAlert()
   const navigate = useNavigate()
   const createParams = useCreateParams()
-
+  const [isShow, setIsShow] = React.useState(false)
+  const [selectedId, setSelectedId] = React.useState('')
   const { page, q, kecamatan, kelurahan, year } = useGetParams(['page', 'q', 'kecamatan', 'kelurahan', 'year'])
-
+  const showDetail = (id: string) => {
+    setSelectedId(id)
+    setIsShow(true)
+  }
   const forms = useForm<FormValues>({
     defaultValues: {
       q: '',
@@ -43,7 +46,7 @@ const DataKube = () => {
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
 
   const {
-    data: businessGroup,
+    data: businessGroups,
     refetch,
     isFetching,
     isLoading
@@ -54,6 +57,7 @@ const DataKube = () => {
     q,
     year
   })
+  const { data: businessGroup, isLoading: isLoadingBusinessGroup } = useGetBusinessGroupById(selectedId)
 
   useDisableBodyScroll(isFetching)
   const handleReset = () => {
@@ -120,7 +124,7 @@ const DataKube = () => {
     }
   }, [isLoadingPage, isFetching])
 
-  if (isLoading) {
+  if (isLoading && isLoadingBusinessGroup) {
     return <Loading />
   }
   return (
@@ -229,15 +233,13 @@ const DataKube = () => {
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Ubah Data</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
 
               </TableRow>
             </TableHeader>
             <TableBody>
-              {businessGroup?.data?.length !== 0 ? (
-                businessGroup?.data.map((item, index) => (
+              {businessGroups?.data?.length !== 0 ? (
+                businessGroups?.data.map((item, index) => (
                   <TableRow key={item.id}>
                     <TableCell className="text-center bg-[#F9FAFC]">{index + 1}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.businessName}</TableCell>
@@ -246,25 +248,8 @@ const DataKube = () => {
                     <TableCell className="text-center bg-[#F9FAFC]">{item.businessAddress?.areaLevel4?.name}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.businessType}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.budgetYear}</TableCell>
-                    <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                      <Button
-                        size="icon"
-                        variant="base"
-                        className="bg-[#959595] text-white hover:bg-[#828282] hover:text-white"
-                        onClick={() => navigate(`/layanan/dayasos/kube/${item.id}`)}
-                      >
-                        <HiOutlinePencilAlt className="text-lg" />
-                      </Button>
-                    </TableCell>
-                    <TableCell className="bg-[#F9FAFC]"><Button
-                      size="icon"
-                      variant="default"
-                      className=" text-white hover:text-white"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <HiMiniTrash className="text-lg" />
-                    </Button>
-                      <Action onDelete={() => handleDelete(item.id)} onDetail={() => console.log('detail')} onEdit={() => console.log('detail')} /></TableCell>
+                    <TableCell className="bg-[#F9FAFC]">
+                      <Action onDelete={() => handleDelete(item.id)} onDetail={() => showDetail(item.id)} onEdit={() => console.log('detail')} /></TableCell>
                   </TableRow>
                 ))
               ) : (
@@ -277,16 +262,65 @@ const DataKube = () => {
             </TableBody>
           </Table>
         </section>
-        {(businessGroup?.meta?.total as number) > 10 ? (
+        {(businessGroups?.meta?.total as number) > 10 ? (
           <Pagination
             className="px-5 py-5 flex justify-end"
             currentPage={page !== '' ? parseInt(page) : 1}
-            totalCount={businessGroup?.meta.total as number}
+            totalCount={businessGroups?.meta.total as number}
             pageSize={10}
             onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
           />
         ) : null}
       </Container>
+      <Modal isShow={isShow} className='md:max-w-4xl'>
+        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+        </Modal.Header>
+        {isLoadingBusinessGroup && <Loading />}
+        <div className='grid grid-cols-3 gap-y-5'>
+          <div>
+              <p className="text-sm font-bold">Nama Usaha</p>
+              <p className="text-base capitalize">{businessGroup?.businessName ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Jenis Usaha</p>
+              <p className="text-base capitalize">{businessGroup?.businessType ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Alamat Usaha</p>
+              <p className="text-base capitalize">{businessGroup?.businessAddress.fullAddress ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kecamatan</p>
+              <p className="text-base capitalize">{businessGroup?.businessAddress.areaLevel3?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kelurahan</p>
+              <p className="text-base capitalize">{businessGroup?.businessAddress.areaLevel4?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Jumlah Anggota</p>
+              <p className="text-base capitalize">{businessGroup?.membersCount ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Jumlah Bantuan</p>
+              <p className="text-base capitalize">{businessGroup?.assistanceAmount ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Tahun Anggaran</p>
+              <p className="text-base capitalize">{businessGroup?.budgetYear ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Status</p>
+              <p className="text-base capitalize">{businessGroup?.status ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Keterangan</p>
+              <p className="text-base capitalize">{businessGroup?.note ?? '-'}</p>
+            </div>
+          </div>
+      </Modal>
     </div>
   )
 }

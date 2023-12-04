@@ -150,35 +150,35 @@ const DataBltbbm = () => {
         <div className='grid grid-cols-3 gap-y-5'>
           <div>
               <p className="text-sm font-bold">Nama</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.name}</p>
+              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.name ? fuelCashAssistance?.beneficiary.name : '-'}</p>
             </div>
             <div>
               <p className="text-sm font-bold">NIK</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.identityNumber}</p>
+              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.identityNumber ? fuelCashAssistance?.beneficiary.identityNumber : '-'}</p>
             </div>
             <div>
               <p className="text-sm font-bold">No. KK</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.familyCardNumber}</p>
+              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.familyCardNumber ? fuelCashAssistance?.beneficiary.familyCardNumber : '-'}</p>
             </div>
             <div>
               <p className="text-sm font-bold">Kecamatan</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.address.areaLevel3?.name}</p>
+              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.address.areaLevel3?.name ? fuelCashAssistance?.beneficiary.address.areaLevel3?.name : '-'}</p>
             </div>
             <div>
               <p className="text-sm font-bold">Kelurahan</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.address.areaLevel4?.name}</p>
+              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.address.areaLevel4?.name ? fuelCashAssistance?.beneficiary.address.areaLevel4?.name : '-'}</p>
             </div>
             <div>
               <p className="text-sm font-bold">Alamat Lengkap</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.address.fullAddress}</p>
+              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.address.fullAddress ? fuelCashAssistance?.beneficiary.address.fullAddress : '-'}</p>
             </div>
             <div>
               <p className="text-sm font-bold">Pekerjaan</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.occupation}</p>
+              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.occupation ? fuelCashAssistance?.beneficiary.occupation : '-'}</p>
             </div>
             <div>
               <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.birthPlace} / {fuelCashAssistance?.beneficiary.birthDate}</p>
+              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.birthPlace ? fuelCashAssistance?.beneficiary.birthPlace : '-'} / {fuelCashAssistance?.beneficiary.birthDate ? fuelCashAssistance?.beneficiary.birthDate : '-'}</p>
             </div>
             <div>
               <p className="text-sm font-bold">Status DTKS</p>
@@ -186,11 +186,11 @@ const DataBltbbm = () => {
             </div>
             <div>
               <p className="text-sm font-bold">Jenis Keanggotaan</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.type}</p>
+              <p className="text-base capitalize">{fuelCashAssistance?.type ? fuelCashAssistance?.type : '-'}</p>
             </div>
             <div>
               <p className="text-sm font-bold">Usia</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.age}</p>
+              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.age ? fuelCashAssistance?.beneficiary.age : '-'}</p>
             </div>
           </div>
       </Modal>
