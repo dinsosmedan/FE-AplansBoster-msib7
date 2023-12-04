@@ -15,7 +15,6 @@ import Ri from './Layanan/Dayasos/RumahIbadah'
 import Bbp from './Layanan/Linjamsos/Bbp'
 import Pkh from './Pkh'
 import Djpm from './Djpm'
-import InfoDataMaster from './InfoDataMaster'
 import Veteran from './Layanan/Dayasos/Veteran'
 import CekDataDukcapil from './CekDataDukcapil'
 import Pokmas from './Layanan/Dayasos/Pokmas'
@@ -30,6 +29,9 @@ import DataHibah from './DataPenerima/Dayasos/DataHibah'
 import Pkr from './Layanan/Linjamsos/Pkr'
 import Sktm from './Layanan/Linjamsos/Sktm'
 import DataPkr from './DataPenerima/Linjamsos/DataPkr'
+import DataUnregister from './DataPenerima/Linjamsos/DataUnregister'
+import DataBbp from './DataPenerima/Linjamsos/DataBbp'
+import InfoDataMaster from './InfoDataMaster'
 
 export {
   Home,
@@ -50,7 +52,6 @@ export {
   Bbp,
   Pkh,
   Djpm,
-  InfoDataMaster,
   Veteran,
   CekDataDukcapil,
   Pokmas,
@@ -63,5 +64,8 @@ export {
   DataHibah,
   Pkr,
   Sktm,
-  DataPkr
+  DataPkr,
+  DataUnregister,
+  DataBbp,
+  InfoDataMaster
 }

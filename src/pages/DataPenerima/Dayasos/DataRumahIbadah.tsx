@@ -61,7 +61,7 @@ const DataRumahIbadah = () => {
   const [isLoadingPage, setIsLoadingPage] = React.useState(false)
 
   const handleReset = () => {
-    navigate('/data-penerima/dayasos/data-djp')
+    navigate('/data-penerima/dayasos/data-rumah-ibadah')
     forms.reset()
   }
   const updateParam = (key: any, value: any) => {
@@ -144,14 +144,13 @@ const DataRumahIbadah = () => {
                 </FormItem>
               )}
             />
-
             <FormField
               name="kecamatan"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value || ''}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Kecamatan" />
@@ -198,16 +197,27 @@ const DataRumahIbadah = () => {
               )}
             />
           </div>
-          <div className="flex justify-end gap-3">
-            <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
-              <HiArrowPath className="text-lg" />
-              <span>Reset</span>
-            </Button>
-            <Button className="w-fit py-6 px-4 bg-primary">
-              <HiMagnifyingGlass className="w-6 h-6 text-white" />
-              <p className="text-white font-semibold text-sm pl-2 w-max">Cari Data</p>
-            </Button>
-          </div>
+          <section className="flex items-center justify-between">
+            <Select>
+              <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
+                <SelectValue placeholder="Export" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value=".clsx">.clsx</SelectItem>
+                <SelectItem value=".csv">.csv</SelectItem>
+              </SelectContent>
+            </Select>
+            <div className="flex items-center gap-3">
+              <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
+                <HiArrowPath className="text-lg" />
+                <span>Reset</span>
+              </Button>
+              <Button className="gap-2 border-none rounded-lg" type="submit">
+                <HiMagnifyingGlass className="text-lg" />
+                <span>Cari Data</span>
+              </Button>
+            </div>
+          </section>
         </form>
       </Form>
       <section className="border rounded-xl mt-5 overflow-hidden">
@@ -227,7 +237,6 @@ const DataRumahIbadah = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Ubah Data</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Hapus Data</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
-
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -256,17 +265,22 @@ const DataRumahIbadah = () => {
                       <HiOutlinePencilAlt className="text-lg" />
                     </Button>
                   </TableCell>
-                  <TableCell className="bg-[#F9FAFC]"><Button
-                    size="icon"
-                    variant="default"
-                    className=" text-white hover:text-white"
-                    onClick={() => handleDelete(item.id)}
-                  >
-                    <HiMiniTrash className="text-lg" />
-                  </Button>
+                  <TableCell className="bg-[#F9FAFC]">
+                    <Button
+                      size="icon"
+                      variant="default"
+                      className=" text-white hover:text-white"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      <HiMiniTrash className="text-lg" />
+                    </Button>
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Action onDelete={() => handleDelete(item.id)} onDetail={() => console.log('detail')} onEdit={() => console.log('detail')} />
+                    <Action
+                      onDelete={() => handleDelete(item.id)}
+                      onDetail={() => console.log('detail')}
+                      onEdit={() => console.log('detail')}
+                    />
                   </TableCell>
                 </TableRow>
               ))

@@ -14,7 +14,7 @@ const DataPenerimaLinjamsos = () => {
           <CardLink.Header className="h-[185px] flex-col" title="Bantuan Biaya Pendidikan" circlePosition="bottom">
             <p className="pt-11 text-white text-base italic font-inter">Education Financial Aid</p>
           </CardLink.Header>
-          <CardLink.Footer href="/layanan/rehabsos">
+          <CardLink.Footer href="/data-penerima/linjamsos/data-bbp">
             <div className="flex gap-3 items-center">
               <HiEye className="h-[30px] w-[30px] text-primary" />
               <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
@@ -40,7 +40,7 @@ const DataPenerimaLinjamsos = () => {
           >
             <p className="pt-11 text-white text-base italic font-inter">Vulnerable Group Handling</p>
           </CardLink.Header>
-          <CardLink.Footer href="/layanan/rehabsos">
+          <CardLink.Footer href="/data-penerima/linjamsos/data-pkr">
             <div className="flex gap-3 items-center">
               <HiEye className="h-[30px] w-[30px] text-primary" />
               <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
@@ -67,6 +67,17 @@ const DataPenerimaLinjamsos = () => {
             <p className="pt-11 text-white text-base italic font-inter">Indigency Certificate</p>
           </CardLink.Header>
           <CardLink.Footer href="/layanan/rehabsos">
+            <div className="flex gap-3 items-center">
+              <HiEye className="h-[30px] w-[30px] text-primary" />
+              <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
+            </div>
+          </CardLink.Footer>
+        </CardLink>
+        <CardLink className="w-full rounded-2xl">
+          <CardLink.Header className="h-[185px] flex-col px-5" title="Tidak Terdaftar" circlePosition="bottom">
+            <p className="pt-11 text-white text-base italic font-inter">Unregister</p>
+          </CardLink.Header>
+          <CardLink.Footer href="/data-penerima/linjamsos/data-unregister">
             <div className="flex gap-3 items-center">
               <HiEye className="h-[30px] w-[30px] text-primary" />
               <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
