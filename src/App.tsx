@@ -29,9 +29,10 @@ import {
   InfoDataMaster,
   DataPkr,
   DataUnregister,
-  DataBbp
+  DataBbp,
+  DataDtks
 } from './pages'
-import { DashboardLayout, Alert } from './components'
+import { DashboardLayout, Alert, ProtectedAuth, ProtectedRoute } from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
 import LayananRehabsos from './pages/Layanan/LayananRehabsos'
 import LayananLinjamsos from './pages/Layanan/LayananLinjamsos'
@@ -63,80 +64,80 @@ export default function App() {
       />
       <Toaster />
       <Routes>
-        {/* <Route element={<ProtectedRoute />}> */}
-        <Route path="/" element={<DashboardLayout />}>
-          <Route index element={<Home />} />
-          <Route path="/layanan">
-            <Route index element={<Layanan />} />
-            <Route path="rehabsos" element={<LayananRehabsos />} />
-            <Route path="linjamsos" element={<LayananLinjamsos />} />
-            <Route path="dayasos" element={<LayananDayasos />} />
-          </Route>
-          <Route path="/cek-riwayat-bansos" element={<CekRiwayatBansos />} />
-          <Route path="/data-penerima">
-            <Route index element={<DataPenerima />} />
-            <Route path="linjamsos" element={<DataPenerimaLinjamsos />} />
-            <Route path="rehabsos" element={<DataPenerimaRehabsos />} />
-            <Route path="dayasos" element={<DataPenerimaDayasos />} />
-          </Route>
-          <Route path="/event" element={<Event />} />
-          <Route path="/data-master">
-            <Route index element={<DataMaster />} />
-            <Route path="info-datamaster" element={<InfoDataMaster />} />
-          </Route>
-          <Route path="/manajemen-role" element={<ManajemenRole />} />
-          <Route path="/manajemen-user" element={<ManajemenUser />} />
-          <Route path="/profiling-masyarakat" element={<ProfilingMasyarakat />} />
-          <Route path="/bansos-lansia" element={<BansosLansia />} />
-          <Route path="/Bbp" element={<Bbp />} />
-          <Route path="/Pkh" element={<Pkh />} />
-          {/* <Route path="/Djpm" element={<Djpm />} /> */}
-          <Route path="/cek-data-dukcapil" element={<CekDataDukcapil />} />
-          <Route path="/layanan/linjamsos">
-            <Route index element={<LayananLinjamsos />} />
-            <Route path="Bbp" element={<Bbp />} />
-            <Route path="Pkr" element={<Pkr />} />
-            <Route path="Sktm" element={<Sktm />} />
-          </Route>
-          <Route path="/layanan/dayasos">
-            <Route index element={<LayananDayasos />} />
-            <Route path="djp" element={<Djp />} />
-            <Route path="djp/:id" element={<Djp />} />
-            <Route path="bpnt" element={<Bpnt />} />
-            <Route path="hibah" element={<Hibah />} />
-            <Route path="hibah/:id" element={<Hibah />} />
-            <Route path="ri" element={<Ri />} />
-            <Route path="ri/:id" element={<Ri />} />
-            <Route path="pokmas" element={<Pokmas />} />
-            <Route path="veteran" element={<Veteran />} />
-            <Route path="veteran/:id" element={<Veteran />} />
-            <Route path="kube" element={<Kube />} />
-            <Route path="kube/:id" element={<Kube />} />
-          </Route>
-          <Route path="/data-penerima/dayasos">
-            <Route index element={<DataPenerimaDayasos />} />
-            <Route path="data-djp" element={<DataDjp />} />
-            <Route path="data-pokmas" element={<DataPokmas />} />
-            <Route path="data-kube" element={<DataKube />} />
-            <Route path="data-rumah-ibadah" element={<DataRumahIbadah />} />
-            <Route path="data-veteran" element={<DataVeteran />} />
-            <Route path="data-bltbbm" element={<DataBltbbm />} />
-            <Route path="data-hibah" element={<DataHibah />} />
-            <Route path="data-bpnt" element={<DataBpnt />} />
-          </Route>
-          <Route path="/data-penerima/linjamsos">
-            <Route index element={<DataPenerimaLinjamsos />} />
-            <Route path="data-pkr" element={<DataPkr />} />
-            <Route path="data-unregister" element={<DataUnregister />} />
-            <Route path="data-bbp" element={<DataBbp />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<DashboardLayout />}>
+            <Route index element={<Home />} />
+            <Route path="/layanan">
+              <Route index element={<Layanan />} />
+              <Route path="rehabsos" element={<LayananRehabsos />} />
+              <Route path="linjamsos" element={<LayananLinjamsos />} />
+              <Route path="dayasos" element={<LayananDayasos />} />
+            </Route>
+            <Route path="/cek-riwayat-bansos" element={<CekRiwayatBansos />} />
+            <Route path="/data-penerima">
+              <Route index element={<DataPenerima />} />
+              <Route path="linjamsos" element={<DataPenerimaLinjamsos />} />
+              <Route path="rehabsos" element={<DataPenerimaRehabsos />} />
+              <Route path="dayasos" element={<DataPenerimaDayasos />} />
+            </Route>
+            <Route path="/event" element={<Event />} />
+            <Route path="/data-master">
+              <Route index element={<DataMaster />} />
+              <Route path="info-datamaster" element={<InfoDataMaster />} />
+            </Route>
+            <Route path="/manajemen-role" element={<ManajemenRole />} />
+            <Route path="/manajemen-user" element={<ManajemenUser />} />
+            <Route path="/profiling-masyarakat" element={<ProfilingMasyarakat />} />
+            <Route path="/bansos-lansia" element={<BansosLansia />} />
+            <Route path="/Bbp" element={<Bbp />} />
+            <Route path="/Pkh" element={<Pkh />} />
+            {/* <Route path="/Djpm" element={<Djpm />} /> */}
+            <Route path="/cek-data-dukcapil" element={<CekDataDukcapil />} />
+            <Route path="/layanan/linjamsos">
+              <Route index element={<LayananLinjamsos />} />
+              <Route path="Bbp" element={<Bbp />} />
+              <Route path="Pkr" element={<Pkr />} />
+              <Route path="Sktm" element={<Sktm />} />
+            </Route>
+            <Route path="/layanan/dayasos">
+              <Route index element={<LayananDayasos />} />
+              <Route path="djp" element={<Djp />} />
+              <Route path="djp/:id" element={<Djp />} />
+              <Route path="bpnt" element={<Bpnt />} />
+              <Route path="hibah" element={<Hibah />} />
+              <Route path="hibah/:id" element={<Hibah />} />
+              <Route path="ri" element={<Ri />} />
+              <Route path="ri/:id" element={<Ri />} />
+              <Route path="pokmas" element={<Pokmas />} />
+              <Route path="veteran" element={<Veteran />} />
+              <Route path="veteran/:id" element={<Veteran />} />
+              <Route path="kube" element={<Kube />} />
+              <Route path="kube/:id" element={<Kube />} />
+            </Route>
+            <Route path="/data-penerima/dayasos">
+              <Route index element={<DataPenerimaDayasos />} />
+              <Route path="data-djp" element={<DataDjp />} />
+              <Route path="data-pokmas" element={<DataPokmas />} />
+              <Route path="data-kube" element={<DataKube />} />
+              <Route path="data-rumah-ibadah" element={<DataRumahIbadah />} />
+              <Route path="data-veteran" element={<DataVeteran />} />
+              <Route path="data-bltbbm" element={<DataBltbbm />} />
+              <Route path="data-hibah" element={<DataHibah />} />
+              <Route path="data-bpnt" element={<DataBpnt />} />
+            </Route>
+            <Route path="/data-penerima/linjamsos">
+              <Route index element={<DataPenerimaLinjamsos />} />
+              <Route path="data-pkr" element={<DataPkr />} />
+              <Route path="data-unregister" element={<DataUnregister />} />
+              <Route path="data-bbp" element={<DataBbp />} />
+            </Route>
+            <Route path="/data-dtks" element={<DataDtks />} />
           </Route>
         </Route>
-        {/* </Route> */}
-        {/* </Route> */}
-        {/* <Route element={<ProtectedAuth />}> */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        {/* </Route> */}
+        <Route element={<ProtectedAuth />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+        </Route>
       </Routes>
     </>
   )

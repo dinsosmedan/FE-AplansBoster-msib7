@@ -29,6 +29,7 @@ import DataHibah from './DataPenerima/Dayasos/DataHibah'
 import Pkr from './Layanan/Linjamsos/Pkr'
 import Sktm from './Layanan/Linjamsos/Sktm'
 import DataPkr from './DataPenerima/Linjamsos/DataPkr'
+import DataDtks from './DataDtks'
 import DataUnregister from './DataPenerima/Linjamsos/DataUnregister'
 import DataBbp from './DataPenerima/Linjamsos/DataBbp'
 import InfoDataMaster from './InfoDataMaster'
@@ -65,6 +66,7 @@ export {
   Pkr,
   Sktm,
   DataPkr,
+  DataDtks,
   DataUnregister,
   DataBbp,
   InfoDataMaster

@@ -17,6 +17,7 @@ export default function Header() {
   const { alert } = useAlert()
   const { data: user, isLoading } = useGetMe()
   const { mutate: logout } = useLogout()
+
   const handleLogout = () => {
     void alert({
       title: 'Logout',
@@ -52,7 +53,7 @@ export default function Header() {
                     <img
                       src="https://source.unsplash.com/random/900×700/?man"
                       alt="profile"
-                      loading='lazy'
+                      loading="lazy"
                       className="w-12 h-12 object-cover rounded-[14px]"
                     />
                     <div className="flex flex-col">
@@ -68,9 +69,9 @@ export default function Header() {
                 <DropdownMenuLabel className="text-primary  w-[170px]">Pengaturan</DropdownMenuLabel>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <DropdownMenuLabel className="text-primary" onClick={handleLogout}>
-                  Keluar
-                </DropdownMenuLabel>
+                <button onClick={handleLogout} className="flex-1 w-full text-left">
+                  <DropdownMenuLabel className="text-primary">Keluar</DropdownMenuLabel>
+                </button>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
