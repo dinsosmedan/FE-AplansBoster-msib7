@@ -51,7 +51,6 @@ export default function Login() {
       }
     })
   }
-  // console.log(status);
 
   return (
     <main className="py-14 px-36 flex flex-row items-start justify-between h-screen">

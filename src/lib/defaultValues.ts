@@ -25,3 +25,15 @@ export const POKMAS_DEFAULT_VALUES: pokmasFields = {
     }
   ]
 }
+
+export const DTKS_DEFAULT_VALUES = {
+  kecamatan: '',
+  kelurahan: '',
+  nama: '',
+  nik: '',
+  kk: '',
+  bpnt: '',
+  blt: '',
+  pbi: '',
+  pkh: ''
+}

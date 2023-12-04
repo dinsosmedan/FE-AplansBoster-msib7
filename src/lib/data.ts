@@ -16,7 +16,9 @@ import {
   HiOutlineChartBar,
   HiChartBar,
   HiMegaphone,
-  HiOutlineMegaphone
+  HiOutlineMegaphone,
+  HiArchiveBox,
+  HiOutlineArchiveBox
 } from 'react-icons/hi2'
 
 export const MAIN_MENU = [
@@ -57,16 +59,16 @@ export const MAIN_MENU = [
     inactiveIcon: HiOutlineFolderOpen
   },
   {
-    link: '/data-dtks',
-    title: 'Data DTKS',
-    activeIcon: HiFolderOpen,
-    inactiveIcon: HiOutlineFolderOpen
-  },
-  {
     link: '/event',
     title: 'Event',
     activeIcon: HiMegaphone,
     inactiveIcon: HiOutlineMegaphone
+  },
+  {
+    link: '/data-dtks',
+    title: 'Data DTKS',
+    activeIcon: HiArchiveBox,
+    inactiveIcon: HiOutlineArchiveBox
   }
 ]
 

@@ -84,3 +84,32 @@ export interface IAllBeneficary {
   data: IBeneficary[]
   meta: IMeta
 }
+
+export interface DtksParams {
+  kecamatan?: string
+  kelurahan?: string
+  nama?: string
+  nik?: string
+  kk?: string
+  bpnt?: boolean
+  blt?: boolean
+  pbi?: boolean
+  pkh?: boolean
+  page?: number
+}
+
+interface IAssistanceDTKS {
+  pbi: boolean
+  bpnt: boolean
+  bltbbm: boolean
+  pkh: boolean
+}
+
+export interface IDtks extends IBeneficary {
+  assistances: IAssistanceDTKS
+}
+
+export interface IAllDtks {
+  data: IDtks[]
+  meta: IMeta
+}

@@ -30,6 +30,7 @@ import DataHibah from './DataPenerima/Dayasos/DataHibah'
 import Pkr from './Layanan/Linjamsos/Pkr'
 import Sktm from './Layanan/Linjamsos/Sktm'
 import DataPkr from './DataPenerima/Linjamsos/DataPkr'
+import DataDtks from './DataDtks'
 
 export {
   Home,
@@ -63,5 +64,6 @@ export {
   DataHibah,
   Pkr,
   Sktm,
-  DataPkr
+  DataPkr,
+  DataDtks
 }
