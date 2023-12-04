@@ -1,16 +1,19 @@
-import { Container, Loading, Pagination } from '@/components'
-import { FormField, Form, FormItem, FormControl, FormLabel } from '@/components/ui/form'
-import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
-import { useGetDTKS, useGetKecamatan, useGetKelurahan } from '@/store/server'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
-import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
+import { Checkbox } from '@/components/ui/checkbox'
+import { FormField, Form, FormItem, FormControl, FormLabel } from '@/components/ui/form'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
 import * as React from 'react'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
+
 import { DTKS_DEFAULT_VALUES } from '@/lib/defaultValues'
+import { Container, Loading, Pagination } from '@/components'
+import { useGetDTKS, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { useCreateParams, useDeleteParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 
 interface DtksParams {
   kecamatan: string
@@ -30,11 +33,13 @@ export default function DataDtks() {
     defaultValues: DTKS_DEFAULT_VALUES
   })
 
+  const navigate = useNavigate()
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3)
 
   const createParams = useCreateParams()
+  const deleteParams = useDeleteParams()
   const { kecamatan, kelurahan, nama, nik, kk, bpnt, blt, pbi, pkh, page } = useGetParams([
     'kecamatan',
     'kelurahan',
@@ -83,10 +88,17 @@ export default function DataDtks() {
     Object.keys(values).forEach((key) => {
       if (values[key as keyof DtksParams] !== '' && values[key as keyof DtksParams] !== undefined) {
         createParams({ key, value: values[key as keyof DtksParams] as string })
+      } else {
+        deleteParams(key)
       }
     })
-    createParams({ key: 'page', value: '1' })
+    deleteParams('page')
     await refetch()
+  }
+
+  const handleReset = () => {
+    forms.reset(DTKS_DEFAULT_VALUES)
+    navigate('/data-dtks')
   }
 
   if (isLoading) {
@@ -234,12 +246,12 @@ export default function DataDtks() {
             </div>
             <div className="flex items-center gap-3">
               {shouldDisplayResetButton('with-page') && (
-                <Button className="gap-3 py-6 text-primary" variant="outline">
+                <Button className="gap-3 py-6 text-primary" type="button" variant="outline" onClick={handleReset}>
                   <HiArrowPath className="text-xl" />
                   <span>Reset</span>
                 </Button>
               )}
-              <Button className="gap-3 py-6">
+              <Button className="gap-3 py-6" type="submit">
                 <HiMagnifyingGlass className="text-xl" />
                 <span>Cari Data</span>
               </Button>
