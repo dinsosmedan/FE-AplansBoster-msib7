@@ -26,7 +26,10 @@ import {
   Pkr,
   Sktm,
   Djp,
-  InfoDataMaster
+  InfoDataMaster,
+  DataPkr,
+  DataUnregister,
+  DataBbp
 } from './pages'
 import { DashboardLayout, Alert } from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
@@ -78,8 +81,8 @@ export default function App() {
           </Route>
           <Route path="/event" element={<Event />} />
           <Route path="/data-master">
-          <Route index element={<DataMaster />} />
-          <Route path="info-datamaster" element={<InfoDataMaster />} />
+            <Route index element={<DataMaster />} />
+            <Route path="info-datamaster" element={<InfoDataMaster />} />
           </Route>
           <Route path="/manajemen-role" element={<ManajemenRole />} />
           <Route path="/manajemen-user" element={<ManajemenUser />} />
@@ -115,15 +118,17 @@ export default function App() {
             <Route path="data-djp" element={<DataDjp />} />
             <Route path="data-pokmas" element={<DataPokmas />} />
             <Route path="data-kube" element={<DataKube />} />
-            <Route path="data-rumahibadah" element={<DataRumahIbadah />} />
+            <Route path="data-rumah-ibadah" element={<DataRumahIbadah />} />
             <Route path="data-veteran" element={<DataVeteran />} />
             <Route path="data-bltbbm" element={<DataBltbbm />} />
             <Route path="data-hibah" element={<DataHibah />} />
             <Route path="data-bpnt" element={<DataBpnt />} />
           </Route>
-          <Route path="/data-penerima/linjmamsos">
+          <Route path="/data-penerima/linjamsos">
             <Route index element={<DataPenerimaLinjamsos />} />
-            {/* <Route path="data-pkr" element={<DataPkr />} /> */}
+            <Route path="data-pkr" element={<DataPkr />} />
+            <Route path="data-unregister" element={<DataUnregister />} />
+            <Route path="data-bbp" element={<DataBbp />} />
           </Route>
         </Route>
         {/* </Route> */}

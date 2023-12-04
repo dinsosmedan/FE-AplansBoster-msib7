@@ -626,8 +626,8 @@ export const useGetFuelCashAssistanceDetail = (id?: string) => {
   })
 }
 /* BANSOS BANTUAN NON TUNAI */
-export const useGetNonCashFoodAssistanceBeneficiary = ({ page }: NonCashFoodAssistanceBeneficiaryQuery) => {
-  return useQuery(['non-cash', page], async () => await getNonCashFoodAssistanceBeneficiary({ page }), {
+export const useGetNonCashFoodAssistanceBeneficiary = ({ page, q }: NonCashFoodAssistanceBeneficiaryQuery) => {
+  return useQuery(['non-cash', page, q], async () => await getNonCashFoodAssistanceBeneficiary({ page, q }), {
     keepPreviousData: true,
     staleTime: 5000
   })

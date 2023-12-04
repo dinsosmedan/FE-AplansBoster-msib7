@@ -88,7 +88,7 @@ const DataPenerimaDayasos = () => {
           <CardLink.Header className="h-[185px] flex-col" title="Rumah Ibadah" circlePosition="bottom">
             <p className="pt-11 text-white text-base italic font-inter">House of Worship</p>
           </CardLink.Header>
-          <CardLink.Footer href="/data-penerima/dayasos/data-rumahibadah">
+          <CardLink.Footer href="/data-penerima/dayasos/data-rumah-ibadah">
             <div className="flex gap-3 items-center">
               <HiEye className="h-[30px] w-[30px] text-primary" />
               <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>

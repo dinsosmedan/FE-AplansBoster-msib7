@@ -69,7 +69,7 @@ const DataPokmas = () => {
   useDisableBodyScroll(isFetching)
 
   const handleReset = () => {
-    navigate('/data-penerima/dayasos/data-djp')
+    navigate('/data-penerima/dayasos/data-pokmas')
     forms.reset()
   }
   const updateParam = (key: any, value: any) => {
@@ -117,7 +117,7 @@ const DataPokmas = () => {
     <div>
       <Container>
         {isFetching && <Loading />}
-        <h1 className="font-bold text-xl ">Dat a Kelompok Masyarakat (Pokmas)</h1>
+        <h1 className="font-bold text-xl ">Data Kelompok Masyarakat (Pokmas)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
             <div className="grid grid-cols-3 gap-x-10 gap-y-5 pt-10">
@@ -228,65 +228,80 @@ const DataPokmas = () => {
                 )}
               />
             </div>
-            <div className="flex justify-end gap-3">
-            <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
-                <HiArrowPath className="text-lg" />
-                <span>Reset</span>
-              </Button>
-              <Button className="w-fit py-6 px-4 bg-primary">
-                <HiMagnifyingGlass className="w-6 h-6 text-white" />
-                <p className="text-white font-semibold text-sm pl-2 w-max">Cari Data</p>
-              </Button>
-            </div>
+            <section className="flex items-center justify-between">
+              <Select>
+                <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
+                  <SelectValue placeholder="Export" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value=".clsx">.clsx</SelectItem>
+                  <SelectItem value=".csv">.csv</SelectItem>
+                </SelectContent>
+              </Select>
+              <div className="flex items-center gap-3">
+                <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
+                  <HiArrowPath className="text-lg" />
+                  <span>Reset</span>
+                </Button>
+                <Button className="gap-2 border-none rounded-lg" type="submit">
+                  <HiMagnifyingGlass className="text-lg" />
+                  <span>Cari Data</span>
+                </Button>
+              </div>
+            </section>
           </form>
         </Form>
-      <section className="border rounded-xl mt-5 overflow-hidden">
-        <Table className="mt-5">
-          <TableHeader className="bg-zinc-300">
-            <TableRow>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Kode Kegiatan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Kelompok Masyarakat</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kegiatan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Bantuan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah Bantuan Disetujui</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Pencairan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Status Pencairan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {communityGroup?.data?.length !== 0 ? (
-              communityGroup?.data.map((item, index) => (
-                <TableRow key={item.id}>
-                  <TableCell className="text-left">
-                    {(communityGroup.meta.currentPage - 1) * communityGroup.meta.perPage + index + 1}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.communityActivityCode}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.communityName}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.address?.areaLevel3?.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.address?.areaLevel4?.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.communityActivityTypeDescription}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.communityAssistanceType}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.approvedFundAmount}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.applicationYear}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.statusDisimbursement}</TableCell>
-                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Action onDelete={() => handleDelete(item.id)} onDetail={() => console.log('detail')} onEdit={() => console.log('detail')}/>
+        <section className="border rounded-xl mt-5 overflow-hidden">
+          <Table>
+            <TableHeader className="bg-white">
+              <TableRow>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Kode Kegiatan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Kelompok Masyarakat</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kegiatan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Bantuan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah Bantuan Disetujui</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Pencairan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Status Pencairan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {communityGroup?.data?.length !== 0 ? (
+                communityGroup?.data.map((item, index) => (
+                  <TableRow key={item.id}>
+                    <TableCell className="text-left bg-[#F9FAFC]">
+                      {(communityGroup.meta.currentPage - 1) * communityGroup.meta.perPage + index + 1}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.communityActivityCode}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.communityName}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.address?.areaLevel3?.name}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.address?.areaLevel4?.name}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.communityActivityTypeDescription}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.communityAssistanceType}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.approvedFundAmount}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.applicationYear}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.statusDisimbursement}</TableCell>
+                    <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                      <Action
+                        onDelete={() => handleDelete(item.id)}
+                        onDetail={() => console.log('detail')}
+                        onEdit={() => console.log('detail')}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={9} className="text-center">
+                    Tidak ada data
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={9} className="text-center">
-                  Tidak ada data
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              )}
+            </TableBody>
+          </Table>
         </section>
         {(communityGroup?.meta?.total as number) > 10 ? (
           <Pagination
