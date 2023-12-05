@@ -245,7 +245,7 @@ const DataRumahIbadah = () => {
             {worshipPlaces?.data.length !== 0 ? (
               worshipPlaces?.data.map((item, index) => (
                 <TableRow key={index}>
-                  <TableCell className="text-left">
+                  <TableCell className="text-left bg-[#F9FAFC]">
                     {(worshipPlaces.meta.currentPage - 1) * worshipPlaces.meta.perPage + index + 1}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.name}</TableCell>
@@ -258,7 +258,11 @@ const DataRumahIbadah = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{item.status}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.note}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Action onDelete={() => handleDelete(item.id)} onDetail={() => showDetail(item.id)} onEdit={() => console.log('detail')} />
+                    <Action
+                      onDelete={() => handleDelete(item.id)}
+                      onDetail={() => showDetail(item.id)}
+                      onEdit={() => console.log('detail')}
+                    />
                   </TableCell>
                 </TableRow>
               ))
@@ -281,54 +285,54 @@ const DataRumahIbadah = () => {
           onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
         />
       ) : null}
-      <Modal isShow={isShow} className='md:max-w-4xl'>
+      <Modal isShow={isShow} className="md:max-w-4xl">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
           <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
         </Modal.Header>
         {isLoadingWorshipPlace && <Loading />}
-        <div className='grid grid-cols-3 gap-y-5'>
+        <div className="grid grid-cols-3 gap-y-5">
           <div>
-              <p className="text-sm font-bold">Nama Rumah Ibadah</p>
-              <p className="text-base capitalize">{worshipPlace?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Jenis Rumah Ibadah</p>
-              <p className="text-base capitalize">{worshipPlace?.type ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Alamat Rumah Ibadah</p>
-              <p className="text-base capitalize">{worshipPlace?.address ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kecamatan</p>
-              <p className="text-base capitalize">{worshipPlace?.areaLevel3?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kelurahan</p>
-              <p className="text-base capitalize">{worshipPlace?.areaLevel4?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Nama PIC</p>
-              <p className="text-base capitalize">{worshipPlace?.picName ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kontak PIC</p>
-              <p className="text-base capitalize">{worshipPlace?.picPhone ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tahun</p>
-              <p className="text-base capitalize">{worshipPlace?.year ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Status</p>
-              <p className="text-base capitalize">{worshipPlace?.status ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Keterangan</p>
-              <p className="text-base capitalize">{worshipPlace?.note ?? '-'}</p>
-            </div>
+            <p className="text-sm font-bold">Nama Rumah Ibadah</p>
+            <p className="text-base capitalize">{worshipPlace?.name ?? '-'}</p>
           </div>
+          <div>
+            <p className="text-sm font-bold">Jenis Rumah Ibadah</p>
+            <p className="text-base capitalize">{worshipPlace?.type ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Alamat Rumah Ibadah</p>
+            <p className="text-base capitalize">{worshipPlace?.address ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kecamatan</p>
+            <p className="text-base capitalize">{worshipPlace?.areaLevel3?.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kelurahan</p>
+            <p className="text-base capitalize">{worshipPlace?.areaLevel4?.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Nama PIC</p>
+            <p className="text-base capitalize">{worshipPlace?.picName ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kontak PIC</p>
+            <p className="text-base capitalize">{worshipPlace?.picPhone ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tahun</p>
+            <p className="text-base capitalize">{worshipPlace?.year ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Status</p>
+            <p className="text-base capitalize">{worshipPlace?.status ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Keterangan</p>
+            <p className="text-base capitalize">{worshipPlace?.note ?? '-'}</p>
+          </div>
+        </div>
       </Modal>
     </Container>
   )

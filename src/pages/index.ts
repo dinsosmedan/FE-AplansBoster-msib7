@@ -33,6 +33,7 @@ import DataDtks from './DataDtks'
 import DataUnregister from './DataPenerima/Linjamsos/DataUnregister'
 import DataBbp from './DataPenerima/Linjamsos/DataBbp'
 import InfoDataMaster from './InfoDataMaster'
+import DataSktm from './DataPenerima/Linjamsos/DataSktm'
 
 export {
   Home,
@@ -69,5 +70,6 @@ export {
   DataDtks,
   DataUnregister,
   DataBbp,
-  InfoDataMaster
+  InfoDataMaster,
+  DataSktm
 }

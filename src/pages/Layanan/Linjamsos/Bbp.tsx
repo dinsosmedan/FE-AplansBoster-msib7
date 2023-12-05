@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import useTitle from '@/hooks/useTitle'
+import Container from '@/components/atoms/Container'
 
 const Bbp = () => {
   useTitle('Bantuan Biaya Pendidikan (BBP)')
@@ -31,7 +32,7 @@ const Bbp = () => {
   }
 
   return (
-    <div className="container bg-white py-5">
+    <Container className="px-[47px]">
       <div className="w-full text-center">
         <p className="text-2xl font-bold">Data Personal</p>
       </div>
@@ -246,7 +247,7 @@ const Bbp = () => {
           </div>
         </form>
       </Form>
-    </div>
+    </Container>
   )
 }
 
