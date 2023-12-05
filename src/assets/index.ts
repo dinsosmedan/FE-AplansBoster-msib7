@@ -9,4 +9,9 @@ import BgDataLinjmasos from './images/bg-data-linjamsos.svg'
 import BgLayananRehabsos from './images/bg-layanan-rehabsos.svg'
 import BgLayananDayasos from './images/bg-layanan-dayasos.svg'
 import BgLayananLinjmasos from './images/bg-layanan-linjamsos.svg'
-export { Logo, BgLogin, LogoMini, BgDukcapil, BgBansos, BgDataRehabsos, BgDataDayasos, BgDataLinjmasos, BgLayananRehabsos, BgLayananDayasos, BgLayananLinjmasos }
+import ImageCover from './images/image-cover.svg'
+import BgCard from './images/bg-card.svg'
+import DinsosLogo from './images/logo-dinsos.svg'
+import MedanBerkahLogo from './images/medan-berkah.svg'
+
+export { Logo, BgLogin, LogoMini, BgDukcapil, BgBansos, BgDataRehabsos, BgDataDayasos, BgDataLinjmasos, BgLayananRehabsos, BgLayananDayasos, BgLayananLinjmasos, ImageCover, BgCard, DinsosLogo, MedanBerkahLogo }
