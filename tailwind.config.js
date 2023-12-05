@@ -31,6 +31,9 @@ module.exports = {
       colors: {
         primary: '#DD2153',
         font: '#0C1421'
+      },
+      transitionDuration: {
+        700: '700ms' 
       }
     }
   },
