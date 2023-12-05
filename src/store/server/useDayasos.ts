@@ -74,28 +74,30 @@ export const useGetWorshipPlaces = ({ page, idKecamatan, idKelurahan, type, q }:
 
 export const useCreateWorshipPlace = () => {
   const queryClient = useQueryClient()
+  const { toast } = useToast()
+
   return useMutation(storeWorshipPlaceFn, {
-    onSuccess: (data: any) => {
-      console.log({ worship: data })
+    onSuccess: () => {
       void queryClient.invalidateQueries('worship-places')
+      toast({
+        title: 'Proses Berhasil',
+        description: 'Data Rumah Ibadah Berhasil Ditambahkan'
+      })
     },
     onError: (error: AxiosError) => {
-      console.log(error)
+      const errorResponse = error.response?.data as IErrorResponse
+
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message ?? 'Gagal',
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
     }
   })
 }
-// export const useUpdateWorshipPlace = () => {
-//   const queryClient = useQueryClient()
-//   return useMutation(storeWorshipPlaceFn, {
-//     onSuccess: (data: any) => {
-//       console.log({ worship: data })
-//       void queryClient.invalidateQueries('worship-places')
-//     },
-//     onError: (error: AxiosError) => {
-//       console.log(error)
-//     }
-//   })
-// }
+
 export const useDeleteWorshipPlace = () => {
   const queryClient = useQueryClient()
 
@@ -198,10 +200,9 @@ export const useGetServiceFunds = ({ page, idKecamatan, idKelurahan, name, type 
 
 export const useCreateServiceFund = () => {
   const queryClient = useQueryClient()
-  const { toast } = useToast()
   return useMutation(storeServiceFundFn, {
-    onSuccess: () => {
-      void queryClient.invalidateQueries('service-funds')
+    onSuccess: async () => {
+      await queryClient.invalidateQueries('service-funds')
       toast({
         title: 'Berhasil',
         description: 'Data DJPM berhasil ditambahkan'
@@ -229,38 +230,15 @@ export const useGetServiceFund = (id?: string) => {
 
 export const useUpdateServiceFund = () => {
   const queryClient = useQueryClient()
-  const { toast } = useToast()
 
   return useMutation(updateServiceFundFn, {
-    onSuccess: () => {
-      void queryClient.invalidateQueries('service-funds')
+    onSuccess: async () => {
+      await queryClient.invalidateQueries('service-funds')
       toast({
+        variant: 'default',
+        duration: 1500,
         title: 'Proses Berhasil',
         description: 'Data DJPM Berhasil Diubah'
-      })
-    },
-    onError: (error: AxiosError) => {
-      const errorResponse = error.response?.data as IErrorResponse
-      if (errorResponse !== undefined) {
-        toast({
-          variant: 'destructive',
-          title: errorResponse.message ?? 'Gagal',
-          description: 'Terjadi masalah dengan permintaan Anda.'
-        })
-      }
-    }
-  })
-}
-export const useUpdateJointBusiness = () => {
-  const queryClient = useQueryClient()
-  const { toast } = useToast()
-
-  return useMutation(updateKubeFn, {
-    onSuccess: () => {
-      void queryClient.invalidateQueries('join-business')
-      toast({
-        title: 'Proses Berhasil',
-        description: 'Data Kube Berhasil Diubah'
       })
     },
     onError: (error: AxiosError) => {
@@ -280,14 +258,38 @@ export const useDeleteServiceFund = () => {
   const queryClient = useQueryClient()
 
   return useMutation(deleteServiceFundFn, {
-    onSuccess: () => {
-      void queryClient.invalidateQueries('service-funds')
+    onSuccess: async () => {
+      await queryClient.invalidateQueries('service-funds')
       toast({
         variant: 'default',
         duration: 1500,
         title: 'Proses Berhasil',
         description: 'Data DJPM Berhasil Dihapus'
       })
+    }
+  })
+}
+
+export const useUpdateJointBusiness = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(updateKubeFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('join-business')
+      toast({
+        title: 'Proses Berhasil',
+        description: 'Data Kube Berhasil Diubah'
+      })
+    },
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message ?? 'Gagal',
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
     }
   })
 }
@@ -511,11 +513,11 @@ export const useGetCommunityGroups = ({
         communityActivityCode,
         status,
         applicationYear
-      }),
-    {
-      keepPreviousData: true,
-      staleTime: 5000
-    }
+      })
+    // {
+    //   keepPreviousData: true,
+    //   staleTime: 5000
+    // }
   )
 }
 export const useDeleteCommunityGroups = () => {
@@ -672,8 +674,8 @@ export const useGetFuelCashAssistanceDetail = (id?: string) => {
   })
 }
 /* BANSOS BANTUAN NON TUNAI */
-export const useGetNonCashFoodAssistanceBeneficiary = ({ page }: NonCashFoodAssistanceBeneficiaryQuery) => {
-  return useQuery(['non-cash', page], async () => await getNonCashFoodAssistanceBeneficiary({ page }), {
+export const useGetNonCashFoodAssistanceBeneficiary = ({ page, q }: NonCashFoodAssistanceBeneficiaryQuery) => {
+  return useQuery(['non-cash', page, q], async () => await getNonCashFoodAssistanceBeneficiary({ page, q }), {
     keepPreviousData: true,
     staleTime: 5000
   })

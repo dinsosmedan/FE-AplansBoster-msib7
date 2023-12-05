@@ -33,6 +33,7 @@ export const useLogout = () => {
     }
   })
 }
+
 export const useGetMe = () => {
   return useQuery('user', async () => await getMeFn(), {
     onSuccess: (data) => {

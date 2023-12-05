@@ -1,6 +1,7 @@
 import { type pokmasFields } from './validations/dayasos.validation'
 
 export const POKMAS_DEFAULT_VALUES: pokmasFields = {
+  executionDate: '',
   applicantPhoneNumber: '',
   communityName: '',
   communityAddress: '',
@@ -9,6 +10,9 @@ export const POKMAS_DEFAULT_VALUES: pokmasFields = {
   communityAssistanceType: '',
   areaLevel3: '',
   areaLevel4: '',
+  requestedRabAmount: '',
+  requestedBansosAmount: '',
+  approvedFundAmount: '',
   applicationYear: '',
   bankName: '',
   bankAccName: '',
@@ -24,4 +28,16 @@ export const POKMAS_DEFAULT_VALUES: pokmasFields = {
       beneficiary: ''
     }
   ]
+}
+
+export const DTKS_DEFAULT_VALUES = {
+  kecamatan: '',
+  kelurahan: '',
+  nama: '',
+  nik: '',
+  kk: '',
+  bpnt: '',
+  blt: '',
+  pbi: '',
+  pkh: ''
 }

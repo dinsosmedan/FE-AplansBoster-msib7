@@ -31,7 +31,9 @@ export default function DatePicker({ selected, onChange, placeholder }: DatePick
         <Calendar
           mode="single"
           selected={selected}
-          onSelect={(date) => date !== undefined && onChange(date)}
+          onSelect={(date) => {
+            date !== undefined && onChange(date)
+          }}
           initialFocus
         />
       </PopoverContent>

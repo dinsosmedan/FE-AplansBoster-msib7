@@ -1,5 +1,5 @@
 import Container from '@/components/atoms/Container'
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import useTitle from '@/hooks/useTitle'
 import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
@@ -9,46 +9,55 @@ import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
+import DatePicker from '@/components/atoms/DatePicker'
 import { useNavigate } from 'react-router-dom'
-import { useGetKecamatan, useGetKelurahan, useVulnerableGroupHandlings } from '@/store/server'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
+import { useUnregisters } from '@/store/server'
 import { Action, Loading } from '@/components'
 interface FormValues {
   q: string
-  kelurahan: string
-  kecamatan: string
+  letterNumber: string
+  date: string | Date
   year: string
 }
-const DataPkr = () => {
-  useTitle('Data Penerima / Linjamsos / Penanganan Kelompok Rentan (PKR) ')
+const DataUnregister = () => {
+  useTitle('Data Penerima / Unregister) ')
   const navigate = useNavigate()
   const createParams = useCreateParams()
-  const { q, kecamatan, kelurahan, page, year } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'year'])
+  const { page, date, letterNumber, q, year } = useGetParams(['q', 'letterNumber', 'date', 'page', 'year'])
+  function getYearFromDate(dateString: string): string | null {
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/
+    if (!dateRegex.test(dateString)) {
+      return null
+    }
+
+    const dateParts = dateString.split('-')
+    const year = dateParts[0]
+
+    return year
+  }
   const forms = useForm<FormValues>({
     defaultValues: {
       q: '',
-      kecamatan: '',
-      kelurahan: '',
+      date: '',
+      letterNumber: '',
       year: ''
     }
   })
   const [currentPage, setCurrentPage] = React.useState(1)
-  const areaLevel3 = forms.watch('kecamatan')
-  const { data: listKecamatan } = useGetKecamatan()
-  const { data: listKelurahan } = useGetKelurahan(areaLevel3)
   const {
-    data: vulnerables,
+    data: unregisters,
     refetch,
     isFetching,
     isLoading
-  } = useVulnerableGroupHandlings({
+  } = useUnregisters({
     page: parseInt(page) ?? 1,
-    idKecamatan: kecamatan,
-    idKelurahan: kelurahan,
+    date,
+    letterNumber,
     year,
     q
   })
-
+  console.log(unregisters)
   useDisableBodyScroll(isFetching)
   const updateParam = (key: any, value: any) => {
     if (value !== '') {
@@ -61,14 +70,14 @@ const DataPkr = () => {
 
   const onSubmit = async (values: FormValues) => {
     updateParam('q', values.q)
-    updateParam('kecamatan', values.kecamatan)
-    updateParam('kelurahan', values.kelurahan)
+    updateParam('date', values.date)
+    updateParam('letterNumber', values.letterNumber)
     updateParam('year', values.year)
 
     await refetch()
   }
   const handleReset = () => {
-    navigate('/data-penerima/linjamsos/data-pkr')
+    navigate('/data-penerima/linjamsos/data-unregister')
     forms.reset()
   }
   if (isLoading) {
@@ -77,71 +86,45 @@ const DataPkr = () => {
   return (
     <div>
       <Container>
-        <h1 className="font-bold text-[32px] ">Penanganan Kelompok Rentan (PKR)</h1>
+        <h1 className="font-bold text-[32px] ">Unregister</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-            <div className="flex flex-row justify-between pt-10 items-center gap-5 ">
-              <div className="flex-1 ">
-                <FormField
-                  name="q"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input {...field} type="number" placeholder="Masukkan NIK Masyarakat" />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
-            <FormField
-                name="kecamatan"
+            <div className="grid grid-cols-3 gap-x-5 gap-y-5 mt-5 ">
+              <FormField
+                name="q"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kecamatan" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                        {listKecamatan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                        </SelectContent>
-                      </Select>
+                      <Input {...field} type="text" placeholder="Nama Kelompok Masyarakat" />
                     </FormControl>
                   </FormItem>
                 )}
               />
               <FormField
-              disabled={areaLevel3 === ''}
-                name="kelurahan"
+                name="letterNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kelurahan" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                        {listKelurahan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                        </SelectContent>
-                      </Select>
+                      <Input {...field} type="text" placeholder="Kode Kegiatan" />
                     </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="date"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <DatePicker
+                        onChange={field.onChange}
+                        selected={field.value as Date}
+                        placeholder="Tanggal Masuk Rumah Sakit"
+                      />
+                    </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -151,14 +134,14 @@ const DataPkr = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Tahun Anggaran" />
+                    <Input {...field} type="text" placeholder="Masukkan Tahun" />
                     </FormControl>
                   </FormItem>
                 )}
               />
             </div>
-            <div className="mb-6 flex justify-between">
-              <div className='w-[20%]'>
+            <div className='flex justify-between'>
+            <div className="w-[20%] mb-6">
               <Select>
                 <SelectTrigger className="border-primary bg-white text-primary focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ">
                   <SelectValue placeholder="Export Data" />
@@ -169,8 +152,8 @@ const DataPkr = () => {
                   <SelectItem value="m@support.com">The Little Krishna</SelectItem>
                 </SelectContent>
               </Select>
-              </div>
-              <div className='flex gap-3'>
+            </div>
+            <div className='flex gap-3'>
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
                 <HiArrowPath className="text-lg" />
                 <span>Reset</span>
@@ -180,7 +163,7 @@ const DataPkr = () => {
                 <p className="font-bold text-sm text-white ml-3 w-max">Cari Data</p>
               </Button>
               </div>
-            </div>
+              </div>
           </form>
         </Form>
         <section className="border rounded-xl mt-5 overflow-hidden">
@@ -188,28 +171,28 @@ const DataPkr = () => {
           <TableHeader className="bg-zinc-300">
             <TableRow>
               <TableHead className="text-[#534D59] font-bold text-[15px]">No. </TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Pemohon</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Kartu Keluraga</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat Kartu Keluarga</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kelamin</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Diagnosa Penyakit</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Umur</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Masuk Rumah Sakit</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-          {vulnerables?.data?.length !== 0 ? (
-              vulnerables?.data.map((item, index) => (
+          {unregisters?.data?.length !== 0 ? (
+              unregisters?.data.map((item, index) => (
                 <TableRow key={item.id}>
                   <TableCell className="text-left bg-[#F9FAFC]">
-                    {(vulnerables.meta.currentPage - 1) * vulnerables.meta.perPage + index + 1}
+                    {(unregisters.meta.currentPage - 1) * unregisters.meta.perPage + index + 1}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.name ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.identityNumber ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.familyCardNumber ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.address.fullAddress ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.address.areaLevel3?.name ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.address.areaLevel4?.name ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.name ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.gender ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{getYearFromDate(item.hospitalEntryDate)}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.deseaseDiagnosis ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.age ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.hospitalEntryDate ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                   <Action onDelete={() => console.log('delete')} onDetail={() => console.log('edit')} onEdit={() => console.log('detail')}/>
         </TableCell>
@@ -236,4 +219,4 @@ const DataPkr = () => {
     </div>
   )
 }
-export default DataPkr
+export default DataUnregister

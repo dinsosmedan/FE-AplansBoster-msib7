@@ -95,6 +95,7 @@ export const getWorshipPlacesFn = async ({
 }
 
 export interface NonCashFoodAssistanceBeneficiaryQuery {
+  q?: string
   page?: number
 }
 
@@ -182,9 +183,10 @@ export const getFuelCashAssistanceFn = async ({ page, q }: FuelCashQuery): Promi
 }
 
 export const getNonCashFoodAssistanceBeneficiary = async ({
+  q,
   page
 }: NonCashFoodAssistanceBeneficiaryQuery): Promise<INonCashFoodAssistanceBeneficiarys> => {
-  const response = await api.get(`/non-cash-food-assistance?page=${page}&limit=30`)
+  const response = await api.get(`/non-cash-food-assistance?q=${q}&page=${page}&limit=30`)
   return response.data
 }
 
@@ -200,7 +202,7 @@ export const showNonCashFoodAssitanceFn = async (id: string): Promise<INonCashFo
   const response = await api.get(`/non-cash-food-assistance/${id}`)
   return response.data?.data
 }
-export const showBusinessGroupFn = async (id: string): Promise<INonCashFoodAssistanceBeneficiary> => {
+export const showBusinessGroupFn = async (id: string): Promise<IBusinessGroupDetail> => {
   const response = await api.get(`/joint-business-group/${id}`)
   return response.data?.data
 }
@@ -218,7 +220,8 @@ export const updateKubeFn = async ({ id, fields }: UpdateKubeParams) => {
 }
 
 export const updateServiceFundFn = async ({ id, fields }: UpdateServiceFundParams) => {
-  await api.put(`/service-fund/${id}`, fields)
+  const response = await api.put(`/service-fund/${id}`, fields)
+  return response.data?.data
 }
 export const deleteServiceFundFn = async (id: string) => {
   await api.delete(`/service-fund/${id}`)
