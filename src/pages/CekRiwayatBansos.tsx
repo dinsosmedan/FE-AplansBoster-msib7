@@ -6,16 +6,19 @@ import { Loading, Modal, Search } from '@/components'
 import { useGetAssistanceHistory, useGetBeneficaryByNIK } from '@/store/server'
 import { type IAssistanceHistory } from '@/lib/types/beneficary.type'
 import { HiOutlineInformationCircle } from 'react-icons/hi2'
+import { useToast } from '@/components/ui/use-toast'
 
 const CekRiwayatBansos = () => {
   useTitle('Cek Riwayat Bansos ')
+  const { toast } = useToast()
   const [NIK, setNIK] = React.useState('')
 
   const {
     data: beneficary,
     refetch: refetchBeneficary,
     isFetching: isFetchingBeneficary,
-    isSuccess: isSuccessBeneficary
+    isSuccess: isSuccessBeneficary,
+    isError
   } = useGetBeneficaryByNIK(NIK, false)
   const {
     data: assistanceHistories,
@@ -23,6 +26,16 @@ const CekRiwayatBansos = () => {
     isFetching: isFetchingAssistanceHistories,
     isSuccess: isSuccessAssistanceHistories
   } = useGetAssistanceHistory(NIK, false)
+
+  React.useEffect(() => {
+    if (isError) {
+      toast({
+        variant: 'destructive',
+        title: 'NIK tidak ditemukan',
+        description: 'Maaf NIK tidak ditemukan, Terjadi kesalahan pada permintaan Anda'
+      })
+    }
+  }, [isError])
 
   const refetch = async () => {
     await refetchBeneficary()

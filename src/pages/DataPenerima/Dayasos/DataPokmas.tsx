@@ -10,7 +10,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useDeleteCommunityGroups, useGetCommunityGroup, useGetCommunityGroups, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import {
+  useDeleteCommunityGroups,
+  useGetCommunityGroup,
+  useGetCommunityGroups,
+  useGetKecamatan,
+  useGetKelurahan
+} from '@/store/server'
 import { Action, Loading, Modal } from '@/components'
 import { useAlert } from '@/store/client'
 import { useNavigate } from 'react-router-dom'
@@ -104,7 +110,7 @@ const DataPokmas = () => {
       description: 'Apakah kamu yakin ingin menghapus data ini?',
       variant: 'danger',
       submitText: 'Delete'
-    }).then(async() => {
+    }).then(async () => {
       await deleteCommunityGroups(id)
     })
   }
@@ -257,43 +263,47 @@ const DataPokmas = () => {
             </section>
           </form>
         </Form>
-      <section className="border rounded-xl mt-5 overflow-hidden">
-        <Table className="mt-5">
-          <TableHeader className="bg-zinc-300">
-            <TableRow>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Kode Kegiatan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Kelompok Masyarakat</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kegiatan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Bantuan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah Bantuan Disetujui</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Pencairan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Status Pencairan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {communityGroups?.data?.length !== 0 ? (
-              communityGroups?.data.map((item, index) => (
-                <TableRow key={item.id}>
-                  <TableCell className="text-left">
-                    {(communityGroups.meta.currentPage - 1) * communityGroups.meta.perPage + index + 1}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.communityActivityCode}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.communityName}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.address?.areaLevel3?.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.address?.areaLevel4?.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.communityActivityTypeDescription}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.communityAssistanceType}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.approvedFundAmount}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.applicationYear}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.statusDisimbursement}</TableCell>
-                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Action onDelete={() => handleDelete(item.id)} onDetail={() => showDetail(item.id)} onEdit={() => console.log('detail')}/>
-        </TableCell>
-        </TableRow>
+        <section className="border rounded-xl mt-5 overflow-hidden">
+          <Table className="mt-5">
+            <TableHeader className="bg-zinc-300">
+              <TableRow>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Kode Kegiatan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Kelompok Masyarakat</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kegiatan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Bantuan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah Bantuan Disetujui</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Pencairan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Status Pencairan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {communityGroups?.data?.length !== 0 ? (
+                communityGroups?.data.map((item, index) => (
+                  <TableRow key={item.id}>
+                    <TableCell className="text-left">
+                      {(communityGroups.meta.currentPage - 1) * communityGroups.meta.perPage + index + 1}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.communityActivityCode}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.communityName}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.address?.areaLevel3?.name}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.address?.areaLevel4?.name}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.communityActivityTypeDescription}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.communityAssistanceType}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.approvedFundAmount}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.applicationYear}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.statusDisimbursement}</TableCell>
+                    <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                      <Action
+                        onDelete={() => handleDelete(item.id)}
+                        onDetail={() => showDetail(item.id)}
+                        onEdit={() => navigate(`/layanan/dayasos/pokmas/${item.id}`)}
+                      />
+                    </TableCell>
+                  </TableRow>
                 ))
               ) : (
                 <TableRow>
@@ -314,14 +324,14 @@ const DataPokmas = () => {
             onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
           />
         ) : null}
-        <Modal isShow={isShow} className='md:max-w-4xl'>
-        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
-          <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
-        </Modal.Header>
-        {isLoadingCommunityGroup && <Loading />}
-        <div className='grid grid-cols-3 gap-y-5'>
-          <div>
+        <Modal isShow={isShow} className="md:max-w-4xl">
+          <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+            <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
+            <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+          </Modal.Header>
+          {isLoadingCommunityGroup && <Loading />}
+          <div className="grid grid-cols-3 gap-y-5">
+            <div>
               <p className="text-sm font-bold">Nama Komunitas</p>
               <p className="text-base capitalize">{communityGroup?.communityName ?? '-'}</p>
             </div>
@@ -386,7 +396,7 @@ const DataPokmas = () => {
               <p className="text-base capitalize">{communityGroup?.statusDisimbursement ?? '-'}</p>
             </div>
           </div>
-      </Modal>
+        </Modal>
       </Container>
     </div>
   )

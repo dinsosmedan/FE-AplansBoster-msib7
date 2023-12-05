@@ -11,7 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useFieldArray, useForm } from 'react-hook-form'
 
 import { useToastNik, useTitle } from '@/hooks'
-import { Container, DatePicker } from '@/components'
+import { Container, DatePicker, Loading } from '@/components'
 
 import {
   useCreateCommunityGroups,
@@ -23,7 +23,7 @@ import {
 } from '@/store/server'
 
 import { cn } from '@/lib/utils'
-import { formatStringToDate } from '@/lib/formatDate'
+import { formatDateToString, formatStringToDate } from '@/lib/formatDate'
 import { POKMAS_DEFAULT_VALUES } from '@/lib/defaultValues'
 import { COMMUNITY_ACTIVITY_CODE, COMMUNITY_ASSISTANCE_TYPE } from '@/lib/data'
 import { type pokmasFields, pokmasValidation } from '@/lib/validations/dayasos.validation'
@@ -52,7 +52,7 @@ const Pokmas = () => {
   const { data: beneficiary, refetch, isFetching, isError, isLoading } = useGetBeneficaryByNIK(NIK, false)
   const { mutate: createPokmas, isLoading: isLoadingCreate } = useCreateCommunityGroups()
 
-  const { data: communityGroup, isSuccess } = useGetCommunityGroup(id)
+  const { data: communityGroup, isSuccess, isLoading: isLoadingGet } = useGetCommunityGroup(id)
   const { mutate: updateCommunityGroup, isLoading: isLoadingUpdate } = useUpdateCommunityGroups()
 
   useToastNik({
@@ -74,23 +74,22 @@ const Pokmas = () => {
     }
   }
 
+  const onSuccess = () => {
+    forms.reset()
+  }
+
   const onSubmit = async (values: pokmasFields) => {
     const newData = {
       ...values,
       members: values?.members?.map((member) => {
         const { nik, ...newMember } = member
         return newMember
-      })
+      }),
+      executionDate: formatDateToString(values.executionDate as Date)
     }
 
-    if (!id) {
-      return createPokmas(newData, { onSuccess: () => forms.reset() })
-    }
-
-    const data = { id, fields: newData }
-    updateCommunityGroup(data, {
-      onSuccess: () => forms.reset()
-    })
+    if (!id) return createPokmas(newData, { onSuccess })
+    updateCommunityGroup({ id, fields: newData }, { onSuccess })
   }
 
   React.useEffect(() => {
@@ -117,12 +116,19 @@ const Pokmas = () => {
         executionDate: formatStringToDate(communityGroup?.executionDate as string),
         executionPlace: communityGroup?.executionPlace as string,
         members: communityGroup?.members?.map((member) => {
-          const { id, ...newMember } = member
-          return { ...newMember, nik: member.beneficiaryId }
+          return {
+            nik: member.beneficiary.identityNumber,
+            position: member.position,
+            beneficiary: member.beneficiary.id
+          }
         })
       })
     }
   }, [isSuccess, communityGroup])
+
+  if (isLoadingGet) {
+    return <Loading />
+  }
 
   return (
     <Container className="py-10 px-16">
@@ -137,7 +143,12 @@ const Pokmas = () => {
                 <FormItem>
                   <FormLabel>Nama Kelompok Masyarakat</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Nama Kelompok Masyarakat" />
+                    <Input
+                      {...field}
+                      value={field.value ?? ''}
+                      type="text"
+                      placeholder="Masukkan Nama Kelompok Masyarakat"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -150,7 +161,7 @@ const Pokmas = () => {
                 <FormItem>
                   <FormLabel>No. HP Pemohon</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan No. HP Pemohon" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan No. HP Pemohon" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -241,7 +252,7 @@ const Pokmas = () => {
                     </FormControl>
                     <SelectContent>
                       {COMMUNITY_ACTIVITY_CODE.map((item, index) => (
-                        <SelectItem value={item.value} key={index}>
+                        <SelectItem value={item.label} key={index}>
                           {item.label}
                         </SelectItem>
                       ))}
@@ -258,7 +269,7 @@ const Pokmas = () => {
                 <FormItem>
                   <FormLabel>Jenis Kegiatan</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Jenis Kegiatan" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Jenis Kegiatan" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -278,7 +289,7 @@ const Pokmas = () => {
                     </FormControl>
                     <SelectContent>
                       {COMMUNITY_ASSISTANCE_TYPE.map((item, index) => (
-                        <SelectItem value={item.value} key={index}>
+                        <SelectItem value={item.label} key={index}>
                           {item.label}
                         </SelectItem>
                       ))}
@@ -295,7 +306,7 @@ const Pokmas = () => {
                 <FormItem>
                   <FormLabel>Jumlah Permohonan RAB</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" placeholder="Rp. " />
+                    <Input {...field} value={field.value as number} type="number" placeholder="Rp. " />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -308,7 +319,7 @@ const Pokmas = () => {
                 <FormItem>
                   <FormLabel>Jumlah Permohonan Bansos</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" placeholder="Rp. " />
+                    <Input {...field} value={field.value as number} type="number" placeholder="Rp. " />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -321,7 +332,7 @@ const Pokmas = () => {
                 <FormItem>
                   <FormLabel>Jumlah Dana Disetujui</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" placeholder="Rp. " />
+                    <Input {...field} value={field.value as number} type="number" placeholder="Rp. " />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -333,9 +344,7 @@ const Pokmas = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Jadwal Pelaksaaan</FormLabel>
-                  <FormControl>
-                    <DatePicker onChange={field.onChange} selected={field.value as Date} placeholder="dd/mm/yyyy" />
-                  </FormControl>
+                  <DatePicker selected={field.value as Date} onChange={field.onChange} placeholder="dd/mm/yyy" />
                   <FormMessage />
                 </FormItem>
               )}
@@ -347,7 +356,7 @@ const Pokmas = () => {
                 <FormItem>
                   <FormLabel>Tempat Pelaksanaan</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Tempat Pelaksanaan" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tempat Pelaksanaan" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -361,7 +370,7 @@ const Pokmas = () => {
                 <FormItem>
                   <FormLabel>Tahun Permohonan</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Tahun Permohonan" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Permohonan" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -374,7 +383,7 @@ const Pokmas = () => {
                 <FormItem>
                   <FormLabel>Nama Bank</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Bank Sumut" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Bank Sumut" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -387,7 +396,7 @@ const Pokmas = () => {
                 <FormItem>
                   <FormLabel>Nama Rekening</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Nama Rekening" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Rekening" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -400,7 +409,7 @@ const Pokmas = () => {
                 <FormItem>
                   <FormLabel>Nomor Rekening</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Nomor Rekening" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nomor Rekening" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -413,7 +422,7 @@ const Pokmas = () => {
                 <FormItem>
                   <FormLabel>Alamat Rekening</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Alamat Rekening" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Alamat Rekening" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -432,9 +441,9 @@ const Pokmas = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="STATUS_FAIL">TIDAK BERHASIL</SelectItem>
-                      <SelectItem value="STATUS_PENDING">TERTUNDA</SelectItem>
-                      <SelectItem value="STATUS_SUCCESS">BERHASIL</SelectItem>
+                      <SelectItem value="TIDAK BERHASIL">TIDAK BERHASIL</SelectItem>
+                      <SelectItem value="TERTUNDA">TERTUNDA</SelectItem>
+                      <SelectItem value="BERHASIL">BERHASIL</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -448,7 +457,7 @@ const Pokmas = () => {
                 <FormItem>
                   <FormLabel>Keterangan</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Keterangan" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Keterangan" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -461,7 +470,9 @@ const Pokmas = () => {
               <FormField
                 name={`members.${index}.beneficiary`}
                 control={forms.control}
-                render={({ field }) => <Input {...field} type="text" hidden className="hidden" />}
+                render={({ field }) => (
+                  <Input {...field} value={field.value ?? ''} type="text" hidden className="hidden" />
+                )}
               />
               <FormField
                 name={`members.${index}.nik`}
@@ -470,7 +481,7 @@ const Pokmas = () => {
                   <FormItem className="flex-1">
                     <FormLabel>NIK</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan NIK" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan NIK" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -489,9 +500,9 @@ const Pokmas = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="POSITION_CHAIRMAN">Ketua</SelectItem>
-                        <SelectItem value="POSITION_SECRETARY">Sekretaris</SelectItem>
-                        <SelectItem value="POSITION_TREASURER">Bendahara</SelectItem>
+                        <SelectItem value="ketua">Ketua</SelectItem>
+                        <SelectItem value="sekretaris">Sekretaris</SelectItem>
+                        <SelectItem value="bendahara">Bendahara</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

@@ -147,7 +147,7 @@ export interface ICommunityGroup {
   bankAccAddress: string | null
   members: Array<{
     id: string
-    beneficiaryId: string
+    beneficiary: IBeneficary
     position: string
   }>
   statusDisimbursement: string | null
@@ -175,6 +175,11 @@ export interface IBusinessGroupDetail {
   note: string
   createdAt: string
   updatedAt: string
+  members: Array<{
+    id: string
+    identityNumber: string
+    position: string
+  }> | null
 }
 export interface IBusinessGroup {
   success: boolean
