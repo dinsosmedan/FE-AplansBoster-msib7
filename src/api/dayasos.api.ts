@@ -283,6 +283,46 @@ export const getWorshipPlaceFn = async (id: string): Promise<IWorshipPlaceDetail
   const response = await api.get(`/worship-place/${id}`)
   return response.data?.data
 }
+export const getAdministrativeAreaFn = async (): Promise<any> => {
+  const response = await api.get('/dashboard/dtks/count/administrative-area?limit=5&orderBy=DESC')
+  return response.data?.data
+}
+export const getGenderDtksFn = async (): Promise<any> => {
+  const response = await api.get('/dashboard/dtks/chart/gender')
+  return response.data?.data
+}
+export const getDataDtksFn = async (): Promise<any> => {
+  const response = await api.get('/dashboard/dtks/chart')
+  return response.data?.data
+}
+export const getCounDtksFn = async (): Promise<any> => {
+  const response = await api.get('/dashboard/dtks/count')
+  return response.data?.data
+}
+export const getCountDataDayasosFn = async (): Promise<any> => {
+  const response = await api.get('/dashboard/dayasos/count')
+  return response.data?.data
+}
+export const getCountServiceFundFn = async () => {
+  const response = await api.get('/dashboard/dayasos/chart/service-fund')
+  return response.data?.data
+}
+export const getCommunityGroupAssistanceFn = async () => {
+  const response = await api.get('/dashboard/dayasos/chart/community-group-assistance')
+  return response.data?.data
+}
+export const getBusinessGroupAssistanceFn = async () => {
+  const response = await api.get('/dashboard/dayasos/chart/joint-business-group-assistance')
+  return response.data?.data
+}
+export const getDataWorshipPlaceFn = async () => {
+  const response = await api.get('/dashboard/dayasos/chart/worship-place')
+  return response.data?.data
+}
+export const getVulnerableGroupFn = async () => {
+  const response = await api.get('/dashboard/linjamsos/chart/vulnerable-group-handling')
+  return response.data?.data
+}
 
 interface UpdateVeteranParams {
   id: string

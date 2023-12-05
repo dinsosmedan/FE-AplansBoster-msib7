@@ -43,7 +43,17 @@ import {
   getDetailBusinessGroupFn,
   updateKubeFn,
   showFuelCashAssistanceFn,
-  showNonCashFoodAssitanceFn
+  showNonCashFoodAssitanceFn,
+  getAdministrativeAreaFn,
+  getGenderDtksFn,
+  getDataDtksFn,
+  getCounDtksFn,
+  getCountServiceFundFn,
+  getCommunityGroupAssistanceFn,
+  getBusinessGroupAssistanceFn,
+  getCountDataDayasosFn,
+  getDataWorshipPlaceFn,
+  getVulnerableGroupFn
 } from '@/api/dayasos.api'
 import { toast, useToast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -132,6 +142,42 @@ export const useGetWorshipPlace = (id?: string) => {
   return useQuery(['worship-place', id], async () => await getWorshipPlaceFn(id as string), {
     enabled: !!id
   })
+}
+
+export const useGetAdministrativeArea = () => {
+  return useQuery(['administrative-area'], async () => await getAdministrativeAreaFn(), { enabled: true })
+}
+
+export const useGetGenderDtks = () => {
+  return useQuery(['gender-dtks'], async () => await getGenderDtksFn(), { enabled: true })
+}
+
+export const useGetDataDtks = () => {
+  return useQuery(['data-dtks'], async () => await getDataDtksFn(), { enabled: true })
+}
+
+export const useCountDataDtks = () => {
+  return useQuery(['count-dtks'], async () => await getCounDtksFn(), { enabled: true })
+}
+
+export const useCountDataDayasos = () => {
+  return useQuery(['count-service-fund'], async () => await getCountDataDayasosFn(), { enabled: true })
+}
+
+export const useCountServiceFund = () => {
+  return useQuery(['count-dayasos'], async () => await getCountServiceFundFn(), { enabled: true })
+}
+export const useCommunityGroupAssistance = () => {
+  return useQuery(['community-group-assistance'], async () => await getCommunityGroupAssistanceFn(), { enabled: true })
+}
+export const useBusinessGroupAssistance = () => {
+  return useQuery(['business-group-assistance'], async () => await getBusinessGroupAssistanceFn(), { enabled: true })
+}
+export const useDataWorshipPlace = () => {
+  return useQuery(['data-worship-place'], async () => await getDataWorshipPlaceFn(), { enabled: true })
+}
+export const useVulnerableGroup = () => {
+  return useQuery(['vulnerable-group-fn'], async () => await getVulnerableGroupFn(), { enabled: true })
 }
 
 /* DJPM */

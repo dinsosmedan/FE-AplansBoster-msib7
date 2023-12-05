@@ -5,5 +5,6 @@ import useGetParams from './useGetParams'
 import useCreateParams from './useCreateParams'
 import useDebounce from './useDebounce'
 import useToastNik from './useToastNik'
+import { formatRibuan, hitungPersentase } from './useAngka'
 
-export { useDisableBodyScroll, usePagination, useTitle, useGetParams, useCreateParams, useDebounce, useToastNik }
+export { useDisableBodyScroll, formatRibuan, hitungPersentase, usePagination, useTitle, useGetParams, useCreateParams, useDebounce, useToastNik }
