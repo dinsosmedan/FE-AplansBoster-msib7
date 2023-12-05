@@ -4,7 +4,8 @@ import {
   getBeneficiaryFn,
   showBeneficaryByNIKFn,
   showIdentityCheckFn,
-  showDTKS
+  showDTKS,
+  showBeneficaryByIdFn
 } from '@/api/beneficary.api'
 import { type DtksParams } from '@/lib/types/beneficary.type'
 import { useQuery } from 'react-query'
@@ -13,6 +14,9 @@ export const useGetBeneficaryByNIK = (nik: string, enabled: boolean) => {
   return useQuery(['beneficary', nik], async () => await showBeneficaryByNIKFn(nik), {
     enabled
   })
+}
+export const useGetBeneficaryById = (id?: string) => {
+  return useQuery(['beneficary', id], async () => await showBeneficaryByIdFn(id as string))
 }
 
 export const useGetBeneficiary = ({ page, q, idKecamatan, idKelurahan, isDtks }: BeneficiaryQuery) => {

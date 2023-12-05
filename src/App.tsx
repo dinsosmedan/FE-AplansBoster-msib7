@@ -83,7 +83,7 @@ export default function App() {
             <Route path="/event" element={<Event />} />
             <Route path="/data-master">
               <Route index element={<DataMaster />} />
-              <Route path="info-datamaster" element={<InfoDataMaster />} />
+              <Route path="info-datamaster/:id" element={<InfoDataMaster />} />
             </Route>
             <Route path="/manajemen-role" element={<ManajemenRole />} />
             <Route path="/manajemen-user" element={<ManajemenUser />} />

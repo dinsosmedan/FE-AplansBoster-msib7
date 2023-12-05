@@ -241,7 +241,7 @@ const areaLevel3 = forms.watch('kecamatan')
                   <TableCell className="text-center bg-[#F9FAFC]">{item.address.areaLevel4?.name ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.isDtks ? 'DTKS' : 'Non DTKS'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Link to="/data-master/info-datamaster">
+                  <Link to={`/data-master/info-datamaster/${item.id}`}>
                 <Button variant="base" size="icon">
                   <HiOutlineExclamationCircle className="h-7 w-7" />
                 </Button>
