@@ -1,6 +1,7 @@
-import BasicCard from '@/components/ui/dashboard/BasicCard'
+import { Loading } from '@/components'
 import LongCard from '@/components/ui/dashboard/LongCard'
 import TitleSign from '@/components/ui/dashboard/TitleSign'
+import { useVulnerableGroup } from '@/store/server'
 
 const SectionLinjamsos = () => {
   return (
@@ -8,20 +9,7 @@ const SectionLinjamsos = () => {
       <div className=" my-12 ">
         <TitleSign text={' Linjamsos '} />
 
-        <div className="grid grid-cols-3 gap-5 mt-5">
-          <BasicCard props={['Bantuan Biaya Pendidikan', '705.262', 'Data']} />
-          <BasicCard props={['Total Penangan Kelompok Rentan', '705.262', 'Data']} />
-          <BasicCard props={['Total SKTM', '705.262', 'Data']} />
-        </div>
-        <div className="grid grid-cols-2 gap-5 mt-5">
-          <BasicCard props={['Bantuan PBI', '705.262', 'Data']} />
-          <BasicCard props={['Total PKH', '705.262', 'Data']} />
-        </div>
-        <div className="grid grid-cols-3 gap-5 mt-5">
-          <BasicCard props={['Total Data DTKS', '705.262', 'Data']} />
-          <BasicCard props={['Jumlah data Non DTKS', '705.262', 'Data']} />
-          <BasicCard props={['Jumlah Keluarga Penerima', '705.262', 'Data']} />
-        </div>
+        {/* <CardData />
         <div className="grid grid-cols-3 gap-5 mt-5">
           <LongCard props={['Data DTKS', 'Persentasi Data DTKS']}>
             <LongCard.Chart
@@ -42,15 +30,9 @@ const SectionLinjamsos = () => {
           <LongCard props={['Prevalensi DTKS Perkecamatan', 'Prevalensi DTKS Perkecamtan']}>
             <LongCard.Tabel />
           </LongCard>
-        </div>
+        </div> */}
         <div className="grid grid-cols-3 gap-5 mt-5">
-          <LongCard props={['Penangan Kelompok Rentan', 'Perkembangan Data PKR']}>
-            <LongCard.Chart
-              data={[2020, 2021, 2022, 2023, 2024]}
-              label={['2020', '2021', '2022', '2023', '2024']}
-              backgroundColor={['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']}
-            />
-          </LongCard>
+          <ChartPenanganan />
           <LongCard props={['Bantuan Biaya Pendidikan', 'Persentasi Data Biaya Pendidikan']}>
             <LongCard.Chart
               data={[20, 5, 13]}
@@ -72,5 +54,46 @@ const SectionLinjamsos = () => {
     </>
   )
 }
+const ChartPenanganan = () => {
+  const { data, isLoading } = useVulnerableGroup()
+
+  if (isLoading) return <Loading />
+  const total = data.map((val: any) => val.count)
+  const label = data.map((val: any) => val.budgetYear.toString())
+  // const values = Object.values(data)
+
+  // console.log(total)
+  return (
+    <>
+      <LongCard props={['Penangan Kelompok Rentan', 'Perkembangan Data PKR']}>
+        <LongCard.Chart
+          data={total}
+          label={label}
+          backgroundColor={['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']}
+        />
+      </LongCard>
+    </>
+  )
+}
+// const CardData = () => {
+//   return (
+//     <>
+//       <div className="grid grid-cols-3 gap-5 mt-5">
+//         <BasicCard props={['Bantuan Biaya Pendidikan', '705.262', 'Data']} />
+//         <BasicCard props={['Total Penangan Kelompok Rentan', '705.262', 'Data']} />
+//         <BasicCard props={['Total SKTM', '705.262', 'Data']} />
+//       </div>
+//       <div className="grid grid-cols-2 gap-5 mt-5">
+//         <BasicCard props={['Bantuan PBI', '705.262', 'Data']} />
+//         <BasicCard props={['Total PKH', '705.262', 'Data']} />
+//       </div>
+//       <div className="grid grid-cols-3 gap-5 mt-5">
+//         <BasicCard props={['Total Data DTKS', '705.262', 'Data']} />
+//         <BasicCard props={['Jumlah data Non DTKS', '705.262', 'Data']} />
+//         <BasicCard props={['Jumlah Keluarga Penerima', '705.262', 'Data']} />
+//       </div>
+//     </>
+//   )
+// }
 
 export default SectionLinjamsos
