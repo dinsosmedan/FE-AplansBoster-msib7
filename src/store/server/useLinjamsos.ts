@@ -2,7 +2,9 @@ import {
   type VulnerableGroupHandlingQuery,
   getVulnerableGroupHandlingFn,
   getUnregisterFn,
-  type UnregisterQuery
+  type UnregisterQuery,
+  getIndigencyCertificateFn,
+  type IndigencyCertificateQuery
 } from '@/api/linjamsos.api'
 import { useQuery } from 'react-query'
 
@@ -28,6 +30,32 @@ export const useUnregisters = ({ page, date, letterNumber, q, year }: Unregister
   return useQuery(
     ['unregisters', page, date, letterNumber, q, year],
     async () => await getUnregisterFn({ page, date, letterNumber, q, year }),
+    {
+      keepPreviousData: true,
+      staleTime: 5000
+    }
+  )
+}
+// SKTM //
+export const useGetIndigencyCertificateFn = ({
+  page,
+  idKecamatan,
+  idKelurahan,
+  q,
+  year,
+  status
+}: IndigencyCertificateQuery) => {
+  return useQuery(
+    ['indigency-certificates', page, idKecamatan, idKelurahan, q, year, status],
+    async () =>
+      await getIndigencyCertificateFn({
+        page,
+        idKecamatan,
+        idKelurahan,
+        q,
+        year,
+        status
+      }),
     {
       keepPreviousData: true,
       staleTime: 5000
