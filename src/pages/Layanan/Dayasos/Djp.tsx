@@ -15,11 +15,12 @@ import {
   useUpdateServiceFund
 } from '@/store/server'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useToastNik } from '@/hooks'
 import { HiMagnifyingGlass } from 'react-icons/hi2'
 
 const Djpm = () => {
+  const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   useTitle(`Dana Jasa Pelayanan Masyarakat${id ? ' [UBAH DATA]' : ''}`)
 
@@ -42,22 +43,22 @@ const Djpm = () => {
     }
   })
 
-  const onSubmit = (values: djpmFields) => {
-    if (!id) {
-      createServiceFund(values, { onSuccess: () => forms.reset() })
-      return
-    }
-
-    const results = { id, fields: values }
-    updateServiceFund(results, { onSuccess: () => forms.reset() })
-  }
-
   const { data: beneficiary, refetch, isLoading, isError } = useGetBeneficaryByNIK(NIK, false)
   const { data: serviceFund, isSuccess, isLoading: isLoadingServiceFund } = useGetServiceFund(id)
   const { data: serviceTypes } = useGetServiceTypes()
 
   const { mutate: createServiceFund, isLoading: isLoadingCreate } = useCreateServiceFund()
-  const { mutate: updateServiceFund, isLoading: isLoadingUpdate } = useUpdateServiceFund()
+  const { mutateAsync: updateServiceFund, isLoading: isLoadingUpdate } = useUpdateServiceFund()
+
+  const onSuccess = () => {
+    forms.reset()
+    navigate('/data-penerima/dayasos/data-djp')
+  }
+
+  const onSubmit = async (values: djpmFields) => {
+    if (!id) return createServiceFund(values, { onSuccess })
+    await updateServiceFund({ id, fields: values }, { onSuccess })
+  }
 
   useToastNik({
     successCondition: !isLoading && beneficiary != null,
@@ -65,8 +66,6 @@ const Djpm = () => {
     notFoundCondition: isError,
     notRegisteredCondition: forms.getValues('beneficiary') === '' && NIK !== '' && forms.formState.isSubmitted
   })
-
-  // console.log('dasdas')
 
   React.useEffect(() => {
     if (isSuccess) {
@@ -120,7 +119,7 @@ const Djpm = () => {
                 <FormItem className="mt-5 mb-8">
                   <FormLabel className="font-semibold dark:text-white">No. Telepon</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" placeholder="Masukkan No. Telepon" />
+                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan No. Telepon" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -130,7 +129,9 @@ const Djpm = () => {
             <FormField
               name="beneficiary"
               control={forms.control}
-              render={({ field }) => <Input {...field} type="text" hidden className="hidden" />}
+              render={({ field }) => (
+                <Input {...field} value={field.value ?? ''} type="text" hidden className="hidden" />
+              )}
             />
             <div className="grid grid-cols-3 gap-5">
               <FormField
@@ -140,7 +141,7 @@ const Djpm = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">No. Rekening Bank Sumut</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan No. Rekening" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan No. Rekening" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -153,7 +154,7 @@ const Djpm = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nama Rekening Bank Sumut</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama Rekening" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Rekening" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -166,7 +167,12 @@ const Djpm = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kantor Cabang Bank Sumut</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Kantor Cabang Rekening" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="text"
+                        placeholder="Masukkan Kantor Cabang Rekening"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -185,8 +191,8 @@ const Djpm = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="disetujui">Disetujui</SelectItem>
-                        <SelectItem value="diproses">Diproses</SelectItem>
+                        <SelectItem value="aktif">Aktif</SelectItem>
+                        <SelectItem value="non_aktif">Non Aktif</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -200,7 +206,12 @@ const Djpm = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nominal Bantuan</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan Nominal Bantuan" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="number"
+                        placeholder="Masukkan Nominal Bantuan"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -213,7 +224,7 @@ const Djpm = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Tahun anggaran</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Tahun Anggaran" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Anggaran" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -229,7 +240,7 @@ const Djpm = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Tempat Tugas</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama Rekening" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Rekening" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -242,7 +253,12 @@ const Djpm = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Alamat Tugas</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Alamat Lengkap Tugas" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="text"
+                        placeholder="Masukkan Alamat Lengkap Tugas"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

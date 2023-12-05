@@ -15,11 +15,12 @@ import {
 } from '@/store/server'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Container, Loading } from '@/components'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import * as React from 'react'
 
 const Hibah = () => {
   useTitle('Bansos Hibah Organisasi/Lembaga (BHO)')
+  const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
 
   const forms = useForm<hibahFields>({
@@ -81,16 +82,14 @@ const Hibah = () => {
     }
   }, [isSuccess])
 
-  const onSubmit = async (values: hibahFields) => {
-    if (!id) {
-      createHibah(values, { onSuccess: () => forms.reset() })
-      return
-    }
+  const onSuccess = () => {
+    forms.reset()
+    navigate('/data-penerima/dayasos/data-hibah')
+  }
 
-    const data = { id, fields: values }
-    updateHibah(data, {
-      onSuccess: () => forms.reset()
-    })
+  const onSubmit = async (values: hibahFields) => {
+    if (!id) return createHibah(values, { onSuccess })
+    updateHibah({ id, fields: values }, { onSuccess })
   }
 
   if (isLoadingHibah) {
@@ -113,7 +112,7 @@ const Hibah = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nama Lembaga/Organisasi</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama Pemohon" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Pemohon" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -128,7 +127,12 @@ const Hibah = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">No. Telepon Lembaga/Organisasi</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan No. Telepon Pemohon " />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="number"
+                        placeholder="Masukkan No. Telepon Pemohon "
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -220,7 +224,7 @@ const Hibah = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">NIK Ketua</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan NIK Ketua" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan NIK Ketua" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -235,7 +239,7 @@ const Hibah = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nama Ketua</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama Ketua " />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Ketua " />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -252,7 +256,12 @@ const Hibah = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nama Sekretaris</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan Nama Sekretaris" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="number"
+                        placeholder="Masukkan Nama Sekretaris"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -267,7 +276,7 @@ const Hibah = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nama Sekretaris</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama Sekretaris " />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Sekretaris " />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -284,7 +293,7 @@ const Hibah = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">NIK Bendahara</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan NIK Bendahara" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan NIK Bendahara" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -299,7 +308,7 @@ const Hibah = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nama Bendahara</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama Bendahara " />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Bendahara " />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -319,7 +328,7 @@ const Hibah = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">No. Rekening</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan No. Rekening " />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan No. Rekening " />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -334,7 +343,7 @@ const Hibah = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nama Bank</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama Bank" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Bank" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -351,7 +360,7 @@ const Hibah = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Alamat Rekening</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Alamat Rekening" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Alamat Rekening" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -366,7 +375,12 @@ const Hibah = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Jumlah Bantuan</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan Jumlah Bantuan " />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="number"
+                        placeholder="Masukkan Jumlah Bantuan "
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -383,7 +397,7 @@ const Hibah = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Tahun Anggaran</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Tahun Anggaran" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Anggaran" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -398,7 +412,7 @@ const Hibah = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Keterangan</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Keterangan " />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Keterangan " />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

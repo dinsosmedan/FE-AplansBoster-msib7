@@ -122,11 +122,11 @@ export const hibahValidation = Yup.object({
 export type hibahFields = Yup.InferType<typeof hibahValidation>
 
 export const pokmasValidation = Yup.object({
-  executionDate: Yup.date().transform((value) => {
-    return `${value.getFullYear()}-${(value.getMonth() + 1).toString().padStart(2, '0')}-${value
-      .getDate()
-      .toString()
-      .padStart(2, '0')}`
+  executionDate: Yup.mixed().test('executionDate', 'Tanggal Pelaksanaan wajib diisi', function (value) {
+    return (
+      value instanceof Date || // Check if it's a Date object
+      (typeof value === 'string' && !isNaN(Date.parse(value))) // Check if it's a parseable string
+    )
   }),
   applicantPhoneNumber: Yup.string()
     .matches(phoneRegExp, 'Nomor telepon tidak valid')
@@ -134,15 +134,21 @@ export const pokmasValidation = Yup.object({
     .max(20, 'Nomor telepon maksimal 20 karakter')
     .required('Nomor Telepon wajib diisi'),
   communityName: Yup.string().required('Nama Pokmas wajib diisi').max(255, 'Nama Pokmas maksimal 255 karakter'),
-  communityAddress: Yup.string().max(255, 'Alamat Pokmas maksimal 255 karakter'),
+  communityAddress: Yup.string().max(255, 'Alamat Pokmas maksimal 255 karakter').required('Alamat Pokmas wajib diisi'),
   communityActivityCode: Yup.string().max(255, 'Kode Kegiatan Pokmas maksimal 255 karakter'),
   communityActivityTypeDescription: Yup.string().max(255, 'Jenis Kegiatan Pokmas maksimal 255 karakter'),
   communityAssistanceType: Yup.string().max(255, 'Jenis Bantuan Pokmas maksimal 255 karakter'),
   areaLevel3: Yup.string().required('Kecamatan wajib diisi'),
   areaLevel4: Yup.string().required('Kelurahan wajib diisi'),
-  requestedRabAmount: Yup.number(),
-  requestedBansosAmount: Yup.number(),
-  approvedFundAmount: Yup.number(),
+  requestedRabAmount: Yup.mixed().test('requestedRabAmount', 'Invalid Format', function (value) {
+    return typeof value === 'number' || (!isNaN(Number(value)) && typeof value === 'string')
+  }),
+  requestedBansosAmount: Yup.mixed().test('requestedBansosAmount', 'Invalid Format', function (value) {
+    return typeof value === 'number' || (!isNaN(Number(value)) && typeof value === 'string')
+  }),
+  approvedFundAmount: Yup.mixed().test('approvedFundAmount', 'Invalid Format', function (value) {
+    return typeof value === 'number' || (!isNaN(Number(value)) && typeof value === 'string')
+  }),
   applicationYear: Yup.string().matches(/^\d{4}$/, 'Format tahun tidak valid. Harap masukkan tahun dengan format YYYY'),
   bankName: Yup.string().max(255, 'Nama Bank maksimal 255 karakter').required('Nama Bank wajib diisi'),
   bankAccName: Yup.string().max(255, 'Nama Rekening Bank maksimal 255 karakter'),

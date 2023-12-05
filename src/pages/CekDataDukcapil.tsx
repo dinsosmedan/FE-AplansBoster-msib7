@@ -5,12 +5,24 @@ import * as React from 'react'
 import { Loading, Modal, Search } from '@/components'
 import { Button } from '@/components/ui/button'
 import { useGetIdentityCheck } from '@/store/server'
+import { useToast } from '@/components/ui/use-toast'
 
 const CekDataDukcapil = () => {
   useTitle('Cek Data Dukcapil ')
+  const { toast } = useToast()
   const [NIK, setNIK] = React.useState('')
   const [isShow, setIsShow] = React.useState(false)
-  const { data: identityCheck, isFetching, refetch, isSuccess } = useGetIdentityCheck(NIK, false)
+  const { data: identityCheck, isFetching, refetch, isSuccess, isError } = useGetIdentityCheck(NIK, false)
+
+  React.useEffect(() => {
+    if (isError) {
+      toast({
+        variant: 'destructive',
+        title: 'NIK tidak ditemukan',
+        description: 'Maaf NIK tidak ditemukan, Terjadi kesalahan pada permintaan Anda'
+      })
+    }
+  }, [isError])
 
   return (
     <>

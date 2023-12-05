@@ -10,7 +10,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useDeleteBusinessGroup, useGetBusinessGroup, useGetBusinessGroupById, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import {
+  useDeleteBusinessGroup,
+  useGetBusinessGroup,
+  useGetBusinessGroupById,
+  useGetKecamatan,
+  useGetKelurahan
+} from '@/store/server'
 import { Action, Loading, Modal } from '@/components'
 import { useAlert } from '@/store/client'
 import { useNavigate } from 'react-router-dom'
@@ -259,7 +265,12 @@ const DataKube = () => {
                     <TableCell className="text-center bg-[#F9FAFC]">{item.businessType}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.budgetYear}</TableCell>
                     <TableCell className="bg-[#F9FAFC]">
-                      <Action onDelete={() => handleDelete(item.id)} onDetail={() => showDetail(item.id)} onEdit={() => console.log('detail')} /></TableCell>
+                      <Action
+                        onDelete={() => handleDelete(item.id)}
+                        onDetail={() => showDetail(item.id)}
+                        onEdit={() => navigate(`/layanan/dayasos/kube/${item.id}`)}
+                      />
+                    </TableCell>
                   </TableRow>
                 ))
               ) : (
@@ -282,54 +293,54 @@ const DataKube = () => {
           />
         ) : null}
       </Container>
-      <Modal isShow={isShow} className='md:max-w-4xl'>
+      <Modal isShow={isShow} className="md:max-w-4xl">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
           <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
         </Modal.Header>
         {isLoadingBusinessGroup && <Loading />}
-        <div className='grid grid-cols-3 gap-y-5'>
+        <div className="grid grid-cols-3 gap-y-5">
           <div>
-              <p className="text-sm font-bold">Nama Usaha</p>
-              <p className="text-base capitalize">{businessGroup?.businessName ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Jenis Usaha</p>
-              <p className="text-base capitalize">{businessGroup?.businessType ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Alamat Usaha</p>
-              <p className="text-base capitalize">{businessGroup?.businessAddress.fullAddress ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kecamatan</p>
-              <p className="text-base capitalize">{businessGroup?.businessAddress.areaLevel3?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kelurahan</p>
-              <p className="text-base capitalize">{businessGroup?.businessAddress.areaLevel4?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Jumlah Anggota</p>
-              <p className="text-base capitalize">{businessGroup?.membersCount ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Jumlah Bantuan</p>
-              <p className="text-base capitalize">{businessGroup?.assistanceAmount ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tahun Anggaran</p>
-              <p className="text-base capitalize">{businessGroup?.budgetYear ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Status</p>
-              <p className="text-base capitalize">{businessGroup?.status ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Keterangan</p>
-              <p className="text-base capitalize">{businessGroup?.note ?? '-'}</p>
-            </div>
+            <p className="text-sm font-bold">Nama Usaha</p>
+            <p className="text-base capitalize">{businessGroup?.businessName ?? '-'}</p>
           </div>
+          <div>
+            <p className="text-sm font-bold">Jenis Usaha</p>
+            <p className="text-base capitalize">{businessGroup?.businessType ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Alamat Usaha</p>
+            <p className="text-base capitalize">{businessGroup?.businessAddress.fullAddress ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kecamatan</p>
+            <p className="text-base capitalize">{businessGroup?.businessAddress.areaLevel3?.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kelurahan</p>
+            <p className="text-base capitalize">{businessGroup?.businessAddress.areaLevel4?.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Jumlah Anggota</p>
+            <p className="text-base capitalize">{businessGroup?.membersCount ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Jumlah Bantuan</p>
+            <p className="text-base capitalize">{businessGroup?.assistanceAmount ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tahun Anggaran</p>
+            <p className="text-base capitalize">{businessGroup?.budgetYear ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Status</p>
+            <p className="text-base capitalize">{businessGroup?.status ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Keterangan</p>
+            <p className="text-base capitalize">{businessGroup?.note ?? '-'}</p>
+          </div>
+        </div>
       </Modal>
     </div>
   )

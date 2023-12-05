@@ -8,19 +8,26 @@ import useTitle from '@/hooks/useTitle'
 import { HiPlus } from 'react-icons/hi'
 import { Container, Loading } from '@/components'
 import { kubeValidation, type kubeFields } from '@/lib/validations/dayasos.validation'
-import { useCreateBusinessGroup, useGetBeneficaryByNIK, useGetBusinessGroupById, useGetKecamatan, useGetKelurahan, useUpdateJointBusiness } from '@/store/server'
+import {
+  useCreateBusinessGroup,
+  useGetBeneficaryByNIK,
+  useGetBusinessGroupById,
+  useGetKecamatan,
+  useGetKelurahan,
+  useUpdateJointBusiness
+} from '@/store/server'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { HiTrash } from 'react-icons/hi2'
 import { cn } from '@/lib/utils'
 import * as React from 'react'
 import { useToast } from '@/components/ui/use-toast'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const Kube = () => {
   useTitle('Kelompok Usaha Bersama (KUBE)')
   const { id } = useParams<{ id: string }>()
 
-  // console.log(id)
+  const navigate = useNavigate()
   const { toast } = useToast()
   const [NIK, setNIK] = React.useState('')
   const [index, setIndex] = React.useState(0)
@@ -59,24 +66,19 @@ const Kube = () => {
   React.useEffect(() => {
     if (NIK !== '') void refetch()
   }, [NIK])
+
   React.useEffect(() => {
     if (isSuccess) {
-      // console.log(BusinessGroup.status)
-      // '245e8842-15cd-4ab5-8ef6-3e04892d602d'
-      // console.log(kelurahan)
       forms.reset({
         businessName: BusinessGroup?.businessName,
         businessType: BusinessGroup?.businessType,
         areaLevel3: BusinessGroup?.businessAddress?.areaLevel3?.id as string,
-        // areaLevel3: 'Medan Belawan',
         areaLevel4: BusinessGroup?.businessAddress?.areaLevel4?.id as string,
-        // areaLevel4: '245e8842-15cd-4ab5-8ef6-3e04892d602d',
         budgetYear: BusinessGroup?.budgetYear,
         note: BusinessGroup?.note,
         status: BusinessGroup?.status,
         businessAddress: BusinessGroup?.businessAddress.fullAddress,
         members: BusinessGroup?.members?.map((member: any) => {
-          // const { id } = member
           return { beneficiary: member.id, nik: member.identityNumber, position: member.position }
         })
       })
@@ -103,7 +105,11 @@ const Kube = () => {
     }
   }, [beneficiary])
 
-  // console.log(forms.formState.errors)
+  const onSuccess = () => {
+    forms.reset()
+    navigate('/data-penerima/dayasos/data-kube')
+  }
+
   const onSubmit = async (values: kubeFields) => {
     const newData = {
       ...values,
@@ -113,17 +119,8 @@ const Kube = () => {
       })
     }
 
-    if (!id) {
-      console.log('tes')
-      createKube(newData, {
-        onSuccess: () => forms.reset()
-      })
-      return
-    }
-
-    console.log('tes1')
-    const results: any = { id, fields: newData }
-    UpdateJointBusiness(results, { onSuccess: () => forms.reset() })
+    if (!id) return createKube(newData, { onSuccess })
+    UpdateJointBusiness({ id, fields: newData }, { onSuccess })
   }
 
   const handleFetchNik = async (index: number) => {
@@ -134,9 +131,10 @@ const Kube = () => {
     }
   }
 
-  if (isLoadingUpdate || isLoadingBusinessGroupById) {
+  if (isLoadingBusinessGroupById) {
     return <Loading />
   }
+
   return (
     <Container className="py-10 px-[47px]">
       <div className="w-full text-center">
@@ -153,7 +151,12 @@ const Kube = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nama KUBE</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama Kelompok Masyarakat" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="text"
+                        placeholder="Masukkan Nama Kelompok Masyarakat"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -168,7 +171,7 @@ const Kube = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Jenis Usaha</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Jenis Usaha" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Jenis Usaha" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -256,7 +259,9 @@ const Kube = () => {
               <FormField
                 name={`members.${index}.beneficiary`}
                 control={forms.control}
-                render={({ field }) => <Input {...field} type="text" hidden className="hidden" />}
+                render={({ field }) => (
+                  <Input {...field} value={field.value ?? ''} type="text" hidden className="hidden" />
+                )}
               />
               <div className="w-6/12">
                 <FormField
@@ -266,7 +271,7 @@ const Kube = () => {
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
                       <FormControl>
-                        <Input {...field} type="text" placeholder="Masukkan NIK" />
+                        <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan NIK" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -338,7 +343,7 @@ const Kube = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Tahun Anggaran</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Tahun Anggaran" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Anggaran" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -376,7 +381,7 @@ const Kube = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Keterangan</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Keterangan" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Keterangan" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

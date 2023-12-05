@@ -102,16 +102,12 @@ export const SUB_MENU_LAYANAN = [
   }
 ]
 export const COMMUNITY_ACTIVITY_CODE = [
-  { label: 'MUSLIM', value: 'COMMUNITY_ACTIVITY_CODE_1' },
-  { label: 'NASRANI', value: 'COMMUNITY_ACTIVITY_CODE_2' },
-  { label: 'HINDU', value: 'COMMUNITY_ACTIVITY_CODE_3' },
-  { label: 'BUDDHA', value: 'COMMUNITY_ACTIVITY_CODE_4' },
-  { label: 'KHONGHUCU', value: 'COMMUNITY_ACTIVITY_CODE_5' },
-  { label: 'UMUM', value: 'COMMUNITY_ACTIVITY_CODE_6' }
+  { label: 'MUSLIM' },
+  { label: 'NASRANI' },
+  { label: 'HINDU' },
+  { label: 'BUDDHA' },
+  { label: 'KHONGHUCU' },
+  { label: 'UMUM' }
 ]
 
-export const COMMUNITY_ASSISTANCE_TYPE = [
-  { label: 'Paket Sembako', value: 'COMMUNITY_ASSISTANCE_TYPE_1' },
-  { label: 'Santunan', value: 'COMMUNITY_ASSISTANCE_TYPE_2' },
-  { label: 'Sandang', value: 'COMMUNITY_ASSISTANCE_TYPE_3' }
-]
+export const COMMUNITY_ASSISTANCE_TYPE = [{ label: 'Paket Sembako' }, { label: 'Santunan' }, { label: 'Sandang' }]
