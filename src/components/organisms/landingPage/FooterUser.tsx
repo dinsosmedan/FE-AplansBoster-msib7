@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 export default function FooterUser() {
   return (
     <footer className="bg-[#161C28] font-poppins">
-      <section className="px-14 py-20">
+      <section className="p-20">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-[22px]">
             <img src={DinsosLogo} alt="dinsos-logo" className="w-[83px]" />
@@ -34,7 +34,7 @@ export default function FooterUser() {
           <p className="text-xl max-w-[432px] text-white/80 leading-relaxed">
             “Memberikan Pelayanan Yang Terbaik Bagi Masyarakat Agar Tercapai Tujuan Bangsa”
           </p>
-          <div className="flex flex-col text-white gap-2 -ml-10">
+          <div className="flex flex-col text-white gap-2 mr-20">
             <p className="font-semibold text-xl">Ikuti Kami</p>
             <div className="flex gap-2 items-center">
               <Link to="/" className="w-8 h-8 flex rounded-full bg-[#00923F]">

@@ -6,7 +6,9 @@ export default function HeaderUser() {
   return (
     <header className="h-24 fixed inset-x-0 top-0 bg-white flex items-center px-14 z-10">
       <div className="flex items-center justify-between flex-1">
-        <img src={Logo} alt="logo" className="w-[297px]" />
+        <Link to="/">
+          <img src={Logo} alt="logo" className="w-[297px]" />
+        </Link>
         <nav className="flex items-center gap-8 font-bold">
           <div className="flex items-center gap-8">
             <Link to="/" className="hover:text-primary">

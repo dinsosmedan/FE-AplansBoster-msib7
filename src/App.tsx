@@ -33,9 +33,12 @@ import {
   DataDtks,
   LandingPage,
   LoginUser,
-  DataSktm
+  DataSktm,
+  RegisterUser,
+  ForgotPasswordUser,
+  UpdatePasswordUser
 } from './pages'
-import { DashboardLayout, Alert, ProtectedAuth, ProtectedRoute, UserLayout } from './components'
+import { DashboardLayout, Alert, ProtectedAuth, ProtectedRoute, UserLayout, AuthUserLayout } from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
 import LayananRehabsos from './pages/Layanan/LayananRehabsos'
 import LayananLinjamsos from './pages/Layanan/LayananLinjamsos'
@@ -147,7 +150,14 @@ export default function App() {
         </Route>
         <Route element={<UserLayout />}>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/user/login" element={<LoginUser />} />
+          <Route path="/user">
+            <Route element={<AuthUserLayout />}>
+              <Route path="login" element={<LoginUser />} />
+              <Route path="register" element={<RegisterUser />} />
+              <Route path="forgot-password" element={<ForgotPasswordUser />} />
+              <Route path="reset-password" element={<UpdatePasswordUser />} />
+            </Route>
+          </Route>
         </Route>
       </Routes>
     </>
