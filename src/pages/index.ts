@@ -34,6 +34,7 @@ import DataUnregister from './DataPenerima/Linjamsos/DataUnregister'
 import DataBbp from './DataPenerima/Linjamsos/DataBbp'
 import InfoDataMaster from './InfoDataMaster'
 import DataSktm from './DataPenerima/Linjamsos/DataSktm'
+import DataPbi from './DataPenerima/Linjamsos/DataPbi'
 
 export {
   Home,
@@ -71,5 +72,6 @@ export {
   DataUnregister,
   DataBbp,
   InfoDataMaster,
-  DataSktm
+  DataSktm,
+  DataPbi
 }
