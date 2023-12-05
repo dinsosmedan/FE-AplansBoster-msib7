@@ -109,6 +109,7 @@ export default function App() {
               <Route path="ri" element={<Ri />} />
               <Route path="ri/:id" element={<Ri />} />
               <Route path="pokmas" element={<Pokmas />} />
+              <Route path="pokmas/:id" element={<Pokmas />} />
               <Route path="veteran" element={<Veteran />} />
               <Route path="veteran/:id" element={<Veteran />} />
               <Route path="kube" element={<Kube />} />

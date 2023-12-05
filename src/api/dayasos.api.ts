@@ -220,7 +220,8 @@ export const updateKubeFn = async ({ id, fields }: UpdateKubeParams) => {
 }
 
 export const updateServiceFundFn = async ({ id, fields }: UpdateServiceFundParams) => {
-  await api.put(`/service-fund/${id}`, fields)
+  const response = await api.put(`/service-fund/${id}`, fields)
+  return response.data?.data
 }
 export const deleteServiceFundFn = async (id: string) => {
   await api.delete(`/service-fund/${id}`)

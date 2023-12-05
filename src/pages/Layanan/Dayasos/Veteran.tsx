@@ -10,11 +10,12 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { useCreateVeteran, useGetBeneficaryByNIK, useGetVeteranById, useUpdateVeteran } from '@/store/server'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const Veteran = () => {
   useTitle('Veteran')
 
+  const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   const [NIK, setNIK] = React.useState('')
 
@@ -54,16 +55,14 @@ const Veteran = () => {
     }
   }, [isSuccess])
 
-  const onSubmit = async (values: veteranFields) => {
-    if (!id) {
-      createVeteran(values, { onSuccess: () => forms.reset() })
-      return
-    }
+  const onSuccess = () => {
+    forms.reset()
+    navigate('/data-penerima/dayasos/data-veteran')
+  }
 
-    const data = { id, fields: values }
-    updateVeteran(data, {
-      onSuccess: () => forms.reset()
-    })
+  const onSubmit = async (values: veteranFields) => {
+    if (!id) return createVeteran(values, { onSuccess })
+    updateVeteran({ id, fields: values }, { onSuccess })
   }
 
   if (isLoadingVeteran) {
@@ -104,7 +103,7 @@ const Veteran = () => {
                   <FormItem>
                     <FormLabel>NPV</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan NPV" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan NPV" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -113,7 +112,9 @@ const Veteran = () => {
               <FormField
                 name="beneficiary"
                 control={forms.control}
-                render={({ field }) => <Input {...field} type="text" className="hidden" hidden />}
+                render={({ field }) => (
+                  <Input {...field} value={field.value ?? ''} type="text" className="hidden" hidden />
+                )}
               />
               <FormField
                 name="veteranUnit"
@@ -122,7 +123,7 @@ const Veteran = () => {
                   <FormItem>
                     <FormLabel>Satuan</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Satuan" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Satuan" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -134,7 +135,12 @@ const Veteran = () => {
                   <FormItem>
                     <FormLabel>Ukuran Baju Celana</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Ukuran Baju Celana " />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="text"
+                        placeholder="Masukkan Ukuran Baju Celana "
+                      />
                     </FormControl>
                   </FormItem>
                 )}
