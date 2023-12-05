@@ -33,6 +33,8 @@ import DataDtks from './DataDtks'
 import DataUnregister from './DataPenerima/Linjamsos/DataUnregister'
 import DataBbp from './DataPenerima/Linjamsos/DataBbp'
 import InfoDataMaster from './InfoDataMaster'
+import LandingPage from './LandingPage/LandingPage'
+import LoginUser from './LandingPage/LoginUser'
 
 export {
   Home,
@@ -69,5 +71,7 @@ export {
   DataDtks,
   DataUnregister,
   DataBbp,
-  InfoDataMaster
+  InfoDataMaster,
+  LandingPage,
+  LoginUser
 }

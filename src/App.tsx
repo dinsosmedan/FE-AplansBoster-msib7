@@ -30,9 +30,11 @@ import {
   DataPkr,
   DataUnregister,
   DataBbp,
-  DataDtks
+  DataDtks,
+  LandingPage,
+  LoginUser
 } from './pages'
-import { DashboardLayout, Alert, ProtectedAuth, ProtectedRoute } from './components'
+import { DashboardLayout, Alert, ProtectedAuth, ProtectedRoute, UserLayout } from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
 import LayananRehabsos from './pages/Layanan/LayananRehabsos'
 import LayananLinjamsos from './pages/Layanan/LayananLinjamsos'
@@ -65,8 +67,8 @@ export default function App() {
       <Toaster />
       <Routes>
         <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<DashboardLayout />}>
-            <Route index element={<Home />} />
+          <Route element={<DashboardLayout />}>
+            <Route path="/dashboard" element={<Home />} />
             <Route path="/layanan">
               <Route index element={<Layanan />} />
               <Route path="rehabsos" element={<LayananRehabsos />} />
@@ -138,6 +140,10 @@ export default function App() {
         <Route element={<ProtectedAuth />}>
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+        </Route>
+        <Route element={<UserLayout />}>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/user/login" element={<LoginUser />} />
         </Route>
       </Routes>
     </>
