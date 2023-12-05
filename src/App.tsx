@@ -30,7 +30,8 @@ import {
   DataPkr,
   DataUnregister,
   DataBbp,
-  DataDtks
+  DataDtks,
+  DataSktm
 } from './pages'
 import { DashboardLayout, Alert, ProtectedAuth, ProtectedRoute } from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
@@ -132,6 +133,7 @@ export default function App() {
               <Route path="data-pkr" element={<DataPkr />} />
               <Route path="data-unregister" element={<DataUnregister />} />
               <Route path="data-bbp" element={<DataBbp />} />
+              <Route path="data-sktm" element={<DataSktm />} />
               <Route path="data-pbi" element={<DataPbi />} />
             </Route>
             <Route path="/data-dtks" element={<DataDtks />} />

@@ -29,7 +29,7 @@ export interface IServiceType {
   code: string
 }
 
-interface IAddress {
+export interface IAddress {
   fullAddress: string
   areaLevel3: IArea | null
   areaLevel4: IArea | null
