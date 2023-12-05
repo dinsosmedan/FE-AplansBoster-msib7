@@ -17,7 +17,7 @@ const DataPenerimaLinjamsos = () => {
         <CardSub
           title={'Penerima Bantuan Iuran (PBI)'}
           subTitle={'Premium Assistance Beneficiary'}
-          href={'/layanan/rehabsos'}
+          href={'/data-penerima/linjamsos/data-pbi'}
         />
         <CardSub
           title={'Penanganan Kelompok Rentan'}
