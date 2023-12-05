@@ -432,8 +432,9 @@ const Pokmas = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="STATUS_PROCESSED">Diproses</SelectItem>
-                      <SelectItem value="STATUS_RECEIVED">Diterima</SelectItem>
+                      <SelectItem value="STATUS_FAIL">TIDAK BERHASIL</SelectItem>
+                      <SelectItem value="STATUS_PENDING">TERTUNDA</SelectItem>
+                      <SelectItem value="STATUS_SUCCESS">BERHASIL</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
