@@ -1,0 +1,3 @@
+
+###
+GET https://api.aplansboster.dinas.social/api/v1/dashboard/linjamsos/chart/vulnerable-group-handling

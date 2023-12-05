@@ -9,9 +9,10 @@ import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
+import { Action } from '@/components'
 
-const DataBbp = () => {
-  useTitle('Data Penerima / Linjamsos / BBP ')
+const DataPbi = () => {
+  useTitle('Data Penerima / Linjamsos / PBI ')
 
   interface FormValues {
     nik: string
@@ -35,43 +36,17 @@ const DataBbp = () => {
 
   return (
     <Container>
-      <h1 className="font-bold text-[32px] ">Bantuan Biaya Pendidikan (BBP)</h1>
+      <h1 className="font-bold text-2xl ">Penerima Bantuan Iuran (PBI)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="flex flex-row justify-between mt-5 items-center gap-5 ">
-            <div className="flex-1 ">
-              <FormField
-                name="nik"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan Nama/ NIK" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
+          <div className="grid grid-cols-2 gap-x-5 gap-y-5 mt-6 ">
             <FormField
-              name="kelurahan"
+              name="nik"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kelurahan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                        <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                        <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Input {...field} type="number" placeholder="Masukkan Nama/ NIK" />
                   </FormControl>
                 </FormItem>
               )}
@@ -85,29 +60,7 @@ const DataBbp = () => {
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kecamatan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                        <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                        <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="batch"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Batch" />
+                          <SelectValue placeholder="Jenis Keanggotaan" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -148,28 +101,26 @@ const DataBbp = () => {
         <Table>
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Kode Kegiatan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Kelompok Masyarakat</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kegiatan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Bantuan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah Bantuan Disetujui</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Pencairan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Status Pencairan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Keanggotaan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow>
-              <TableCell className="text-left  bg-[#F9FAFC]">1271092350010008</TableCell>
+              <TableCell className="text-left  bg-[#F9FAFC]">1</TableCell>
               <TableCell className="text-left  bg-[#F9FAFC]">Oza Kristen</TableCell>
               <TableCell className="text-left  bg-[#F9FAFC]">Perempuan</TableCell>
               <TableCell className="text-left  bg-[#F9FAFC]">1945</TableCell>
-              <TableCell className="text-left  bg-[#F9FAFC]">Medan</TableCell>
-              <TableCell className="text-left  bg-[#F9FAFC]">Medan</TableCell>
-              <TableCell className="text-left  bg-[#F9FAFC]">Santunan</TableCell>
-              <TableCell className="text-left  bg-[#F9FAFC]">10.000.000</TableCell>
-              <TableCell className="text-left  bg-[#F9FAFC]">10.000.000</TableCell>
+              <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                <Action
+                  onDetail={() => showDetail(item.id)}
+                  onDelete={() => handleDelete(item.id)}
+                  onEdit={() => navigate(`/layanan/dayasos/Djp/${item.id}`)}
+                />
+              </TableCell>{' '}
             </TableRow>
           </TableBody>
         </Table>
@@ -184,4 +135,4 @@ const DataBbp = () => {
     </Container>
   )
 }
-export default DataBbp
+export default DataPbi

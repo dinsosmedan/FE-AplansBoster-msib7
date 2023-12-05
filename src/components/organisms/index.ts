@@ -8,5 +8,6 @@ import Action from './Action'
 import CardLandingPage from './landingPage/CardLandingPage'
 import FooterUser from './landingPage/FooterUser'
 import HeaderUser from './landingPage/HeaderUser'
+import CardSub from './CardSub'
 
-export { Header, Footer, Sidebar, Modal, Alert, CardLink, Action, CardLandingPage, FooterUser, HeaderUser }
+export { Header, Footer, Sidebar, Modal, Alert, CardLink, Action, CardLandingPage, FooterUser, HeaderUser, CardSub }

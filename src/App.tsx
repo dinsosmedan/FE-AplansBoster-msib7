@@ -32,7 +32,8 @@ import {
   DataBbp,
   DataDtks,
   LandingPage,
-  LoginUser
+  LoginUser,
+  DataSktm
 } from './pages'
 import { DashboardLayout, Alert, ProtectedAuth, ProtectedRoute, UserLayout } from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
@@ -52,6 +53,7 @@ import DataRumahIbadah from './pages/DataPenerima/Dayasos/DataRumahIbadah'
 import DataHibah from './pages/DataPenerima/Dayasos/DataHibah'
 import { Toaster } from './components/ui/toaster'
 import DataBpnt from './pages/DataPenerima/Dayasos/DataBpnt'
+import DataPbi from './pages/DataPenerima/Linjamsos/DataPbi'
 // import DataPkr from './pages/DataPenerima/Linjamsos/DataPkr'
 
 export default function App() {
@@ -133,6 +135,8 @@ export default function App() {
               <Route path="data-pkr" element={<DataPkr />} />
               <Route path="data-unregister" element={<DataUnregister />} />
               <Route path="data-bbp" element={<DataBbp />} />
+              <Route path="data-sktm" element={<DataSktm />} />
+              <Route path="data-pbi" element={<DataPbi />} />
             </Route>
             <Route path="/data-dtks" element={<DataDtks />} />
           </Route>

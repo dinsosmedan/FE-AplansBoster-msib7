@@ -3,6 +3,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import 'chartjs-plugin-datalabels'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { formatRibuan } from '@/hooks'
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels)
 // Chart.register(ChartDataLabels);
@@ -71,10 +72,12 @@ const LongCard = ({ props, children }: any) => {
   )
 }
 
-const Chart = ({ data, label, backgroundColor, isPercent }: any) => {
+const Chart = ({ data, label: labels, backgroundColor, isPercent }: any) => {
+
+  const total = data.reduce((acc: any, current: any) => acc + current, 0);
+
   const datalabel = {
-    // labels: ['DTKS', 'Non DTKS'],
-    labels: label,
+    labels,
     datasets: [
       {
         label: '# of Votes',
@@ -92,9 +95,9 @@ const Chart = ({ data, label, backgroundColor, isPercent }: any) => {
         <Pie
           options={{
             plugins: {
-              tooltip: { callbacks: { label: (item) => `${item.label}: ${item.formattedValue} %` } },
+              tooltip: { callbacks: { label: (item) => `${item.label} : ${item.formattedValue.replace(',', '.')} ` } },
               legend: { position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle' } },
-              datalabels: { display: true, color: 'white', formatter: (item) => `${item} ${isPercent ? '%' : ' '}` }
+              datalabels: { display: true, color: 'white', formatter: (item) => ` ${isPercent ? Math.round(item / total * 100) + ' %' : item}` }
             }
           }}
           data={datalabel}
@@ -104,7 +107,9 @@ const Chart = ({ data, label, backgroundColor, isPercent }: any) => {
   )
 }
 
-const Tabel = () => {
+const Tabel = ({ data }: any) => {
+  // console.log(data);
+
   return (
     <>
       <div className=" w-[340px] my-5">
@@ -117,31 +122,15 @@ const Tabel = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="text-center bg-zinc-100/50">1</TableCell>
-              <TableCell className="text-center bg-zinc-100/50">Hura Asli</TableCell>
-              <TableCell className="text-center bg-zinc-100/50">Medan Amplas</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="text-center bg-zinc-100/50">2</TableCell>
-              <TableCell className="text-center bg-zinc-100/50">Hura Asli</TableCell>
-              <TableCell className="text-center bg-zinc-100/50">Medan Amplas</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="text-center bg-zinc-100/50">3</TableCell>
-              <TableCell className="text-center bg-zinc-100/50">Hura Asli</TableCell>
-              <TableCell className="text-center bg-zinc-100/50">Medan Amplas</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="text-center bg-zinc-100/50">4</TableCell>
-              <TableCell className="text-center bg-zinc-100/50">Hura Asli</TableCell>
-              <TableCell className="text-center bg-zinc-100/50">Medan Amplas</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="text-center bg-zinc-100/50">5</TableCell>
-              <TableCell className="text-center bg-zinc-100/50">Hura Asli</TableCell>
-              <TableCell className="text-center bg-zinc-100/50">Medan Amplas</TableCell>
-            </TableRow>
+            {data?.map((value: any, no: any) => {
+              return (
+                <TableRow key={no}>
+                  <TableCell className="text-center bg-zinc-100/50">{no + 1}</TableCell>
+                  <TableCell className="text-center bg-zinc-100/50">{value.areaLevel3}</TableCell>
+                  <TableCell className="text-center bg-zinc-100/50">{formatRibuan(value.count)}</TableCell>
+                </TableRow>
+              )
+            })}
           </TableBody>
         </Table>
       </div>
