@@ -3,9 +3,11 @@ import { Button } from '@/components/ui/button'
 import { useTitle } from '@/hooks'
 import { HiAcademicCap, HiArrowRightCircle, HiDocumentText, HiGift } from 'react-icons/hi2'
 import { CardLandingPage } from '@/components'
+import { useNavigate } from 'react-router-dom'
 
 export default function LandingPage() {
   useTitle('Aplans Boster')
+  const navigate = useNavigate()
 
   return (
     <>
@@ -23,7 +25,11 @@ export default function LandingPage() {
                 A Team of experienced tourism professionals will provide you with the best advice and tips for your
                 desire place.
               </p>
-              <Button variant="ghost" className="bg-white rounded-lg gap-3 text-primary">
+              <Button
+                variant="ghost"
+                className="bg-white rounded-lg gap-3 text-primary"
+                onClick={() => navigate('/user/cek-bansos')}
+              >
                 <span className="font-medium">Cek Bansos Sekarang</span>
                 <HiArrowRightCircle className="text-xl" />
               </Button>

@@ -11,7 +11,7 @@ export default function ProtectedAuth({ children }: ProtectedAuthProps) {
   const token = useToken((state) => state.token)
 
   if (token !== '') {
-    return <Navigate to="/" replace state={{ from: location }} />
+    return <Navigate to="/dashboard" replace state={{ from: location }} />
   }
 
   return children ?? <Outlet />

@@ -36,9 +36,18 @@ import {
   DataSktm,
   RegisterUser,
   ForgotPasswordUser,
-  UpdatePasswordUser
+  UpdatePasswordUser,
+  CekBansosUser
 } from './pages'
-import { DashboardLayout, Alert, ProtectedAuth, ProtectedRoute, UserLayout, AuthUserLayout } from './components'
+import {
+  DashboardLayout,
+  Alert,
+  ProtectedAuth,
+  ProtectedRoute,
+  UserLayout,
+  AuthUserLayout,
+  UserProtectedAuth
+} from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
 import LayananRehabsos from './pages/Layanan/LayananRehabsos'
 import LayananLinjamsos from './pages/Layanan/LayananLinjamsos'
@@ -151,12 +160,15 @@ export default function App() {
         <Route element={<UserLayout />}>
           <Route path="/" element={<LandingPage />} />
           <Route path="/user">
-            <Route element={<AuthUserLayout />}>
-              <Route path="login" element={<LoginUser />} />
-              <Route path="register" element={<RegisterUser />} />
-              <Route path="forgot-password" element={<ForgotPasswordUser />} />
-              <Route path="reset-password" element={<UpdatePasswordUser />} />
+            <Route element={<UserProtectedAuth />}>
+              <Route element={<AuthUserLayout />}>
+                <Route path="login" element={<LoginUser />} />
+                <Route path="register" element={<RegisterUser />} />
+                <Route path="forgot-password" element={<ForgotPasswordUser />} />
+                <Route path="reset-password" element={<UpdatePasswordUser />} />
+              </Route>
             </Route>
+            <Route path="cek-bansos" element={<CekBansosUser />} />
           </Route>
         </Route>
       </Routes>

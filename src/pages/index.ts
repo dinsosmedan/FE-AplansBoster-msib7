@@ -40,6 +40,7 @@ import DataPbi from './DataPenerima/Linjamsos/DataPbi'
 import RegisterUser from './LandingPage/RegisterUser'
 import ForgotPasswordUser from './LandingPage/ForgotPasswordUser'
 import UpdatePasswordUser from './LandingPage/UpdatePasswordUser'
+import CekBansosUser from './LandingPage/CekBansosUser'
 
 export {
   Home,
@@ -83,5 +84,6 @@ export {
   DataPbi,
   RegisterUser,
   ForgotPasswordUser,
-  UpdatePasswordUser
+  UpdatePasswordUser,
+  CekBansosUser
 }

@@ -24,3 +24,9 @@ export const getMeFn = async (): Promise<IUser> => {
   const response = await api.get('/auth/me')
   return response.data
 }
+
+// LANDING PAGE
+export const loginUserFn = async (fields: LoginInput): Promise<IAuthResponse> => {
+  const response = await apiPublic.post('/auth/login', fields)
+  return response.data
+}
