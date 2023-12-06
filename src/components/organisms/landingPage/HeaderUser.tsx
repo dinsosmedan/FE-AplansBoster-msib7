@@ -1,14 +1,12 @@
 import { Logo } from '@/assets'
 import { Button } from '@/components/ui/button'
 import { useUserPublicToken } from '@/store/client'
-import { useGetMePublic } from '@/store/server'
 import { HiChevronDown, HiOutlineBell } from 'react-icons/hi2'
 import { Link } from 'react-router-dom'
 
 export default function HeaderUser() {
   const token = useUserPublicToken((state) => state.token)
-  const { data: user, isLoading } = useGetMePublic()
-  console.log({ user, isLoading })
+  const user = useUserPublicToken((state) => state.user)
 
   return (
     <header className="h-24 fixed inset-x-0 top-0 bg-white flex items-center px-14 z-10">
@@ -33,7 +31,7 @@ export default function HeaderUser() {
                   <img
                     alt="profile"
                     className="w-10 h-10 rounded-full object-cover bg-[#ECF0F4]"
-                    src="https://ui-avatars.com/api/?name=krisnacuki"
+                    src={`https://ui-avatars.com/api/?name=${user.name}`}
                   />
                   <div className="absolute -bottom-1 -right-1 border-white border bg-[#ECF0F4] rounded-full w-5 h-5 flex">
                     <HiChevronDown className="m-auto text-sm" />

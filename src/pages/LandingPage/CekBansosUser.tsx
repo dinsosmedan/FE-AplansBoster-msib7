@@ -7,6 +7,7 @@ import { NotFoundBansos } from '@/assets'
 import { useGetAssistanceCheck } from '@/store/server/usePublic'
 import { useGetBeneficaryByNIK } from '@/store/server'
 import { Loading } from '@/components'
+import { cn } from '@/lib/utils'
 
 export default function CekBansosUser() {
   useTitle('Cek Bansos')
@@ -109,8 +110,20 @@ export default function CekBansosUser() {
                       <TableCell position="center">{assistance.product.name}</TableCell>
                       <TableCell position="center">{assistance.year}</TableCell>
                       <TableCell position="center">
-                        <div className="py-1 px-3 rounded-full bg-green-300">
-                          <p className="text-green-700 font-medium text-xs">{assistance.status}</p>
+                        <div
+                          className={cn(
+                            'py-1 px-3 rounded-full',
+                            assistance.status === 'approved' ? 'bg-green-300' : 'bg-red-300'
+                          )}
+                        >
+                          <p
+                            className={cn(
+                              'font-medium text-xs',
+                              assistance.status === 'approved' ? 'text-green-700' : 'text-red-700'
+                            )}
+                          >
+                            {assistance.status}
+                          </p>
                         </div>
                       </TableCell>
                     </TableRow>
