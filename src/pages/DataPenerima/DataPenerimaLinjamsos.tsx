@@ -24,7 +24,11 @@ const DataPenerimaLinjamsos = () => {
           subTitle={'Vulnerable Group Handling'}
           href={'/data-penerima/linjamsos/data-pkr'}
         />
-        <CardSub title={'Program Keluarga Harapan (PKH)'} subTitle={'Family Home Program'} href={'/layanan/rehabsos'} />
+        <CardSub
+          title={'Program Keluarga Harapan (PKH)'}
+          subTitle={'Family Home Program'}
+          href={'/data-penerima/linjamsos/data-pkh'}
+        />
         <CardSub
           title={'Surat Keterangan Tidak Mampu (SKTM)'}
           subTitle={'Indigency Certificate'}
