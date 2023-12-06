@@ -3,23 +3,27 @@ import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useTitle } from '@/hooks'
-import { type LoginUserFields } from '@/lib/validations/landingPage/auth.validation'
+import { type LoginInput } from '@/lib/validations/auth.validation'
+import { useLoginPublic } from '@/store/server'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 
 export default function LoginUser() {
   useTitle('Masuk Akun')
   const navigate = useNavigate()
-  const forms = useForm<LoginUserFields>({
+
+  const { mutate: loginPublic, isLoading } = useLoginPublic()
+
+  const forms = useForm<LoginInput>({
     mode: 'onTouched',
     defaultValues: {
-      email: '',
+      identifier: '',
       password: ''
     }
   })
 
-  const onSubmit = async (data: LoginUserFields) => {
-    console.log({ data })
+  const onSubmit = async (data: LoginInput) => {
+    loginPublic(data)
   }
 
   return (
@@ -27,7 +31,7 @@ export default function LoginUser() {
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)}>
           <FormField
-            name="email"
+            name="identifier"
             control={forms.control}
             render={({ field }) => (
               <FormItem className="mt-[30px] mb-5">
@@ -36,7 +40,7 @@ export default function LoginUser() {
                   <Input
                     {...field}
                     value={field.value ?? ''}
-                    type="email"
+                    type="text"
                     placeholder="Masukkan Email Anda"
                     className="rounded-lg py-6"
                   />
@@ -63,12 +67,15 @@ export default function LoginUser() {
               </FormItem>
             )}
           />
-          <Button className="rounded-lg w-full py-6 mb-6 mt-[30px] text-lg">Masuk</Button>
+          <Button className="rounded-lg w-full py-6 mb-6 mt-[30px] text-lg" type="submit" loading={isLoading}>
+            Masuk
+          </Button>
           <Link to="/user/forgot-password" className="text-primary">
             <p className="text-center">Lupa Password?</p>
           </Link>
           <div className="border-t border-[#BDBDBD] pt-6 mt-6">
             <Button
+              type="button"
               onClick={() => navigate('/user/register')}
               className="bg-[#00923F] hover:bg-[#00923F]/80 rounded-lg w-full py-6 text-lg"
             >

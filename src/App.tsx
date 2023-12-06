@@ -37,9 +37,18 @@ import {
   RegisterUser,
   ForgotPasswordUser,
   UpdatePasswordUser,
+  CekBansosUser,
   DataPkh
 } from './pages'
-import { DashboardLayout, Alert, ProtectedAuth, ProtectedRoute, UserLayout, AuthUserLayout } from './components'
+import {
+  DashboardLayout,
+  Alert,
+  ProtectedAuth,
+  ProtectedRoute,
+  UserLayout,
+  AuthUserLayout,
+  UserProtectedAuth
+} from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
 import LayananRehabsos from './pages/Layanan/LayananRehabsos'
 import LayananLinjamsos from './pages/Layanan/LayananLinjamsos'
@@ -58,6 +67,7 @@ import DataHibah from './pages/DataPenerima/Dayasos/DataHibah'
 import { Toaster } from './components/ui/toaster'
 import DataBpnt from './pages/DataPenerima/Dayasos/DataBpnt'
 import DataPbi from './pages/DataPenerima/Linjamsos/DataPbi'
+import Unregister from './pages/Layanan/Linjamsos/Unregister'
 // import DataPkr from './pages/DataPenerima/Linjamsos/DataPkr'
 
 export default function App() {
@@ -106,6 +116,7 @@ export default function App() {
               <Route path="Bbp" element={<Bbp />} />
               <Route path="Pkr" element={<Pkr />} />
               <Route path="Sktm" element={<Sktm />} />
+              <Route path="Unregister" element={<Unregister />} />
             </Route>
             <Route path="/layanan/dayasos">
               <Route index element={<LayananDayasos />} />
@@ -153,12 +164,15 @@ export default function App() {
         <Route element={<UserLayout />}>
           <Route path="/" element={<LandingPage />} />
           <Route path="/user">
-            <Route element={<AuthUserLayout />}>
-              <Route path="login" element={<LoginUser />} />
-              <Route path="register" element={<RegisterUser />} />
-              <Route path="forgot-password" element={<ForgotPasswordUser />} />
-              <Route path="reset-password" element={<UpdatePasswordUser />} />
+            <Route element={<UserProtectedAuth />}>
+              <Route element={<AuthUserLayout />}>
+                <Route path="login" element={<LoginUser />} />
+                <Route path="register" element={<RegisterUser />} />
+                <Route path="forgot-password" element={<ForgotPasswordUser />} />
+                <Route path="reset-password" element={<UpdatePasswordUser />} />
+              </Route>
             </Route>
+            <Route path="cek-bansos" element={<CekBansosUser />} />
           </Route>
         </Route>
       </Routes>
