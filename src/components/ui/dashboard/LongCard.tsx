@@ -5,6 +5,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { formatRibuan } from '@/hooks'
 
+
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels)
 // Chart.register(ChartDataLabels);
 
@@ -112,28 +113,28 @@ const Tabel = ({ data }: any) => {
 
   return (
     <>
-      <div className=" w-[340px] my-5">
-        <Table>
-          <TableHeader className="bg-primary">
-            <TableRow>
-              <TableHead className="text-black bg-white">No</TableHead>
-              <TableHead className="text-black bg-white">Nama Kecamatan</TableHead>
-              <TableHead className="text-black bg-white">Jumlah Penduduk </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data?.map((value: any, no: any) => {
-              return (
-                <TableRow key={no}>
-                  <TableCell className="text-center bg-zinc-100/50">{no + 1}</TableCell>
-                  <TableCell className="text-center bg-zinc-100/50">{value.areaLevel3}</TableCell>
-                  <TableCell className="text-center bg-zinc-100/50">{formatRibuan(value.count)}</TableCell>
-                </TableRow>
-              )
-            })}
-          </TableBody>
-        </Table>
-      </div>
+
+
+      <Table>
+        <TableHeader className="bg-primary">
+          <TableRow>
+            <TableHead className="text-black bg-white">No</TableHead>
+            <TableHead className="text-black bg-white">Nama Kecamatan</TableHead>
+            <TableHead className="text-black bg-white">Jumlah Penduduk </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data?.map((value: any, no: any) => {
+            return (
+              <TableRow key={no}>
+                <TableCell className="text-center bg-zinc-100/50">{no + 1}</TableCell>
+                <TableCell className="text-center bg-zinc-100/50">{value.areaLevel3}</TableCell>
+                <TableCell className="text-center bg-zinc-100/50">{formatRibuan(value.count)}</TableCell>
+              </TableRow>
+            )
+          })}
+        </TableBody>
+      </Table>
     </>
   )
 }

@@ -58,7 +58,7 @@ const ChartPenanganan = () => {
   const { data, isLoading } = useVulnerableGroup()
 
   if (isLoading) return <Loading />
-  const total = data.map((val: any) => val.count)
+  // const total = data.map((val: any) => val.count)
   const label = data.map((val: any) => val.budgetYear.toString())
   // const values = Object.values(data)
 
@@ -67,7 +67,7 @@ const ChartPenanganan = () => {
     <>
       <LongCard props={['Penangan Kelompok Rentan', 'Perkembangan Data PKR']}>
         <LongCard.Chart
-          data={total}
+          data={[12, 21, 22, 31, 21]}
           label={label}
           backgroundColor={['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']}
         />

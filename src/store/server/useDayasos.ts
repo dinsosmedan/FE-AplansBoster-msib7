@@ -146,8 +146,8 @@ export const useGetWorshipPlace = (id?: string) => {
   })
 }
 
-export const useGetAdministrativeArea = () => {
-  return useQuery(['administrative-area'], async () => await getAdministrativeAreaFn(), { enabled: true })
+export const useGetAdministrativeArea = (order: string) => {
+  return useQuery(['administrative-area'], async () => await getAdministrativeAreaFn(order), { enabled: true })
 }
 
 export const useGetGenderDtks = () => {

@@ -1,3 +1,3 @@
 
 ###
-GET https://api.aplansboster.dinas.social/api/v1/dashboard/linjamsos/chart/vulnerable-group-handling
+GET https://api.aplansboster.dinas.social/api/v1/dashboard/dtks/count/administrative-area?limit=5&sort=DESC
