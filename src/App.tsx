@@ -58,6 +58,7 @@ import DataHibah from './pages/DataPenerima/Dayasos/DataHibah'
 import { Toaster } from './components/ui/toaster'
 import DataBpnt from './pages/DataPenerima/Dayasos/DataBpnt'
 import DataPbi from './pages/DataPenerima/Linjamsos/DataPbi'
+import Unregister from './pages/Layanan/Linjamsos/Unregister'
 // import DataPkr from './pages/DataPenerima/Linjamsos/DataPkr'
 
 export default function App() {
@@ -106,6 +107,7 @@ export default function App() {
               <Route path="Bbp" element={<Bbp />} />
               <Route path="Pkr" element={<Pkr />} />
               <Route path="Sktm" element={<Sktm />} />
+              <Route path="Unregister" element={<Unregister />} />
             </Route>
             <Route path="/layanan/dayasos">
               <Route index element={<LayananDayasos />} />
