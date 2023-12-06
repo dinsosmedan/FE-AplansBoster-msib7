@@ -6,7 +6,9 @@ import {
   getIndigencyCertificateFn,
   type IndigencyCertificateQuery,
   getPremiumAssistanceBenefitFn,
-  type PremiumAssistanceBenefitQuery
+  type PremiumAssistanceBenefitQuery,
+  getFamilyHopeFn,
+  type FamilyHopeQuery
 } from '@/api/linjamsos.api'
 import { useQuery } from 'react-query'
 
@@ -74,9 +76,28 @@ export const useGetPremiumAssistanceBenefitFn = ({
   type
 }: PremiumAssistanceBenefitQuery) => {
   return useQuery(
-    ['indigency-certificates', page, idKecamatan, idKelurahan, q, type],
+    ['premium-assistances', page, idKecamatan, idKelurahan, q, type],
     async () =>
       await getPremiumAssistanceBenefitFn({
+        page,
+        idKecamatan,
+        idKelurahan,
+        q,
+        type
+      }),
+    {
+      keepPreviousData: true,
+      staleTime: 5000
+    }
+  )
+}
+
+// PKH //
+export const useGetFamilyHopeFn = ({ page, type, idKecamatan, idKelurahan, q }: FamilyHopeQuery) => {
+  return useQuery(
+    ['indigency-certificates', page, idKecamatan, idKelurahan, q, type],
+    async () =>
+      await getFamilyHopeFn({
         page,
         idKecamatan,
         idKelurahan,
