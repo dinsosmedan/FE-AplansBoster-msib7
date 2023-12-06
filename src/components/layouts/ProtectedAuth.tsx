@@ -10,6 +10,8 @@ export default function ProtectedAuth({ children }: ProtectedAuthProps) {
   const location = useLocation()
   const token = useToken((state) => state.token)
 
+  // ini komentar
+
   if (token !== '') {
     return <Navigate to="/dashboard" replace state={{ from: location }} />
   }
