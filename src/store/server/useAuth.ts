@@ -1,9 +1,10 @@
-import { getMeFn, loginFn, loginUserFn, logoutFn } from '@/api/auth.api'
+import { getMeFn, getMePublicFn, loginFn, loginUserFn, logoutFn } from '@/api/auth.api'
 import { type AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { useToken, useUserInfo, useUserPublicToken } from '../client'
 import { toast } from '@/components/ui/use-toast'
+import { type IErrorResponse } from '@/lib/types/user.type'
 
 export const useLogin = () => {
   const navigate = useNavigate()
@@ -43,7 +44,7 @@ export const useGetMe = () => {
 }
 
 export const useGetMePublic = () => {
-  return useQuery('user-public', async () => await getMeFn())
+  return useQuery('user-public', async () => await getMePublicFn())
 }
 
 export const useLoginPublic = () => {
@@ -59,6 +60,17 @@ export const useLoginPublic = () => {
         description: 'You have successfully logged in.'
       })
       navigate('/')
+    },
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message,
+          description: 'There was a problem with your request.'
+        })
+      }
     }
   })
 }
