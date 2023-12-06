@@ -6,7 +6,7 @@ export default function UserProtectedRoute() {
   const token = useUserPublicToken((state) => state.token)
 
   if (token === '') {
-    return <Navigate to="/login" replace state={{ from: location }} />
+    return <Navigate to="/user/login" replace state={{ from: location }} />
   }
 
   return <Outlet />
