@@ -1,12 +1,5 @@
 import * as Yup from 'yup'
 
-export const loginUserValidation = Yup.object({
-  email: Yup.string().required('Email harus diisi').email('Format email salah'),
-  password: Yup.string().required('Password harus diisi')
-})
-
-export type LoginUserFields = Yup.InferType<typeof loginUserValidation>
-
 export const registerUserValidation = Yup.object({
   name: Yup.string().required('Nama harus diisi'),
   email: Yup.string().required('Email harus diisi').email('Format email salah'),
