@@ -286,8 +286,8 @@ export const getWorshipPlaceFn = async (id: string): Promise<IWorshipPlaceDetail
   const response = await api.get(`/worship-place/${id}`)
   return response.data?.data
 }
-export const getAdministrativeAreaFn = async (): Promise<any> => {
-  const response = await api.get('/dashboard/dtks/count/administrative-area?limit=5&orderBy=DESC')
+export const getAdministrativeAreaFn = async (order: string): Promise<any> => {
+  const response = await api.get(`/dashboard/dtks/count/administrative-area?limit=5&sort=${order === 'Menurun' ? 'DESC' : 'ASC'}`)
   return response.data?.data
 }
 export const getGenderDtksFn = async (): Promise<any> => {

@@ -2,8 +2,12 @@ import { Loading } from '@/components'
 import BasicCard from '@/components/ui/dashboard/BasicCard'
 import LongCard from '@/components/ui/dashboard/LongCard'
 import TitleSign from '@/components/ui/dashboard/TitleSign'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useCountDataDtks, useGetAdministrativeArea, useGetDataDtks, useGetGenderDtks } from '@/store/server'
-
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { useForm } from 'react-hook-form'
+import { useState } from 'react'
 const SectionDataDtks = () => {
   return (
     <>
@@ -23,14 +27,57 @@ const SectionDataDtks = () => {
 }
 
 const TabelDtks = () => {
-  const { data, isLoading } = useGetAdministrativeArea()
+  const forms = useForm<any>({
+    mode: 'onTouched',
+    defaultValues: {
+      filter: ''
+    }
+  })
+
+  const [order, setorder] = useState('Menurun')
+  const { data, refetch, isLoading } = useGetAdministrativeArea(order)
 
   if (isLoading) return <Loading />
+
+  const onChange = async (values: any) => {
+    forms.setValue('filter', values)
+    setorder(values)
+    await refetch()
+  }
 
   return (
     <>
       <LongCard props={['Prevalensi DTKS Perkecamatan', 'Prevalensi DTKS Perkecamatan']}>
-        <LongCard.Tabel data={data} />
+        <div className=" w-[340px] my-5">
+          <div className="my-2">
+            <Form {...forms}>
+              <form className="flex flex-col">
+                <FormField
+                  name="filter"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold dark:text-white">Cari Berdasarkan</FormLabel>
+                      <Select defaultValue='Menurun' onValueChange={onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Menurun" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Menurun">Menurun</SelectItem>
+                          <SelectItem value="Menaik">Menaik</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </form>
+            </Form>
+          </div>
+          <LongCard.Tabel data={data} />
+        </div>
       </LongCard>
     </>
   )
@@ -80,13 +127,26 @@ const CardData = () => {
 
   if (isLoading) return <Loading />
 
-  const { beneficiaries, nonbeneficiaries, familybeneficiaries } = data
+  // console.log({ beneficiaries, nonbeneficiaries, familybeneficiaries })
+  const { beneficiaries, nonBeneficiaries, familyBeneficiaries } = data
+  // console.log({ beneficiaries, nonBeneficiaries, familyBeneficiaries })
 
   return (
     <>
-      <BasicCard props={['Total Data DTKS', beneficiaries, 'Jiwa']} />
-      <BasicCard props={['Jumlah data Non DTKS', nonbeneficiaries, 'Data']} />
-      <BasicCard props={['Jumlah Keluarga Penerima', familybeneficiaries, 'Data']} />
+      {isLoading ? (
+        <>
+          <Skeleton className="w-12 h-12 rounded-[14px]" />
+          <div className="flex flex-col gap-3">
+            <Skeleton className="w-[120px] h-3 rounded-[14px]" />
+            <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+          </div>
+        </>
+      ) : <>
+        <BasicCard props={['Total Data DTKS', beneficiaries, 'Jiwa']} />
+        <BasicCard props={['Jumlah data Non DTKS', nonBeneficiaries, 'Data']} />
+        <BasicCard props={['Jumlah Keluarga Penerima', familyBeneficiaries, 'Data']} />
+      </>
+      }
     </>
   )
 }
