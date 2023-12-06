@@ -8,27 +8,73 @@ import { Button } from '@/components/ui/button'
 import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
-import * as React from 'react'
-import { Action } from '@/components'
+import { Action, Loading } from '@/components'
+import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
+import { useGetKecamatan, useGetKelurahan, useGetPremiumAssistanceBenefitFn } from '@/store/server'
+import { useNavigate } from 'react-router-dom'
 
 const DataPbi = () => {
   useTitle('Data Penerima / Linjamsos / PBI ')
+  const navigate = useNavigate()
 
   interface FormValues {
-    nik: string
+    q: string
     kelurahan: string
     kecamatan: string
-    batch: string
+    type: string
   }
+  const createParams = useCreateParams()
+  const { q, kecamatan, kelurahan, page, type } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'type'])
   const forms = useForm<FormValues>({
-    mode: 'onTouched'
+    defaultValues: {
+      q: '',
+      kecamatan: '',
+      kelurahan: '',
+      type: ''
+    }
   })
-  const [currentPage, setCurrentPage] = React.useState(1)
+  const areaLevel3 = forms.watch('kecamatan')
+  const { data: listKecamatan } = useGetKecamatan()
+  const { data: listKelurahan } = useGetKelurahan(areaLevel3)
+  const {
+    data: premiums,
+    refetch,
+    isFetching,
+    isLoading
+  } = useGetPremiumAssistanceBenefitFn({
+    page: parseInt(page) ?? 1,
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    type,
+    q
+  })
+  useDisableBodyScroll(isFetching)
+console.log(premiums)
+  const updateParam = (key: any, value: any) => {
+    if (value !== '') {
+      createParams({ key, value })
+      createParams({ key: 'page', value: '' })
+    } else {
+      createParams({ key, value: '' })
+    }
+  }
 
   const onSubmit = async (values: FormValues) => {
-    console.log(values)
+    updateParam('q', values.q)
+    updateParam('kecamatan', values.kecamatan)
+    updateParam('kelurahan', values.kelurahan)
+    updateParam('type', values.type)
+
+    await refetch()
   }
 
+  const handleReset = () => {
+    navigate('/data-penerima/linjamsos/data-pkr')
+    forms.reset()
+  }
+  if (isLoading) {
+    return <Loading />
+  }
   // const handleReset = () => {
   //   navigate('/data-penerima/dayasos/data-djp')
   //   forms.reset()
@@ -41,7 +87,7 @@ const DataPbi = () => {
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="grid grid-cols-2 gap-x-5 gap-y-5 mt-6 ">
             <FormField
-              name="nik"
+              name="q"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
@@ -60,13 +106,64 @@ const DataPbi = () => {
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Jenis Keanggotaan" />
+                          <SelectValue placeholder="Pilih Kecamatan" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                        <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                        <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                      {listKecamatan?.map((item, index) => (
+                          <SelectItem key={index} value={item.id}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="kelurahan"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={areaLevel3 === '' || kecamatan === ''}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Kelurahan" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                      {listKelurahan?.map((item, index) => (
+                          <SelectItem key={index} value={item.id}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="type"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Jenis Anggotaan" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                          <SelectItem value="APBN">
+                            APBN
+                          </SelectItem>
+                          <SelectItem value="APBD">
+                            APBD
+                          </SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -84,16 +181,16 @@ const DataPbi = () => {
                 <SelectItem value=".csv">.csv</SelectItem>
               </SelectContent>
             </Select>
-            <div className="flex items-center gap-3">
-              <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg">
+            <div className='flex gap-3'>
+              <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
                 <HiArrowPath className="text-lg" />
                 <span>Reset</span>
               </Button>
-              <Button className="gap-2 border-none rounded-lg" type="submit">
-                <HiMagnifyingGlass className="text-lg" />
-                <span>Cari Data</span>
+              <Button>
+                <HiMagnifyingGlass className="w-4 h-4 py" />
+                <p className="font-bold text-sm text-white ml-3 w-max">Cari Data</p>
               </Button>
-            </div>
+              </div>
           </section>
         </form>
       </Form>
@@ -101,37 +198,49 @@ const DataPbi = () => {
         <Table>
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">No. </TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Keanggotaan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Anggaran</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="text-left  bg-[#F9FAFC]">1</TableCell>
-              <TableCell className="text-left  bg-[#F9FAFC]">Oza Kristen</TableCell>
-              <TableCell className="text-left  bg-[#F9FAFC]">Perempuan</TableCell>
-              <TableCell className="text-left  bg-[#F9FAFC]">1945</TableCell>
-              <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                <Action
-                  onDetail={() => showDetail(item.id)}
-                  onDelete={() => handleDelete(item.id)}
-                  onEdit={() => navigate(`/layanan/dayasos/Djp/${item.id}`)}
-                />
-              </TableCell>{' '}
-            </TableRow>
+            {premiums?.data?.length !== 0 ? (
+              premiums?.data.map((item, index) => (
+                <TableRow key={item.id}>
+                  <TableCell className="text-left bg-[#F9FAFC]">
+                    {(premiums.meta.currentPage - 1) * premiums.meta.perPage + index + 1}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.name ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.identityNumber ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">-</TableCell>
+                  {/* <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.address.areaLevel3?.name ?? '-'}</TableCell> */}
+                  {/* <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.address.areaLevel4?.name ?? '-'}</TableCell> */}
+                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                  <Action onDelete={() => console.log('delete')} onDetail={() => console.log('edit')} onEdit={() => console.log('detail')}/>
+        </TableCell>
+        </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={9} className="text-center">
+                    Tidak ada data
+                  </TableCell>
+                </TableRow>
+              )}
           </TableBody>
         </Table>
       </section>
-      <Pagination
-        className="px-5 py-5 flex justify-end"
-        currentPage={currentPage}
-        totalCount={100}
-        pageSize={10}
-        onPageChange={(page) => setCurrentPage(page)}
-      />
+      {(premiums?.meta?.total as number) > 10 ? (
+          <Pagination
+            className="px-5 py-5 flex justify-end"
+            currentPage={page !== '' ? parseInt(page) : 1}
+            totalCount={premiums?.meta.total as number}
+            pageSize={30}
+            onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
+          />
+        ) : null}
     </Container>
   )
 }

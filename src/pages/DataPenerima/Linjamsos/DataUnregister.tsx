@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button'
 import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
-import * as React from 'react'
 import DatePicker from '@/components/atoms/DatePicker'
 import { useNavigate } from 'react-router-dom'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
@@ -44,7 +43,6 @@ const DataUnregister = () => {
       year: ''
     }
   })
-  const [currentPage, setCurrentPage] = React.useState(1)
   const {
     data: unregisters,
     refetch,
@@ -208,13 +206,15 @@ const DataUnregister = () => {
           </TableBody>
         </Table>
         </section>
-        <Pagination
-          className="px-5 py-5 flex justify-end"
-          currentPage={currentPage}
-          totalCount={100}
-          pageSize={10}
-          onPageChange={(page) => setCurrentPage(page)}
-        />
+        {(unregisters?.meta?.total as number) > 10 ? (
+          <Pagination
+            className="px-5 py-5 flex justify-end"
+            currentPage={page !== '' ? parseInt(page) : 1}
+            totalCount={unregisters?.meta.total as number}
+            pageSize={30}
+            onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
+          />
+        ) : null}
       </Container>
     </div>
   )
