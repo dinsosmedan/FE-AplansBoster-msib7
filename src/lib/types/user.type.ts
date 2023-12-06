@@ -8,6 +8,9 @@ export interface IUser {
     name: string
     email: string
     role: IRole
+    identityNumber: string
+    phoneNumber: string
+    isActive: boolean
   }
 }
 export interface IAuthResponse {
@@ -16,6 +19,7 @@ export interface IAuthResponse {
     accessToken: string
     tokenType: string
     expiresIn: number
+    user: IUser['data']
   }
 }
 

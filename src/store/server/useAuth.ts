@@ -55,6 +55,7 @@ export const useLoginPublic = () => {
     onSuccess: async (data) => {
       await queryClient.invalidateQueries('user-public')
       useUserPublicToken.getState().storeToken(data.data.accessToken)
+      useUserPublicToken.getState().storeUser(data.data.user)
       toast({
         title: 'Login Success',
         description: 'You have successfully logged in.'
