@@ -1,4 +1,9 @@
-import { type IIndigencyCertificate, type IUnregister, type IVulnerableGroupHandling } from '@/lib/types/linjamsos.type'
+import {
+  type IPremiumAssistanceBenefit,
+  type IIndigencyCertificate,
+  type IUnregister,
+  type IVulnerableGroupHandling
+} from '@/lib/types/linjamsos.type'
 import api from './axiosInstance'
 
 export interface VulnerableGroupHandlingQuery {
@@ -22,6 +27,13 @@ export interface IndigencyCertificateQuery {
   q?: string
   year?: string
   status?: string
+}
+export interface PremiumAssistanceBenefitQuery {
+  page?: number
+  q?: string
+  type?: string
+  idKecamatan?: string
+  idKelurahan?: string
 }
 // Penanganan Kelompok Renta //
 export const getVulnerableGroupHandlingFn = async ({
@@ -55,6 +67,19 @@ export const getIndigencyCertificateFn = async ({
 }: IndigencyCertificateQuery): Promise<IIndigencyCertificate> => {
   const response = await api.get(
     `/indigency-certificate?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&issue_year=${year}&is_dtks=${status}&limit=10`
+  )
+  return response.data
+}
+// PBI //
+export const getPremiumAssistanceBenefitFn = async ({
+  page,
+  type,
+  idKecamatan,
+  idKelurahan,
+  q
+}: PremiumAssistanceBenefitQuery): Promise<IPremiumAssistanceBenefit> => {
+  const response = await api.get(
+    `/premium-assistance-beneficiary?page=${page}&type=${type}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&limit=10`
   )
   return response.data
 }

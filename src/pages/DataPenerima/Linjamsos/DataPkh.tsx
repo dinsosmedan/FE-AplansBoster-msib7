@@ -10,8 +10,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 
-const DataSktm = () => {
-  useTitle('Data Penerima / Linjamsos / SKTM ')
+const DataPkh = () => {
+  useTitle('Data Penerima / Linjamsos / PKH ')
 
   interface FormValues {
     nik: string
@@ -35,7 +35,7 @@ const DataSktm = () => {
 
   return (
     <Container>
-      <h1 className="font-bold text-2xl ">Surat Keterangan Tidak Mampu (SKTM)</h1>
+      <h1 className="font-bold text-2xl ">Program Keluarga Harapan (PKH)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="grid grid-cols-3 gap-x-5 gap-y-5 mt-6 ">
@@ -91,7 +91,7 @@ const DataSktm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} type="number" placeholder="Masukan Jenis Pengajuan" />
+                    <Input {...field} type="number" placeholder="Jenis Pengajuan" />
                   </FormControl>
                 </FormItem>
               )}
@@ -206,4 +206,4 @@ const DataSktm = () => {
     </Container>
   )
 }
-export default DataSktm
+export default DataPkh

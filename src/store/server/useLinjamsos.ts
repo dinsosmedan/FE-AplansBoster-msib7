@@ -4,7 +4,9 @@ import {
   getUnregisterFn,
   type UnregisterQuery,
   getIndigencyCertificateFn,
-  type IndigencyCertificateQuery
+  type IndigencyCertificateQuery,
+  getPremiumAssistanceBenefitFn,
+  type PremiumAssistanceBenefitQuery
 } from '@/api/linjamsos.api'
 import { useQuery } from 'react-query'
 
@@ -55,6 +57,31 @@ export const useGetIndigencyCertificateFn = ({
         q,
         year,
         status
+      }),
+    {
+      keepPreviousData: true,
+      staleTime: 5000
+    }
+  )
+}
+
+// PBI //
+export const useGetPremiumAssistanceBenefitFn = ({
+  page,
+  idKecamatan,
+  idKelurahan,
+  q,
+  type
+}: PremiumAssistanceBenefitQuery) => {
+  return useQuery(
+    ['indigency-certificates', page, idKecamatan, idKelurahan, q, type],
+    async () =>
+      await getPremiumAssistanceBenefitFn({
+        page,
+        idKecamatan,
+        idKelurahan,
+        q,
+        type
       }),
     {
       keepPreviousData: true,

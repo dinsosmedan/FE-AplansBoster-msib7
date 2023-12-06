@@ -37,7 +37,8 @@ import {
   RegisterUser,
   ForgotPasswordUser,
   UpdatePasswordUser,
-  CekBansosUser
+  CekBansosUser,
+  DataPkh
 } from './pages'
 import {
   DashboardLayout,
@@ -66,6 +67,7 @@ import DataHibah from './pages/DataPenerima/Dayasos/DataHibah'
 import { Toaster } from './components/ui/toaster'
 import DataBpnt from './pages/DataPenerima/Dayasos/DataBpnt'
 import DataPbi from './pages/DataPenerima/Linjamsos/DataPbi'
+import Unregister from './pages/Layanan/Linjamsos/Unregister'
 // import DataPkr from './pages/DataPenerima/Linjamsos/DataPkr'
 
 export default function App() {
@@ -114,6 +116,7 @@ export default function App() {
               <Route path="Bbp" element={<Bbp />} />
               <Route path="Pkr" element={<Pkr />} />
               <Route path="Sktm" element={<Sktm />} />
+              <Route path="Unregister" element={<Unregister />} />
             </Route>
             <Route path="/layanan/dayasos">
               <Route index element={<LayananDayasos />} />
@@ -149,6 +152,7 @@ export default function App() {
               <Route path="data-bbp" element={<DataBbp />} />
               <Route path="data-sktm" element={<DataSktm />} />
               <Route path="data-pbi" element={<DataPbi />} />
+              <Route path="data-pkh" element={<DataPkh />} />
             </Route>
             <Route path="/data-dtks" element={<DataDtks />} />
           </Route>
