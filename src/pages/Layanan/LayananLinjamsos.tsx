@@ -33,7 +33,7 @@ const LayananLinjamsos = () => {
         <CardSub
           title={'Tidak Terdaftar'}
           subTitle={'Unregister'}
-          href={'/layanan/linjamsos/tidak-terdaftar'}
+          href={'/layanan/linjamsos/data-unregister'}
         />
       </div>
     </Container>

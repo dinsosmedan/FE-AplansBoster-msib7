@@ -98,3 +98,15 @@ export interface IIndigencyCertificate {
   }>
   meta: IMeta
 }
+export interface IPremiumAssistanceBenefit {
+  success: boolean
+  message: string
+  data: Array<{
+    id: string
+    beneficiary: IBeneficary
+    type: string
+    createdAt: string
+    updatedAt: string
+  }>
+  meta: IMeta
+}
