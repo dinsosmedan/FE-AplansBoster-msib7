@@ -3,7 +3,10 @@ import {
   type IIndigencyCertificate,
   type IUnregister,
   type IVulnerableGroupHandling,
-  type IFamilyHope
+  type IFamilyHope,
+  type IPremiumAssistanceBenefitById,
+  type IVulnerableGroupHandlingDetail,
+  type IUnregisterDetail
 } from '@/lib/types/linjamsos.type'
 import api from './axiosInstance'
 import { type unregisterFields, type vulnerableGroupHandlingFields } from '@/lib/validations/linjamsos.validation'
@@ -62,6 +65,20 @@ export const storeVulnerableGroupHandlingFn = async (data: vulnerableGroupHandli
   await api.post('/vulnarable-group-handling', data)
 }
 
+export const showDetailVulnerableGroupHandlingFn = async (id: string): Promise<IVulnerableGroupHandlingDetail> => {
+  const response = await api.get(`/vulnerable-group-handling/${id}`)
+  return response.data?.data
+}
+
+interface IVulnerableGroupHandlingUpdate {
+  id: string
+  fields: vulnerableGroupHandlingFields
+}
+
+export const updateVulnerableGroupHandlingFn = async ({ id, fields }: IVulnerableGroupHandlingUpdate) => {
+  await api.put(`/vulnerable-group-handling/${id}`, fields)
+}
+
 // Unregister //
 export const getUnregisterFn = async ({ page, date, letterNumber, q, year }: UnregisterQuery): Promise<IUnregister> => {
   const response = await api.get(
@@ -72,6 +89,20 @@ export const getUnregisterFn = async ({ page, date, letterNumber, q, year }: Unr
 
 export const storeUnregisterFn = async (data: unregisterFields) => {
   await api.post('/unregister', data)
+}
+
+export const showDetailUnregisterFn = async (id: string): Promise<IUnregisterDetail> => {
+  const response = await api.get(`/unregister/${id}`)
+  return response.data?.data
+}
+
+interface IUnregisterUpdate {
+  id: string
+  fields: unregisterFields
+}
+
+export const updateUnregisterFn = async ({ id, fields }: IUnregisterUpdate) => {
+  await api.put(`/unregister/${id}`, fields)
 }
 
 // SKTM //
@@ -101,7 +132,10 @@ export const getPremiumAssistanceBenefitFn = async ({
   )
   return response.data
 }
-
+export const getPremiumAssistanceBenefitByIdFn = async (id: string): Promise<IPremiumAssistanceBenefitById> => {
+  const response = await api.get(`/premium-assistance-beneficiary/${id}`)
+  return response.data?.data
+}
 // PKH //
 export const getFamilyHopeFn = async ({ page, q }: FamilyHopeQuery): Promise<IFamilyHope> => {
   const response = await api.get(`/family-hope-program?page=${page}&q=${q}&limit=10`)

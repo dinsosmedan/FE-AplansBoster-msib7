@@ -1,40 +1,44 @@
 import { type IBeneficary } from './beneficary.type'
 import { type IAddress, type IMeta } from './dayasos.type'
 
+export interface IVulnerableGroupHandlingDetail {
+  id: string
+  beneficiary: IBeneficary
+  incidentDate: string
+  incidentAddress: string
+  bankAccountNumber: string
+  bankName: string
+  assistanceAmount: number
+  budgetYear: string
+  createdAt: string
+  updatedAt: string
+}
+
 export interface IVulnerableGroupHandling {
   success: boolean
   message: string
-  data: Array<{
-    id: string
-    beneficiary: IBeneficary
-    incidentDate: string
-    incidentAddress: string
-    bankAccountNumber: string
-    bankName: string
-    assistanceAmount: number
-    budgetYear: string
-    createdAt: string
-    updatedAt: string
-  }>
+  data: IVulnerableGroupHandlingDetail[]
   meta: IMeta
+}
+
+export interface IUnregisterDetail {
+  id: string
+  name: string
+  age: string
+  gender: string
+  dinsosLetterNumber: string
+  dinsosLetterDate: string
+  deseaseDiagnosis: string
+  hospitalEntryDate: string
+  hospitalLetterNumber: string
+  hospitalLetterDate: string
+  createdAt: string
+  updatedAt: string
 }
 export interface IUnregister {
   success: boolean
   message: string
-  data: Array<{
-    id: string
-    name: string
-    age: string
-    gender: string
-    dinsosLetterNumber: string
-    dinsosLetterDate: string
-    deseaseDiagnosis: string
-    hospitalEntryDate: string
-    hospitalLetterNumber: string
-    hospitalLetterDate: string
-    createdAt: string
-    updatedAt: string
-  }>
+  data: IUnregisterDetail[]
   meta: IMeta
 }
 export interface IApplicant {
@@ -108,6 +112,16 @@ export interface IPremiumAssistanceBenefit {
     createdAt: string
     updatedAt: string
   }>
+  meta: IMeta
+}
+export interface IPremiumAssistanceBenefitById {
+  success: boolean
+  message: string
+  id: string
+  beneficiary: IBeneficary
+  type: string
+  createdAt: string
+  updatedAt: string
   meta: IMeta
 }
 export interface IFamilyHope {

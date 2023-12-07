@@ -1,7 +1,15 @@
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { type vulnerableGroupHandlingFields } from '@/lib/validations/linjamsos.validation'
-import { useCreateVulnerableGroupHandling, useGetBeneficaryByNIK } from '@/store/server'
-import { Container, DatePicker } from '@/components'
+import {
+  vulnerableGroupHandlingValidation,
+  type vulnerableGroupHandlingFields
+} from '@/lib/validations/linjamsos.validation'
+import {
+  useCreateVulnerableGroupHandling,
+  useGetBeneficaryByNIK,
+  useGetDetailVulnerableGroupHandling,
+  useUpdateVulnerableGroupHandling
+} from '@/store/server'
+import { Container, DatePicker, Loading } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import useTitle from '@/hooks/useTitle'
@@ -9,22 +17,43 @@ import { useToastNik } from '@/hooks'
 
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
+import { useNavigate, useParams } from 'react-router-dom'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { formatDateToString, formatStringToDate } from '@/lib/formatDate'
 
 const Pkr = () => {
   useTitle('Penanganan Kelompok Rentan (PKR)')
+  const navigate = useNavigate()
+  const { id } = useParams<{ id: string }>()
   const [NIK, setNIK] = React.useState('')
 
   const { mutate: createVulnerableGroupHandling, isLoading: isLoadingCreate } = useCreateVulnerableGroupHandling()
   const { data: beneficiary, refetch, isLoading, isError } = useGetBeneficaryByNIK(NIK, false)
+  const {
+    data: vulnerableGroupHandling,
+    isLoading: isLoadingDetail,
+    isSuccess
+  } = useGetDetailVulnerableGroupHandling(id as string)
+
+  const { mutate: updateVulnerableGroupHandling, isLoading: isLoadingUpdate } = useUpdateVulnerableGroupHandling()
 
   const forms = useForm<vulnerableGroupHandlingFields>({
-    mode: 'onTouched'
+    mode: 'onTouched',
+    resolver: yupResolver(vulnerableGroupHandlingValidation)
   })
 
+  const onSuccess = () => {
+    forms.reset()
+    navigate('/data-penerima/linjamsos/data-pkr')
+  }
+
   const onSubmit = async (values: vulnerableGroupHandlingFields) => {
-    createVulnerableGroupHandling(values, {
-      onSuccess: () => forms.reset()
-    })
+    const newData = {
+      ...values,
+      incidentDate: formatDateToString(values.incidentDate as Date)
+    }
+    if (!id) return createVulnerableGroupHandling(newData, { onSuccess })
+    updateVulnerableGroupHandling({ id, fields: newData }, { onSuccess })
   }
 
   useToastNik({
@@ -34,32 +63,54 @@ const Pkr = () => {
     notRegisteredCondition: forms.getValues('beneficiary') === '' && NIK !== '' && forms.formState.isSubmitted
   })
 
+  React.useEffect(() => {
+    if (isSuccess) {
+      forms.reset({
+        beneficiary: vulnerableGroupHandling.beneficiary.id,
+        assistanceAmount: vulnerableGroupHandling.assistanceAmount,
+        bankAccountNumber: vulnerableGroupHandling.bankAccountNumber,
+        bankName: vulnerableGroupHandling.bankName,
+        budgetYear: vulnerableGroupHandling.budgetYear,
+        incidentAddress: vulnerableGroupHandling.incidentAddress,
+        incidentDate: vulnerableGroupHandling.incidentDate
+          ? formatStringToDate(vulnerableGroupHandling.incidentDate)
+          : ''
+      })
+    }
+  }, [vulnerableGroupHandling])
+
+  if (isLoadingDetail) {
+    return <Loading />
+  }
+
   return (
     <Container className="py-7">
       <section className="w-9/12 mx-auto">
-        <p className="text-2xl font-bold text-center">Data Personal</p>
+        {!id && <p className="text-2xl font-bold text-center">Data Personal</p>}
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-            <div className="flex flex-row justify-between gap-3">
-              <div className="w-11/12">
-                <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      value={NIK}
-                      onChange={(e) => setNIK(e.target.value)}
-                      placeholder="Masukkan NIK Masyarakat"
-                    />
-                  </FormControl>
-                </FormItem>
+            {!id && (
+              <div className="flex flex-row justify-between gap-3">
+                <div className="w-11/12">
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        value={NIK}
+                        onChange={(e) => setNIK(e.target.value)}
+                        placeholder="Masukkan NIK Masyarakat"
+                      />
+                    </FormControl>
+                  </FormItem>
+                </div>
+                <div className="w-1/12 flex items-end justify-end">
+                  <Button className="w-full" type="button" onClick={async () => await refetch()} loading={isLoading}>
+                    Cari
+                  </Button>
+                </div>
               </div>
-              <div className="w-1/12 flex items-end justify-end">
-                <Button className="w-full" type="button" onClick={async () => await refetch()} loading={isLoading}>
-                  Cari
-                </Button>
-              </div>
-            </div>
+            )}
             <div className="w-full text-center">
               <p className="text-2xl font-bold">Alamat</p>
             </div>
@@ -172,12 +223,12 @@ const Pkr = () => {
                 />
               </div>
             </div>
-            <div className="flex justify-end gap-5">
+            <div className="flex justify-end gap-4">
               <Button variant="cancel" type="button" onClick={() => forms.reset()}>
                 Cancel
               </Button>
-              <Button type="submit" loading={isLoadingCreate}>
-                Submit
+              <Button type="submit" loading={isLoadingCreate || isLoadingUpdate}>
+                {id ? 'Update' : 'Submit'}
               </Button>
             </div>
           </form>

@@ -8,15 +8,17 @@ import { Button } from '@/components/ui/button'
 import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
-import { Action, Loading } from '@/components'
+import { Action, Loading, Modal } from '@/components'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useGetKecamatan, useGetKelurahan, useGetPremiumAssistanceBenefitFn } from '@/store/server'
+import { useGetKecamatan, useGetKelurahan, useGetPremiumAssistanceBenefitByID, useGetPremiumAssistanceBenefitFn } from '@/store/server'
 import { useNavigate } from 'react-router-dom'
+import React from 'react'
 
 const DataPbi = () => {
   useTitle('Data Penerima / Linjamsos / PBI ')
   const navigate = useNavigate()
-
+  const [isShow, setIsShow] = React.useState(false)
+  const [selectedId, setSelectedId] = React.useState('')
   interface FormValues {
     q: string
     kelurahan: string
@@ -36,6 +38,8 @@ const DataPbi = () => {
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3)
+  const { data: premium, isLoading: isLoadingPremium } = useGetPremiumAssistanceBenefitByID(selectedId)
+
   const {
     data: premiums,
     refetch,
@@ -49,7 +53,6 @@ const DataPbi = () => {
     q
   })
   useDisableBodyScroll(isFetching)
-console.log(premiums)
   const updateParam = (key: any, value: any) => {
     if (value !== '') {
       createParams({ key, value })
@@ -67,12 +70,15 @@ console.log(premiums)
 
     await refetch()
   }
-
+  const showDetail = (id: string) => {
+    setSelectedId(id)
+    setIsShow(true)
+  }
   const handleReset = () => {
     navigate('/data-penerima/linjamsos/data-pkr')
     forms.reset()
   }
-  if (isLoading) {
+  if (isLoading && isLoadingPremium) {
     return <Loading />
   }
   // const handleReset = () => {
@@ -218,7 +224,7 @@ console.log(premiums)
                   {/* <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.address.areaLevel3?.name ?? '-'}</TableCell> */}
                   {/* <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.address.areaLevel4?.name ?? '-'}</TableCell> */}
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Action onDelete={() => console.log('delete')} onDetail={() => console.log('edit')} onEdit={() => console.log('detail')}/>
+                  <Action onDelete={() => console.log('delete')} onDetail={() => showDetail(item.id)} onEdit={() => console.log('detail')}/>
         </TableCell>
         </TableRow>
                 ))
@@ -241,6 +247,59 @@ console.log(premiums)
             onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
           />
         ) : null}
+        <Modal isShow={isShow} className="md:max-w-4xl">
+        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+        </Modal.Header>
+        {isLoadingPremium && <Loading />}
+        <div className="grid grid-cols-3 gap-y-5">
+          <div>
+              <p className="text-sm font-bold">Nama</p>
+              <p className="text-base capitalize">{premium?.beneficiary.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">NIK</p>
+              <p className="text-base capitalize">{premium?.beneficiary.identityNumber ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">No. KK</p>
+              <p className="text-base capitalize">{premium?.beneficiary.familyCardNumber ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kecamatan</p>
+              <p className="text-base capitalize">{premium?.beneficiary.address.areaLevel3?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kelurahan</p>
+              <p className="text-base capitalize">{premium?.beneficiary.address.areaLevel4?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Alamat Lengkap</p>
+              <p className="text-base capitalize">{premium?.beneficiary.address.fullAddress ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Pekerjaan</p>
+              <p className="text-base capitalize">{premium?.beneficiary.occupation ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
+              <p className="text-base capitalize">{premium?.beneficiary.birthPlace ?? '-'} / {premium?.beneficiary.birthDate ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Status DTKS</p>
+              <p className="text-base capitalize">{premium?.beneficiary.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Jenis Anggaran</p>
+              <p className="text-base capitalize">{premium?.type ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Usia</p>
+              <p className="text-base capitalize">{premium?.beneficiary.age ?? '-'}</p>
+            </div>
+        </div>
+      </Modal>
     </Container>
   )
 }

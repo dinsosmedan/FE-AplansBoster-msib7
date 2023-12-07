@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { HiMagnifyingGlass } from 'react-icons/hi2'
 import * as React from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { useTitle } from '@/hooks'
+import { useDisableBodyScroll, useTitle } from '@/hooks'
 import { NotFoundBansos } from '@/assets'
 import { useGetAssistanceCheck } from '@/store/server/usePublic'
 import { useGetBeneficaryByNIK } from '@/store/server'
@@ -17,7 +17,8 @@ export default function CekBansosUser() {
     data: beneficary,
     refetch: refetchBeneficary,
     isFetching: isFetchingBeneficary,
-    isSuccess: isSuccessBeneficary
+    isSuccess: isSuccessBeneficary,
+    isError: isErrorBeneficary
   } = useGetBeneficaryByNIK(NIK, false)
 
   const {
@@ -27,6 +28,8 @@ export default function CekBansosUser() {
     isSuccess: isSuccessAssistance,
     isError: isErrorAssistance
   } = useGetAssistanceCheck(NIK, false)
+
+  useDisableBodyScroll(isFetchingBeneficary || isFetchingAssistance)
 
   const handleRefetch = async () => {
     await refetchBeneficary()
@@ -59,9 +62,8 @@ export default function CekBansosUser() {
           </Button>
         </div>
       </section>
-      {!isSuccessAssistance && !isSuccessBeneficary && <div className="min-h-[calc(100vh-340px)]" />}
-      {isSuccessAssistance && isSuccessBeneficary && (
-        <div className="px-14 pb-9 flex flex-col gap-5 mt-[72px]">
+      <div className="px-14 pb-9 flex flex-col gap-5 mt-[72px] min-h-[calc(100vh-340px)]">
+        {isSuccessAssistance && isSuccessBeneficary && (
           <section className="bg-white px-9 py-8">
             <Table containerClassName="max-w-none">
               <TableHeader>
@@ -76,26 +78,31 @@ export default function CekBansosUser() {
               </TableHeader>
               <TableBody>
                 <TableRow className="hover:bg-white">
-                  <TableCell position="center">{beneficary.identityNumber}</TableCell>
-                  <TableCell position="center">{beneficary.name}</TableCell>
-                  <TableCell position="center">{beneficary.gender}</TableCell>
-                  <TableCell position="center">{beneficary.address.areaLevel3?.name}</TableCell>
-                  <TableCell position="center">{beneficary.address.areaLevel4?.name}</TableCell>
-                  <TableCell position="center">{beneficary.isDtks ? 'IYA' : 'TIDAK'}</TableCell>
+                  <TableCell position="center">{beneficary?.identityNumber}</TableCell>
+                  <TableCell position="center">{beneficary?.name}</TableCell>
+                  <TableCell position="center">{beneficary?.gender}</TableCell>
+                  <TableCell position="center">{beneficary?.address.areaLevel3?.name}</TableCell>
+                  <TableCell position="center">{beneficary?.address.areaLevel4?.name}</TableCell>
+                  <TableCell position="center">{beneficary?.isDtks ? 'IYA' : 'TIDAK'}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </section>
+        )}
+        {isErrorAssistance || isErrorBeneficary ? (
           <section className="bg-white py-14 px-32">
-            {isErrorAssistance ? (
-              <div className="flex flex-col justify-center items-center">
-                <img src={NotFoundBansos} alt="not-found-bansos" />
-                <h1 className="font-bold text-3xl text-center mt-9">Tidak Ada Bantuan Sosial Terdaftar</h1>
-                <p className="text-[#8B8B8B] max-w-[476px] text-center mt-3">
-                  Mohon Maaf, Data Anda Belum Terdaftar dalam Program Bantuan Sosial
-                </p>
-              </div>
-            ) : (
+            <div className="flex flex-col justify-center items-center">
+              <img src={NotFoundBansos} alt="not-found-bansos" />
+              <h1 className="font-bold text-3xl text-center mt-9">Tidak Ada Bantuan Sosial Terdaftar</h1>
+              <p className="text-[#8B8B8B] max-w-[476px] text-center mt-3">
+                Mohon Maaf, Data Anda Belum Terdaftar dalam Program Bantuan Sosial
+              </p>
+            </div>
+          </section>
+        ) : (
+          isSuccessAssistance &&
+          isSuccessAssistance && (
+            <section className="bg-white py-14 px-32">
               <Table containerClassName="max-w-none">
                 <TableHeader>
                   <TableRow className="hover:bg-white">
@@ -105,7 +112,7 @@ export default function CekBansosUser() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {assistances.assistances.map((assistance) => (
+                  {assistances?.assistances.map((assistance) => (
                     <TableRow className="hover:bg-white" key={assistance.id}>
                       <TableCell position="center">{assistance.product.name}</TableCell>
                       <TableCell position="center">{assistance.year}</TableCell>
@@ -130,10 +137,10 @@ export default function CekBansosUser() {
                   ))}
                 </TableBody>
               </Table>
-            )}
-          </section>
-        </div>
-      )}
+            </section>
+          )
+        )}
+      </div>
     </section>
   )
 }

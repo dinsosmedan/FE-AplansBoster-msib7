@@ -6,20 +6,31 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import useTitle from '@/hooks/useTitle'
 import Container from '@/components/atoms/Container'
 import { unregisterValidation, type unregisterFields } from '@/lib/validations/linjamsos.validation'
-import { DatePicker } from '@/components'
+import { DatePicker, Loading } from '@/components'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useCreateUnregister } from '@/store/server'
-import { formatDateToString } from '@/lib/formatDate'
+import { useCreateUnregister, useGetDetailUnregister, useUpdateUnregister } from '@/store/server'
+import { formatDateToString, formatStringToDate } from '@/lib/formatDate'
+import { useNavigate, useParams } from 'react-router-dom'
+import * as React from 'react'
 
 const Unregister = () => {
   useTitle('Unregister)')
 
+  const navigate = useNavigate()
+  const { id } = useParams<{ id: string }>()
   const { mutate: createUnregister, isLoading } = useCreateUnregister()
+  const { data: unregister, isLoading: isLoadingDetail, isSuccess } = useGetDetailUnregister(id as string)
+  const { mutate: updateUnregister, isLoading: isLoadingUpdate } = useUpdateUnregister()
 
   const forms = useForm<unregisterFields>({
     mode: 'onTouched',
     resolver: yupResolver(unregisterValidation)
   })
+
+  const onSuccess = () => {
+    forms.reset()
+    navigate('/data-penerima/linjamsos/data-unregister')
+  }
 
   const onSubmit = async (values: unregisterFields) => {
     const newData = {
@@ -29,9 +40,28 @@ const Unregister = () => {
       hospitalLetterDate: formatDateToString(values.hospitalLetterDate as Date)
     }
 
-    createUnregister(newData, {
-      onSuccess: () => forms.reset()
-    })
+    if (!id) return createUnregister(newData, { onSuccess })
+    updateUnregister({ id, fields: newData }, { onSuccess })
+  }
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      forms.reset({
+        name: unregister.name,
+        age: unregister.age,
+        gender: unregister.gender,
+        dinsosLetterNumber: unregister.dinsosLetterNumber,
+        dinsosLetterDate: formatStringToDate(unregister.dinsosLetterDate),
+        deseaseDiagnosis: unregister.deseaseDiagnosis,
+        hospitalEntryDate: formatStringToDate(unregister.hospitalEntryDate),
+        hospitalLetterNumber: unregister.hospitalLetterNumber,
+        hospitalLetterDate: formatStringToDate(unregister.hospitalLetterDate)
+      })
+    }
+  }, [isSuccess])
+
+  if (isLoadingDetail) {
+    return <Loading />
   }
 
   return (
@@ -210,7 +240,7 @@ const Unregister = () => {
             <Button variant="cancel" type="button">
               Cancel
             </Button>
-            <Button type="submit" loading={isLoading}>
+            <Button type="submit" loading={isLoading || isLoadingUpdate}>
               Submit
             </Button>
           </div>

@@ -10,12 +10,17 @@ import {
   storeVulnerableGroupHandlingFn,
   storeUnregisterFn,
   getFamilyHopeFn,
-  type FamilyHopeQuery
+  type FamilyHopeQuery,
+  showDetailVulnerableGroupHandlingFn,
+  updateVulnerableGroupHandlingFn,
+  updateUnregisterFn,
+  showDetailUnregisterFn
 } from '@/api/linjamsos.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
 import { type AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { getPremiumAssistanceBenefitByIdFn } from '../../api/linjamsos.api'
 
 // Penanganan Kelompok Rentan//
 export const useVulnerableGroupHandlings = ({
@@ -59,6 +64,36 @@ export const useCreateVulnerableGroupHandling = () => {
   })
 }
 
+export const useGetDetailVulnerableGroupHandling = (id: string) => {
+  return useQuery(['vulnerable', id], async () => await showDetailVulnerableGroupHandlingFn(id), {
+    enabled: !!id
+  })
+}
+
+export const useUpdateVulnerableGroupHandling = () => {
+  const queryClient = useQueryClient()
+  return useMutation(updateVulnerableGroupHandlingFn, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries('vulnerable')
+      toast({
+        title: 'Proses Berhasil',
+        description: 'Data Penanganan Kelompok Rentan (PKR) berhasil diubah'
+      })
+    },
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message ?? 'Gagal',
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
+    }
+  })
+}
+
 // Unregister //
 export const useUnregisters = ({ page, date, letterNumber, q, year }: UnregisterQuery) => {
   return useQuery(
@@ -80,6 +115,36 @@ export const useCreateUnregister = () => {
       toast({
         title: 'Proses Berhasil',
         description: 'Data Tidak terdaftar (Unregister) berhasil ditambahkan'
+      })
+    },
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message ?? 'Gagal',
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
+    }
+  })
+}
+
+export const useGetDetailUnregister = (id: string) => {
+  return useQuery(['unregister', id], async () => await showDetailUnregisterFn(id), {
+    enabled: !!id
+  })
+}
+
+export const useUpdateUnregister = () => {
+  const queryClient = useQueryClient()
+  return useMutation(updateUnregisterFn, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries('unregisters')
+      toast({
+        title: 'Proses Berhasil',
+        description: 'Data Tidak terdaftar (Unregister) berhasil diubah'
       })
     },
     onError: (error: AxiosError) => {
@@ -147,7 +212,11 @@ export const useGetPremiumAssistanceBenefitFn = ({
     }
   )
 }
-
+export const useGetPremiumAssistanceBenefitByID = (id?: string) => {
+  return useQuery(['worship-place', id], async () => await getPremiumAssistanceBenefitByIdFn(id as string), {
+    enabled: !!id
+  })
+}
 // PKH //
 export const useGetFamilyHopeFn = ({ page, type, idKecamatan, idKelurahan, q }: FamilyHopeQuery) => {
   return useQuery(

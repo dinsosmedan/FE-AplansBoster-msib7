@@ -274,7 +274,7 @@ const DataPokmas = () => {
           </form>
         </Form>
         <section className="border rounded-xl mt-5 overflow-hidden">
-          <Table">
+          <Table>
             <TableHeader className="bg-zinc-300">
               <TableRow>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
