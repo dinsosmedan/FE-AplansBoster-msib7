@@ -17,9 +17,10 @@ import {
   useGetKecamatan,
   useGetKelurahan
 } from '@/store/server'
-import { Action, Loading, Modal } from '@/components'
+import { Action, ExportButton, Loading, Modal } from '@/components'
 import { useAlert } from '@/store/client'
 import { useNavigate } from 'react-router-dom'
+import { exportJointBussinessFn } from '@/api/dayasos.api'
 interface FormValues {
   q: string
   kelurahan: string
@@ -47,6 +48,8 @@ const DataKube = () => {
     }
   })
   const [isLoadingPage, setIsLoadingPage] = React.useState(false)
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
+
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
@@ -133,10 +136,23 @@ const DataKube = () => {
   if (isLoading && isLoadingBusinessGroup) {
     return <Loading />
   }
+
+  const exportAsCsv = async () => {
+    setIsLoadingExport(true)
+    await exportJointBussinessFn('data-kube', 'csv')
+    setIsLoadingExport(false)
+  }
+
+  const exportAsXlsx = async () => {
+    setIsLoadingExport(true)
+    await exportJointBussinessFn('data-kube', 'xlsx')
+    setIsLoadingExport(false)
+  }
+
   return (
     <div>
       <Container>
-        {isFetching && <Loading />}
+        {(isFetching || isLoadingExport) && <Loading />}
         <h1 className="font-bold ext-2xl ">Kelompok Usaha Bersama (Kube)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -217,15 +233,11 @@ const DataKube = () => {
               />
             </div>
             <section className="flex items-center justify-between">
-              <Select>
-                <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
-                  <SelectValue placeholder="Export" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value=".clsx">.clsx</SelectItem>
-                  <SelectItem value=".csv">.csv</SelectItem>
-                </SelectContent>
-              </Select>
+              <div>
+                {businessGroups?.data?.length !== 0 ? (
+                  <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+                ) : null}
+              </div>
               <div className="flex items-center gap-3">
                 <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
                   <HiArrowPath className="text-lg" />

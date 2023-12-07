@@ -4,9 +4,12 @@ import {
   type IUnregister,
   type IVulnerableGroupHandling,
   type IFamilyHope,
-  type IPremiumAssistanceBenefitById
+  type IPremiumAssistanceBenefitById,
+  type IVulnerableGroupHandlingDetail,
+  type IUnregisterDetail
 } from '@/lib/types/linjamsos.type'
 import api from './axiosInstance'
+import { type unregisterFields, type vulnerableGroupHandlingFields } from '@/lib/validations/linjamsos.validation'
 
 export interface VulnerableGroupHandlingQuery {
   page?: number
@@ -58,6 +61,24 @@ export const getVulnerableGroupHandlingFn = async ({
   return response.data
 }
 
+export const storeVulnerableGroupHandlingFn = async (data: vulnerableGroupHandlingFields) => {
+  await api.post('/vulnarable-group-handling', data)
+}
+
+export const showDetailVulnerableGroupHandlingFn = async (id: string): Promise<IVulnerableGroupHandlingDetail> => {
+  const response = await api.get(`/vulnerable-group-handling/${id}`)
+  return response.data?.data
+}
+
+interface IVulnerableGroupHandlingUpdate {
+  id: string
+  fields: vulnerableGroupHandlingFields
+}
+
+export const updateVulnerableGroupHandlingFn = async ({ id, fields }: IVulnerableGroupHandlingUpdate) => {
+  await api.put(`/vulnerable-group-handling/${id}`, fields)
+}
+
 // Unregister //
 export const getUnregisterFn = async ({ page, date, letterNumber, q, year }: UnregisterQuery): Promise<IUnregister> => {
   const response = await api.get(
@@ -65,6 +86,25 @@ export const getUnregisterFn = async ({ page, date, letterNumber, q, year }: Unr
   )
   return response.data
 }
+
+export const storeUnregisterFn = async (data: unregisterFields) => {
+  await api.post('/unregister', data)
+}
+
+export const showDetailUnregisterFn = async (id: string): Promise<IUnregisterDetail> => {
+  const response = await api.get(`/unregister/${id}`)
+  return response.data?.data
+}
+
+interface IUnregisterUpdate {
+  id: string
+  fields: unregisterFields
+}
+
+export const updateUnregisterFn = async ({ id, fields }: IUnregisterUpdate) => {
+  await api.put(`/unregister/${id}`, fields)
+}
+
 // SKTM //
 export const getIndigencyCertificateFn = async ({
   page,

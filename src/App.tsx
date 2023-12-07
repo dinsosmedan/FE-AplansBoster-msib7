@@ -116,8 +116,10 @@ export default function App() {
               <Route index element={<LayananLinjamsos />} />
               <Route path="Bbp" element={<Bbp />} />
               <Route path="Pkr" element={<Pkr />} />
+              <Route path="Pkr/:id" element={<Pkr />} />
               <Route path="Sktm" element={<Sktm />} />
               <Route path="Unregister" element={<Unregister />} />
+              <Route path="Unregister/:id" element={<Unregister />} />
             </Route>
             <Route path="/layanan/dayasos">
               <Route index element={<LayananDayasos />} />

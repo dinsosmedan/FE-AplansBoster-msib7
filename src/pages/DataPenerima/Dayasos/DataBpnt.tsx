@@ -1,17 +1,16 @@
 import Container from '@/components/atoms/Container'
 import useTitle from '@/hooks/useTitle'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useGetNonCashFoodAssistanceBeneficiary, useGetNonCashFoodAssistanceDetail } from '@/store/server'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { Action, Loading, Modal } from '@/components'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Action, ExportButton, Loading, Modal, Pagination } from '@/components'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { HiMagnifyingGlass } from 'react-icons/hi2'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
+import { exportNonCashFoodAssistanceFn } from '@/api/dayasos.api'
 
 interface FormValues {
   q: string
@@ -21,10 +20,12 @@ const DataBpnt = () => {
   useTitle('Data Penerima / Dayasos / Bantuan Pangan Non Tunai (BPNT) ')
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
   const createParams = useCreateParams()
   const { page, q } = useGetParams(['page', 'q'])
   const [isLoadingPage, setIsLoadingPage] = React.useState(false)
-  const { data: NonCashFoodAssistanceBeneficiary, isLoading: isLoadingNonCash } = useGetNonCashFoodAssistanceDetail(selectedId)
+  const { data: NonCashFoodAssistanceBeneficiary, isLoading: isLoadingNonCash } =
+    useGetNonCashFoodAssistanceDetail(selectedId)
 
   const {
     data: NonCashFoodAssistanceBeneficiarys,
@@ -59,23 +60,35 @@ const DataBpnt = () => {
     }
   })
 
-   const onSubmit = async (values: FormValues) => {
-     if (values.q !== '') {
-       createParams({
-         key: 'q',
-         value: values.q !== '' ? values.q : ''
-       })
-       createParams({ key: 'page', value: '' }) // Set page to empty string when searching
-     } else {
-       createParams({ key: 'q', value: '' }) // Set q to empty string if the search query is empty
-     }
-     await refetch()
-   }
+  const onSubmit = async (values: FormValues) => {
+    if (values.q !== '') {
+      createParams({
+        key: 'q',
+        value: values.q !== '' ? values.q : ''
+      })
+      createParams({ key: 'page', value: '' }) // Set page to empty string when searching
+    } else {
+      createParams({ key: 'q', value: '' }) // Set q to empty string if the search query is empty
+    }
+    await refetch()
+  }
+
+  const exportAsCsv = async () => {
+    setIsLoadingExport(true)
+    await exportNonCashFoodAssistanceFn('data-bpnt', 'csv')
+    setIsLoadingExport(false)
+  }
+
+  const exportAsXlsx = async () => {
+    setIsLoadingExport(true)
+    await exportNonCashFoodAssistanceFn('data-bpnt', 'xlsx')
+    setIsLoadingExport(false)
+  }
 
   return (
     <div>
       <Container>
-        {isFetching && <Loading />}
+        {(isFetching || isLoadingExport) && <Loading />}
         <h1 className="font-bold text-2xl "> Bantuan Pangan Non Tunai (BPNT) </h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -93,15 +106,11 @@ const DataBpnt = () => {
               />
             </div>
             <section className="flex items-center justify-between">
-              <Select>
-                <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
-                  <SelectValue placeholder="Export" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value=".clsx">.clsx</SelectItem>
-                  <SelectItem value=".csv">.csv</SelectItem>
-                </SelectContent>
-              </Select>
+              <div>
+                {NonCashFoodAssistanceBeneficiarys?.data?.length !== 0 ? (
+                  <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+                ) : null}
+              </div>
               <div className="flex items-center gap-3">
                 <Button className="gap-2 border-none rounded-lg" type="submit">
                   <HiMagnifyingGlass className="text-lg" />
@@ -126,7 +135,7 @@ const DataBpnt = () => {
               {NonCashFoodAssistanceBeneficiarys?.data?.length !== 0 ? (
                 NonCashFoodAssistanceBeneficiarys?.data.map((item, index) => (
                   <TableRow key={item.id}>
-                    <TableCell className="text-center bg-[#F9FAFC]">
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
                       {(NonCashFoodAssistanceBeneficiarys.meta.currentPage - 1) *
                         NonCashFoodAssistanceBeneficiarys.meta.perPage +
                         index +
@@ -134,7 +143,9 @@ const DataBpnt = () => {
                     </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.identityNumber}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.type}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC] capitalize" position="center">
+                      {item.type}
+                    </TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       <Action onDetail={() => showDetail(item.id)} />
                     </TableCell>
@@ -168,49 +179,93 @@ const DataBpnt = () => {
         {isLoadingNonCash && <Loading />}
         <div className="grid grid-cols-3 gap-y-5">
           <div>
-              <p className="text-sm font-bold">Nama</p>
-              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.name ? NonCashFoodAssistanceBeneficiary?.beneficiary.name : '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">NIK</p>
-              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.identityNumber ? NonCashFoodAssistanceBeneficiary?.beneficiary.identityNumber : '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">No. KK</p>
-              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.familyCardNumber ? NonCashFoodAssistanceBeneficiary?.beneficiary.familyCardNumber : '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kecamatan</p>
-              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.address.areaLevel3?.name ? NonCashFoodAssistanceBeneficiary?.beneficiary.address.areaLevel3?.name : '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kelurahan</p>
-              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.address.areaLevel4?.name ? NonCashFoodAssistanceBeneficiary?.beneficiary.address.areaLevel4?.name : '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Alamat Lengkap</p>
-              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.address.fullAddress ? NonCashFoodAssistanceBeneficiary?.beneficiary.address.fullAddress : '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Pekerjaan</p>
-              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.occupation ? NonCashFoodAssistanceBeneficiary?.beneficiary.occupation : '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
-              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.birthPlace ? NonCashFoodAssistanceBeneficiary?.beneficiary.birthPlace : '-'} / {NonCashFoodAssistanceBeneficiary?.beneficiary.birthDate ? NonCashFoodAssistanceBeneficiary?.beneficiary.birthDate : '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Status DTKS</p>
-              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Jenis Keanggotaan</p>
-              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.type ? NonCashFoodAssistanceBeneficiary?.type : '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Usia</p>
-              <p className="text-base capitalize">{NonCashFoodAssistanceBeneficiary?.beneficiary.age ? NonCashFoodAssistanceBeneficiary?.beneficiary.age : '-'}</p>
-            </div>
+            <p className="text-sm font-bold">Nama</p>
+            <p className="text-base capitalize">
+              {NonCashFoodAssistanceBeneficiary?.beneficiary.name
+                ? NonCashFoodAssistanceBeneficiary?.beneficiary.name
+                : '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">NIK</p>
+            <p className="text-base capitalize">
+              {NonCashFoodAssistanceBeneficiary?.beneficiary.identityNumber
+                ? NonCashFoodAssistanceBeneficiary?.beneficiary.identityNumber
+                : '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">No. KK</p>
+            <p className="text-base capitalize">
+              {NonCashFoodAssistanceBeneficiary?.beneficiary.familyCardNumber
+                ? NonCashFoodAssistanceBeneficiary?.beneficiary.familyCardNumber
+                : '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kecamatan</p>
+            <p className="text-base capitalize">
+              {NonCashFoodAssistanceBeneficiary?.beneficiary.address.areaLevel3?.name
+                ? NonCashFoodAssistanceBeneficiary?.beneficiary.address.areaLevel3?.name
+                : '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kelurahan</p>
+            <p className="text-base capitalize">
+              {NonCashFoodAssistanceBeneficiary?.beneficiary.address.areaLevel4?.name
+                ? NonCashFoodAssistanceBeneficiary?.beneficiary.address.areaLevel4?.name
+                : '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Alamat Lengkap</p>
+            <p className="text-base capitalize">
+              {NonCashFoodAssistanceBeneficiary?.beneficiary.address.fullAddress
+                ? NonCashFoodAssistanceBeneficiary?.beneficiary.address.fullAddress
+                : '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Pekerjaan</p>
+            <p className="text-base capitalize">
+              {NonCashFoodAssistanceBeneficiary?.beneficiary.occupation
+                ? NonCashFoodAssistanceBeneficiary?.beneficiary.occupation
+                : '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
+            <p className="text-base capitalize">
+              {NonCashFoodAssistanceBeneficiary?.beneficiary.birthPlace
+                ? NonCashFoodAssistanceBeneficiary?.beneficiary.birthPlace
+                : '-'}{' '}
+              /{' '}
+              {NonCashFoodAssistanceBeneficiary?.beneficiary.birthDate
+                ? NonCashFoodAssistanceBeneficiary?.beneficiary.birthDate
+                : '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Status DTKS</p>
+            <p className="text-base capitalize">
+              {NonCashFoodAssistanceBeneficiary?.beneficiary.isDtks ? 'DTKS' : 'Tidak DTKS'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Jenis Keanggotaan</p>
+            <p className="text-base capitalize">
+              {NonCashFoodAssistanceBeneficiary?.type ? NonCashFoodAssistanceBeneficiary?.type : '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Usia</p>
+            <p className="text-base capitalize">
+              {NonCashFoodAssistanceBeneficiary?.beneficiary.age
+                ? NonCashFoodAssistanceBeneficiary?.beneficiary.age
+                : '-'}
+            </p>
+          </div>
         </div>
       </Modal>
     </div>

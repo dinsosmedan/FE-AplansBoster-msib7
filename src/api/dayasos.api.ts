@@ -287,7 +287,9 @@ export const getWorshipPlaceFn = async (id: string): Promise<IWorshipPlaceDetail
   return response.data?.data
 }
 export const getAdministrativeAreaFn = async (order: string): Promise<any> => {
-  const response = await api.get(`/dashboard/dtks/count/administrative-area?limit=5&sort=${order === 'Menurun' ? 'DESC' : 'ASC'}`)
+  const response = await api.get(
+    `/dashboard/dtks/count/administrative-area?limit=5&sort=${order === 'Menurun' ? 'DESC' : 'ASC'}`
+  )
   return response.data?.data
 }
 export const getGenderDtksFn = async (): Promise<any> => {
@@ -353,4 +355,77 @@ export const updateBusinessGroupFn = async ({ id, fields }: updateBusinessGroupP
 export const getDetailBusinessGroupFn = async (id: string): Promise<IBusinessGroupDetail> => {
   const response = await api.get(`/joint-business-group/${id}`)
   return response.data?.data
+}
+
+const convertBase64ToFile = (data: any, fileName: string, type: 'xlsx' | 'csv') => {
+  const url = window.URL.createObjectURL(new Blob([data]))
+  const link = document.createElement('a')
+  link.href = url
+  link.setAttribute('download', `${fileName}.${type}`)
+  document.body.appendChild(link)
+  link.click()
+}
+
+export const exportFuelCashAssistanceFn = async (fileName: string, type: 'xlsx' | 'csv') => {
+  const response = await api.get(`/fuel-cash-assistance/export/${type}`, {
+    responseType: 'blob'
+  })
+
+  convertBase64ToFile(response.data, fileName, type)
+}
+
+export const exportNonCashFoodAssistanceFn = async (fileName: string, type: 'xlsx' | 'csv') => {
+  const response = await api.get(`/non-cash-food-assistance/export/${type}`, {
+    responseType: 'blob'
+  })
+
+  convertBase64ToFile(response.data, fileName, type)
+}
+
+export const exportServiceFundFn = async (fileName: string, type: 'xlsx' | 'csv') => {
+  const response = await api.get(`/service-fund/export/${type}`, {
+    responseType: 'blob'
+  })
+
+  convertBase64ToFile(response.data, fileName, type)
+}
+
+export const exportOrganizationGrantAssistance = async (fileName: string, type: 'xlsx' | 'csv') => {
+  const response = await api.get(`/organization-grant-assistance/export/${type}`, {
+    responseType: 'blob'
+  })
+
+  convertBase64ToFile(response.data, fileName, type)
+}
+
+export const exportJointBussinessFn = async (fileName: string, type: 'xlsx' | 'csv') => {
+  const response = await api.get(`/joint-business-group/export/${type}`, {
+    responseType: 'blob'
+  })
+
+  convertBase64ToFile(response.data, fileName, type)
+}
+
+export const exportCommunityGroupFn = async (fileName: string, type: 'xlsx' | 'csv') => {
+  const response = await api.get(`/community-group/export/${type}`, {
+    responseType: 'blob'
+  })
+
+  convertBase64ToFile(response.data, fileName, type)
+}
+
+export const exportWorshipPlaceFn = async (fileName: string, type: 'xlsx' | 'csv') => {
+  const response = await api.get(`/worship-place/export/${type}`, {
+    responseType: 'blob'
+  })
+
+  convertBase64ToFile(response.data, fileName, type)
+}
+
+export const exportVeteranFn = async (fileName: string, type: 'xlsx' | 'csv') => {
+  const response = await api.get(`/veteran/export/${type}`, {
+    responseType: 'blob'
+  })
+
+  convertBase64ToFile(response.data, fileName, type)
 }

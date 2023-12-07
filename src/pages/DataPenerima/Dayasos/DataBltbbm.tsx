@@ -10,25 +10,27 @@ import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useGetFuelCashAssistance, useGetFuelCashAssistanceDetail } from '@/store/server'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { Action, Loading, Modal } from '@/components'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Action, ExportButton, Loading, Modal } from '@/components'
+import { exportFuelCashAssistanceFn } from '@/api/dayasos.api'
 
 interface FormValues {
   q: string
 }
+
 const DataBltbbm = () => {
   useTitle('Data Penerima / Dayasos / BLTBBM ')
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
   const createParams = useCreateParams()
   const { page, q } = useGetParams(['page', 'q'])
-  const { data: fuelCashAssistance, isLoading: isLoadingFuelCashAssistance } = useGetFuelCashAssistanceDetail(selectedId)
+  const { data: fuelCashAssistance, isLoading: isLoadingFuelCashAssistance } =
+    useGetFuelCashAssistanceDetail(selectedId)
   const forms = useForm<FormValues>({
     defaultValues: {
       q: ''
     }
   })
-  const [isLoadingPage, setIsLoadingPage] = React.useState(false)
   const showDetail = (id: string) => {
     setSelectedId(id)
     setIsShow(true)
@@ -57,13 +59,17 @@ const DataBltbbm = () => {
     await refetch()
   }
 
-  React.useEffect(() => {
-    if (isFetching) {
-      setIsLoadingPage(true)
-    } else {
-      setIsLoadingPage(false)
-    }
-  }, [isLoadingPage, isFetching])
+  const exportAsCsv = async () => {
+    setIsLoadingExport(true)
+    await exportFuelCashAssistanceFn('DataBltbbm', 'csv')
+    setIsLoadingExport(false)
+  }
+
+  const exportAsXlsx = async () => {
+    setIsLoadingExport(true)
+    await exportFuelCashAssistanceFn('DataBltbbm', 'xlsx')
+    setIsLoadingExport(false)
+  }
 
   if (isLoading && isLoadingFuelCashAssistance) {
     return <Loading />
@@ -72,7 +78,7 @@ const DataBltbbm = () => {
   return (
     <div>
       <Container>
-        {isFetching && <Loading />}
+        {(isFetching || isLoadingExport) && <Loading />}
         <h1 className="font-bold text-2xl ">Bantuan Langsung Tunai BBM (BLTBBM)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -90,15 +96,11 @@ const DataBltbbm = () => {
               />
             </div>
             <section className="flex items-center justify-between">
-              <Select>
-                <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
-                  <SelectValue placeholder="Export" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value=".clsx">.clsx</SelectItem>
-                  <SelectItem value=".csv">.csv</SelectItem>
-                </SelectContent>
-              </Select>
+              <div>
+                {fuelCashAssistances?.data?.length !== 0 ? (
+                  <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+                ) : null}
+              </div>
               <div className="flex items-center gap-3">
                 <Button className="gap-2 border-none rounded-lg" type="submit">
                   <HiMagnifyingGlass className="text-lg" />
@@ -109,7 +111,7 @@ const DataBltbbm = () => {
           </form>
         </Form>
         <section className="border rounded-xl mt-5 overflow-hidden">
-          <Table className="mt-5">
+          <Table>
             <TableHeader className="bg-[#FFFFFF]">
               <TableRow>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
@@ -123,12 +125,14 @@ const DataBltbbm = () => {
               {fuelCashAssistances?.data?.length !== 0 ? (
                 fuelCashAssistances?.data.map((item, index) => (
                   <TableRow key={item.id}>
-                    <TableCell className="text-left bg-[#F9FAFC]">
+                    <TableCell className="text-left bg-[#F9FAFC]" position="center">
                       {(fuelCashAssistances.meta.currentPage - 1) * fuelCashAssistances.meta.perPage + index + 1}
                     </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.identityNumber}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.type}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC] capitalize" position="center">
+                      {item.type}
+                    </TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       <Action onDetail={() => showDetail(item.id)} />
                     </TableCell>
@@ -162,49 +166,76 @@ const DataBltbbm = () => {
         {isLoadingFuelCashAssistance && <Loading />}
         <div className="grid grid-cols-3 gap-y-5">
           <div>
-              <p className="text-sm font-bold">Nama</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.name ? fuelCashAssistance?.beneficiary.name : '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">NIK</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.identityNumber ? fuelCashAssistance?.beneficiary.identityNumber : '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">No. KK</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.familyCardNumber ? fuelCashAssistance?.beneficiary.familyCardNumber : '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kecamatan</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.address.areaLevel3?.name ? fuelCashAssistance?.beneficiary.address.areaLevel3?.name : '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kelurahan</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.address.areaLevel4?.name ? fuelCashAssistance?.beneficiary.address.areaLevel4?.name : '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Alamat Lengkap</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.address.fullAddress ? fuelCashAssistance?.beneficiary.address.fullAddress : '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Pekerjaan</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.occupation ? fuelCashAssistance?.beneficiary.occupation : '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.birthPlace ? fuelCashAssistance?.beneficiary.birthPlace : '-'} / {fuelCashAssistance?.beneficiary.birthDate ? fuelCashAssistance?.beneficiary.birthDate : '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Status DTKS</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Jenis Keanggotaan</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.type ? fuelCashAssistance?.type : '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Usia</p>
-              <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.age ? fuelCashAssistance?.beneficiary.age : '-'}</p>
-            </div>
+            <p className="text-sm font-bold">Nama</p>
+            <p className="text-base capitalize">
+              {fuelCashAssistance?.beneficiary.name ? fuelCashAssistance?.beneficiary.name : '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">NIK</p>
+            <p className="text-base capitalize">
+              {fuelCashAssistance?.beneficiary.identityNumber ? fuelCashAssistance?.beneficiary.identityNumber : '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">No. KK</p>
+            <p className="text-base capitalize">
+              {fuelCashAssistance?.beneficiary.familyCardNumber
+                ? fuelCashAssistance?.beneficiary.familyCardNumber
+                : '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kecamatan</p>
+            <p className="text-base capitalize">
+              {fuelCashAssistance?.beneficiary.address.areaLevel3?.name
+                ? fuelCashAssistance?.beneficiary.address.areaLevel3?.name
+                : '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kelurahan</p>
+            <p className="text-base capitalize">
+              {fuelCashAssistance?.beneficiary.address.areaLevel4?.name
+                ? fuelCashAssistance?.beneficiary.address.areaLevel4?.name
+                : '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Alamat Lengkap</p>
+            <p className="text-base capitalize">
+              {fuelCashAssistance?.beneficiary.address.fullAddress
+                ? fuelCashAssistance?.beneficiary.address.fullAddress
+                : '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Pekerjaan</p>
+            <p className="text-base capitalize">
+              {fuelCashAssistance?.beneficiary.occupation ? fuelCashAssistance?.beneficiary.occupation : '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
+            <p className="text-base capitalize">
+              {fuelCashAssistance?.beneficiary.birthPlace ? fuelCashAssistance?.beneficiary.birthPlace : '-'} /{' '}
+              {fuelCashAssistance?.beneficiary.birthDate ? fuelCashAssistance?.beneficiary.birthDate : '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Status DTKS</p>
+            <p className="text-base capitalize">{fuelCashAssistance?.beneficiary.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Jenis Keanggotaan</p>
+            <p className="text-base capitalize">{fuelCashAssistance?.type ? fuelCashAssistance?.type : '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Usia</p>
+            <p className="text-base capitalize">
+              {fuelCashAssistance?.beneficiary.age ? fuelCashAssistance?.beneficiary.age : '-'}
+            </p>
+          </div>
         </div>
       </Modal>
     </div>

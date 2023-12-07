@@ -1,70 +1,140 @@
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { useForm } from 'react-hook-form'
+import {
+  vulnerableGroupHandlingValidation,
+  type vulnerableGroupHandlingFields
+} from '@/lib/validations/linjamsos.validation'
+import {
+  useCreateVulnerableGroupHandling,
+  useGetBeneficaryByNIK,
+  useGetDetailVulnerableGroupHandling,
+  useUpdateVulnerableGroupHandling
+} from '@/store/server'
+import { Container, DatePicker, Loading } from '@/components'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Input } from '@/components/ui/input'
 import useTitle from '@/hooks/useTitle'
-import { Container } from '@/components'
+import { useToastNik } from '@/hooks'
+
+import * as React from 'react'
+import { useForm } from 'react-hook-form'
+import { useNavigate, useParams } from 'react-router-dom'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { formatDateToString, formatStringToDate } from '@/lib/formatDate'
 
 const Pkr = () => {
   useTitle('Penanganan Kelompok Rentan (PKR)')
+  const navigate = useNavigate()
+  const { id } = useParams<{ id: string }>()
+  const [NIK, setNIK] = React.useState('')
 
-  interface FormValues {
-    nik: string
-    tanggal: string
-    kejadian: string
-    noRekening: string
-    namaBank: string
-    jumlahDibantu: string
-    tahun: string
-  }
+  const { mutate: createVulnerableGroupHandling, isLoading: isLoadingCreate } = useCreateVulnerableGroupHandling()
+  const { data: beneficiary, refetch, isLoading, isError } = useGetBeneficaryByNIK(NIK, false)
+  const {
+    data: vulnerableGroupHandling,
+    isLoading: isLoadingDetail,
+    isSuccess
+  } = useGetDetailVulnerableGroupHandling(id as string)
 
-  const forms = useForm<FormValues>({
-    mode: 'onTouched'
+  const { mutate: updateVulnerableGroupHandling, isLoading: isLoadingUpdate } = useUpdateVulnerableGroupHandling()
+
+  const forms = useForm<vulnerableGroupHandlingFields>({
+    mode: 'onTouched',
+    resolver: yupResolver(vulnerableGroupHandlingValidation)
   })
 
-  const onSubmit = async (values: FormValues) => {
-    console.log(values)
+  const onSuccess = () => {
+    forms.reset()
+    navigate('/data-penerima/linjamsos/data-pkr')
+  }
+
+  const onSubmit = async (values: vulnerableGroupHandlingFields) => {
+    const newData = {
+      ...values,
+      incidentDate: formatDateToString(values.incidentDate as Date)
+    }
+    if (!id) return createVulnerableGroupHandling(newData, { onSuccess })
+    updateVulnerableGroupHandling({ id, fields: newData }, { onSuccess })
+  }
+
+  useToastNik({
+    successCondition: !isLoading && beneficiary != null,
+    onSuccess: () => forms.setValue('beneficiary', beneficiary?.id as string),
+    notFoundCondition: isError,
+    notRegisteredCondition: forms.getValues('beneficiary') === '' && NIK !== '' && forms.formState.isSubmitted
+  })
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      forms.reset({
+        beneficiary: vulnerableGroupHandling.beneficiary.id,
+        assistanceAmount: vulnerableGroupHandling.assistanceAmount,
+        bankAccountNumber: vulnerableGroupHandling.bankAccountNumber,
+        bankName: vulnerableGroupHandling.bankName,
+        budgetYear: vulnerableGroupHandling.budgetYear,
+        incidentAddress: vulnerableGroupHandling.incidentAddress,
+        incidentDate: vulnerableGroupHandling.incidentDate
+          ? formatStringToDate(vulnerableGroupHandling.incidentDate)
+          : ''
+      })
+    }
+  }, [vulnerableGroupHandling])
+
+  if (isLoadingDetail) {
+    return <Loading />
   }
 
   return (
-    <Container className="py-10">
+    <Container className="py-7">
       <section className="w-9/12 mx-auto">
-        <p className="text-2xl font-bold text-center">Data Personal</p>
+        {!id && <p className="text-2xl font-bold text-center">Data Personal</p>}
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-            <div className="flex flex-row justify-between gap-3">
-              <div className="w-11/12">
-                <FormField
-                  name="nik"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
-                      <FormControl>
-                        <Input {...field} type="number" placeholder="Masukkan NIK Masyarakat" />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
+            {!id && (
+              <div className="flex flex-row justify-between gap-3">
+                <div className="w-11/12">
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        value={NIK}
+                        onChange={(e) => setNIK(e.target.value)}
+                        placeholder="Masukkan NIK Masyarakat"
+                      />
+                    </FormControl>
+                  </FormItem>
+                </div>
+                <div className="w-1/12 flex items-end justify-end">
+                  <Button className="w-full" type="button" onClick={async () => await refetch()} loading={isLoading}>
+                    Cari
+                  </Button>
+                </div>
               </div>
-              <div className="w-1/12 flex items-end justify-end">
-                <Button className="w-full">Cari</Button>
-              </div>
-            </div>
+            )}
             <div className="w-full text-center">
               <p className="text-2xl font-bold">Alamat</p>
             </div>
             <div className="flex flex-row gap-4">
               <div className="w-6/12">
                 <FormField
-                  name="tanggal"
+                  name="incidentDate"
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">Tanggal Kejadian</FormLabel>
                       <FormControl>
-                        <Input {...field} type="text" placeholder="Masukkan Tanggal Kejadian" />
+                        <DatePicker selected={field.value as Date} onChange={field.onChange} placeholder="dd/mm/yyyy" />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="beneficiary"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} value={field.value ?? ''} type="text" hidden className="hidden" />
                       </FormControl>
                     </FormItem>
                   )}
@@ -72,24 +142,18 @@ const Pkr = () => {
               </div>
               <div className="w-6/12">
                 <FormField
-                  name="kejadian"
+                  name="incidentAddress"
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">Alamat Kejadian</FormLabel>
                       <FormControl>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Masukkan Alamat Kejadian" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                            <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                            <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <Input
+                          {...field}
+                          value={field.value ?? ''}
+                          type="text"
+                          placeholder="Masukkan Alamat Kejadian"
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -102,13 +166,13 @@ const Pkr = () => {
             <div className="flex flex-row gap-4">
               <div className="w-6/12">
                 <FormField
-                  name="noRekening"
+                  name="bankAccountNumber"
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">No Rekening</FormLabel>
                       <FormControl>
-                        <Input {...field} type="text" placeholder="Masukkan No Rekening" />
+                        <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan No Rekening" />
                       </FormControl>
                     </FormItem>
                   )}
@@ -116,24 +180,13 @@ const Pkr = () => {
               </div>
               <div className="w-6/12">
                 <FormField
-                  name="namaBank"
+                  name="bankName"
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">Masukkan Nama Bank</FormLabel>
                       <FormControl>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Masukkan Masukkan Nama Bank" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                            <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                            <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Bank" />
                       </FormControl>
                     </FormItem>
                   )}
@@ -143,13 +196,13 @@ const Pkr = () => {
             <div className="flex flex-row gap-4">
               <div className="w-6/12">
                 <FormField
-                  name="jumlahDibantu"
+                  name="assistanceAmount"
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">Jumlah Dibantu</FormLabel>
                       <FormControl>
-                        <Input {...field} type="text" placeholder="Masukkan Jumlah Dibantu" />
+                        <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Jumlah Dibantu" />
                       </FormControl>
                     </FormItem>
                   )}
@@ -157,22 +210,26 @@ const Pkr = () => {
               </div>
               <div className="w-6/12">
                 <FormField
-                  name="tahun"
+                  name="budgetYear"
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">Tahun</FormLabel>
                       <FormControl>
-                        <Input {...field} type="text" placeholder="Masukkan Tahun" />
+                        <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun" />
                       </FormControl>
                     </FormItem>
                   )}
                 />
               </div>
             </div>
-            <div className="flex justify-end gap-5">
-              <Button variant="cancel">Cancel</Button>
-              <Button>Submit</Button>
+            <div className="flex justify-end gap-4">
+              <Button variant="cancel" type="button" onClick={() => forms.reset()}>
+                Cancel
+              </Button>
+              <Button type="submit" loading={isLoadingCreate || isLoadingUpdate}>
+                {id ? 'Update' : 'Submit'}
+              </Button>
             </div>
           </form>
         </Form>

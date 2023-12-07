@@ -9,12 +9,12 @@ export default function HeaderUser() {
   const user = useUserPublicToken((state) => state.user)
 
   return (
-    <header className="h-24 fixed inset-x-0 top-0 bg-white flex items-center px-14 z-10">
+    <header className="h-24 fixed inset-x-0 top-0 bg-white flex items-center px-14 z-10 font-poppins">
       <div className="flex items-center justify-between flex-1">
         <Link to="/">
           <img src={Logo} alt="logo" className="w-[297px]" />
         </Link>
-        <nav className="flex items-center gap-8 font-bold">
+        <nav className="flex items-center gap-8 font-semibold">
           <div className="flex items-center gap-8">
             <Link to="/" className="hover:text-primary">
               Beranda

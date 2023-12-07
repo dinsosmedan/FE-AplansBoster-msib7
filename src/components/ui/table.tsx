@@ -1,16 +1,26 @@
 import * as React from 'react'
 
 import { cn } from '@/lib/utils'
+import { useExpandedBar } from '@/store/client'
 
 interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
   containerClassName?: string
 }
 
-const Table = React.forwardRef<HTMLTableElement, TableProps>(({ className, containerClassName, ...props }, ref) => (
-  <div className={cn('relative w-full overflow-y-auto max-w-[calc(100vw-390px)]', containerClassName)}>
-    <table ref={ref} className={cn('w-full caption-bottom text-sm overflow-x-auto', className)} {...props} />
-  </div>
-))
+const Table = React.forwardRef<HTMLTableElement, TableProps>(({ className, containerClassName, ...props }, ref) => {
+  const expanded = useExpandedBar((state) => state.expanded)
+  return (
+    <div
+      className={cn(
+        'relative w-full overflow-y-auto',
+        expanded ? 'max-w-[calc(100vw-193px)]' : 'max-w-[calc(100vw-390px)]',
+        containerClassName
+      )}
+    >
+      <table ref={ref} className={cn('w-full caption-bottom text-sm overflow-x-auto', className)} {...props} />
+    </div>
+  )
+})
 Table.displayName = 'Table'
 
 const TableHeader = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(

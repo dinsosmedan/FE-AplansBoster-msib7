@@ -55,7 +55,6 @@ const DataUnregister = () => {
     year,
     q
   })
-  console.log(unregisters)
   useDisableBodyScroll(isFetching)
   const updateParam = (key: any, value: any) => {
     if (value !== '') {
@@ -132,69 +131,77 @@ const DataUnregister = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Tahun" />
+                      <Input {...field} type="text" placeholder="Masukkan Tahun" />
                     </FormControl>
                   </FormItem>
                 )}
               />
             </div>
-            <div className='flex justify-between'>
-            <div className="w-[20%] mb-6">
-              <Select>
-                <SelectTrigger className="border-primary bg-white text-primary focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ">
-                  <SelectValue placeholder="Export Data" />
-                </SelectTrigger>
-                <SelectContent className="border-primary text-primary">
-                  <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                  <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                  <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="flex justify-between">
+              <div className="w-[20%] mb-6">
+                <Select>
+                  <SelectTrigger className="border-primary bg-white text-primary focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ">
+                    <SelectValue placeholder="Export Data" />
+                  </SelectTrigger>
+                  <SelectContent className="border-primary text-primary">
+                    <SelectItem value="m@example.com">Krisna Asu</SelectItem>
+                    <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
+                    <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex gap-3">
+                <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
+                  <HiArrowPath className="text-lg" />
+                  <span>Reset</span>
+                </Button>
+                <Button>
+                  <HiMagnifyingGlass className="w-4 h-4 py" />
+                  <p className="font-bold text-sm text-white ml-3 w-max">Cari Data</p>
+                </Button>
+              </div>
             </div>
-            <div className='flex gap-3'>
-              <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
-                <HiArrowPath className="text-lg" />
-                <span>Reset</span>
-              </Button>
-              <Button>
-                <HiMagnifyingGlass className="w-4 h-4 py" />
-                <p className="font-bold text-sm text-white ml-3 w-max">Cari Data</p>
-              </Button>
-              </div>
-              </div>
           </form>
         </Form>
         <section className="border rounded-xl mt-5 overflow-hidden">
-        <Table>
-          <TableHeader className="bg-zinc-300">
-            <TableRow>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">No. </TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kelamin</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Diagnosa Penyakit</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Umur</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Masuk Rumah Sakit</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-          {unregisters?.data?.length !== 0 ? (
-              unregisters?.data.map((item, index) => (
-                <TableRow key={item.id}>
-                  <TableCell className="text-left bg-[#F9FAFC]">
-                    {(unregisters.meta.currentPage - 1) * unregisters.meta.perPage + index + 1}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.name ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.gender ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{getYearFromDate(item.hospitalEntryDate)}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.deseaseDiagnosis ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.age ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.hospitalEntryDate ?? '-'}</TableCell>
-                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Action onDelete={() => console.log('delete')} onDetail={() => console.log('edit')} onEdit={() => console.log('detail')}/>
-        </TableCell>
-        </TableRow>
+          <Table>
+            <TableHeader className="bg-zinc-300">
+              <TableRow>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">No. </TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kelamin</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Diagnosa Penyakit</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Umur</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Masuk Rumah Sakit</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {unregisters?.data?.length !== 0 ? (
+                unregisters?.data.map((item, index) => (
+                  <TableRow key={item.id}>
+                    <TableCell className="text-left bg-[#F9FAFC]" position="center">
+                      {(unregisters.meta.currentPage - 1) * unregisters.meta.perPage + index + 1}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.name ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.gender ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">
+                      {getYearFromDate(item.hospitalEntryDate)}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.deseaseDiagnosis ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.age ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item.hospitalEntryDate ?? '-'}
+                    </TableCell>
+                    <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                      <Action
+                        onDelete={() => console.log('delete')}
+                        onDetail={() => console.log('edit')}
+                        onEdit={() => navigate(`/layanan/linjamsos/unregister/${item.id}`)}
+                      />
+                    </TableCell>
+                  </TableRow>
                 ))
               ) : (
                 <TableRow>
@@ -203,8 +210,8 @@ const DataUnregister = () => {
                   </TableCell>
                 </TableRow>
               )}
-          </TableBody>
-        </Table>
+            </TableBody>
+          </Table>
         </section>
         {(unregisters?.meta?.total as number) > 10 ? (
           <Pagination
