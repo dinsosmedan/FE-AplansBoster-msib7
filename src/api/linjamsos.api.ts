@@ -72,6 +72,15 @@ export const showDetailVulnerableGroupHandlingFn = async (id: string): Promise<I
   return response.data?.data
 }
 
+export const deleteSktmFn = async (id: string) => {
+  await api.delete(`/indigency-certificate/${id}`)
+}
+export const deleteUnregisterFn = async (id: string) => {
+  await api.delete(`/unregister/${id}`)
+}
+export const deletePkrFn = async (id: string) => {
+  await api.delete(`/vulnerable-group-handling/${id}`)
+}
 interface IVulnerableGroupHandlingUpdate {
   id: string
   fields: vulnerableGroupHandlingFields

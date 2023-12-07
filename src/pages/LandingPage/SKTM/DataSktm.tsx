@@ -95,7 +95,7 @@ export default function UserSktm() {
             <div className="py-14 px-7">
               <HiAcademicCap className="w-[70px] h-[70px] text-primary" />
               <p className="text-xl font-semibold py-[26px]">SKTM Untuk Sekolah Universitas (Terdaftar DTKS)</p>
-              <Button className="disabled:bg-[#535151] w-full h-[60px]" disabled>
+              <Button className="disabled:bg-black w-full h-[60px]  " disabled>
                 <p className="text-xl text-white">Diproses</p>
               </Button>
             </div>
@@ -108,14 +108,14 @@ export default function UserSktm() {
               <div className="flex items-center px-2 ">
                 <div className="border-2 border-dashed w-[280px] h-0 border-primary " />
               </div>
-              <div className="bg-primary rounded-full w-[70px] h-[70px] flex items-center justify-center">
-                <p className="text-white text-[26px]">2</p>
+              <div className="bg-white border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center">
+                <p className="text-primary text-[26px]">2</p>
               </div>
               <div className="flex items-center px-2 ">
                 <div className="border-2 border-dashed w-[280px] h-0 border-primary " />
               </div>
-              <div className="bg-primary rounded-full w-[70px] h-[70px] flex items-center justify-center">
-                <p className="text-white text-[26px]">3</p>
+              <div className="bg-white border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center">
+                <p className="text-primary text-[26px]">3</p>
               </div>
             </div>
             <div className="flex flex-row items-center justify-center pt-3 gap-[225px] ">

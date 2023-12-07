@@ -8,29 +8,56 @@ import Modal from '@/components/organisms/Modal'
 import * as React from 'react'
 import { HiOutlinePencilAlt, HiUserAdd } from 'react-icons/hi'
 import useTitle from '@/hooks/useTitle'
-import { Container, Pagination, Search } from '@/components'
+import { Container, Loading, Pagination, Search } from '@/components'
 import { useAlert } from '@/store/client'
+import { useCreateUser, useGetRole, useGetUser } from '@/store/server/useUserManagement'
+import { type userFields } from '@/lib/validations/user.validation'
+import { toast } from '@/components/ui/use-toast'
+import { type IErrorResponse } from '@/lib/types/user.type'
+import { type AxiosError } from 'axios'
 
-interface FormValues {
-  nip: string
-  email: string
-  nama: string
-  noHp: string
-  username: string
-  role: string
-  status: string
-}
+// interface FormValues {
+//   employeeIdentityNumber: string
+//   email: string
+//   name: string
+//   phoneNumber: string
+//   password: string
+//   role: string
+//   status: string
+// }
 
 const ManajemenUser = () => {
   useTitle('Manajemen User ')
   const { alert } = useAlert()
 
+  const { data: user, isLoading } = useGetUser()
+  const { data: role } = useGetRole()
   const [isShow, setIsShow] = React.useState(false)
   const [currentPage, setCurrentPage] = React.useState(1)
-  const forms = useForm<FormValues>({ mode: 'onTouched' })
+  const forms = useForm<userFields>({ mode: 'onTouched' })
+  const { mutate: Register } = useCreateUser()
+  // console.log(user)
 
-  const onSubmit = async (values: any) => {
-    console.log(values)
+  const onSubmit = async (values: userFields) => {
+    Register(values, {
+      onError: (error: AxiosError) => {
+        const errorResponse = error.response?.data as IErrorResponse
+
+        if (errorResponse !== undefined) {
+          toast({
+            variant: 'destructive',
+            title: errorResponse.message,
+            description: 'There was a problem with your request.'
+          })
+        }
+      },
+      onSuccess: () => {
+        toast({
+          title: 'Registration Success',
+          description: 'You have successfully Registered an account.'
+        })
+      }
+    })
   }
 
   const showAlert = () => {
@@ -44,6 +71,9 @@ const ManajemenUser = () => {
     })
   }
 
+  if (isLoading) {
+    return <Loading />
+  }
   return (
     <Container className="relative pt-[34px] pb-[22px] px-7">
       <div className="flex items-center mb-[18px]">
@@ -58,8 +88,8 @@ const ManajemenUser = () => {
         <TableHeader className="bg-primary">
           <TableRow>
             <TableHead className="text-white">NIP</TableHead>
+            <TableHead className="text-white">NIK</TableHead>
             <TableHead className="text-white">Nama</TableHead>
-            <TableHead className="text-white">Username</TableHead>
             <TableHead className="text-white">Email</TableHead>
             <TableHead className="text-white">No. HP</TableHead>
             <TableHead className="text-white">Role</TableHead>
@@ -68,30 +98,46 @@ const ManajemenUser = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell className="font-semibold">198608212009012001</TableCell>
-            <TableCell className="font-semibold">198608212009012001</TableCell>
-            <TableCell className="text-center">Syamsul</TableCell>
-            <TableCell className="text-center">elytha79sipayung@gmail.com</TableCell>
-            <TableCell className="text-center">081376331191</TableCell>
-            <TableCell className="text-center">Admin</TableCell>
-            <TableCell>
-              <div className="bg-[#E9FFEF] rounded-full flex items-center w-fit gap-2 py-1 px-2 mx-auto">
-                <div className="w-2 h-2 rounded-full bg-[#409261]" />
-                <p className="text-[#409261] text-xs">Active</p>
-              </div>
-            </TableCell>
-            <TableCell className="flex items-center justify-center">
-              <Button
-                size="icon"
-                variant="base"
-                className="bg-[#959595] text-white hover:bg-[#828282] hover:text-white"
-                onClick={showAlert}
-              >
-                <HiOutlinePencilAlt className="text-lg" />
-              </Button>
-            </TableCell>
-          </TableRow>
+          {user?.data?.length !== 0 ? (
+            user?.data.map((item: any) => (
+              <TableRow key={item.id}>
+                <TableCell className="font-semibold">{item.employeeIdentityNumber || '-'}</TableCell>
+                <TableCell className="font-semibold">{item.identityNumber || '-'}</TableCell>
+                <TableCell className="font-semibold">{item.name}</TableCell>
+                <TableCell className="text-center">{item.email || '-'}</TableCell>
+                <TableCell className="text-center">{item.phoneNumber || '-'}</TableCell>
+                <TableCell className="text-center">{item.role?.name || 'Guest'}</TableCell>
+                <TableCell>
+                  <div
+                    className={`${
+                      item.isActive ? '[#E9FFEF]' : '[#FFD6E1]'
+                    } rounded-full flex items-center w-fit gap-2 py-1 px-2 mx-auto`}
+                  >
+                    <div className={`w-2 h-2 rounded-full bg-${item.isActive ? '[#409261]' : 'red-500'}`} />
+                    <p className={`text-${item.isActive ? '[#409261]' : 'red-500'} text-xs`}>
+                      {item.isActive ? 'Active' : 'Inactive'}
+                    </p>
+                  </div>
+                </TableCell>
+                <TableCell className="flex items-center justify-center">
+                  <Button
+                    size="icon"
+                    variant="base"
+                    className="bg-[#959595] text-white hover:bg-[#828282] hover:text-white"
+                    onClick={showAlert}
+                  >
+                    <HiOutlinePencilAlt className="text-lg" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={9} className="text-center">
+                Tidak ada data
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
 
@@ -112,7 +158,7 @@ const ManajemenUser = () => {
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-3">
             <div className="grid grid-cols-2 gap-3">
               <FormField
-                name="nip"
+                name="employeeIdentityNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem className="flex-1">
@@ -136,7 +182,7 @@ const ManajemenUser = () => {
                 )}
               />
               <FormField
-                name="nama"
+                name="name"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem className="flex-1">
@@ -148,7 +194,7 @@ const ManajemenUser = () => {
                 )}
               />
               <FormField
-                name="noHp"
+                name="phoneNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem className="flex-1">
@@ -160,13 +206,13 @@ const ManajemenUser = () => {
                 )}
               />
               <FormField
-                name="username"
+                name="password"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Username</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">Password</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Masukkan Username" />
+                      <Input {...field} placeholder="Masukkan Password (default)" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -183,9 +229,11 @@ const ManajemenUser = () => {
                           <SelectValue placeholder="Pilih Role" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                          {role?.data.map((item: any, index: any) => (
+                            <SelectItem key={index} value={item.id}>
+                              {item.name}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -194,7 +242,7 @@ const ManajemenUser = () => {
               />
             </div>
             <FormField
-              name="role"
+              name="isActive"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
@@ -207,26 +255,28 @@ const ManajemenUser = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                        <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                        <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                        <SelectItem value="1">Aktif</SelectItem>
+                        <SelectItem value="0">Tidak Aktif</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
                 </FormItem>
               )}
             />
+            <Modal.Footer>
+              <Button
+                variant="outline"
+                className="rounded-lg text-primary border-primary"
+                onClick={() => setIsShow(false)}
+              >
+                Cancel
+              </Button>
+              <Button className="rounded-lg" type="submit" loading={isLoading}>
+                Tambah Data
+              </Button>
+            </Modal.Footer>
           </form>
         </Form>
-
-        <Modal.Footer>
-          <Button variant="outline" className="rounded-lg text-primary border-primary" onClick={() => setIsShow(false)}>
-            Cancel
-          </Button>
-          <Button className="rounded-lg" type="submit">
-            Tambah Data
-          </Button>
-        </Modal.Footer>
       </Modal>
     </Container>
   )

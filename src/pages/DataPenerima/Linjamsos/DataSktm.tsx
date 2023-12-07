@@ -10,9 +10,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useNavigate } from 'react-router-dom'
-import { useGetIndigencyCertificateByID, useGetIndigencyCertificateFn, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { useGetIndigencyCertificateByID, useGetIndigencyCertificateFn, useGetKecamatan, useGetKelurahan, useDeleteSktm } from '@/store/server'
 import { Action, Loading, Modal } from '@/components'
 import React from 'react'
+import { useAlert } from '@/store/client'
+
 interface FormValues {
   q: string
   kelurahan: string
@@ -23,6 +25,7 @@ interface FormValues {
 const DataSktm = () => {
   useTitle('Data Penerima / Linjamsos / SKTM ')
   const navigate = useNavigate()
+  const { alert } = useAlert()
   const createParams = useCreateParams()
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
@@ -57,6 +60,17 @@ const DataSktm = () => {
     statusDtks,
     q
   })
+  const { mutateAsync: deleteSktm } = useDeleteSktm()
+  const handleDelete = async (id: string) => {
+    await alert({
+      title: 'Hapus Data SKTM',
+      description: 'Apakah kamu yakin ingin menghapus data ini?',
+      variant: 'danger',
+      submitText: 'Delete'
+    }).then(async () => {
+      await deleteSktm(id)
+    })
+  }
   useDisableBodyScroll(isFetching)
   const updateParam = (key: any, value: any) => {
     if (value !== '') {
@@ -76,6 +90,7 @@ const DataSktm = () => {
 
     await refetch()
   }
+
   const handleReset = () => {
     navigate('/data-penerima/linjamsos/data-sktm')
     forms.reset()
@@ -137,15 +152,15 @@ function ubahFormatDateTime(dateTimeString: string): string {
                           <SelectValue placeholder="Pilih Status DTKS" />
                         </SelectTrigger>
                       <SelectContent>
-                          <SelectItem value='dtks'>
-                            DTKS
-                          </SelectItem>
-                          <SelectItem value='non-dtks'>
-                            Non DTKS
-                          </SelectItem>
-                          <SelectItem value='prelist'>
-                            PRELIST
-                          </SelectItem>
+                        <SelectItem value='dtks'>
+                          DTKS
+                        </SelectItem>
+                        <SelectItem value='non-dtks'>
+                          Non DTKS
+                        </SelectItem>
+                        <SelectItem value='prelist'>
+                          PRELIST
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -167,7 +182,7 @@ function ubahFormatDateTime(dateTimeString: string): string {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                      {listKecamatan?.map((item, index) => (
+                        {listKecamatan?.map((item, index) => (
                           <SelectItem key={index} value={item.id}>
                             {item.name}
                           </SelectItem>
@@ -191,7 +206,7 @@ function ubahFormatDateTime(dateTimeString: string): string {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                      {listKelurahan?.map((item, index) => (
+                        {listKelurahan?.map((item, index) => (
                           <SelectItem key={index} value={item.id}>
                             {item.name}
                           </SelectItem>
@@ -222,7 +237,7 @@ function ubahFormatDateTime(dateTimeString: string): string {
                 <HiMagnifyingGlass className="w-4 h-4 py" />
                 <p className="font-bold text-sm text-white ml-3 w-max">Cari Data</p>
               </Button>
-              </div>
+            </div>
           </section>
         </form>
       </Form>
@@ -242,7 +257,7 @@ function ubahFormatDateTime(dateTimeString: string): string {
             </TableRow>
           </TableHeader>
           <TableBody>
-          {indigencys?.data?.length !== 0 ? (
+            {indigencys?.data?.length !== 0 ? (
               indigencys?.data.map((item, index) => (
                 <TableRow key={item.id}>
                   <TableCell className="text-left bg-[#F9FAFC]">
@@ -256,7 +271,7 @@ function ubahFormatDateTime(dateTimeString: string): string {
                   <TableCell className="text-center bg-[#F9FAFC]">{item.applicant?.address.areaLevel3?.name ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.applicant?.address.areaLevel4?.name ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Action onDelete={() => console.log('delete')} onDetail={() => showDetail(item.id)} onEdit={() => console.log('detail')}/>
+                  <Action onDelete={async() => await handleDelete(item.id)} onDetail={() => showDetail(item.id)} onEdit={() => console.log('detail')}/>
         </TableCell>
         </TableRow>
                 ))
