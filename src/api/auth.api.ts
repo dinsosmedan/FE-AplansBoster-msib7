@@ -3,6 +3,7 @@ import { type IUser, type IAuthResponse } from '@/lib/types/user.type'
 import { type LoginInput } from '@/lib/validations/auth.validation'
 import axios from 'axios'
 import api from './axiosInstance'
+import axiosPublic from './axiosPublicInstance'
 
 const apiPublic = axios.create({
   baseURL: ENV.apiUrl,
@@ -20,7 +21,19 @@ export const logoutFn = async (): Promise<IAuthResponse> => {
   const response = await api.post('/auth/logout')
   return response.data
 }
+
 export const getMeFn = async (): Promise<IUser> => {
   const response = await api.get('/auth/me')
+  return response.data
+}
+
+// LANDING PAGE
+export const loginUserFn = async (fields: LoginInput): Promise<IAuthResponse> => {
+  const response = await apiPublic.post('/auth/login', fields)
+  return response.data
+}
+
+export const getMePublicFn = async (): Promise<IUser> => {
+  const response = await axiosPublic.get('/auth/me')
   return response.data
 }

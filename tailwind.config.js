@@ -12,7 +12,9 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        inter: ['Inter', 'sans-serif']
+        inter: ['Inter', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
+        volkhov: ['Volkhov', 'serif']
       },
       keyframes: {
         'accordion-down': {
@@ -31,6 +33,9 @@ module.exports = {
       colors: {
         primary: '#DD2153',
         font: '#0C1421'
+      },
+      transitionDuration: {
+        700: '700ms' 
       }
     }
   },

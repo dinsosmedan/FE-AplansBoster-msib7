@@ -72,7 +72,7 @@ export default function Login() {
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">NIP</FormLabel>
                       <FormControl>
-                        <Input {...field} type="text" placeholder="input your NIP" />
+                        <Input {...field} type="text" placeholder="Masukkan NIP Anda" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -85,7 +85,7 @@ export default function Login() {
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">Kata Sandi</FormLabel>
                       <FormControl>
-                        <Password {...field} placeholder="At least 8 characters" />
+                        <Password {...field} placeholder="Minimal 8 Karakter" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

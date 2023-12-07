@@ -28,7 +28,7 @@ export default function Header() {
   }
 
   return (
-    <header className="h-24 flex items-center px-8 z-[20] sticky top-0 bg-white border-b border-[#E9E9E9] text-font">
+    <header className="h-20 flex items-center px-8 z-[20] sticky top-0 bg-white border-b border-[#E9E9E9] text-font">
       <nav className="flex items-center justify-between flex-1">
         <div>
           <Breadcrumbs />

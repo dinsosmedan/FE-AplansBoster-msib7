@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
-import { Action, Container, Loading, Modal, Pagination } from '@/components'
+import { Action, Container, ExportButton, Loading, Modal, Pagination } from '@/components'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 import { JENIS_RUMAH_IBADAH } from '@/pages/Layanan/Dayasos/RumahIbadah'
 
@@ -15,6 +15,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useAlert } from '@/store/client'
 import { useNavigate } from 'react-router-dom'
+import { exportWorshipPlaceFn } from '@/api/dayasos.api'
 
 interface FormValues {
   q: string
@@ -30,6 +31,7 @@ const DataRumahIbadah = () => {
   const createParams = useCreateParams()
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
   const { page, q, kecamatan, kelurahan, type } = useGetParams(['page', 'q', 'type', 'kecamatan', 'kelurahan'])
   const { data: worshipPlace, isLoading: isLoadingWorshipPlace } = useGetWorshipPlace(selectedId)
 
@@ -107,8 +109,22 @@ const DataRumahIbadah = () => {
   if (isLoading && isLoadingWorshipPlace) {
     return <Loading />
   }
+
+  const exportAsCsv = async () => {
+    setIsLoadingExport(true)
+    await exportWorshipPlaceFn('data-rumah-ibadah', 'csv')
+    setIsLoadingExport(false)
+  }
+
+  const exportAsXlsx = async () => {
+    setIsLoadingExport(true)
+    await exportWorshipPlaceFn('data-rumah-ibadah', 'xlsx')
+    setIsLoadingExport(false)
+  }
+
   return (
     <Container>
+      {(isFetching || isLoadingExport) && <Loading />}
       <h1 className="font-bold text-[32px] ">Rumah Ibadah (RI)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -202,15 +218,11 @@ const DataRumahIbadah = () => {
             />
           </div>
           <section className="flex items-center justify-between">
-            <Select>
-              <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
-                <SelectValue placeholder="Export" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value=".clsx">.clsx</SelectItem>
-                <SelectItem value=".csv">.csv</SelectItem>
-              </SelectContent>
-            </Select>
+            <div>
+              {worshipPlaces?.data?.length !== 0 ? (
+                <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+              ) : null}
+            </div>
             <div className="flex items-center gap-3">
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
                 <HiArrowPath className="text-lg" />
@@ -225,7 +237,7 @@ const DataRumahIbadah = () => {
         </form>
       </Form>
       <section className="border rounded-xl mt-5 overflow-hidden">
-        <Table className="mt-5">
+        <Table>
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
               <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
@@ -245,7 +257,7 @@ const DataRumahIbadah = () => {
             {worshipPlaces?.data.length !== 0 ? (
               worshipPlaces?.data.map((item, index) => (
                 <TableRow key={index}>
-                  <TableCell className="text-left">
+                  <TableCell className="text-left bg-[#F9FAFC]">
                     {(worshipPlaces.meta.currentPage - 1) * worshipPlaces.meta.perPage + index + 1}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.name}</TableCell>
@@ -258,7 +270,11 @@ const DataRumahIbadah = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{item.status}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.note}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Action onDelete={() => handleDelete(item.id)} onDetail={() => showDetail(item.id)} onEdit={() => console.log('detail')} />
+                    <Action
+                      onDelete={() => handleDelete(item.id)}
+                      onDetail={() => showDetail(item.id)}
+                      onEdit={() => console.log('detail')}
+                    />
                   </TableCell>
                 </TableRow>
               ))
@@ -281,54 +297,54 @@ const DataRumahIbadah = () => {
           onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
         />
       ) : null}
-      <Modal isShow={isShow} className='md:max-w-4xl'>
+      <Modal isShow={isShow} className="md:max-w-4xl">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
           <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
         </Modal.Header>
         {isLoadingWorshipPlace && <Loading />}
-        <div className='grid grid-cols-3 gap-y-5'>
+        <div className="grid grid-cols-3 gap-y-5">
           <div>
-              <p className="text-sm font-bold">Nama Rumah Ibadah</p>
-              <p className="text-base capitalize">{worshipPlace?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Jenis Rumah Ibadah</p>
-              <p className="text-base capitalize">{worshipPlace?.type ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Alamat Rumah Ibadah</p>
-              <p className="text-base capitalize">{worshipPlace?.address ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kecamatan</p>
-              <p className="text-base capitalize">{worshipPlace?.areaLevel3?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kelurahan</p>
-              <p className="text-base capitalize">{worshipPlace?.areaLevel4?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Nama PIC</p>
-              <p className="text-base capitalize">{worshipPlace?.picName ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kontak PIC</p>
-              <p className="text-base capitalize">{worshipPlace?.picPhone ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tahun</p>
-              <p className="text-base capitalize">{worshipPlace?.year ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Status</p>
-              <p className="text-base capitalize">{worshipPlace?.status ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Keterangan</p>
-              <p className="text-base capitalize">{worshipPlace?.note ?? '-'}</p>
-            </div>
+            <p className="text-sm font-bold">Nama Rumah Ibadah</p>
+            <p className="text-base capitalize">{worshipPlace?.name ?? '-'}</p>
           </div>
+          <div>
+            <p className="text-sm font-bold">Jenis Rumah Ibadah</p>
+            <p className="text-base capitalize">{worshipPlace?.type ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Alamat Rumah Ibadah</p>
+            <p className="text-base capitalize">{worshipPlace?.address ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kecamatan</p>
+            <p className="text-base capitalize">{worshipPlace?.areaLevel3?.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kelurahan</p>
+            <p className="text-base capitalize">{worshipPlace?.areaLevel4?.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Nama PIC</p>
+            <p className="text-base capitalize">{worshipPlace?.picName ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kontak PIC</p>
+            <p className="text-base capitalize">{worshipPlace?.picPhone ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tahun</p>
+            <p className="text-base capitalize">{worshipPlace?.year ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Status</p>
+            <p className="text-base capitalize">{worshipPlace?.status ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Keterangan</p>
+            <p className="text-base capitalize">{worshipPlace?.note ?? '-'}</p>
+          </div>
+        </div>
       </Modal>
     </Container>
   )

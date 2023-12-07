@@ -1,14 +1,26 @@
 import * as React from 'react'
 
 import { cn } from '@/lib/utils'
+import { useExpandedBar } from '@/store/client'
 
-const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
-  ({ className, ...props }, ref) => (
-    <div className="relative w-full overflow-y-auto max-w-[calc(100vw-390px)]">
+interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
+  containerClassName?: string
+}
+
+const Table = React.forwardRef<HTMLTableElement, TableProps>(({ className, containerClassName, ...props }, ref) => {
+  const expanded = useExpandedBar((state) => state.expanded)
+  return (
+    <div
+      className={cn(
+        'relative w-full overflow-y-auto',
+        expanded ? 'max-w-[calc(100vw-193px)]' : 'max-w-[calc(100vw-390px)]',
+        containerClassName
+      )}
+    >
       <table ref={ref} className={cn('w-full caption-bottom text-sm overflow-x-auto', className)} {...props} />
     </div>
   )
-)
+})
 Table.displayName = 'Table'
 
 const TableHeader = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(
@@ -64,10 +76,23 @@ const TableHead = React.forwardRef<HTMLTableCellElement, React.ThHTMLAttributes<
 )
 TableHead.displayName = 'TableHead'
 
-const TableCell = React.forwardRef<HTMLTableCellElement, React.TdHTMLAttributes<HTMLTableCellElement>>(
-  ({ className, ...props }, ref) => (
+interface TableCellProps extends React.TdHTMLAttributes<HTMLTableCellElement> {
+  position?: 'center' | 'left' | 'right'
+}
+
+const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
+  ({ className, position = 'left', ...props }, ref) => (
     <td ref={ref} className={cn('p-4 align-middle [&:has([role=checkbox])]:pr-0', className)} {...props}>
-      <p className="w-max">{props.children}</p>
+      <p
+        className={cn(
+          'w-max',
+          position === 'left' && '',
+          position === 'center' && 'mx-auto',
+          position === 'right' && 'ml-auto'
+        )}
+      >
+        {props.children}
+      </p>
     </td>
   )
 )

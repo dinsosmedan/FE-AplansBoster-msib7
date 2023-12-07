@@ -30,9 +30,25 @@ import {
   DataPkr,
   DataUnregister,
   DataBbp,
-  DataDtks
+  DataDtks,
+  LandingPage,
+  LoginUser,
+  DataSktm,
+  RegisterUser,
+  ForgotPasswordUser,
+  UpdatePasswordUser,
+  CekBansosUser,
+  DataPkh
 } from './pages'
-import { DashboardLayout, Alert, ProtectedAuth, ProtectedRoute } from './components'
+import {
+  DashboardLayout,
+  Alert,
+  ProtectedAuth,
+  ProtectedRoute,
+  UserLayout,
+  AuthUserLayout,
+  UserProtectedAuth
+} from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
 import LayananRehabsos from './pages/Layanan/LayananRehabsos'
 import LayananLinjamsos from './pages/Layanan/LayananLinjamsos'
@@ -50,7 +66,10 @@ import DataRumahIbadah from './pages/DataPenerima/Dayasos/DataRumahIbadah'
 import DataHibah from './pages/DataPenerima/Dayasos/DataHibah'
 import { Toaster } from './components/ui/toaster'
 import DataBpnt from './pages/DataPenerima/Dayasos/DataBpnt'
+import DataPbi from './pages/DataPenerima/Linjamsos/DataPbi'
+import Unregister from './pages/Layanan/Linjamsos/Unregister'
 // import DataPkr from './pages/DataPenerima/Linjamsos/DataPkr'
+import UserSktm from './pages/LandingPage/SKTM/DataSktm'
 
 export default function App() {
   const { alertOptions, handleClose, handleSubmit } = useAlert()
@@ -65,8 +84,8 @@ export default function App() {
       <Toaster />
       <Routes>
         <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<DashboardLayout />}>
-            <Route index element={<Home />} />
+          <Route element={<DashboardLayout />}>
+            <Route path="/dashboard" element={<Home />} />
             <Route path="/layanan">
               <Route index element={<Layanan />} />
               <Route path="rehabsos" element={<LayananRehabsos />} />
@@ -97,7 +116,10 @@ export default function App() {
               <Route index element={<LayananLinjamsos />} />
               <Route path="Bbp" element={<Bbp />} />
               <Route path="Pkr" element={<Pkr />} />
+              <Route path="Pkr/:id" element={<Pkr />} />
               <Route path="Sktm" element={<Sktm />} />
+              <Route path="Unregister" element={<Unregister />} />
+              <Route path="Unregister/:id" element={<Unregister />} />
             </Route>
             <Route path="/layanan/dayasos">
               <Route index element={<LayananDayasos />} />
@@ -131,6 +153,9 @@ export default function App() {
               <Route path="data-pkr" element={<DataPkr />} />
               <Route path="data-unregister" element={<DataUnregister />} />
               <Route path="data-bbp" element={<DataBbp />} />
+              <Route path="data-sktm" element={<DataSktm />} />
+              <Route path="data-pbi" element={<DataPbi />} />
+              <Route path="data-pkh" element={<DataPkh />} />
             </Route>
             <Route path="/data-dtks" element={<DataDtks />} />
           </Route>
@@ -138,6 +163,21 @@ export default function App() {
         <Route element={<ProtectedAuth />}>
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+        </Route>
+        <Route element={<UserLayout />}>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/user">
+            <Route element={<UserProtectedAuth />}>
+              <Route element={<AuthUserLayout />}>
+                <Route path="login" element={<LoginUser />} />
+                <Route path="register" element={<RegisterUser />} />
+                <Route path="forgot-password" element={<ForgotPasswordUser />} />
+                <Route path="reset-password" element={<UpdatePasswordUser />} />
+              </Route>
+            </Route>
+            <Route path="sktm" element={<UserSktm />} />
+            <Route path="cek-bansos" element={<CekBansosUser />} />
+          </Route>
         </Route>
       </Routes>
     </>

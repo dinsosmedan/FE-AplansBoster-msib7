@@ -23,7 +23,7 @@ import {
 
 export const MAIN_MENU = [
   {
-    link: '/',
+    link: '/dashboard',
     title: 'Dashboard',
     activeIcon: HiSquares2X2,
     inactiveIcon: HiOutlineSquares2X2

@@ -33,6 +33,18 @@ import DataDtks from './DataDtks'
 import DataUnregister from './DataPenerima/Linjamsos/DataUnregister'
 import DataBbp from './DataPenerima/Linjamsos/DataBbp'
 import InfoDataMaster from './InfoDataMaster'
+import LandingPage from './LandingPage/LandingPage'
+import LoginUser from './LandingPage/LoginUser'
+import DataSktm from './DataPenerima/Linjamsos/DataSktm'
+import DataPbi from './DataPenerima/Linjamsos/DataPbi'
+import RegisterUser from './LandingPage/RegisterUser'
+import ForgotPasswordUser from './LandingPage/ForgotPasswordUser'
+import UpdatePasswordUser from './LandingPage/UpdatePasswordUser'
+import CekBansosUser from './LandingPage/CekBansosUser'
+import DataPkh from './DataPenerima/Linjamsos/DataPkh'
+import Unregister from './Layanan/Linjamsos/Unregister'
+import UserSktm from './LandingPage/SKTM/DataSktm'
+import FormSktmTerdaftar from './LandingPage/SKTM/SktmRegistered'
 
 export {
   Home,
@@ -69,5 +81,17 @@ export {
   DataDtks,
   DataUnregister,
   DataBbp,
-  InfoDataMaster
+  InfoDataMaster,
+  LandingPage,
+  LoginUser,
+  DataSktm,
+  DataPbi,
+  RegisterUser,
+  ForgotPasswordUser,
+  UpdatePasswordUser,
+  DataPkh,
+  Unregister,
+  CekBansosUser,
+  UserSktm,
+  FormSktmTerdaftar
 }

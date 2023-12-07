@@ -1,7 +1,6 @@
-import { CardLink, Container } from '@/components'
+import { CardSub, Container } from '@/components'
 import useTitle from '@/hooks/useTitle'
 // import { Link } from 'react-router-dom'
-import { HiEye } from 'react-icons/hi2'
 
 const DataPenerimaLinjamsos = () => {
   useTitle('Data Penerima / Linjamsos ')
@@ -9,81 +8,33 @@ const DataPenerimaLinjamsos = () => {
   return (
     <Container className="px-[120px]">
       <h1 className="font-bold text-2xl ">LINJAMSOS</h1>
-      <div className="grid grid-cols-2 gap-x-[85px] gap-y-[45px] mt-10">
-        <CardLink className="w-full rounded-2xl">
-          <CardLink.Header className="h-[185px] flex-col" title="Bantuan Biaya Pendidikan" circlePosition="bottom">
-            <p className="pt-11 text-white text-base italic font-inter">Education Financial Aid</p>
-          </CardLink.Header>
-          <CardLink.Footer href="/data-penerima/linjamsos/data-bbp">
-            <div className="flex gap-3 items-center">
-              <HiEye className="h-[30px] w-[30px] text-primary" />
-              <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
-            </div>
-          </CardLink.Footer>
-        </CardLink>
-        <CardLink className="w-full rounded-2xl">
-          <CardLink.Header className="h-[185px] flex-col" title="Penerima Bantuan Iuran (PBI)" circlePosition="top">
-            <p className="pt-11 text-white text-base italic font-inter">Premium Assistance Beneficiary</p>
-          </CardLink.Header>
-          <CardLink.Footer href="/layanan/rehabsos">
-            <div className="flex gap-3 items-center">
-              <HiEye className="h-[30px] w-[30px] text-primary" />
-              <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
-            </div>
-          </CardLink.Footer>
-        </CardLink>
-        <CardLink className="w-full rounded-2xl">
-          <CardLink.Header
-            className="h-[185px] flex-col px-4"
-            title="Penanganan Kelompok Rentan"
-            circlePosition="bottom"
-          >
-            <p className="pt-11 text-white text-base italic font-inter">Vulnerable Group Handling</p>
-          </CardLink.Header>
-          <CardLink.Footer href="/data-penerima/linjamsos/data-pkr">
-            <div className="flex gap-3 items-center">
-              <HiEye className="h-[30px] w-[30px] text-primary" />
-              <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
-            </div>
-          </CardLink.Footer>
-        </CardLink>
-        <CardLink className="w-full rounded-2xl">
-          <CardLink.Header className="h-[185px] flex-col" title="Program Keluarga Harapan (PKH)" circlePosition="top">
-            <p className="pt-11 text-white text-base italic font-inter">Family Home Program</p>
-          </CardLink.Header>
-          <CardLink.Footer href="/layanan/rehabsos">
-            <div className="flex gap-3 items-center">
-              <HiEye className="h-[30px] w-[30px] text-primary" />
-              <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
-            </div>
-          </CardLink.Footer>
-        </CardLink>
-        <CardLink className="w-full rounded-2xl">
-          <CardLink.Header
-            className="h-[185px] flex-col px-5"
-            title="Surat Keterangan Tidak Mampu (SKTM)"
-            circlePosition="bottom"
-          >
-            <p className="pt-11 text-white text-base italic font-inter">Indigency Certificate</p>
-          </CardLink.Header>
-          <CardLink.Footer href="/layanan/rehabsos">
-            <div className="flex gap-3 items-center">
-              <HiEye className="h-[30px] w-[30px] text-primary" />
-              <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
-            </div>
-          </CardLink.Footer>
-        </CardLink>
-        <CardLink className="w-full rounded-2xl">
-          <CardLink.Header className="h-[185px] flex-col px-5" title="Tidak Terdaftar" circlePosition="bottom">
-            <p className="pt-11 text-white text-base italic font-inter">Unregister</p>
-          </CardLink.Header>
-          <CardLink.Footer href="/data-penerima/linjamsos/data-unregister">
-            <div className="flex gap-3 items-center">
-              <HiEye className="h-[30px] w-[30px] text-primary" />
-              <p className="text-[25px] text-primary text-center font-bold ">Lihat Data</p>
-            </div>
-          </CardLink.Footer>
-        </CardLink>
+      <div className="grid grid-cols-2 gap-x-[85px] gap-y-[40px] mt-10">
+        <CardSub
+          title={'Bantuan Biaya Pendidikan'}
+          subTitle={'Education Financial Aid'}
+          href={'/data-penerima/linjamsos/data-bbp'}
+        />
+        <CardSub
+          title={'Penerima Bantuan Iuran (PBI)'}
+          subTitle={'Premium Assistance Beneficiary'}
+          href={'/data-penerima/linjamsos/data-pbi'}
+        />
+        <CardSub
+          title={'Penanganan Kelompok Rentan'}
+          subTitle={'Vulnerable Group Handling'}
+          href={'/data-penerima/linjamsos/data-pkr'}
+        />
+        <CardSub
+          title={'Program Keluarga Harapan (PKH)'}
+          subTitle={'Family Home Program'}
+          href={'/data-penerima/linjamsos/data-pkh'}
+        />
+        <CardSub
+          title={'Surat Keterangan Tidak Mampu (SKTM)'}
+          subTitle={'Indigency Certificate'}
+          href={'/data-penerima/linjamsos/data-sktm'}
+        />
+        <CardSub title={'Tidak Terdaftar'} subTitle={'Unregister'} href={'/data-penerima/linjamsos/data-unregister'} />
       </div>
     </Container>
   )

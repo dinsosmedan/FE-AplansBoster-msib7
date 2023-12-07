@@ -17,11 +17,12 @@ import {
   useGetServiceFunds,
   useGetServiceTypes
 } from '@/store/server'
-import { Action, Loading, Modal, Title } from '@/components'
+import { Action, ExportButton, Loading, Modal, Title } from '@/components'
 import { useNavigate } from 'react-router-dom'
 import { useAlert } from '@/store/client'
 import { Input } from '@/components/ui/input'
-import React from 'react'
+import * as React from 'react'
+import { exportServiceFundFn } from '@/api/dayasos.api'
 
 interface FormValues {
   q: string
@@ -37,6 +38,7 @@ const DataDjp = () => {
 
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
 
   const createParams = useCreateParams()
   const { q, kecamatan, kelurahan, page, type } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'type'])
@@ -106,13 +108,25 @@ const DataDjp = () => {
     setIsShow(true)
   }
 
+  const exportAsCsv = async () => {
+    setIsLoadingExport(true)
+    await exportServiceFundFn('data-djpm', 'csv')
+    setIsLoadingExport(false)
+  }
+
+  const exportAsXlsx = async () => {
+    setIsLoadingExport(true)
+    await exportServiceFundFn('data-djpm', 'xlsx')
+    setIsLoadingExport(false)
+  }
+
   if (isLoading && isLoadingServiceFund) {
     return <Loading />
   }
 
   return (
     <Container>
-      {isFetching && <Loading />}
+      {(isFetching || isLoadingExport) && <Loading />}
       <Title>Dana Jasa Pelayanan Masyarakat (DJPM)</Title>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-[18px]">
@@ -206,15 +220,11 @@ const DataDjp = () => {
           </section>
 
           <section className="flex items-center justify-between">
-            <Select>
-              <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
-                <SelectValue placeholder="Export" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value=".clsx">.clsx</SelectItem>
-                <SelectItem value=".csv">.csv</SelectItem>
-              </SelectContent>
-            </Select>
+            <div>
+              {serviceFunds?.data?.length !== 0 && (
+                <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+              )}
+            </div>
             <div className="flex items-center gap-3">
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
                 <HiArrowPath className="text-lg" />

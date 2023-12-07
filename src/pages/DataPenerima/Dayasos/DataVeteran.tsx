@@ -10,16 +10,16 @@ import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useDeleteVeteran, useGetVeteran, useGetVeteranById } from '@/store/server'
-import { Action, Loading, Modal } from '@/components'
+import { Action, ExportButton, Loading, Modal } from '@/components'
 import { useAlert } from '@/store/client'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { exportVeteranFn } from '@/api/dayasos.api'
 
 const DataVeteran = () => {
   useTitle('Data Penerima / Dayasos / Veteran ')
   const { alert } = useAlert()
   const createParams = useCreateParams()
   const { q, page } = useGetParams(['q', 'page'])
-  const [isLoadingPage, setIsLoadingPage] = React.useState(false)
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
   interface FormValues {
@@ -50,9 +50,9 @@ const DataVeteran = () => {
         key: 'q',
         value: values.q !== '' ? values.q : ''
       })
-      createParams({ key: 'page', value: '' }) // Set page to empty string when searching
+      createParams({ key: 'page', value: '' })
     } else {
-      createParams({ key: 'q', value: '' }) // Set q to empty string if the search query is empty
+      createParams({ key: 'q', value: '' })
     }
     await refetch()
   }
@@ -71,57 +71,59 @@ const DataVeteran = () => {
       await deleteVeteran(id)
     })
   }
-  React.useEffect(() => {
-    if (isFetching) {
-      setIsLoadingPage(true)
-    } else {
-      setIsLoadingPage(false)
-    }
-  }, [isLoadingPage, isFetching])
 
   if (isLoading) {
     return <Loading />
   }
+
+  const exportAsCsv = async () => {
+    setIsLoadingExport(true)
+    await exportVeteranFn('data-veteran', 'csv')
+    setIsLoadingExport(false)
+  }
+
+  const exportAsXlsx = async () => {
+    setIsLoadingExport(true)
+    await exportVeteranFn('data-veteran', 'xlsx')
+    setIsLoadingExport(false)
+  }
+
   return (
-    <div>
-      <Container>
-        <h1 className="font-bold text-2xl ">Veteran (VET)</h1>
-        <Form {...forms}>
-          <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-            <div className="grid gap-x-10 gap-y-5 pt-10">
-              <FormField
-                name="q"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+    <Container>
+      {(isFetching || isLoadingExport) && <Loading />}
+      <h1 className="font-bold text-2xl ">Veteran (VET)</h1>
+      <Form {...forms}>
+        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
+          <div className="grid gap-x-10 gap-y-5 pt-10">
+            <FormField
+              name="q"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input {...field} type="text" placeholder="Masukkan Nama" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </div>
+          <section className="flex items-center justify-between">
+            <div>
+              {veterans?.data?.length !== 0 ? (
+                <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+              ) : null}
             </div>
-            <section className="flex items-center justify-between">
-              <Select>
-                <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
-                  <SelectValue placeholder="Export" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value=".clsx">.clsx</SelectItem>
-                  <SelectItem value=".csv">.csv</SelectItem>
-                </SelectContent>
-              </Select>
-              <div className="flex items-center gap-3">
-                <Button className="gap-2 border-none rounded-lg" type="submit">
-                  <HiMagnifyingGlass className="text-lg" />
-                  <span>Cari Data</span>
-                </Button>
-              </div>
-            </section>
-          </form>
-        </Form>
+            <div className="flex items-center gap-3">
+              <Button className="gap-2 border-none rounded-lg" type="submit">
+                <HiMagnifyingGlass className="text-lg" />
+                <span>Cari Data</span>
+              </Button>
+            </div>
+          </section>
+        </form>
+      </Form>
       <section className="border rounded-xl mt-5 overflow-hidden">
-        <Table className="mt-5">
+        <Table>
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
               <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
@@ -148,76 +150,81 @@ const DataVeteran = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{item.veteranUnit}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.uniformSize}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Action onDelete={() => handleDelete(item.id)} onDetail={() => showDetail(item.id)} onEdit={() => console.log('detail')}/>
-          </TableCell>
-          </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={9} className="text-center">
-                    Tidak ada data
+                    <Action
+                      onDelete={() => handleDelete(item.id)}
+                      onDetail={() => showDetail(item.id)}
+                      onEdit={() => console.log('detail')}
+                    />
                   </TableCell>
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
-          </section>
-        {(veterans?.meta?.total as number) > 10 ? (
-          <Pagination
-            className="px-5 py-5 flex justify-end"
-            currentPage={page !== '' ? parseInt(page) : 1}
-            totalCount={veterans?.meta.total as number}
-            pageSize={10}
-            onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
-          />
-        ) : null}
-        <Modal isShow={isShow} className='md:max-w-4xl'>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center">
+                  Tidak ada data
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </section>
+      {(veterans?.meta?.total as number) > 10 ? (
+        <Pagination
+          className="px-5 py-5 flex justify-end"
+          currentPage={page !== '' ? parseInt(page) : 1}
+          totalCount={veterans?.meta.total as number}
+          pageSize={10}
+          onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
+        />
+      ) : null}
+      <Modal isShow={isShow} className="md:max-w-4xl">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
           <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
         </Modal.Header>
         {isLoadingVeteran && <Loading />}
-        <div className='grid grid-cols-3 gap-y-5'>
+        <div className="grid grid-cols-3 gap-y-5">
           <div>
-              <p className="text-sm font-bold">Nama</p>
-              <p className="text-base capitalize">{veteran?.beneficiary.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">NIK</p>
-              <p className="text-base capitalize">{veteran?.beneficiary.identityNumber ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">No. KK</p>
-              <p className="text-base capitalize">{veteran?.beneficiary.familyCardNumber ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kecamatan</p>
-              <p className="text-base capitalize">{veteran?.beneficiary?.address.areaLevel3?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kelurahan</p>
-              <p className="text-base capitalize">{veteran?.beneficiary?.address.areaLevel4?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tempat / Tanggal Lahir </p>
-              <p className="text-base capitalize">{veteran?.beneficiary.birthPlace ?? '-'} / {veteran?.beneficiary.birthDate ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Usia</p>
-              <p className="text-base capitalize">{veteran?.beneficiary.age ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Agama</p>
-              <p className="text-base capitalize">{veteran?.beneficiary.religion ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Status DTKS</p>
-              <p className="text-base capitalize">{veteran?.beneficiary.isDtks ? 'DTKS' : 'Tidak DTKS' ?? '-'}</p>
-            </div>
+            <p className="text-sm font-bold">Nama</p>
+            <p className="text-base capitalize">{veteran?.beneficiary.name ?? '-'}</p>
           </div>
+          <div>
+            <p className="text-sm font-bold">NIK</p>
+            <p className="text-base capitalize">{veteran?.beneficiary.identityNumber ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">No. KK</p>
+            <p className="text-base capitalize">{veteran?.beneficiary.familyCardNumber ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kecamatan</p>
+            <p className="text-base capitalize">{veteran?.beneficiary?.address.areaLevel3?.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kelurahan</p>
+            <p className="text-base capitalize">{veteran?.beneficiary?.address.areaLevel4?.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tempat / Tanggal Lahir </p>
+            <p className="text-base capitalize">
+              {veteran?.beneficiary.birthPlace ?? '-'} / {veteran?.beneficiary.birthDate ?? '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Usia</p>
+            <p className="text-base capitalize">{veteran?.beneficiary.age ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Agama</p>
+            <p className="text-base capitalize">{veteran?.beneficiary.religion ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Status DTKS</p>
+            <p className="text-base capitalize">{veteran?.beneficiary.isDtks ? 'DTKS' : 'Tidak DTKS' ?? '-'}</p>
+          </div>
+        </div>
       </Modal>
-      </Container>
-    </div>
+    </Container>
   )
 }
 export default DataVeteran
