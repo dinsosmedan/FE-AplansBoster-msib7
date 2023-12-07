@@ -37,7 +37,7 @@ const DataPbi = () => {
   })
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
-  const { data: listKelurahan } = useGetKelurahan(areaLevel3)
+  const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
   const { data: premium, isLoading: isLoadingPremium } = useGetPremiumAssistanceBenefitByID(selectedId)
 
   const {
@@ -75,7 +75,7 @@ const DataPbi = () => {
     setIsShow(true)
   }
   const handleReset = () => {
-    navigate('/data-penerima/linjamsos/data-pkr')
+    navigate('/data-penerima/linjamsos/data-pbi')
     forms.reset()
   }
   if (isLoading && isLoadingPremium) {
@@ -98,7 +98,7 @@ const DataPbi = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} type="number" placeholder="Masukkan Nama/ NIK" />
+                    <Input {...field} type="text" placeholder="Masukkan Nama/ NIK" />
                   </FormControl>
                 </FormItem>
               )}
@@ -109,7 +109,7 @@ const DataPbi = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Kecamatan" />
@@ -133,7 +133,7 @@ const DataPbi = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={areaLevel3 === '' || kecamatan === ''}>
+                    <Select onValueChange={field.onChange} value={field.value} disabled={areaLevel3 === '' && kecamatan === ''}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Kelurahan" />
@@ -160,7 +160,7 @@ const DataPbi = () => {
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Jenis Anggotaan" />
+                          <SelectValue placeholder="Jenis Anggaran" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -207,6 +207,8 @@ const DataPbi = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">No. </TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Anggaran</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
@@ -220,9 +222,9 @@ const DataPbi = () => {
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.name ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.identityNumber ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">-</TableCell>
-                  {/* <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.address.areaLevel3?.name ?? '-'}</TableCell> */}
-                  {/* <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.address.areaLevel4?.name ?? '-'}</TableCell> */}
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.address.areaLevel3?.name ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.address.areaLevel4?.name ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC] capitalize">{item.type ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                   <Action onDelete={() => console.log('delete')} onDetail={() => showDetail(item.id)} onEdit={() => console.log('detail')}/>
         </TableCell>
