@@ -9,10 +9,11 @@ import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import { useNavigate } from 'react-router-dom'
-import { useDeletePkr, useGetKecamatan, useGetKelurahan, useVulnerableGroupHandlings } from '@/store/server'
+import { useDeletePkr, useGetDetailVulnerableGroupHandling, useGetKecamatan, useGetKelurahan, useVulnerableGroupHandlings } from '@/store/server'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { Action, ExportButton, Loading } from '@/components'
+import { Action, ExportButton, Loading, Modal } from '@/components'
 import { useAlert } from '@/store/client'
+import React from 'react'
 interface FormValues {
   q: string
   kelurahan: string
@@ -23,6 +24,8 @@ const DataPkr = () => {
   useTitle('Data Penerima / Linjamsos / Penanganan Kelompok Rentan (PKR) ')
   const navigate = useNavigate()
   const createParams = useCreateParams()
+  const [isShow, setIsShow] = React.useState(false)
+  const [selectedId, setSelectedId] = React.useState('')
   const { q, kecamatan, kelurahan, page, year } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'year'])
   const forms = useForm<FormValues>({
     defaultValues: {
@@ -37,6 +40,8 @@ const DataPkr = () => {
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3)
+  const { data: vulnerable, isLoading: isLoadingVulnerable } = useGetDetailVulnerableGroupHandling(selectedId)
+
   const {
     data: vulnerables,
     refetch,
@@ -60,6 +65,10 @@ const DataPkr = () => {
       await deletePkr(id)
     })
   }
+  const showDetail = (id: string) => {
+    setSelectedId(id)
+    setIsShow(true)
+  }
   useDisableBodyScroll(isFetching)
   const updateParam = (key: any, value: any) => {
     if (value !== '') {
@@ -82,9 +91,10 @@ const DataPkr = () => {
     navigate('/data-penerima/linjamsos/data-pkr')
     forms.reset()
   }
-  if (isLoading) {
+  if (isLoading && isLoadingVulnerable) {
     return <Loading />
   }
+
   return (
     <div>
       <Container>
@@ -99,7 +109,7 @@ const DataPkr = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} type="number" placeholder="Masukkan NIK Masyarakat" />
+                        <Input {...field} type="text" placeholder="Masukkan NIK Masyarakat" />
                       </FormControl>
                     </FormItem>
                   )}
@@ -113,7 +123,7 @@ const DataPkr = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Kecamatan" />
@@ -132,13 +142,12 @@ const DataPkr = () => {
                 )}
               />
               <FormField
-                disabled={areaLevel3 === ''}
                 name="kelurahan"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value} disabled={!areaLevel3 || !kecamatan}>
+                      <Select onValueChange={field.onChange} value={field.value} disabled={areaLevel3 === '' && kecamatan === ''}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Kelurahan" />
@@ -196,6 +205,7 @@ const DataPkr = () => {
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat Kartu Keluarga</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
               </TableRow>
             </TableHeader>
@@ -222,10 +232,13 @@ const DataPkr = () => {
                     <TableCell className="text-center bg-[#F9FAFC]">
                       {item.beneficiary?.address.areaLevel4?.name ?? '-'}
                     </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">
+                      {item.budgetYear ?? '-'}
+                    </TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       <Action
                         onDelete={async () => await handleDelete(item.id)}
-                        onDetail={() => console.log('edit')}
+                        onDetail={() => showDetail(item.id)}
                         onEdit={() => navigate(`/layanan/linjamsos/Pkr/${item.id}`)}
                       />
                     </TableCell>
@@ -250,6 +263,79 @@ const DataPkr = () => {
             onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
           />
         ) : null}
+        <Modal isShow={isShow} className="md:max-w-4xl">
+          <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+            <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
+            <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+          </Modal.Header>
+          {isLoadingVulnerable && <Loading />}
+          <div className="grid grid-cols-3 gap-y-5">
+            <div>
+              <p className="text-sm font-bold">Nama</p>
+              <p className="text-base capitalize">{vulnerable?.beneficiary.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">NIK</p>
+              <p className="text-base capitalize">{vulnerable?.beneficiary.identityNumber ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">No. KK</p>
+              <p className="text-base capitalize">{vulnerable?.beneficiary.familyCardNumber ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kecamatan</p>
+              <p className="text-base capitalize">{vulnerable?.beneficiary.address.areaLevel3?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kelurahan</p>
+              <p className="text-base capitalize">{vulnerable?.beneficiary.address.areaLevel4?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Alamat Lengkap</p>
+              <p className="text-base capitalize">{vulnerable?.beneficiary.address.fullAddress ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Pekerjaan</p>
+              <p className="text-base capitalize">{vulnerable?.beneficiary.occupation ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
+              <p className="text-base capitalize">{vulnerable?.beneficiary.birthPlace ?? '-'} / {vulnerable?.beneficiary.birthDate ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Status DTKS</p>
+              <p className="text-base capitalize">{vulnerable?.beneficiary.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Usia</p>
+              <p className="text-base capitalize">{vulnerable?.beneficiary.age ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Tanggal Kejadian</p>
+              <p className="text-base capitalize">{vulnerable?.incidentDate ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Lokasi Kejadian</p>
+              <p className="text-base capitalize">{vulnerable?.incidentAddress ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nomor Rekening</p>
+              <p className="text-base capitalize">{vulnerable?.bankAccountNumber ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nama Bank</p>
+              <p className="text-base capitalize">{vulnerable?.bankName ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Jumlah Bantuan</p>
+              <p className="text-base capitalize">{vulnerable?.assistanceAmount ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Tahun Anggaran</p>
+              <p className="text-base capitalize">{vulnerable?.budgetYear ?? '-'}</p>
+            </div>
+          </div>
+        </Modal>
       </Container>
     </div>
   )
