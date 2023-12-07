@@ -69,6 +69,7 @@ import DataBpnt from './pages/DataPenerima/Dayasos/DataBpnt'
 import DataPbi from './pages/DataPenerima/Linjamsos/DataPbi'
 import Unregister from './pages/Layanan/Linjamsos/Unregister'
 // import DataPkr from './pages/DataPenerima/Linjamsos/DataPkr'
+import UserSktm from './pages/LandingPage/SKTM/DataSktm'
 
 export default function App() {
   const { alertOptions, handleClose, handleSubmit } = useAlert()
@@ -172,6 +173,7 @@ export default function App() {
                 <Route path="reset-password" element={<UpdatePasswordUser />} />
               </Route>
             </Route>
+            <Route path="sktm" element={<UserSktm />} />
             <Route path="cek-bansos" element={<CekBansosUser />} />
           </Route>
         </Route>
