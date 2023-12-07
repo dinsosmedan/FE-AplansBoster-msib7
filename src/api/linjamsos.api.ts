@@ -7,7 +7,8 @@ import {
   type IPremiumAssistanceBenefitById,
   type IFamilyHopeId,
   type IVulnerableGroupHandlingDetail,
-  type IUnregisterDetail
+  type IUnregisterDetail,
+  type IIndigencyCertificateByID
 } from '@/lib/types/linjamsos.type'
 import api from './axiosInstance'
 import { type unregisterFields, type vulnerableGroupHandlingFields } from '@/lib/validations/linjamsos.validation'
@@ -32,7 +33,7 @@ export interface IndigencyCertificateQuery {
   idKelurahan?: string
   q?: string
   year?: string
-  status?: string
+  statusDtks: string
 }
 export interface PremiumAssistanceBenefitQuery {
   page?: number
@@ -122,12 +123,16 @@ export const getIndigencyCertificateFn = async ({
   idKelurahan,
   q,
   year,
-  status
+  statusDtks
 }: IndigencyCertificateQuery): Promise<IIndigencyCertificate> => {
   const response = await api.get(
-    `/indigency-certificate?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&issue_year=${year}&is_dtks=${status}&limit=10`
+    `/indigency-certificate?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&issue_year=${year}&status_dtks=${statusDtks}&limit=10`
   )
   return response.data
+}
+export const showDetailIndigencyCertificateFn = async (id: string): Promise<IIndigencyCertificateByID> => {
+  const response = await api.get(`/indigency-certificate/${id}`)
+  return response.data?.data
 }
 // PBI //
 export const getPremiumAssistanceBenefitFn = async ({
