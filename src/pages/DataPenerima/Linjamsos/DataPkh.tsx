@@ -10,8 +10,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import { useNavigate } from 'react-router-dom'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useGetFamilyHopeFn, useGetKecamatan, useGetKelurahan } from '@/store/server'
-import { Action, Loading } from '@/components'
+import { useGetFamilyHopeByID, useGetFamilyHopeFn, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { Action, Loading, Modal } from '@/components'
+import React from 'react'
 interface FormValues {
   q: string
   kelurahan: string
@@ -21,6 +22,8 @@ interface FormValues {
 const DataPkh = () => {
   useTitle('Data Penerima / Linjamsos / PKH ')
   const navigate = useNavigate()
+  const [isShow, setIsShow] = React.useState(false)
+  const [selectedId, setSelectedId] = React.useState('')
   const createParams = useCreateParams()
   const { q, kecamatan, kelurahan, page, type } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'type'])
   const forms = useForm<FormValues>({
@@ -33,7 +36,8 @@ const DataPkh = () => {
   })
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
-  const { data: listKelurahan } = useGetKelurahan(areaLevel3)
+  const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
+  const { data: family, isLoading: isLoadingFamilyHope } = useGetFamilyHopeByID(selectedId)
   const {
     data: familys,
     refetch,
@@ -64,11 +68,15 @@ const DataPkh = () => {
 
     await refetch()
   }
+  const showDetail = (id: string) => {
+    setSelectedId(id)
+    setIsShow(true)
+  }
   const handleReset = () => {
-    navigate('/data-penerima/linjamsos/data-pkr')
+    navigate('/data-penerima/linjamsos/data-pkh')
     forms.reset()
   }
-  if (isLoading) {
+  if (isLoading && isLoadingFamilyHope) {
     return <Loading />
   }
   // const handleReset = () => {
@@ -101,7 +109,7 @@ const DataPkh = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Jenis Anggota" />
@@ -117,12 +125,12 @@ const DataPkh = () => {
               )}
             />
             <FormField
-              name="kelurahan"
+              name="kecamatan"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Kecamatan" />
@@ -141,12 +149,12 @@ const DataPkh = () => {
               )}
             />
             <FormField
-              name="kecamatan"
+              name="kelurahan"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={areaLevel3 === '' && kecamatan === ''}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Kelurahan" />
@@ -217,7 +225,7 @@ const DataPkh = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.address.areaLevel4?.name ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.type ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Action onDelete={() => console.log('delete')} onDetail={() => console.log('edit')} onEdit={() => console.log('detail')}/>
+                  <Action onDelete={() => console.log('delete')} onDetail={() => showDetail(item.id)} onEdit={() => console.log('detail')}/>
         </TableCell>
         </TableRow>
                 ))
@@ -240,6 +248,59 @@ const DataPkh = () => {
             onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
           />
         ) : null}
+        <Modal isShow={isShow} className="md:max-w-4xl">
+        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+        </Modal.Header>
+        {isLoadingFamilyHope && <Loading />}
+        <div className="grid grid-cols-3 gap-y-5">
+          <div>
+              <p className="text-sm font-bold">Nama</p>
+              <p className="text-base capitalize">{family?.beneficiary.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">NIK</p>
+              <p className="text-base capitalize">{family?.beneficiary.identityNumber ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">No. KK</p>
+              <p className="text-base capitalize">{family?.beneficiary.familyCardNumber ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kecamatan</p>
+              <p className="text-base capitalize">{family?.beneficiary.address.areaLevel3?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Kelurahan</p>
+              <p className="text-base capitalize">{family?.beneficiary.address.areaLevel4?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Alamat Lengkap</p>
+              <p className="text-base capitalize">{family?.beneficiary.address.fullAddress ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Pekerjaan</p>
+              <p className="text-base capitalize">{family?.beneficiary.occupation ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
+              <p className="text-base capitalize">{family?.beneficiary.birthPlace ?? '-'} / {family?.beneficiary.birthDate ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Status DTKS</p>
+              <p className="text-base capitalize">{family?.beneficiary.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Jenis Keanggotaan</p>
+              <p className="text-base capitalize">{family?.type ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Usia</p>
+              <p className="text-base capitalize">{family?.beneficiary.age ?? '-'}</p>
+            </div>
+        </div>
+      </Modal>
     </Container>
   )
 }
