@@ -15,7 +15,8 @@ import {
   showDetailUnregisterFn,
   updateVulnerableGroupHandlingFn,
   updateUnregisterFn,
-  showDetailVulnerableGroupHandlingFn
+  showDetailVulnerableGroupHandlingFn,
+  showDetailIndigencyCertificateFn
 } from '@/api/linjamsos.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -169,10 +170,10 @@ export const useGetIndigencyCertificateFn = ({
   idKelurahan,
   q,
   year,
-  status
+  statusDtks
 }: IndigencyCertificateQuery) => {
   return useQuery(
-    ['indigency-certificates', page, idKecamatan, idKelurahan, q, year, status],
+    ['indigency-certificates', page, idKecamatan, idKelurahan, q, year, statusDtks],
     async () =>
       await getIndigencyCertificateFn({
         page,
@@ -180,13 +181,18 @@ export const useGetIndigencyCertificateFn = ({
         idKelurahan,
         q,
         year,
-        status
+        statusDtks
       }),
     {
       keepPreviousData: true,
       staleTime: 5000
     }
   )
+}
+export const useGetIndigencyCertificateByID = (id?: string) => {
+  return useQuery(['indigency-certificates', id], async () => await showDetailIndigencyCertificateFn(id as string), {
+    enabled: !!id
+  })
 }
 
 // PBI //

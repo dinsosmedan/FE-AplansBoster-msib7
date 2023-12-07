@@ -102,6 +102,22 @@ export interface IIndigencyCertificate {
   }>
   meta: IMeta
 }
+export interface IIndigencyCertificateByID {
+  success: boolean
+  message: string
+  id: string
+  applicant: IApplicant
+  peopleConcerned: IPeopleConcerned
+  application: string
+  certificateDestination: string
+  issueDate: string
+  issueYear: string
+  statusDtks: string
+  isApplicationOnline: string
+  createdAt: string
+  updatedAt: string
+  meta: IMeta
+}
 export interface IPremiumAssistanceBenefit {
   success: boolean
   message: string
