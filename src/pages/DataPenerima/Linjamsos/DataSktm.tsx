@@ -10,8 +10,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useNavigate } from 'react-router-dom'
-import { useGetIndigencyCertificateFn, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { useDeleteSktm, useGetIndigencyCertificateFn, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import { Action, Loading } from '@/components'
+import { useAlert } from '@/store/client'
+
 interface FormValues {
   q: string
   kelurahan: string
@@ -22,6 +24,7 @@ interface FormValues {
 const DataSktm = () => {
   useTitle('Data Penerima / Linjamsos / SKTM ')
   const navigate = useNavigate()
+  const { alert } = useAlert()
   const createParams = useCreateParams()
   const { q, kecamatan, kelurahan, page, year } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'year'])
   const forms = useForm<FormValues>({
@@ -49,6 +52,17 @@ const DataSktm = () => {
     status,
     q
   })
+  const { mutateAsync: deleteSktm } = useDeleteSktm()
+  const handleDelete = async (id: string) => {
+    await alert({
+      title: 'Hapus Data SKTM',
+      description: 'Apakah kamu yakin ingin menghapus data ini?',
+      variant: 'danger',
+      submitText: 'Delete'
+    }).then(async () => {
+      await deleteSktm(id)
+    })
+  }
   useDisableBodyScroll(isFetching)
   const updateParam = (key: any, value: any) => {
     if (value !== '') {
@@ -68,6 +82,7 @@ const DataSktm = () => {
 
     await refetch()
   }
+
   const handleReset = () => {
     navigate('/data-penerima/linjamsos/data-sktm')
     forms.reset()
@@ -110,22 +125,22 @@ const DataSktm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Status DTKS" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                          <SelectItem value='dtks'>
-                            DTKS
-                          </SelectItem>
-                          <SelectItem value='non-dtks'>
-                            Non DTKS
-                          </SelectItem>
-                          <SelectItem value='prelist'>
-                            PRELIST
-                          </SelectItem>
+                        <SelectItem value='dtks'>
+                          DTKS
+                        </SelectItem>
+                        <SelectItem value='non-dtks'>
+                          Non DTKS
+                        </SelectItem>
+                        <SelectItem value='prelist'>
+                          PRELIST
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -147,7 +162,7 @@ const DataSktm = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                      {listKecamatan?.map((item, index) => (
+                        {listKecamatan?.map((item, index) => (
                           <SelectItem key={index} value={item.id}>
                             {item.name}
                           </SelectItem>
@@ -171,7 +186,7 @@ const DataSktm = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                      {listKelurahan?.map((item, index) => (
+                        {listKelurahan?.map((item, index) => (
                           <SelectItem key={index} value={item.id}>
                             {item.name}
                           </SelectItem>
@@ -202,7 +217,7 @@ const DataSktm = () => {
                 <HiMagnifyingGlass className="w-4 h-4 py" />
                 <p className="font-bold text-sm text-white ml-3 w-max">Cari Data</p>
               </Button>
-              </div>
+            </div>
           </section>
         </form>
       </Form>
@@ -219,11 +234,10 @@ const DataSktm = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Pengajuan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-          {indigencys?.data?.length !== 0 ? (
+            {indigencys?.data?.length !== 0 ? (
               indigencys?.data.map((item, index) => (
                 <TableRow key={item.id}>
                   <TableCell className="text-left bg-[#F9FAFC]">
@@ -237,29 +251,50 @@ const DataSktm = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{item.applicant?.address.areaLevel3?.name ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.applicant?.address.areaLevel4?.name ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Action onDelete={() => console.log('delete')} onDetail={() => console.log('edit')} onEdit={() => console.log('detail')}/>
-        </TableCell>
-        </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={9} className="text-center">
-                    Tidak ada data
+                    <Action onDelete={async () => await handleDelete(item.id)}
+                      onDetail={() => console.log('edit')}
+                      onEdit={() => console.log('detail')} />
                   </TableCell>
                 </TableRow>
-              )}
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center">
+                  Tidak ada data
+                </TableCell>
+              </TableRow>
+            )}
+
+            {/* <TableRow key={2}>
+              <TableCell className="text-left bg-[#F9FAFC]">
+                {(indigencys.meta.currentPage - 1) * indigencys.meta.perPage + index + 1}
+              </TableCell>
+              <TableCell className="text-center bg-[#F9FAFC]"> dadas</TableCell>
+              <TableCell className="text-center bg-[#F9FAFC]"> dasdasdas</TableCell>
+              <TableCell className="text-center bg-[#F9FAFC]"> dasdasdas</TableCell>
+              <TableCell className="text-center bg-[#F9FAFC]"> dasdasdas</TableCell>
+              <TableCell className="text-center bg-[#F9FAFC]"> dasdasdas</TableCell>
+              <TableCell className="text-center bg-[#F9FAFC]"> dasdasdas</TableCell>
+              <TableCell className="text-center bg-[#F9FAFC]"> dasdasdas</TableCell>
+              <TableCell className="text-center bg-[#F9FAFC]"> dasdasdas</TableCell>
+              <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                <Action onDelete={async () => await handleDelete('dasdasdas')}
+                  onDetail={() => console.log('edit')}
+                  onEdit={() => console.log('detail')} />
+              </TableCell>
+            </TableRow> */}
           </TableBody>
         </Table>
       </section>
       {(indigencys?.meta?.total as number) > 10 ? (
-          <Pagination
-            className="px-5 py-5 flex justify-end"
-            currentPage={page !== '' ? parseInt(page) : 1}
-            totalCount={indigencys?.meta.total as number}
-            pageSize={30}
-            onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
-          />
-        ) : null}
+        <Pagination
+          className="px-5 py-5 flex justify-end"
+          currentPage={page !== '' ? parseInt(page) : 1}
+          totalCount={indigencys?.meta.total as number}
+          pageSize={30}
+          onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
+        />
+      ) : null}
     </Container>
   )
 }

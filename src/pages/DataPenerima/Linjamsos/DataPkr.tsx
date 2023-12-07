@@ -9,9 +9,10 @@ import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import { useNavigate } from 'react-router-dom'
-import { useGetKecamatan, useGetKelurahan, useVulnerableGroupHandlings } from '@/store/server'
+import { useDeletePkr, useGetKecamatan, useGetKelurahan, useVulnerableGroupHandlings } from '@/store/server'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { Action, ExportButton, Loading } from '@/components'
+import { useAlert } from '@/store/client'
 interface FormValues {
   q: string
   kelurahan: string
@@ -31,6 +32,8 @@ const DataPkr = () => {
       year: ''
     }
   })
+  const { alert } = useAlert()
+
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3)
@@ -46,7 +49,17 @@ const DataPkr = () => {
     year,
     q
   })
-
+  const { mutateAsync: deletePkr } = useDeletePkr()
+  const handleDelete = async (id: string) => {
+    await alert({
+      title: 'Hapus Data PKR',
+      description: 'Apakah kamu yakin ingin menghapus data ini?',
+      variant: 'danger',
+      submitText: 'Delete'
+    }).then(async () => {
+      await deletePkr(id)
+    })
+  }
   useDisableBodyScroll(isFetching)
   const updateParam = (key: any, value: any) => {
     if (value !== '') {
@@ -157,7 +170,7 @@ const DataPkr = () => {
             </div>
             <div className="mb-6 flex justify-between">
               <div className="w-[20%]">
-                <ExportButton onExportFirst={() => {}} onExportSecond={() => {}} />
+                <ExportButton onExportFirst={() => { }} onExportSecond={() => { }} />
               </div>
               <div className="flex gap-3">
                 <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
@@ -211,7 +224,7 @@ const DataPkr = () => {
                     </TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       <Action
-                        onDelete={() => console.log('delete')}
+                        onDelete={async () => await handleDelete(item.id)}
                         onDetail={() => console.log('edit')}
                         onEdit={() => navigate(`/layanan/linjamsos/Pkr/${item.id}`)}
                       />

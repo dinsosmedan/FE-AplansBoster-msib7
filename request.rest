@@ -1,3 +1,25 @@
 
 ###
 GET https://api.aplansboster.dinas.social/api/v1/dashboard/dtks/count/administrative-area?limit=5&sort=DESC
+###
+GET https://api.aplansboster.dinas.social/api/v1/indigency-certificate
+
+
+###
+POST https://api.aplansboster.dinas.social/api/v1/indigency-certificate
+###
+DELETE https://api.aplansboster.dinas.social/api/v1/vulnerable-group-handling/9ac9e119-aaca-4931-b55e-964f96fbb7cc
+
+
+### 
+POST https://api.aplansboster.dinas.social/api/v1/indigency-certificate
+Content-Type: application/json
+Accept: application/json
+
+{
+    "applicant" : "9abcb4ad-9e3b-4862-a0e0-8f015745fc3e",
+    "peopleConcerned" : "9abcb4ad-9e3b-4862-a0e0-8f015745fc3e",
+    "certificateDestination" : "Sekolah",
+    "issueDate" : "2022-03-03",
+    "isDtks" : true
+}
