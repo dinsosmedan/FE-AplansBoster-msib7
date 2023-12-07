@@ -8,16 +8,16 @@ import { Button } from '@/components/ui/button'
 import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
-import DatePicker from '@/components/atoms/DatePicker'
 import { useNavigate } from 'react-router-dom'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useDeleteUnregister, useUnregisters } from '@/store/server'
-import { Action, Loading } from '@/components'
+import { useDeleteUnregister, useGetDetailUnregister, useUnregisters } from '@/store/server'
+import { Action, Loading, Modal } from '@/components'
 import { useAlert } from '@/store/client'
+import React from 'react'
 interface FormValues {
   q: string
   letterNumber: string
-  date: string | Date
+  month: string
   year: string
 }
 const DataUnregister = () => {
@@ -26,8 +26,9 @@ const DataUnregister = () => {
   const createParams = useCreateParams()
 
   const { alert } = useAlert()
-
-  const { page, date, letterNumber, q, year } = useGetParams(['q', 'letterNumber', 'date', 'page', 'year'])
+  const [isShow, setIsShow] = React.useState(false)
+  const [selectedId, setSelectedId] = React.useState('')
+  const { page, month, letterNumber, q, year } = useGetParams(['q', 'letterNumber', 'month', 'page', 'year'])
   function getYearFromDate(dateString: string): string | null {
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/
     if (!dateRegex.test(dateString)) {
@@ -42,7 +43,7 @@ const DataUnregister = () => {
   const forms = useForm<FormValues>({
     defaultValues: {
       q: '',
-      date: '',
+      month: '',
       letterNumber: '',
       year: ''
     }
@@ -54,12 +55,17 @@ const DataUnregister = () => {
     isLoading
   } = useUnregisters({
     page: parseInt(page) ?? 1,
-    date,
+    month,
     letterNumber,
     year,
     q
   })
+  const { data: unregister, isLoading: isLoadingUnregister } = useGetDetailUnregister(selectedId)
 
+  const showDetail = (id: string) => {
+    setSelectedId(id)
+    setIsShow(true)
+  }
   const { mutateAsync: deletePkr } = useDeleteUnregister()
   const handleDelete = async (id: string) => {
     await alert({
@@ -83,7 +89,7 @@ const DataUnregister = () => {
 
   const onSubmit = async (values: FormValues) => {
     updateParam('q', values.q)
-    updateParam('date', values.date)
+    updateParam('month', values.month)
     updateParam('letterNumber', values.letterNumber)
     updateParam('year', values.year)
 
@@ -109,7 +115,7 @@ const DataUnregister = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Nama Kelompok Masyarakat" />
+                      <Input {...field} type="text" placeholder="Nama Atau Diagnosa Penyakit" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -120,22 +126,18 @@ const DataUnregister = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Kode Kegiatan" />
+                      <Input {...field} type="text" placeholder="Nomor Surat" />
                     </FormControl>
                   </FormItem>
                 )}
               />
               <FormField
-                name="date"
+                name="month"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <DatePicker
-                        onChange={field.onChange}
-                        selected={field.value as Date}
-                        placeholder="Tanggal Masuk Rumah Sakit"
-                      />
+                    <Input {...field} type="text" placeholder="Masukkan Bulan" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -213,7 +215,7 @@ const DataUnregister = () => {
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       <Action
                         onDelete={async () => await handleDelete(item.id)}
-                        onDetail={() => console.log('edit')}
+                        onDetail={() => showDetail(item.id)}
                         onEdit={() => navigate(`/layanan/linjamsos/unregister/${item.id}`)}
                       />
                     </TableCell>
@@ -239,6 +241,51 @@ const DataUnregister = () => {
           />
         ) : null}
       </Container>
+      <Modal isShow={isShow} className="md:max-w-4xl">
+          <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+            <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
+            <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+          </Modal.Header>
+          {isLoadingUnregister && <Loading />}
+          <div className="grid grid-cols-3 gap-y-5">
+            <div>
+              <p className="text-sm font-bold">Nama</p>
+              <p className="text-base capitalize">{unregister?.name ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Usia</p>
+              <p className="text-base capitalize">{unregister?.age ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Jenis Kelamin</p>
+              <p className="text-base capitalize">{unregister?.gender ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nomor Surat Dinas Sosial</p>
+              <p className="text-base capitalize">{unregister?.dinsosLetterNumber ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Tanggal Surat Dinas Sosial</p>
+              <p className="text-base capitalize">{unregister?.dinsosLetterDate ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Diagnosa Penyakit</p>
+              <p className="text-base capitalize">{unregister?.deseaseDiagnosis ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Tanggal Masuk Rumah Sakit</p>
+              <p className="text-base capitalize">{unregister?.hospitalEntryDate ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Nomor Surat Rumah Sakit</p>
+              <p className="text-base capitalize">{unregister?.hospitalLetterNumber ?? '-'}</p>
+            </div>
+            <div>
+              <p className="text-sm font-bold">Tanggal Surat Rumah Sakit</p>
+              <p className="text-base capitalize">{unregister?.hospitalLetterDate ?? '-'}</p>
+            </div>
+          </div>
+        </Modal>
     </div>
   )
 }
