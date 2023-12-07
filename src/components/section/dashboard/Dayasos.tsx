@@ -71,8 +71,9 @@ const ChartPokmas = () => {
 
   if (isLoading) return <Loading />
 
-  const data = CommunityGroup.map((val: any) => val.count)
+  // const data = CommunityGroup.map((val: any) => val.count)
   const label = CommunityGroup.map((val: any) => val.applicationYear.toString())
+  // console.log(data)
   const color = ['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']
   const title = ['POKMAS', 'Perkembangan Data POKMAS']
 
@@ -80,7 +81,7 @@ const ChartPokmas = () => {
     <>
       <LongCard props={title}>
         <LongCard.Chart
-          data={data}
+          data={[20, 10, 12, 13, 21]}
           label={label}
           backgroundColor={color}
         />
@@ -95,7 +96,7 @@ const ChartKube = () => {
   if (isLoading) return <Loading />
 
   // return
-  const data = BusinessGroup.map((valdata: any) => valdata.count)
+  // const data = BusinessGroup.map((valdata: any) => valdata.count)
   const label = BusinessGroup.map((val: any) => val.budgetYear)
   // console.log(label)
   const color = ['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']
@@ -105,7 +106,7 @@ const ChartKube = () => {
     <>
       <LongCard props={title}>
         <LongCard.Chart
-          data={data}
+          data={[20, 10, 12, 13, 21]}
           label={label}
           backgroundColor={color}
         />

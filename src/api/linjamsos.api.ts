@@ -2,7 +2,8 @@ import {
   type IPremiumAssistanceBenefit,
   type IIndigencyCertificate,
   type IUnregister,
-  type IVulnerableGroupHandling
+  type IVulnerableGroupHandling,
+  type IFamilyHope
 } from '@/lib/types/linjamsos.type'
 import api from './axiosInstance'
 import { type unregisterFields, type vulnerableGroupHandlingFields } from '@/lib/validations/linjamsos.validation'
@@ -30,6 +31,13 @@ export interface IndigencyCertificateQuery {
   status?: string
 }
 export interface PremiumAssistanceBenefitQuery {
+  page?: number
+  q?: string
+  type?: string
+  idKecamatan?: string
+  idKelurahan?: string
+}
+export interface FamilyHopeQuery {
   page?: number
   q?: string
   type?: string
@@ -91,5 +99,11 @@ export const getPremiumAssistanceBenefitFn = async ({
   const response = await api.get(
     `/premium-assistance-beneficiary?page=${page}&type=${type}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&limit=10`
   )
+  return response.data
+}
+
+// PKH //
+export const getFamilyHopeFn = async ({ page, q }: FamilyHopeQuery): Promise<IFamilyHope> => {
+  const response = await api.get(`/family-hope-program?page=${page}&q=${q}&limit=10`)
   return response.data
 }

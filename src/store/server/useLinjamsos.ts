@@ -8,7 +8,9 @@ import {
   getPremiumAssistanceBenefitFn,
   type PremiumAssistanceBenefitQuery,
   storeVulnerableGroupHandlingFn,
-  storeUnregisterFn
+  storeUnregisterFn,
+  getFamilyHopeFn,
+  type FamilyHopeQuery
 } from '@/api/linjamsos.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -130,9 +132,28 @@ export const useGetPremiumAssistanceBenefitFn = ({
   type
 }: PremiumAssistanceBenefitQuery) => {
   return useQuery(
-    ['indigency-certificates', page, idKecamatan, idKelurahan, q, type],
+    ['premium-assistances', page, idKecamatan, idKelurahan, q, type],
     async () =>
       await getPremiumAssistanceBenefitFn({
+        page,
+        idKecamatan,
+        idKelurahan,
+        q,
+        type
+      }),
+    {
+      keepPreviousData: true,
+      staleTime: 5000
+    }
+  )
+}
+
+// PKH //
+export const useGetFamilyHopeFn = ({ page, type, idKecamatan, idKelurahan, q }: FamilyHopeQuery) => {
+  return useQuery(
+    ['indigency-certificates', page, idKecamatan, idKelurahan, q, type],
+    async () =>
+      await getFamilyHopeFn({
         page,
         idKecamatan,
         idKelurahan,
