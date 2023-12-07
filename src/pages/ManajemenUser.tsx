@@ -36,9 +36,9 @@ const ManajemenUser = () => {
   const [currentPage, setCurrentPage] = React.useState(1)
   const forms = useForm<userFields>({ mode: 'onTouched' })
   const { mutate: Register } = useCreateUser()
+  // console.log(user)
 
   const onSubmit = async (values: userFields) => {
-    // console.log(values)
     Register(values, {
       onError: (error: AxiosError) => {
         const errorResponse = error.response?.data as IErrorResponse
@@ -88,6 +88,7 @@ const ManajemenUser = () => {
         <TableHeader className="bg-primary">
           <TableRow>
             <TableHead className="text-white">NIP</TableHead>
+            <TableHead className="text-white">NIK</TableHead>
             <TableHead className="text-white">Nama</TableHead>
             <TableHead className="text-white">Email</TableHead>
             <TableHead className="text-white">No. HP</TableHead>
@@ -100,11 +101,12 @@ const ManajemenUser = () => {
           {user?.data?.length !== 0 ? (
             user?.data.map((item: any) => (
               <TableRow key={item.id}>
-                <TableCell className="font-semibold">{item.employeeIdentityNumber}</TableCell>
+                <TableCell className="font-semibold">{item.employeeIdentityNumber || '-'}</TableCell>
+                <TableCell className="font-semibold">{item.identityNumber || '-'}</TableCell>
                 <TableCell className="font-semibold">{item.name}</TableCell>
-                <TableCell className="text-center">{item.email}</TableCell>
-                <TableCell className="text-center">{item.phoneNumber}</TableCell>
-                <TableCell className="text-center">{item.role.name}</TableCell>
+                <TableCell className="text-center">{item.email || '-'}</TableCell>
+                <TableCell className="text-center">{item.phoneNumber || '-'}</TableCell>
+                <TableCell className="text-center">{item.role?.name || 'Guest'}</TableCell>
                 <TableCell>
                   <div
                     className={`${
