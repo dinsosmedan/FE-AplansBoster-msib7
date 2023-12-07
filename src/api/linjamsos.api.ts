@@ -3,7 +3,8 @@ import {
   type IIndigencyCertificate,
   type IUnregister,
   type IVulnerableGroupHandling,
-  type IFamilyHope
+  type IFamilyHope,
+  type IPremiumAssistanceBenefitById
 } from '@/lib/types/linjamsos.type'
 import api from './axiosInstance'
 
@@ -91,7 +92,10 @@ export const getPremiumAssistanceBenefitFn = async ({
   )
   return response.data
 }
-
+export const getPremiumAssistanceBenefitByIdFn = async (id: string): Promise<IPremiumAssistanceBenefitById> => {
+  const response = await api.get(`/premium-assistance-beneficiary/${id}`)
+  return response.data?.data
+}
 // PKH //
 export const getFamilyHopeFn = async ({ page, q }: FamilyHopeQuery): Promise<IFamilyHope> => {
   const response = await api.get(`/family-hope-program?page=${page}&q=${q}&limit=10`)

@@ -11,6 +11,7 @@ import {
   type FamilyHopeQuery
 } from '@/api/linjamsos.api'
 import { useQuery } from 'react-query'
+import { getPremiumAssistanceBenefitByIdFn } from '../../api/linjamsos.api'
 
 // Penanganan Kelompok Rentan//
 export const useVulnerableGroupHandlings = ({
@@ -29,6 +30,7 @@ export const useVulnerableGroupHandlings = ({
     }
   )
 }
+
 // Unregister //
 export const useUnregisters = ({ page, date, letterNumber, q, year }: UnregisterQuery) => {
   return useQuery(
@@ -91,7 +93,11 @@ export const useGetPremiumAssistanceBenefitFn = ({
     }
   )
 }
-
+export const useGetPremiumAssistanceBenefitByID = (id?: string) => {
+  return useQuery(['worship-place', id], async () => await getPremiumAssistanceBenefitByIdFn(id as string), {
+    enabled: !!id
+  })
+}
 // PKH //
 export const useGetFamilyHopeFn = ({ page, type, idKecamatan, idKelurahan, q }: FamilyHopeQuery) => {
   return useQuery(

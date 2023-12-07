@@ -110,6 +110,16 @@ export interface IPremiumAssistanceBenefit {
   }>
   meta: IMeta
 }
+export interface IPremiumAssistanceBenefitById {
+  success: boolean
+  message: string
+  id: string
+  beneficiary: IBeneficary
+  type: string
+  createdAt: string
+  updatedAt: string
+  meta: IMeta
+}
 export interface IFamilyHope {
   success: boolean
   message: string
