@@ -11,8 +11,9 @@ import Pagination from './../../../components/atoms/Pagination'
 import DatePicker from '@/components/atoms/DatePicker'
 import { useNavigate } from 'react-router-dom'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useUnregisters } from '@/store/server'
+import { useDeleteUnregister, useUnregisters } from '@/store/server'
 import { Action, Loading } from '@/components'
+import { useAlert } from '@/store/client'
 interface FormValues {
   q: string
   letterNumber: string
@@ -23,6 +24,9 @@ const DataUnregister = () => {
   useTitle('Data Penerima / Unregister) ')
   const navigate = useNavigate()
   const createParams = useCreateParams()
+
+  const { alert } = useAlert()
+
   const { page, date, letterNumber, q, year } = useGetParams(['q', 'letterNumber', 'date', 'page', 'year'])
   function getYearFromDate(dateString: string): string | null {
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/
@@ -55,6 +59,18 @@ const DataUnregister = () => {
     year,
     q
   })
+
+  const { mutateAsync: deletePkr } = useDeleteUnregister()
+  const handleDelete = async (id: string) => {
+    await alert({
+      title: 'Hapus Data Unregister',
+      description: 'Apakah kamu yakin ingin menghapus data ini?',
+      variant: 'danger',
+      submitText: 'Delete'
+    }).then(async () => {
+      await deletePkr(id)
+    })
+  }
   useDisableBodyScroll(isFetching)
   const updateParam = (key: any, value: any) => {
     if (value !== '') {
@@ -196,7 +212,7 @@ const DataUnregister = () => {
                     </TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       <Action
-                        onDelete={() => console.log('delete')}
+                        onDelete={async () => await handleDelete(item.id)}
                         onDetail={() => console.log('edit')}
                         onEdit={() => navigate(`/layanan/linjamsos/unregister/${item.id}`)}
                       />

@@ -15,7 +15,10 @@ import {
   showDetailUnregisterFn,
   updateVulnerableGroupHandlingFn,
   updateUnregisterFn,
-  showDetailVulnerableGroupHandlingFn
+  showDetailVulnerableGroupHandlingFn,
+  deletePkrFn,
+  deleteSktmFn,
+  deleteUnregisterFn
 } from '@/api/linjamsos.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -162,6 +165,51 @@ export const useUpdateUnregister = () => {
   })
 }
 
+export const useDeleteSktm = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(deleteSktmFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('sktm')
+      toast({
+        variant: 'default',
+        duration: 1500,
+        title: 'Proses Berhasil',
+        description: 'Data Sktm Berhasil Dihapus'
+      })
+    }
+  })
+}
+export const useDeleteUnregister = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(deleteUnregisterFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('sktm')
+      toast({
+        variant: 'default',
+        duration: 1500,
+        title: 'Proses Berhasil',
+        description: 'Data Sktm Berhasil Dihapus'
+      })
+    }
+  })
+}
+export const useDeletePkr = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(deletePkrFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('pkr')
+      toast({
+        variant: 'default',
+        duration: 1500,
+        title: 'Proses Berhasil',
+        description: 'Data PKR Berhasil Dihapus'
+      })
+    }
+  })
+}
 // SKTM //
 export const useGetIndigencyCertificateFn = ({
   page,

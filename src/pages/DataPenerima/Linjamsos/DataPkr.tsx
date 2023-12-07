@@ -9,9 +9,10 @@ import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import { useNavigate } from 'react-router-dom'
-import { useGetDetailVulnerableGroupHandling, useGetKecamatan, useGetKelurahan, useVulnerableGroupHandlings } from '@/store/server'
+import { useDeletePkr, useGetDetailVulnerableGroupHandling, useGetKecamatan, useGetKelurahan, useVulnerableGroupHandlings } from '@/store/server'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { Action, ExportButton, Loading, Modal } from '@/components'
+import { useAlert } from '@/store/client'
 import React from 'react'
 interface FormValues {
   q: string
@@ -34,6 +35,8 @@ const DataPkr = () => {
       year: ''
     }
   })
+  const { alert } = useAlert()
+
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3)
@@ -51,6 +54,17 @@ const DataPkr = () => {
     year,
     q
   })
+  const { mutateAsync: deletePkr } = useDeletePkr()
+  const handleDelete = async (id: string) => {
+    await alert({
+      title: 'Hapus Data PKR',
+      description: 'Apakah kamu yakin ingin menghapus data ini?',
+      variant: 'danger',
+      submitText: 'Delete'
+    }).then(async () => {
+      await deletePkr(id)
+    })
+  }
   const showDetail = (id: string) => {
     setSelectedId(id)
     setIsShow(true)
@@ -80,6 +94,7 @@ const DataPkr = () => {
   if (isLoading && isLoadingVulnerable) {
     return <Loading />
   }
+
   return (
     <div>
       <Container>
@@ -164,7 +179,7 @@ const DataPkr = () => {
             </div>
             <div className="mb-6 flex justify-between">
               <div className="w-[20%]">
-                <ExportButton onExportFirst={() => {}} onExportSecond={() => {}} />
+                <ExportButton onExportFirst={() => { }} onExportSecond={() => { }} />
               </div>
               <div className="flex gap-3">
                 <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
@@ -222,7 +237,7 @@ const DataPkr = () => {
                     </TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       <Action
-                        onDelete={() => console.log('delete')}
+                        onDelete={async () => await handleDelete(item.id)}
                         onDetail={() => showDetail(item.id)}
                         onEdit={() => navigate(`/layanan/linjamsos/Pkr/${item.id}`)}
                       />
@@ -249,13 +264,13 @@ const DataPkr = () => {
           />
         ) : null}
         <Modal isShow={isShow} className="md:max-w-4xl">
-        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
-          <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
-        </Modal.Header>
-        {isLoadingVulnerable && <Loading />}
-        <div className="grid grid-cols-3 gap-y-5">
-          <div>
+          <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+            <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
+            <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+          </Modal.Header>
+          {isLoadingVulnerable && <Loading />}
+          <div className="grid grid-cols-3 gap-y-5">
+            <div>
               <p className="text-sm font-bold">Nama</p>
               <p className="text-base capitalize">{vulnerable?.beneficiary.name ?? '-'}</p>
             </div>
@@ -319,8 +334,8 @@ const DataPkr = () => {
               <p className="text-sm font-bold">Tahun Anggaran</p>
               <p className="text-base capitalize">{vulnerable?.budgetYear ?? '-'}</p>
             </div>
-        </div>
-      </Modal>
+          </div>
+        </Modal>
       </Container>
     </div>
   )
