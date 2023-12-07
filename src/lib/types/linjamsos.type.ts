@@ -132,3 +132,13 @@ export interface IFamilyHope {
   }>
   meta: IMeta
 }
+export interface IFamilyHopeId {
+  success: boolean
+  message: string
+  id: string
+  beneficiary: IBeneficary
+  type: string
+  createdAt: string
+  updatedAt: string
+  meta: IMeta
+}

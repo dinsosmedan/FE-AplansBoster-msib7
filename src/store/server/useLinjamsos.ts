@@ -8,7 +8,8 @@ import {
   getPremiumAssistanceBenefitFn,
   type PremiumAssistanceBenefitQuery,
   getFamilyHopeFn,
-  type FamilyHopeQuery
+  type FamilyHopeQuery,
+  getFamilyHopeByIdFn
 } from '@/api/linjamsos.api'
 import { useQuery } from 'react-query'
 import { getPremiumAssistanceBenefitByIdFn } from '../../api/linjamsos.api'
@@ -101,7 +102,7 @@ export const useGetPremiumAssistanceBenefitByID = (id?: string) => {
 // PKH //
 export const useGetFamilyHopeFn = ({ page, type, idKecamatan, idKelurahan, q }: FamilyHopeQuery) => {
   return useQuery(
-    ['indigency-certificates', page, idKecamatan, idKelurahan, q, type],
+    ['family-hopes', page, idKecamatan, idKelurahan, q, type],
     async () =>
       await getFamilyHopeFn({
         page,
@@ -115,4 +116,9 @@ export const useGetFamilyHopeFn = ({ page, type, idKecamatan, idKelurahan, q }: 
       staleTime: 5000
     }
   )
+}
+export const useGetFamilyHopeByID = (id?: string) => {
+  return useQuery(['family-hopes', id], async () => await getFamilyHopeByIdFn(id as string), {
+    enabled: !!id
+  })
 }

@@ -4,7 +4,8 @@ import {
   type IUnregister,
   type IVulnerableGroupHandling,
   type IFamilyHope,
-  type IPremiumAssistanceBenefitById
+  type IPremiumAssistanceBenefitById,
+  type IFamilyHopeId
 } from '@/lib/types/linjamsos.type'
 import api from './axiosInstance'
 
@@ -97,7 +98,19 @@ export const getPremiumAssistanceBenefitByIdFn = async (id: string): Promise<IPr
   return response.data?.data
 }
 // PKH //
-export const getFamilyHopeFn = async ({ page, q }: FamilyHopeQuery): Promise<IFamilyHope> => {
-  const response = await api.get(`/family-hope-program?page=${page}&q=${q}&limit=10`)
+export const getFamilyHopeFn = async ({
+  page,
+  q,
+  idKecamatan,
+  idKelurahan,
+  type
+}: FamilyHopeQuery): Promise<IFamilyHope> => {
+  const response = await api.get(
+    `/family-hope-program?page=${page}&q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&type=${type}&limit=10`
+  )
   return response.data
+}
+export const getFamilyHopeByIdFn = async (id: string): Promise<IFamilyHopeId> => {
+  const response = await api.get(`/family-hope-program/${id}`)
+  return response.data?.data
 }
