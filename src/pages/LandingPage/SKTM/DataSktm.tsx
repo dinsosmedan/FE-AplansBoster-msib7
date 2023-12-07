@@ -86,6 +86,7 @@ export default function UserSktm() {
             </div>
             <Button className="w-full h-[60px] mt-[60px]">
               <p className="text-xl">Daftar Sekarang</p>
+              {/* kr */}
             </Button>
           </div>
         </TabsContent>
