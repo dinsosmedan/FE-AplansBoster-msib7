@@ -100,10 +100,10 @@ export const useUpdateVulnerableGroupHandling = () => {
 }
 
 // Unregister //
-export const useUnregisters = ({ page, date, letterNumber, q, year }: UnregisterQuery) => {
+export const useUnregisters = ({ page, letterNumber, q, month, year }: UnregisterQuery) => {
   return useQuery(
-    ['unregisters', page, date, letterNumber, q, year],
-    async () => await getUnregisterFn({ page, date, letterNumber, q, year }),
+    ['unregisters', page, letterNumber, q, month, year],
+    async () => await getUnregisterFn({ page, letterNumber, q, month, year }),
     {
       keepPreviousData: true,
       staleTime: 5000

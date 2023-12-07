@@ -22,7 +22,7 @@ export interface VulnerableGroupHandlingQuery {
 }
 export interface UnregisterQuery {
   page?: number
-  date?: string
+  month?: string
   letterNumber?: string
   q?: string
   year?: string
@@ -91,9 +91,15 @@ export const updateVulnerableGroupHandlingFn = async ({ id, fields }: IVulnerabl
 }
 
 // Unregister //
-export const getUnregisterFn = async ({ page, date, letterNumber, q, year }: UnregisterQuery): Promise<IUnregister> => {
+export const getUnregisterFn = async ({
+  page,
+  month,
+  letterNumber,
+  q,
+  year
+}: UnregisterQuery): Promise<IUnregister> => {
   const response = await api.get(
-    `/unregister?page=${page}&hospital_entry_date=${date}&dinsos_letter_number=${letterNumber}&q=${q}&year=${year}&limit=10`
+    `/unregister?page=${page}&month=${month}&dinsos_letter_number=${letterNumber}&q=${q}&year=${year}&limit=10`
   )
   return response.data
 }
