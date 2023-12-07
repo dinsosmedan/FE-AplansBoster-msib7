@@ -27,7 +27,7 @@ export default function LandingPage() {
               </p>
               <Button
                 variant="ghost"
-                className="bg-white rounded-lg gap-3 text-primary"
+                className="bg-white rounded-lg gap-3 py-7 px-5 text-primary"
                 onClick={() => navigate('/user/cek-bansos')}
               >
                 <span className="font-medium">Cek Bansos Sekarang</span>

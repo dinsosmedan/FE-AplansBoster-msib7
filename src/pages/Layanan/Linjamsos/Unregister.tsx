@@ -5,30 +5,63 @@ import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import useTitle from '@/hooks/useTitle'
 import Container from '@/components/atoms/Container'
+import { unregisterValidation, type unregisterFields } from '@/lib/validations/linjamsos.validation'
+import { DatePicker, Loading } from '@/components'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useCreateUnregister, useGetDetailUnregister, useUpdateUnregister } from '@/store/server'
+import { formatDateToString, formatStringToDate } from '@/lib/formatDate'
+import { useNavigate, useParams } from 'react-router-dom'
+import * as React from 'react'
 
 const Unregister = () => {
   useTitle('Unregister)')
 
-  interface FormValues {
-    nik: string
-    email: string
-    ipk: string
-    universitas: string
-    prodi: string
-    semester: string
-    tahun: string
-    noHp: string
-    namaBank: string
-    noRekening: string
-    jumlah: string
-  }
+  const navigate = useNavigate()
+  const { id } = useParams<{ id: string }>()
+  const { mutate: createUnregister, isLoading } = useCreateUnregister()
+  const { data: unregister, isLoading: isLoadingDetail, isSuccess } = useGetDetailUnregister(id as string)
+  const { mutate: updateUnregister, isLoading: isLoadingUpdate } = useUpdateUnregister()
 
-  const forms = useForm<FormValues>({
-    mode: 'onTouched'
+  const forms = useForm<unregisterFields>({
+    mode: 'onTouched',
+    resolver: yupResolver(unregisterValidation)
   })
 
-  const onSubmit = async (values: FormValues) => {
-    console.log(values)
+  const onSuccess = () => {
+    forms.reset()
+    navigate('/data-penerima/linjamsos/data-unregister')
+  }
+
+  const onSubmit = async (values: unregisterFields) => {
+    const newData = {
+      ...values,
+      dinsosLetterDate: formatDateToString(values.dinsosLetterDate as Date),
+      hospitalEntryDate: formatDateToString(values.hospitalEntryDate as Date),
+      hospitalLetterDate: formatDateToString(values.hospitalLetterDate as Date)
+    }
+
+    if (!id) return createUnregister(newData, { onSuccess })
+    updateUnregister({ id, fields: newData }, { onSuccess })
+  }
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      forms.reset({
+        name: unregister.name,
+        age: unregister.age,
+        gender: unregister.gender,
+        dinsosLetterNumber: unregister.dinsosLetterNumber,
+        dinsosLetterDate: formatStringToDate(unregister.dinsosLetterDate),
+        deseaseDiagnosis: unregister.deseaseDiagnosis,
+        hospitalEntryDate: formatStringToDate(unregister.hospitalEntryDate),
+        hospitalLetterNumber: unregister.hospitalLetterNumber,
+        hospitalLetterDate: formatStringToDate(unregister.hospitalLetterDate)
+      })
+    }
+  }, [isSuccess])
+
+  if (isLoadingDetail) {
+    return <Loading />
   }
 
   return (
@@ -41,13 +74,13 @@ const Unregister = () => {
           <div className="flex flex-row gap-4 mt-5">
             <div className="w-6/12">
               <FormField
-                name="email"
+                name="name"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder=" Masukkan Nama" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder=" Masukkan Nama" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -55,13 +88,13 @@ const Unregister = () => {
             </div>
             <div className="w-6/12">
               <FormField
-                name="email"
+                name="age"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Umur</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Umur" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Umur" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -71,22 +104,21 @@ const Unregister = () => {
           <div className="flex flex-row gap-4">
             <div className="w-6/12">
               <FormField
-                name="universitas"
+                name="gender"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Jenis Kelamin</FormLabel>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value ?? ''}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Jenis Kelamin" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                          <SelectItem value="LAKI-LAKI">Laki-laki</SelectItem>
+                          <SelectItem value="PEREMPUAN">Perempuan</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -96,13 +128,18 @@ const Unregister = () => {
             </div>
             <div className="w-6/12">
               <FormField
-                name="email"
+                name="dinsosLetterNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nomor Surat Dinsos</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nomor Surat Dinsos" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="text"
+                        placeholder="Masukkan Nomor Surat Dinsos"
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -112,13 +149,13 @@ const Unregister = () => {
           <div className="flex flex-row gap-4">
             <div className="w-6/12">
               <FormField
-                name="semester"
+                name="dinsosLetterDate"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Tanggal Surat Dinsos</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Semester" />
+                      <DatePicker selected={field.value as Date} onChange={field.onChange} placeholder="dd/mm/yyyy" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -126,13 +163,18 @@ const Unregister = () => {
             </div>
             <div className="w-6/12">
               <FormField
-                name="tahun"
+                name="deseaseDiagnosis"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Diagnosa Penyakit</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Diagnosa Penyakit" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="text"
+                        placeholder="Masukkan Diagnosa Penyakit"
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -142,13 +184,13 @@ const Unregister = () => {
           <div className="flex flex-row gap-4">
             <div className="w-6/12">
               <FormField
-                name="semester"
+                name="hospitalEntryDate"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Tanggal Masuk Rumah Sakit</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Semester" />
+                      <DatePicker selected={field.value as Date} onChange={field.onChange} placeholder="dd/mm/yyyy" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -156,7 +198,7 @@ const Unregister = () => {
             </div>
             <div className="w-6/12">
               <FormField
-                name="tahun"
+                name="hospitalLetterNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -164,7 +206,12 @@ const Unregister = () => {
                       Nomor Surat Pengantar dari Rumah Sakit
                     </FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nomor Surat Pengantar dari Rumah Sakit" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="text"
+                        placeholder="Masukkan Nomor Surat Pengantar dari Rumah Sakit"
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -174,7 +221,7 @@ const Unregister = () => {
           <div className="flex flex-row gap-4">
             <div className="w-6/12">
               <FormField
-                name="semester"
+                name="hospitalLetterDate"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -182,21 +229,7 @@ const Unregister = () => {
                       Tanggal Surat Pengantar dari Rumah Sakit
                     </FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Semester" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-6/12">
-              <FormField
-                name="tahun"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Tahun</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Tahun" />
+                      <DatePicker selected={field.value as Date} onChange={field.onChange} placeholder="dd/mm/yyyy" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -204,8 +237,12 @@ const Unregister = () => {
             </div>
           </div>
           <div className="flex justify-end gap-5">
-            <Button variant="cancel">Cancel</Button>
-            <Button>Submit</Button>
+            <Button variant="cancel" type="button">
+              Cancel
+            </Button>
+            <Button type="submit" loading={isLoading || isLoadingUpdate}>
+              Submit
+            </Button>
           </div>
         </form>
       </Form>
