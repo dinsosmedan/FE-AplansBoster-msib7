@@ -86,6 +86,7 @@ const DataPkh = () => {
 
   return (
     <Container>
+        {(isFetching) && <Loading />}
       <h1 className="font-bold text-2xl ">Program Keluarga Harapan (PKH)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">

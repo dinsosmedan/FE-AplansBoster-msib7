@@ -105,6 +105,7 @@ const DataUnregister = () => {
   return (
     <div>
       <Container>
+        {(isFetching) && <Loading />}
         <h1 className="font-bold text-[32px] ">Unregister</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">

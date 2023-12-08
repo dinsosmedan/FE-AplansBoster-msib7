@@ -93,6 +93,7 @@ const DataBbp = () => {
 
   return (
     <Container>
+        {(isFetching) && <Loading />}
       <h1 className="font-bold text-[32px] ">Bantuan Biaya Pendidikan (BBP)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
