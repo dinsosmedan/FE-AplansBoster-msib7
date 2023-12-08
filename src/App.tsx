@@ -70,6 +70,10 @@ import DataPbi from './pages/DataPenerima/Linjamsos/DataPbi'
 import Unregister from './pages/Layanan/Linjamsos/Unregister'
 // import DataPkr from './pages/DataPenerima/Linjamsos/DataPkr'
 import UserSktm from './pages/LandingPage/SKTM/DataSktm'
+import SktmUnregister from './pages/LandingPage/SKTM/SktmUnregister'
+import SktmRegister from './pages/LandingPage/SKTM/SktmRegister'
+import SktmReligious from './pages/LandingPage/SKTM/SktmRegisterReligious'
+import SktmUnregisterReligious from './pages/LandingPage/SKTM/SktmUnregisterReligious'
 
 export default function App() {
   const { alertOptions, handleClose, handleSubmit } = useAlert()
@@ -175,7 +179,13 @@ export default function App() {
                 <Route path="reset-password" element={<UpdatePasswordUser />} />
               </Route>
             </Route>
-            <Route path="sktm" element={<UserSktm />} />
+            <Route path="sktm">
+              <Route index element={<UserSktm />} />
+              <Route path="register" element={<SktmRegister />} />
+              <Route path="unregister" element={<SktmUnregister />} />
+              <Route path="register-religious" element={<SktmReligious />} />
+              <Route path="unregister-religious" element={<SktmUnregisterReligious />} />
+            </Route>
             <Route path="cek-bansos" element={<CekBansosUser />} />
           </Route>
         </Route>
