@@ -1,13 +1,13 @@
 import { ImageCover } from '@/assets'
 import { Button } from '@/components/ui/button'
-import { useTitle } from '@/hooks'
 import { HiAcademicCap, HiArrowRightCircle, HiDocumentText, HiGift } from 'react-icons/hi2'
 import { CardLandingPage } from '@/components'
 import { useNavigate } from 'react-router-dom'
+import { useTitle } from '@/hooks'
 
 export default function LandingPage() {
-  useTitle('Aplans Boster')
   const navigate = useNavigate()
+  useTitle('')
 
   return (
     <>
@@ -37,7 +37,8 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-      <section className="py-[70px] px-14 bg-[#F9F9F9]">
+      <section className="py-[70px] px-14 bg-[#F9F9F9] relative overflow-hidden">
+        <div className="w-96 h-96 opacity-20 bg-rose-600 rounded-full absolute top-[calc(-192px+38px)] right-[calc(-192px+103px)] blur-3xl" />
         <div className="flex flex-col gap-6 w-fit mx-auto">
           <h2 className="text-5xl font-bold font-volkhov text-center">
             Layanan Pengajuan <span className="text-[#FFB60A]">Online</span>

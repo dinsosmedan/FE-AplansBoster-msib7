@@ -3,8 +3,9 @@ import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useTitle } from '@/hooks'
-import { type LoginInput } from '@/lib/validations/auth.validation'
+import { type LoginUserFields, loginUserValidation } from '@/lib/validations/landingPage/auth.validation'
 import { useLoginPublic } from '@/store/server'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -14,15 +15,16 @@ export default function LoginUser() {
 
   const { mutate: loginPublic, isLoading } = useLoginPublic()
 
-  const forms = useForm<LoginInput>({
+  const forms = useForm<LoginUserFields>({
     mode: 'onTouched',
+    resolver: yupResolver(loginUserValidation),
     defaultValues: {
       identifier: '',
       password: ''
     }
   })
 
-  const onSubmit = async (data: LoginInput) => {
+  const onSubmit = async (data: LoginUserFields) => {
     loginPublic(data)
   }
 
