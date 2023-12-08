@@ -225,7 +225,7 @@ const DataPkh = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.address.areaLevel4?.name ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.type ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Action onDelete={() => console.log('delete')} onDetail={() => showDetail(item.id)} onEdit={() => console.log('detail')}/>
+                  <Action onDetail={() => showDetail(item.id)}/>
         </TableCell>
         </TableRow>
                 ))
@@ -250,8 +250,8 @@ const DataPkh = () => {
         ) : null}
         <Modal isShow={isShow} className="md:max-w-4xl">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
-          <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data PKH</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data PKH</p>
         </Modal.Header>
         {isLoadingFamilyHope && <Loading />}
         <div className="grid grid-cols-3 gap-y-5">

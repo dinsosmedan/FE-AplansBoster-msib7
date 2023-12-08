@@ -296,8 +296,8 @@ function ubahFormatDateTime(dateTimeString: string): string {
         ) : null}
         <Modal isShow={isShow} className="md:max-w-4xl max-h-[calc(100vh-50px)] overflow-y-auto">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
-          <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data SKTM</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data SKTM</p>
         </Modal.Header>
         {isLoadingIndigencyCertificate && <Loading />}
         <div className="grid grid-cols-3 gap-y-5">
