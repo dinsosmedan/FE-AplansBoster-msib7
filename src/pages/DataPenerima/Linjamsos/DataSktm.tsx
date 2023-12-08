@@ -115,6 +115,7 @@ function ubahFormatDateTime(dateTimeString: string): string {
 
   return (
     <Container>
+        {(isFetching) && <Loading />}
       <h1 className="font-bold text-2xl ">Surat Keterangan Tidak Mampu (SKTM)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">

@@ -88,6 +88,7 @@ const DataPbi = () => {
 
   return (
     <Container>
+        {(isFetching) && <Loading />}
       <h1 className="font-bold text-2xl ">Penerima Bantuan Iuran (PBI)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
