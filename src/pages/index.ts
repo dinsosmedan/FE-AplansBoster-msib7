@@ -44,7 +44,10 @@ import CekBansosUser from './LandingPage/CekBansosUser'
 import DataPkh from './DataPenerima/Linjamsos/DataPkh'
 import Unregister from './Layanan/Linjamsos/Unregister'
 import UserSktm from './LandingPage/SKTM/DataSktm'
-import FormSktmTerdaftar from './LandingPage/SKTM/SktmRegistered'
+import SktmUnregister from './LandingPage/SKTM/SktmUnregister'
+import SktmRegister from './LandingPage/SKTM/SktmRegister'
+import SktmReligious from './LandingPage/SKTM/SktmRegisterReligious'
+import SktmUnregisterReligious from './LandingPage/SKTM/SktmUnregisterReligious'
 
 export {
   Home,
@@ -93,5 +96,8 @@ export {
   Unregister,
   CekBansosUser,
   UserSktm,
-  FormSktmTerdaftar
+  SktmUnregister,
+  SktmRegister,
+  SktmReligious,
+  SktmUnregisterReligious
 }
