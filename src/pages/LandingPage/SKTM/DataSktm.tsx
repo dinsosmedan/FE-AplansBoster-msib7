@@ -5,26 +5,26 @@ import { Button } from '@/components/ui/button'
 
 export default function UserSktm() {
   return (
-    <section className="bg-[#F9F9F9] px-10 pt-[38px]">
-      <Tabs defaultValue="account" className="pb-[200px] pl-10">
-        <div className="w-full bg-[#FFFFFF]">
-          <p className="text-[26px] font-semibold pl-10 py-5">SKTM (Surat Keterangan Tidak Mampu)</p>
-          <TabsList className="w-[450px] bg-white">
+    <section className="bg-[#F9F9F9] px-10 py-[38px]">
+      <Tabs defaultValue="open">
+        <div className="w-full bg-[#FFFFFF] border border-[#E4E4E4] rounded-lg">
+          <p className="text-[26px] font-semibold mb-7 px-10 mt-9">SKTM (Surat Keterangan Tidak Mampu)</p>
+          <TabsList className="p-0 h-auto bg-white gap-5 px-7">
             <TabsTrigger
-              value="account"
-              className="w-full data-[state=active]:border-b-8 data-[state=active]:border-primary pb-5"
+              value="open"
+              className="shadow-none border-b-8 border-white text-black data-[state=active]:border-primary data-[state=active]:text-primary pb-5"
             >
-              <p className="text-xl">Sedang dibuka</p>
+              <p className="text-lg font-medium">Sedang dibuka</p>
             </TabsTrigger>
             <TabsTrigger
-              value="password"
-              className="w-full data-[state=active]:border-b-8 data-[state=active]:border-primary pb-5"
+              value="request"
+              className="shadow-none border-b-8 border-white text-black data-[state=active]:border-primary data-[state=active]:text-primary pb-5"
             >
-              <p className="text-xl">Proses Pengajuan</p>
+              <p className="text-lg font-medium">Proses Pengajuan</p>
             </TabsTrigger>
           </TabsList>
         </div>
-        <TabsContent value="account" className="mt-11 flex flex-row justify-between bg-[#F9F9F9] gap-10">
+        <TabsContent value="open" className="mt-11 flex flex-row justify-between bg-[#F9F9F9] gap-10">
           <div className="flex flex-col gap-8">
             <CardLandingPage
               className="w-[400px]"
@@ -59,38 +59,39 @@ export default function UserSktm() {
               href={'/'}
             />
           </div>
-          <div className="h-[480px] bg-white rounded-lg">
-            <p className="font-semibold text-xl pl-6 pt-[50px]">Persyaratan</p>
-            <div className="px-10 py-7">
-              <ol className="list-decimal py-5">
-                <li className="text-xl">
-                  Mengisi Template Surat Permohonan yang bisa di download di bawah untuk di tujukan kepada Bapak Kepala
-                  Dinas Sosial Kota Medan;
-                </li>
-                <li className="text-xl">Fotocopy Surat Domisili dari Kelurahan Setempat;</li>
-                <li className="text-xl">Fotocopy Kartu Keluarga;</li>
-                <li className="text-xl">Fotocopy Kartu Tanda Penduduk (KTP);</li>
-                <li className="text-xl">Jenjang SD-SMA: Surat Keterangan dari sekolah</li>
-                <li className="text-xl">
-                  Jenjang Universitas: Print-an Surat Pengumuman dari Pihak Universitas baik berupa download-an alamat
-                  link online atau pengumuman dari universitas.
-                </li>
-              </ol>
+          <section className="flex flex-col gap-8">
+            <div className="h-fit bg-white rounded-lg px-10 py-14">
+              <p className="font-semibold text-xl">Persyaratan</p>
+              <div className="px-10 py-7">
+                <ol className="list-disc">
+                  <li className="text-lg leading-relaxed">
+                    Mengisi Template Surat Permohonan yang bisa di download di bawah untuk di tujukan kepada Bapak
+                    Kepala Dinas Sosial Kota Medan;
+                  </li>
+                  <li className="text-lg leading-relaxed">Fotocopy Surat Domisili dari Kelurahan Setempat;</li>
+                  <li className="text-lg leading-relaxed">Fotocopy Kartu Keluarga;</li>
+                  <li className="text-lg leading-relaxed">Fotocopy Kartu Tanda Penduduk (KTP);</li>
+                  <li className="text-lg leading-relaxed">Jenjang SD-SMA: Surat Keterangan dari sekolah</li>
+                  <li className="text-lg leading-relaxed">
+                    Jenjang Universitas: Print-an Surat Pengumuman dari Pihak Universitas baik berupa download-an alamat
+                    link online atau pengumuman dari universitas.
+                  </li>
+                </ol>
+              </div>
+              <div className="flex gap-4 items-center">
+                <p className="text-xl text-primary font-medium">Download Template Surat Permohonan</p>
+                <Button variant="outline" className="border-primary border-2 rounded-lg">
+                  <p className="text-base text-primary">Unduh</p>
+                  <HiArrowDownTray className="text-2xl ml-2 text-primary" />
+                </Button>
+              </div>
             </div>
-            <div className="flex gap-4 items-center pl-6 ">
-              <p className="text-xl text-primary font-medium">Download Template Surat Permohonan</p>
-              <Button variant="outline" className="border-primary border-2">
-                <p className="text-base text-primary">Unduh</p>
-                <HiArrowDownTray className="text-2xl ml-2 text-primary" />
-              </Button>
-            </div>
-            <Button className="w-full h-[60px] mt-[60px]">
+            <Button className="w-full py-8">
               <p className="text-xl">Daftar Sekarang</p>
-              {/* kr */}
             </Button>
-          </div>
+          </section>
         </TabsContent>
-        <TabsContent value="password" className="flex flex-row gap-10 ">
+        <TabsContent value="request" className="flex flex-row gap-10 ">
           <div className="w-[40%] h-[349] bg-white rounded-lg bg-[url('@/assets/images/line-curve.svg')] bg-no-repeat">
             <div className="py-14 px-7">
               <HiAcademicCap className="w-[70px] h-[70px] text-primary" />

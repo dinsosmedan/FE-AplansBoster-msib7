@@ -14,5 +14,6 @@ import BgCard from './images/bg-card.svg'
 import DinsosLogo from './images/logo-dinsos.svg'
 import MedanBerkahLogo from './images/medan-berkah.svg'
 import NotFoundBansos from './icons/not-found-bansos.svg'
+import Swafoto from './images/swafoto.png'
 
-export { Logo, BgLogin, LogoMini, BgDukcapil, BgBansos, BgDataRehabsos, BgDataDayasos, BgDataLinjmasos, BgLayananRehabsos, BgLayananDayasos, BgLayananLinjmasos, ImageCover, BgCard, DinsosLogo, MedanBerkahLogo, NotFoundBansos }
+export { Logo, BgLogin, LogoMini, BgDukcapil, BgBansos, BgDataRehabsos, BgDataDayasos, BgDataLinjmasos, BgLayananRehabsos, BgLayananDayasos, BgLayananLinjmasos, ImageCover, BgCard, DinsosLogo, MedanBerkahLogo, NotFoundBansos, Swafoto }

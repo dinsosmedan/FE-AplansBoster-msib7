@@ -1,10 +1,10 @@
-import { getMeFn, getMePublicFn, loginFn, loginUserFn, logoutFn } from '@/api/auth.api'
+import { getMeFn, getMePublicFn, loginFn, loginUserFn, logoutFn, registerUserFn } from '@/api/auth.api'
 import { type AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { useToken, useUserInfo, useUserPublicToken } from '../client'
 import { toast } from '@/components/ui/use-toast'
-import { type IErrorResponse } from '@/lib/types/user.type'
+import { type IUser, type IErrorResponse } from '@/lib/types/user.type'
 
 export const useLogin = () => {
   const navigate = useNavigate()
@@ -28,7 +28,8 @@ export const useLogout = () => {
     onSuccess: () => {
       useToken.getState().removeToken()
       toast({
-        title: 'Successfully logged out'
+        title: 'Berhasil keluar dengan sukses',
+        description: 'Anda telah berhasil keluar.'
       })
       navigate('/login')
     }
@@ -57,8 +58,8 @@ export const useLoginPublic = () => {
       useUserPublicToken.getState().storeToken(data.data.accessToken)
       useUserPublicToken.getState().storeUser(data.data.user)
       toast({
-        title: 'Login Success',
-        description: 'You have successfully logged in.'
+        title: 'Akun berhasil masuk',
+        description: 'Akun Anda telah berhasil masuk.'
       })
       navigate('/')
     },
@@ -69,7 +70,50 @@ export const useLoginPublic = () => {
         toast({
           variant: 'destructive',
           title: errorResponse.message,
-          description: 'There was a problem with your request.'
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
+    }
+  })
+}
+
+export const useLogoutPublic = () => {
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
+  return useMutation(logoutFn, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries('user-public')
+      useUserPublicToken.getState().removeToken()
+      useUserPublicToken.getState().storeUser({} as IUser['data'])
+      toast({
+        title: 'Berhasil keluar dengan sukses',
+        description: 'Anda telah berhasil keluar.'
+      })
+      navigate('/')
+    }
+  })
+}
+
+export const useRegisterPublic = () => {
+  const navigate = useNavigate()
+
+  return useMutation(registerUserFn, {
+    onSuccess: async () => {
+      toast({
+        title: 'Akun berhasil didaftarkan',
+        description: 'Anda telah berhasil melakukan pendaftaran.'
+      })
+      navigate('/')
+    },
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message,
+          description: 'Terjadi masalah dengan permintaan Anda.'
         })
       }
     }
