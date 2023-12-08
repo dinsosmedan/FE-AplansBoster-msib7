@@ -19,7 +19,10 @@ import {
   showDetailIndigencyCertificateFn,
   deletePkrFn,
   deleteSktmFn,
-  deleteUnregisterFn
+  deleteUnregisterFn,
+  getTuitionAssistanceFn,
+  type TuitionAssistanceQuery,
+  getTuitionAssistanceByIdFn
 } from '@/api/linjamsos.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -98,7 +101,21 @@ export const useUpdateVulnerableGroupHandling = () => {
     }
   })
 }
+export const useDeletePkr = () => {
+  const queryClient = useQueryClient()
 
+  return useMutation(deletePkrFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('vulnerable')
+      toast({
+        variant: 'default',
+        duration: 1500,
+        title: 'Proses Berhasil',
+        description: 'Data PKR Berhasil Dihapus'
+      })
+    }
+  })
+}
 // Unregister //
 export const useUnregisters = ({ page, letterNumber, q, month, year }: UnregisterQuery) => {
   return useQuery(
@@ -137,7 +154,7 @@ export const useCreateUnregister = () => {
 }
 
 export const useGetDetailUnregister = (id: string) => {
-  return useQuery(['unregister', id], async () => await showDetailUnregisterFn(id), {
+  return useQuery(['unregisters', id], async () => await showDetailUnregisterFn(id), {
     enabled: !!id
   })
 }
@@ -165,48 +182,17 @@ export const useUpdateUnregister = () => {
     }
   })
 }
-
-export const useDeleteSktm = () => {
-  const queryClient = useQueryClient()
-
-  return useMutation(deleteSktmFn, {
-    onSuccess: () => {
-      void queryClient.invalidateQueries('sktm')
-      toast({
-        variant: 'default',
-        duration: 1500,
-        title: 'Proses Berhasil',
-        description: 'Data Sktm Berhasil Dihapus'
-      })
-    }
-  })
-}
 export const useDeleteUnregister = () => {
   const queryClient = useQueryClient()
 
   return useMutation(deleteUnregisterFn, {
     onSuccess: () => {
-      void queryClient.invalidateQueries('sktm')
+      void queryClient.invalidateQueries('unregisters')
       toast({
         variant: 'default',
         duration: 1500,
         title: 'Proses Berhasil',
         description: 'Data Sktm Berhasil Dihapus'
-      })
-    }
-  })
-}
-export const useDeletePkr = () => {
-  const queryClient = useQueryClient()
-
-  return useMutation(deletePkrFn, {
-    onSuccess: () => {
-      void queryClient.invalidateQueries('pkr')
-      toast({
-        variant: 'default',
-        duration: 1500,
-        title: 'Proses Berhasil',
-        description: 'Data PKR Berhasil Dihapus'
       })
     }
   })
@@ -242,7 +228,21 @@ export const useGetIndigencyCertificateByID = (id?: string) => {
     enabled: !!id
   })
 }
+export const useDeleteSktm = () => {
+  const queryClient = useQueryClient()
 
+  return useMutation(deleteSktmFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('indigency-certificates')
+      toast({
+        variant: 'default',
+        duration: 1500,
+        title: 'Proses Berhasil',
+        description: 'Data Sktm Berhasil Dihapus'
+      })
+    }
+  })
+}
 // PBI //
 export const useGetPremiumAssistanceBenefitFn = ({
   page,
@@ -292,6 +292,39 @@ export const useGetFamilyHopeFn = ({ page, type, idKecamatan, idKelurahan, q }: 
 }
 export const useGetFamilyHopeByID = (id?: string) => {
   return useQuery(['family-hopes', id], async () => await getFamilyHopeByIdFn(id as string), {
+    enabled: !!id
+  })
+}
+// PBB //
+export const useGetTuitionAssistanceFn = ({
+  page,
+  q,
+  event,
+  idKecamatan,
+  idKelurahan,
+  year,
+  status
+}: TuitionAssistanceQuery) => {
+  return useQuery(
+    ['tuition-assistances', page, idKecamatan, idKelurahan, q, event, year, status],
+    async () =>
+      await getTuitionAssistanceFn({
+        page,
+        q,
+        event,
+        idKecamatan,
+        idKelurahan,
+        year,
+        status
+      }),
+    {
+      keepPreviousData: true,
+      staleTime: 5000
+    }
+  )
+}
+export const useGetTuitionAssistanceID = (id?: string) => {
+  return useQuery(['tuition-assistances', id], async () => await getTuitionAssistanceByIdFn(id as string), {
     enabled: !!id
   })
 }

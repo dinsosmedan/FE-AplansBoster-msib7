@@ -8,7 +8,9 @@ import {
   type IFamilyHopeId,
   type IVulnerableGroupHandlingDetail,
   type IUnregisterDetail,
-  type IIndigencyCertificateByID
+  type IIndigencyCertificateByID,
+  type ITuitionAssistance,
+  type ITuitionAssistanceID
 } from '@/lib/types/linjamsos.type'
 import api from './axiosInstance'
 import { type unregisterFields, type vulnerableGroupHandlingFields } from '@/lib/validations/linjamsos.validation'
@@ -49,6 +51,15 @@ export interface FamilyHopeQuery {
   idKecamatan?: string
   idKelurahan?: string
 }
+export interface TuitionAssistanceQuery {
+  page?: number
+  q?: string
+  event?: string
+  status?: string
+  year?: string
+  idKecamatan?: string
+  idKelurahan?: string
+}
 // Penanganan Kelompok Renta //
 export const getVulnerableGroupHandlingFn = async ({
   page,
@@ -72,12 +83,6 @@ export const showDetailVulnerableGroupHandlingFn = async (id: string): Promise<I
   return response.data?.data
 }
 
-export const deleteSktmFn = async (id: string) => {
-  await api.delete(`/indigency-certificate/${id}`)
-}
-export const deleteUnregisterFn = async (id: string) => {
-  await api.delete(`/unregister/${id}`)
-}
 export const deletePkrFn = async (id: string) => {
   await api.delete(`/vulnerable-group-handling/${id}`)
 }
@@ -112,7 +117,9 @@ export const showDetailUnregisterFn = async (id: string): Promise<IUnregisterDet
   const response = await api.get(`/unregister/${id}`)
   return response.data?.data
 }
-
+export const deleteUnregisterFn = async (id: string) => {
+  await api.delete(`/unregister/${id}`)
+}
 interface IUnregisterUpdate {
   id: string
   fields: unregisterFields
@@ -139,6 +146,9 @@ export const getIndigencyCertificateFn = async ({
 export const showDetailIndigencyCertificateFn = async (id: string): Promise<IIndigencyCertificateByID> => {
   const response = await api.get(`/indigency-certificate/${id}`)
   return response.data?.data
+}
+export const deleteSktmFn = async (id: string) => {
+  await api.delete(`/indigency-certificate/${id}`)
 }
 // PBI //
 export const getPremiumAssistanceBenefitFn = async ({
@@ -172,5 +182,25 @@ export const getFamilyHopeFn = async ({
 }
 export const getFamilyHopeByIdFn = async (id: string): Promise<IFamilyHopeId> => {
   const response = await api.get(`/family-hope-program/${id}`)
+  return response.data?.data
+}
+
+// PBB //
+export const getTuitionAssistanceFn = async ({
+  page,
+  q,
+  event,
+  idKecamatan,
+  idKelurahan,
+  year,
+  status
+}: TuitionAssistanceQuery): Promise<ITuitionAssistance> => {
+  const response = await api.get(
+    `/tuition-assistance?q=${q}&page=${page}&event=${event}&area_level_4=${idKelurahan}&area_level_3=${idKecamatan}&budget_year=${year}&disbursement_status=${status}&limit=10`
+  )
+  return response.data
+}
+export const getTuitionAssistanceByIdFn = async (id: string): Promise<ITuitionAssistanceID> => {
+  const response = await api.get(`/tuition-assistance/${id}`)
   return response.data?.data
 }

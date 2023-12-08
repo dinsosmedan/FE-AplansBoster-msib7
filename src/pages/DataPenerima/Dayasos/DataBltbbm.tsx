@@ -160,8 +160,8 @@ const DataBltbbm = () => {
       </Container>
       <Modal isShow={isShow} className="md:max-w-4xl">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
-          <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data BLTBBM</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data BLTBBM</p>
         </Modal.Header>
         {isLoadingFuelCashAssistance && <Loading />}
         <div className="grid grid-cols-3 gap-y-5">

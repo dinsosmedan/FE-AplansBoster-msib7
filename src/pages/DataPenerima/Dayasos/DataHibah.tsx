@@ -83,7 +83,7 @@ const DataHibah = () => {
   const { mutateAsync: deleteOrganizationGrantAssistance } = useDeleteOrganizationGrantAssistance()
   const handleDelete = (id: string) => {
     void alert({
-      title: 'Hapus Data DJPM',
+      title: 'Hapus Data HIBAH',
       description: 'Apakah kamu yakin ingin menghapus data ini?',
       variant: 'danger',
       submitText: 'Delete'
@@ -217,8 +217,8 @@ const DataHibah = () => {
       ) : null}
       <Modal isShow={isShow} className="md:max-w-4xl">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
-          <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data HIBAH</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data HIBAH</p>
         </Modal.Header>
         {isLoadingOrganization && <Loading />}
         <div className="grid grid-cols-3 gap-y-5">
