@@ -10,7 +10,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import { useNavigate } from 'react-router-dom'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useGetEvent, useGetKecamatan, useGetKelurahan, useGetTuitionAssistanceFn, useGetTuitionAssistanceID } from '@/store/server'
+import {
+  useGetEvent,
+  useGetKecamatan,
+  useGetKelurahan,
+  useGetTuitionAssistanceFn,
+  useGetTuitionAssistanceID
+} from '@/store/server'
 import { Action, Loading, Modal } from '@/components'
 import React from 'react'
 interface FormValues {
@@ -27,7 +33,15 @@ const DataBbp = () => {
   const createParams = useCreateParams()
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
-  const { q, kecamatan, kelurahan, page, year, status, event } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'year', 'status', 'event'])
+  const { q, kecamatan, kelurahan, page, year, status, event } = useGetParams([
+    'q',
+    'kecamatan',
+    'kelurahan',
+    'page',
+    'year',
+    'status',
+    'event'
+  ])
   const forms = useForm<FormValues>({
     defaultValues: {
       q: '',
@@ -93,7 +107,7 @@ const DataBbp = () => {
 
   return (
     <Container>
-        {(isFetching) && <Loading />}
+      {isFetching && <Loading />}
       <h1 className="font-bold text-[32px] ">Bantuan Biaya Pendidikan (BBP)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -126,11 +140,11 @@ const DataBbp = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                      {listKecamatan?.map((item, index) => (
-                            <SelectItem key={index} value={item.id}>
-                              {item.name}
-                            </SelectItem>
-                          ))}
+                        {listKecamatan?.map((item, index) => (
+                          <SelectItem key={index} value={item.id}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -143,18 +157,22 @@ const DataBbp = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={areaLevel3 === '' && kecamatan === ''}>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      disabled={areaLevel3 === '' && kecamatan === ''}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Kelurahan" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                      {listKelurahan?.map((item, index) => (
-                            <SelectItem key={index} value={item.id}>
-                              {item.name}
-                            </SelectItem>
-                          ))}
+                        {listKelurahan?.map((item, index) => (
+                          <SelectItem key={index} value={item.id}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -174,11 +192,11 @@ const DataBbp = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                      {listEvent?.map((item, index) => (
-                            <SelectItem key={index} value={item.id}>
-                              {item.type.name}
-                            </SelectItem>
-                          ))}
+                        {listEvent?.map((item, index) => (
+                          <SelectItem key={index} value={item.id}>
+                            {item.type.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -191,7 +209,7 @@ const DataBbp = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                  <Input {...field} type="text" placeholder="Masukkan Tahun Pengajuan" />
+                    <Input {...field} type="text" placeholder="Masukkan Tahun Pengajuan" />
                   </FormControl>
                 </FormItem>
               )}
@@ -209,15 +227,9 @@ const DataBbp = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                      <SelectItem value='pending'>
-                Ditunda
-                      </SelectItem>
-                      <SelectItem value='processed'>
-                Diproses
-                      </SelectItem>
-                      <SelectItem value='disbursed'>
-                Dicairkan
-                      </SelectItem>
+                        <SelectItem value="pending">Ditunda</SelectItem>
+                        <SelectItem value="processed">Diproses</SelectItem>
+                        <SelectItem value="disbursed">Dicairkan</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -236,15 +248,15 @@ const DataBbp = () => {
               </SelectContent>
             </Select>
             <div className="flex gap-3">
-                <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
-                  <HiArrowPath className="text-lg" />
-                  <span>Reset</span>
-                </Button>
-                <Button>
-                  <HiMagnifyingGlass className="w-4 h-4 py" />
-                  <p className="font-bold text-sm text-white ml-3 w-max">Cari Data</p>
-                </Button>
-              </div>
+              <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
+                <HiArrowPath className="text-lg" />
+                <span>Reset</span>
+              </Button>
+              <Button>
+                <HiMagnifyingGlass className="w-4 h-4 py" />
+                <p className="font-bold text-sm text-white ml-3 w-max">Cari Data</p>
+              </Button>
+            </div>
           </section>
         </form>
       </Form>
@@ -267,171 +279,171 @@ const DataBbp = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-          {tuitions?.data?.length !== 0 ? (
-                tuitions?.data.map((item, index) => (
-                  <TableRow key={item.id}>
-                    <TableCell className="text-left bg-[#F9FAFC]">
-                      {(tuitions.meta.currentPage - 1) * tuitions.meta.perPage + index + 1}
-                    </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.application?.beneficiary?.name ?? '-'}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">
-                      {item.application?.beneficiary?.identityNumber ?? '-'}
-                    </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">
-                      {item.application?.beneficiary?.birthPlace ?? '-'}
-                    </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">
-                      {item.application?.beneficiary?.birthDate ?? '-'}
-                    </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">
-                      {item.application?.beneficiary?.gender ?? '-'}
-                    </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">
-                      {item.application?.beneficiary?.address.fullAddress ?? '-'}
-                    </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">
-                      {item.application?.beneficiary?.address.areaLevel3?.name ?? '-'}
-                    </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">
-                      {item.application?.beneficiary?.address.areaLevel4?.name ?? '-'}
-                    </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">
-                      {item.application.phoneNumber ?? '-'}
-                    </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">
-                      {item.budgetYear ?? '-'}
-                    </TableCell>
-                    <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                      <Action
-                        onDetail={() => showDetail(item.id)}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={9} className="text-center">
-                    Tidak ada data
+            {tuitions?.data?.length !== 0 ? (
+              tuitions?.data.map((item, index) => (
+                <TableRow key={item.id}>
+                  <TableCell className="text-left bg-[#F9FAFC]">
+                    {(tuitions.meta.currentPage - 1) * tuitions.meta.perPage + index + 1}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {item.application?.beneficiary?.name ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {item.application?.beneficiary?.identityNumber ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {item.application?.beneficiary?.birthPlace ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {item.application?.beneficiary?.birthDate ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {item.application?.beneficiary?.gender ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {item.application?.beneficiary?.address.fullAddress ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {item.application?.beneficiary?.address.areaLevel3?.name ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {item.application?.beneficiary?.address.areaLevel4?.name ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.application.phoneNumber ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.budgetYear ?? '-'}</TableCell>
+                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                    <Action onDetail={() => showDetail(item.id)} />
                   </TableCell>
                 </TableRow>
-              )}
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center">
+                  Tidak ada data
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </section>
-      {(tuitions?.meta?.total as number) > 10 ? (
-          <Pagination
-            className="px-5 py-5 flex justify-end"
-            currentPage={page !== '' ? parseInt(page) : 1}
-            totalCount={tuitions?.meta.total as number}
-            pageSize={30}
-            onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
-          />
-        ) : null}
-        <Modal isShow={isShow} className="md:max-w-4xl">
-          <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-            <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data BBP</h3>
-            <p className="text-sm text-[#A1A1A1]">View Data Detail Data BBP</p>
-          </Modal.Header>
-          {isLoadingTuition && <Loading />}
-          <div className="grid grid-cols-3 gap-y-5">
-            <div>
-              <p className="text-sm font-bold">Nama Mahasiswa</p>
-              <p className="text-base capitalize">{tuition?.application?.beneficiary.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Email</p>
-              <p className="text-base capitalize">{tuition?.application.email ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">NIK</p>
-              <p className="text-base capitalize">{tuition?.application?.beneficiary.identityNumber ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">No. KK</p>
-              <p className="text-base capitalize">{tuition?.application?.beneficiary.familyCardNumber ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kecamatan</p>
-              <p className="text-base capitalize">{tuition?.application?.beneficiary.address.areaLevel3?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kelurahan</p>
-              <p className="text-base capitalize">{tuition?.application?.beneficiary.address.areaLevel4?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Alamat Lengkap</p>
-              <p className="text-base capitalize">{tuition?.application?.beneficiary.address.fullAddress ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
-              <p className="text-base capitalize">{tuition?.application?.beneficiary.birthPlace ?? '-'} / {tuition?.application?.beneficiary.birthDate ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Usia</p>
-              <p className="text-base capitalize">{tuition?.application?.beneficiary.age ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Jenis Bantuan</p>
-              <p className="text-base capitalize">{tuition?.application.event.type.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Estimasi</p>
-              <p className="text-base capitalize">{tuition?.application.event.startDate ?? '-'}-{tuition?.application.event.endDate ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Batch</p>
-              <p className="text-base capitalize">{tuition?.application.event.batch ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Universitas</p>
-              <p className="text-base capitalize">{tuition?.application.university.id ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Universitas</p>
-              <p className="text-base capitalize">{tuition?.application.university?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Program Studi</p>
-              <p className="text-base capitalize">{tuition?.application.studyProgram.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Semester</p>
-              <p className="text-base capitalize">{tuition?.application.semester ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">IPK</p>
-              <p className="text-base capitalize">{tuition?.application.gpa ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Uang Kuliah</p>
-              <p className="text-base capitalize">{tuition?.application.tuitionFee ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Nomor Rekening</p>
-              <p className="text-base capitalize">{tuition?.application.bankAccNumber ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Nama Rekening</p>
-              <p className="text-base capitalize">{tuition?.application.bankAccName ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Status Pengajuan</p>
-              <p className="text-base capitalize">{tuition?.application.application_status ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Jumlah Bantuan</p>
-              <p className="text-base capitalize">{tuition?.assistanceAmount ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Status Pencairan</p>
-              <p className="text-base capitalize">{tuition?.disbursementStatus ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tahun Anggaran</p>
-              <p className="text-base capitalize">{tuition?.budgetYear ?? '-'}</p>
-            </div>
+      {(tuitions?.meta?.total as number) > 30 ? (
+        <Pagination
+          currentPage={page !== '' ? parseInt(page) : 1}
+          totalCount={tuitions?.meta.total as number}
+          pageSize={30}
+          onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
+        />
+      ) : null}
+      <Modal isShow={isShow} className="md:max-w-4xl">
+        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data BBP</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data BBP</p>
+        </Modal.Header>
+        {isLoadingTuition && <Loading />}
+        <div className="grid grid-cols-3 gap-y-5">
+          <div>
+            <p className="text-sm font-bold">Nama Mahasiswa</p>
+            <p className="text-base capitalize">{tuition?.application?.beneficiary.name ?? '-'}</p>
           </div>
-        </Modal>
+          <div>
+            <p className="text-sm font-bold">Email</p>
+            <p className="text-base capitalize">{tuition?.application.email ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">NIK</p>
+            <p className="text-base capitalize">{tuition?.application?.beneficiary.identityNumber ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">No. KK</p>
+            <p className="text-base capitalize">{tuition?.application?.beneficiary.familyCardNumber ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kecamatan</p>
+            <p className="text-base capitalize">{tuition?.application?.beneficiary.address.areaLevel3?.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kelurahan</p>
+            <p className="text-base capitalize">{tuition?.application?.beneficiary.address.areaLevel4?.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Alamat Lengkap</p>
+            <p className="text-base capitalize">{tuition?.application?.beneficiary.address.fullAddress ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
+            <p className="text-base capitalize">
+              {tuition?.application?.beneficiary.birthPlace ?? '-'} /{' '}
+              {tuition?.application?.beneficiary.birthDate ?? '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Usia</p>
+            <p className="text-base capitalize">{tuition?.application?.beneficiary.age ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Jenis Bantuan</p>
+            <p className="text-base capitalize">{tuition?.application.event.type.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Estimasi</p>
+            <p className="text-base capitalize">
+              {tuition?.application.event.startDate ?? '-'}-{tuition?.application.event.endDate ?? '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Batch</p>
+            <p className="text-base capitalize">{tuition?.application.event.batch ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Universitas</p>
+            <p className="text-base capitalize">{tuition?.application.university.id ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Universitas</p>
+            <p className="text-base capitalize">{tuition?.application.university?.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Program Studi</p>
+            <p className="text-base capitalize">{tuition?.application.studyProgram.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Semester</p>
+            <p className="text-base capitalize">{tuition?.application.semester ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">IPK</p>
+            <p className="text-base capitalize">{tuition?.application.gpa ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Uang Kuliah</p>
+            <p className="text-base capitalize">{tuition?.application.tuitionFee ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Nomor Rekening</p>
+            <p className="text-base capitalize">{tuition?.application.bankAccNumber ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Nama Rekening</p>
+            <p className="text-base capitalize">{tuition?.application.bankAccName ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Status Pengajuan</p>
+            <p className="text-base capitalize">{tuition?.application.application_status ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Jumlah Bantuan</p>
+            <p className="text-base capitalize">{tuition?.assistanceAmount ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Status Pencairan</p>
+            <p className="text-base capitalize">{tuition?.disbursementStatus ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tahun Anggaran</p>
+            <p className="text-base capitalize">{tuition?.budgetYear ?? '-'}</p>
+          </div>
+        </div>
+      </Modal>
     </Container>
   )
 }

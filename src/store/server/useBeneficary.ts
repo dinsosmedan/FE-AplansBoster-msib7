@@ -32,7 +32,7 @@ export const useGetBeneficiary = ({ page, q, idKecamatan, idKelurahan, isDtks }:
       }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
 }
@@ -55,7 +55,7 @@ export const useGetDTKS = ({ kecamatan, kelurahan, nama, nik, kk, bpnt, blt, pbi
     async () => await showDTKS({ kecamatan, kelurahan, nama, nik, kk, bpnt, blt, pbi, pkh, page }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
 }

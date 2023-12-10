@@ -301,7 +301,6 @@ export default function DataDtks() {
         </Table>
         {(dtks?.meta?.total as number) > 30 ? (
           <Pagination
-            className="pt-5 flex justify-end"
             currentPage={page !== '' ? parseInt(page) : 1}
             totalCount={dtks?.meta.total as number}
             pageSize={30}

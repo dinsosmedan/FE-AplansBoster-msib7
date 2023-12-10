@@ -43,7 +43,7 @@ export const useVulnerableGroupHandlings = ({
     async () => await getVulnerableGroupHandlingFn({ page, idKecamatan, idKelurahan, q, year }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
 }
@@ -123,7 +123,7 @@ export const useUnregisters = ({ page, letterNumber, q, month, year }: Unregiste
     async () => await getUnregisterFn({ page, letterNumber, q, month, year }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
 }
@@ -219,7 +219,7 @@ export const useGetIndigencyCertificateFn = ({
       }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
 }
@@ -263,7 +263,7 @@ export const useGetPremiumAssistanceBenefitFn = ({
       }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
 }
@@ -286,7 +286,7 @@ export const useGetFamilyHopeFn = ({ page, type, idKecamatan, idKelurahan, q }: 
       }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
 }
@@ -319,7 +319,7 @@ export const useGetTuitionAssistanceFn = ({
       }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
 }

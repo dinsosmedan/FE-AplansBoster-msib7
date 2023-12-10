@@ -67,7 +67,7 @@ export const useGetWorshipPlaces = ({ page, idKecamatan, idKelurahan, type, q }:
     async () => await getWorshipPlacesFn({ page, idKecamatan, idKelurahan, type, q }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
 }
@@ -193,7 +193,7 @@ export const useGetServiceFunds = ({ page, idKecamatan, idKelurahan, name, type 
     async () => await getServiceFundsFn({ page, idKecamatan, idKelurahan, name, type }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
 }
@@ -327,7 +327,7 @@ export const useGetOrganizationGrantAssistance = ({ page, budgetYear, name }: Or
     async () => await getOrganizationGrantAssistance({ page, budgetYear, name }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
 }
@@ -430,7 +430,7 @@ export const useGetBusinessGroup = ({ page, q, idKecamatan, idKelurahan, year }:
     async () => await getBusinessGroupFn({ page, q, idKecamatan, idKelurahan, year }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
 }
@@ -513,11 +513,11 @@ export const useGetCommunityGroups = ({
         communityActivityCode,
         status,
         applicationYear
-      })
-    // {
-    //   keepPreviousData: true,
-    //   staleTime: 5000
-    // }
+      }),
+    {
+      keepPreviousData: true,
+      staleTime: 10 * 60 * 1000
+    }
   )
 }
 export const useDeleteCommunityGroups = () => {
@@ -572,7 +572,7 @@ export const useGetCommunityGroup = (id?: string) => {
 export const useGetVeteran = ({ page, q }: VeteranQuery) => {
   return useQuery(['veterans', page, q], async () => await getVeteranFn({ page, q }), {
     keepPreviousData: true,
-    staleTime: 5000
+    staleTime: 10 * 60 * 1000
   })
 }
 
@@ -650,7 +650,7 @@ export const useGetVeteranById = (id?: string) => {
 export const useGetFuelCashAssistance = ({ page, q }: FuelCashQuery) => {
   return useQuery(['fuel-cash-assistances', page, q], async () => await getFuelCashAssistanceFn({ page, q }), {
     keepPreviousData: true,
-    staleTime: 5000
+    staleTime: 10 * 60 * 1000
   })
 }
 export const useDeleteFuelCashAssistance = () => {
@@ -677,7 +677,7 @@ export const useGetFuelCashAssistanceDetail = (id?: string) => {
 export const useGetNonCashFoodAssistanceBeneficiary = ({ page, q }: NonCashFoodAssistanceBeneficiaryQuery) => {
   return useQuery(['non-cash', page, q], async () => await getNonCashFoodAssistanceBeneficiary({ page, q }), {
     keepPreviousData: true,
-    staleTime: 5000
+    staleTime: 10 * 60 * 1000
   })
 }
 export const useGetNonCashFoodAssistanceDetail = (id?: string) => {

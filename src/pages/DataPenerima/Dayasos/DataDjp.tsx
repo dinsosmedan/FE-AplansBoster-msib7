@@ -296,10 +296,9 @@ const DataDjp = () => {
       </section>
       {(serviceFunds?.meta?.total as number) > 30 ? (
         <Pagination
-          className="pt-5 flex justify-end"
           currentPage={page !== '' ? parseInt(page) : 1}
           totalCount={serviceFunds?.meta.total as number}
-          pageSize={10}
+          pageSize={30}
           onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
         />
       ) : null}
