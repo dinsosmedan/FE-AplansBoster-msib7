@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import useTitle from '@/hooks/useTitle'
 import { Container } from '@/components'
+import { HiMagnifyingGlass } from 'react-icons/hi2'
 
 const Pkr = () => {
   useTitle('Surat Keterangan Tidak Mampu (SKTM)')
@@ -48,10 +49,14 @@ const Pkr = () => {
                   )}
                 />
               </div>
-              <div className="w-1/12 flex items-end justify-end">
-                <Button className="w-full">Cari</Button>
+              <div className="w-fit flex items-end justify-end">
+                <Button className="w-full gap-2" type="button">
+                  <HiMagnifyingGlass className="text-lg" />
+                  <span>Cari</span>
+                </Button>
               </div>
             </div>
+
             <div className="flex flex-row justify-between gap-3">
               <div className="w-11/12">
                 <FormField
@@ -67,8 +72,11 @@ const Pkr = () => {
                   )}
                 />
               </div>
-              <div className="w-1/12 flex items-end justify-end">
-                <Button className="w-full">Cari</Button>
+              <div className="w-fit flex items-end justify-end">
+                <Button className="w-full gap-2" type="button">
+                  <HiMagnifyingGlass className="text-lg" />
+                  <span>Cari</span>
+                </Button>
               </div>
             </div>
             <div className="w-12/12">
@@ -129,9 +137,13 @@ const Pkr = () => {
                 />
               </div>
             </div>
-            <div className="flex justify-end gap-5">
-              <Button variant="cancel">Cancel</Button>
-              <Button>Submit</Button>
+            <div className="flex justify-end gap-4">
+              <Button variant="cancel" className="font-bold">
+                Cancel
+              </Button>
+              <Button className="font-bold" type="submit">
+                Submit
+              </Button>
             </div>
           </form>
         </Form>

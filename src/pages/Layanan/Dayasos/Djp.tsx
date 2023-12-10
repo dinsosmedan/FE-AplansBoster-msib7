@@ -224,7 +224,7 @@ const Djpm = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Tahun anggaran</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Anggaran" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Tahun Anggaran" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -291,7 +291,7 @@ const Djpm = () => {
             </div>
 
             <div className="flex justify-end gap-4 mt-8">
-              <Button variant="cancel" className="font-bold" onClick={() => forms.reset()}>
+              <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
                 Cancel
               </Button>
               <Button className="font-bold" type="submit" loading={isLoadingCreate || isLoadingUpdate}>

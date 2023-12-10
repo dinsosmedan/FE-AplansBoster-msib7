@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { useCreateVeteran, useGetBeneficaryByNIK, useGetVeteranById, useUpdateVeteran } from '@/store/server'
 import { useNavigate, useParams } from 'react-router-dom'
+import { HiMagnifyingGlass } from 'react-icons/hi2'
 
 const Veteran = () => {
   useTitle('Veteran')
@@ -89,8 +90,9 @@ const Veteran = () => {
                   </FormControl>
                 </FormItem>
                 <div className="w-fit flex items-end justify-end" onClick={async () => await refetch()}>
-                  <Button className="w-full" loading={isLoading} type="button">
-                    Cari
+                  <Button className="w-full gap-2" loading={isLoading} type="button">
+                    <HiMagnifyingGlass className="text-lg" />
+                    <span>Cari</span>
                   </Button>
                 </div>
               </div>

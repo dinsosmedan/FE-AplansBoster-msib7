@@ -30,7 +30,7 @@ export default function HeaderUser() {
   }
 
   return (
-    <header className="h-24 fixed inset-x-0 top-0 bg-white flex items-center px-14 z-50 font-poppins">
+    <header className="h-20 fixed inset-x-0 top-0 bg-white flex items-center px-14 z-50 font-poppins">
       <div className="flex items-center justify-between flex-1">
         <Link to="/">
           <img src={Logo} alt="logo" className="w-[297px]" />

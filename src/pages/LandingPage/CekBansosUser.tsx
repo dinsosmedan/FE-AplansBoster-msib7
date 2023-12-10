@@ -3,10 +3,10 @@ import { HiMagnifyingGlass } from 'react-icons/hi2'
 import * as React from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { useDisableBodyScroll, useTitle } from '@/hooks'
-import { NotFoundBansos } from '@/assets'
+import { CekBansosIlustration, NotFoundBansos } from '@/assets'
 import { useGetAssistanceCheck } from '@/store/server/usePublic'
 import { useGetBeneficaryByNIK } from '@/store/server'
-import { Loading } from '@/components'
+import { Loading, NoData } from '@/components'
 import { cn } from '@/lib/utils'
 import { useToast } from '@/components/ui/use-toast'
 
@@ -79,6 +79,13 @@ export default function CekBansosUser() {
         </form>
       </section>
       <div className="px-14 pb-9 flex flex-col gap-5 mt-[72px] min-h-[calc(100vh-340px)]">
+        {!isSuccessBeneficary && !isSuccessAssistance && (
+          <NoData
+            image={CekBansosIlustration}
+            title="Cek BANSOS Anda"
+            desc="Silahkan Masukkan NIK Anda Untuk Mengecek Daftar Bantuan Sosial Anda"
+          />
+        )}
         {isSuccessBeneficary && (
           <section className="bg-white px-9 py-8">
             <Table containerClassName="max-w-none">
@@ -144,15 +151,11 @@ export default function CekBansosUser() {
           </section>
         )}
         {isErrorAssistance && (
-          <section className="bg-white py-14 px-32">
-            <div className="flex flex-col justify-center items-center">
-              <img src={NotFoundBansos} alt="not-found-bansos" />
-              <h1 className="font-bold text-3xl text-center mt-9">Tidak Ada Bantuan Sosial Terdaftar</h1>
-              <p className="text-[#8B8B8B] max-w-[476px] text-center mt-3">
-                Mohon Maaf, Data Anda Belum Terdaftar dalam Program Bantuan Sosial
-              </p>
-            </div>
-          </section>
+          <NoData
+            image={NotFoundBansos}
+            title="Tidak Ada Bantuan Sosial Terdaftar"
+            desc="Mohon Maaf, Data Anda Belum Terdaftar dalam Program Bantuan Sosial"
+          />
         )}
       </div>
     </section>

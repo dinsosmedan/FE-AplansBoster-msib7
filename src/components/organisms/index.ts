@@ -10,6 +10,7 @@ import FooterUser from './landingPage/FooterUser'
 import HeaderUser from './landingPage/HeaderUser'
 import CardSub from './CardSub'
 import FormAuthContainer from './landingPage/FormAuthContainer'
+import NoData from './landingPage/NoData'
 
 export {
   Header,
@@ -23,5 +24,6 @@ export {
   FooterUser,
   HeaderUser,
   CardSub,
-  FormAuthContainer
+  FormAuthContainer,
+  NoData
 }
