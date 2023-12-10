@@ -271,7 +271,7 @@ const Kube = () => {
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
                       <FormControl>
-                        <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan NIK" />
+                        <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan NIK" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -343,7 +343,7 @@ const Kube = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Tahun Anggaran</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Anggaran" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Tahun Anggaran" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

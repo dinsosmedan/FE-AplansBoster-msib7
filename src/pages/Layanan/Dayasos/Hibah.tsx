@@ -254,14 +254,9 @@ const Hibah = () => {
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nama Sekretaris</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">NIK Sekretaris</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        type="number"
-                        placeholder="Masukkan Nama Sekretaris"
-                      />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan NIK Sekretaris" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -397,7 +392,7 @@ const Hibah = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Tahun Anggaran</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Anggaran" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Tahun Anggaran" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

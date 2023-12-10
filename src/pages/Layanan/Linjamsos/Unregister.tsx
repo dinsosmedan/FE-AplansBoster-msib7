@@ -236,12 +236,12 @@ const Unregister = () => {
               />
             </div>
           </div>
-          <div className="flex justify-end gap-5">
-            <Button variant="cancel" type="button">
+          <div className="flex justify-end gap-4">
+            <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
               Cancel
             </Button>
-            <Button type="submit" loading={isLoading || isLoadingUpdate}>
-              Submit
+            <Button className="font-bold" type="submit" loading={isLoading || isLoadingUpdate}>
+              {id ? 'Ubah Data' : 'Submit'}
             </Button>
           </div>
         </form>

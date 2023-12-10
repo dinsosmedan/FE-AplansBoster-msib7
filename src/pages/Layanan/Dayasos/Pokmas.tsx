@@ -161,7 +161,7 @@ const Pokmas = () => {
                 <FormItem>
                   <FormLabel>No. HP Pemohon</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan No. HP Pemohon" />
+                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan No. HP Pemohon" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -409,7 +409,7 @@ const Pokmas = () => {
                 <FormItem>
                   <FormLabel>Nomor Rekening</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nomor Rekening" />
+                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Nomor Rekening" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -481,7 +481,7 @@ const Pokmas = () => {
                   <FormItem className="flex-1">
                     <FormLabel>NIK</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan NIK" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan NIK" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
