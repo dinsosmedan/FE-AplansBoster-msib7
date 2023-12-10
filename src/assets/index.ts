@@ -15,5 +15,6 @@ import DinsosLogo from './images/logo-dinsos.svg'
 import MedanBerkahLogo from './images/medan-berkah.svg'
 import NotFoundBansos from './icons/not-found-bansos.svg'
 import Swafoto from './images/swafoto.png'
+import CekBansosIlustration from './icons/cek-bansos.svg'
 
-export { Logo, BgLogin, LogoMini, BgDukcapil, BgBansos, BgDataRehabsos, BgDataDayasos, BgDataLinjmasos, BgLayananRehabsos, BgLayananDayasos, BgLayananLinjmasos, ImageCover, BgCard, DinsosLogo, MedanBerkahLogo, NotFoundBansos, Swafoto }
+export { Logo, BgLogin, LogoMini, BgDukcapil, BgBansos, BgDataRehabsos, BgDataDayasos, BgDataLinjmasos, BgLayananRehabsos, BgLayananDayasos, BgLayananLinjmasos, ImageCover, BgCard, DinsosLogo, MedanBerkahLogo, NotFoundBansos, Swafoto, CekBansosIlustration }
