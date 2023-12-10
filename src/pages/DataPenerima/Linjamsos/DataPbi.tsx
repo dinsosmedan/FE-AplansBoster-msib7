@@ -10,7 +10,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import { Action, Loading, Modal } from '@/components'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useGetKecamatan, useGetKelurahan, useGetPremiumAssistanceBenefitByID, useGetPremiumAssistanceBenefitFn } from '@/store/server'
+import {
+  useGetKecamatan,
+  useGetKelurahan,
+  useGetPremiumAssistanceBenefitByID,
+  useGetPremiumAssistanceBenefitFn
+} from '@/store/server'
 import { useNavigate } from 'react-router-dom'
 import React from 'react'
 
@@ -88,7 +93,7 @@ const DataPbi = () => {
 
   return (
     <Container>
-        {(isFetching) && <Loading />}
+      {isFetching && <Loading />}
       <h1 className="font-bold text-2xl ">Penerima Bantuan Iuran (PBI)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -117,7 +122,7 @@ const DataPbi = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                      {listKecamatan?.map((item, index) => (
+                        {listKecamatan?.map((item, index) => (
                           <SelectItem key={index} value={item.id}>
                             {item.name}
                           </SelectItem>
@@ -134,14 +139,18 @@ const DataPbi = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={areaLevel3 === '' && kecamatan === ''}>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      disabled={areaLevel3 === '' && kecamatan === ''}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Kelurahan" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                      {listKelurahan?.map((item, index) => (
+                        {listKelurahan?.map((item, index) => (
                           <SelectItem key={index} value={item.id}>
                             {item.name}
                           </SelectItem>
@@ -165,12 +174,8 @@ const DataPbi = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                          <SelectItem value="APBN">
-                            APBN
-                          </SelectItem>
-                          <SelectItem value="APBD">
-                            APBD
-                          </SelectItem>
+                        <SelectItem value="APBN">APBN</SelectItem>
+                        <SelectItem value="APBD">APBD</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -188,7 +193,7 @@ const DataPbi = () => {
                 <SelectItem value=".csv">.csv</SelectItem>
               </SelectContent>
             </Select>
-            <div className='flex gap-3'>
+            <div className="flex gap-3">
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
                 <HiArrowPath className="text-lg" />
                 <span>Reset</span>
@@ -197,7 +202,7 @@ const DataPbi = () => {
                 <HiMagnifyingGlass className="w-4 h-4 py" />
                 <p className="font-bold text-sm text-white ml-3 w-max">Cari Data</p>
               </Button>
-              </div>
+            </div>
           </section>
         </form>
       </Form>
@@ -223,34 +228,37 @@ const DataPbi = () => {
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.name ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.identityNumber ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.address.areaLevel3?.name ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.address.areaLevel4?.name ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {item.beneficiary?.address.areaLevel3?.name ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {item.beneficiary?.address.areaLevel4?.name ?? '-'}
+                  </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC] capitalize">{item.type ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Action onDetail={() => showDetail(item.id)}/>
-        </TableCell>
-        </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={9} className="text-center">
-                    Tidak ada data
+                    <Action onDetail={() => showDetail(item.id)} />
                   </TableCell>
                 </TableRow>
-              )}
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center">
+                  Tidak ada data
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </section>
-      {(premiums?.meta?.total as number) > 10 ? (
-          <Pagination
-            className="px-5 py-5 flex justify-end"
-            currentPage={page !== '' ? parseInt(page) : 1}
-            totalCount={premiums?.meta.total as number}
-            pageSize={30}
-            onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
-          />
-        ) : null}
-        <Modal isShow={isShow} className="md:max-w-4xl">
+      {(premiums?.meta?.total as number) > 30 ? (
+        <Pagination
+          currentPage={page !== '' ? parseInt(page) : 1}
+          totalCount={premiums?.meta.total as number}
+          pageSize={30}
+          onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
+        />
+      ) : null}
+      <Modal isShow={isShow} className="md:max-w-4xl">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data PBI</h3>
           <p className="text-sm text-[#A1A1A1]">View Data Detail Data PBI</p>
@@ -258,49 +266,51 @@ const DataPbi = () => {
         {isLoadingPremium && <Loading />}
         <div className="grid grid-cols-3 gap-y-5">
           <div>
-              <p className="text-sm font-bold">Nama</p>
-              <p className="text-base capitalize">{premium?.beneficiary.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">NIK</p>
-              <p className="text-base capitalize">{premium?.beneficiary.identityNumber ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">No. KK</p>
-              <p className="text-base capitalize">{premium?.beneficiary.familyCardNumber ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kecamatan</p>
-              <p className="text-base capitalize">{premium?.beneficiary.address.areaLevel3?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kelurahan</p>
-              <p className="text-base capitalize">{premium?.beneficiary.address.areaLevel4?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Alamat Lengkap</p>
-              <p className="text-base capitalize">{premium?.beneficiary.address.fullAddress ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Pekerjaan</p>
-              <p className="text-base capitalize">{premium?.beneficiary.occupation ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
-              <p className="text-base capitalize">{premium?.beneficiary.birthPlace ?? '-'} / {premium?.beneficiary.birthDate ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Status DTKS</p>
-              <p className="text-base capitalize">{premium?.beneficiary.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Jenis Anggaran</p>
-              <p className="text-base capitalize">{premium?.type ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Usia</p>
-              <p className="text-base capitalize">{premium?.beneficiary.age ?? '-'}</p>
-            </div>
+            <p className="text-sm font-bold">Nama</p>
+            <p className="text-base capitalize">{premium?.beneficiary.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">NIK</p>
+            <p className="text-base capitalize">{premium?.beneficiary.identityNumber ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">No. KK</p>
+            <p className="text-base capitalize">{premium?.beneficiary.familyCardNumber ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kecamatan</p>
+            <p className="text-base capitalize">{premium?.beneficiary.address.areaLevel3?.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kelurahan</p>
+            <p className="text-base capitalize">{premium?.beneficiary.address.areaLevel4?.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Alamat Lengkap</p>
+            <p className="text-base capitalize">{premium?.beneficiary.address.fullAddress ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Pekerjaan</p>
+            <p className="text-base capitalize">{premium?.beneficiary.occupation ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
+            <p className="text-base capitalize">
+              {premium?.beneficiary.birthPlace ?? '-'} / {premium?.beneficiary.birthDate ?? '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Status DTKS</p>
+            <p className="text-base capitalize">{premium?.beneficiary.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Jenis Anggaran</p>
+            <p className="text-base capitalize">{premium?.type ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Usia</p>
+            <p className="text-base capitalize">{premium?.beneficiary.age ?? '-'}</p>
+          </div>
         </div>
       </Modal>
     </Container>

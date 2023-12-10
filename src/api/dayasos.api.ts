@@ -89,7 +89,7 @@ export const getWorshipPlacesFn = async ({
   type
 }: WorshipPlaceQuery): Promise<IWorshipPlace> => {
   const response = await api.get(
-    `/worship-place?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&type=${type}&limit=10`
+    `/worship-place?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&type=${type}`
   )
   return response.data
 }
@@ -111,7 +111,7 @@ export const getServiceFundsFn = async ({
   type
 }: ServiceFundQuery): Promise<IServiceFunds> => {
   const response = await api.get(
-    `/service-fund?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${name}&type=${type}&limit=10`
+    `/service-fund?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${name}&type=${type}`
   )
   return response.data
 }
@@ -147,7 +147,7 @@ export const getOrganizationGrantAssistance = async ({
 }
 
 export const getVeteranFn = async ({ page, q }: VeteranQuery): Promise<IVeteran> => {
-  const response = await api.get(`/veteran/?page=${page}&q=${q}&limit=10`)
+  const response = await api.get(`/veteran/?page=${page}&q=${q}`)
   return response.data
 }
 export const getCommunityGroupsFn = async ({
@@ -160,7 +160,7 @@ export const getCommunityGroupsFn = async ({
   applicationYear
 }: CommunityGroupQuery): Promise<ICommunityGroups> => {
   const response = await api.get(
-    `/community-group/?q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&application_year=${applicationYear}&status=${status}&community_activity_code=${communityActivityCode}&page=${page}&limit=10`
+    `/community-group/?q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&application_year=${applicationYear}&status=${status}&community_activity_code=${communityActivityCode}&page=${page}`
   )
   return response.data
 }
@@ -173,7 +173,7 @@ export const getBusinessGroupFn = async ({
   year
 }: BusinessGroupQuery): Promise<IBusinessGroup> => {
   const response = await api.get(
-    `/joint-business-group/?q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&budget_year=${year}&page=${page}&limit=10`
+    `/joint-business-group/?q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&budget_year=${year}&page=${page}`
   )
   return response.data
 }

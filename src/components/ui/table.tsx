@@ -9,11 +9,19 @@ interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
 
 const Table = React.forwardRef<HTMLTableElement, TableProps>(({ className, containerClassName, ...props }, ref) => {
   const expanded = useExpandedBar((state) => state.expanded)
+  // const [scrollBarWidth, setScrollBarWidth] = React.useState(0)
+
+  // React.useEffect(() => {
+  //   const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth
+  //   setScrollBarWidth(scrollBarWidth)
+  // }, [])
+  // console.log({ scrollBarWidth, width: `max-w-[calc(100vw-390px${scrollBarWidth === 0 ? '+8px' : ''})]` })
+
   return (
     <div
       className={cn(
         'relative w-full overflow-y-auto',
-        expanded ? 'max-w-[calc(100vw-193px)]' : 'max-w-[calc(100vw-390px)]',
+        expanded ? `max-w-[calc(100vw-193px)]` : `max-w-[calc(100vw-390px)]`,
         containerClassName
       )}
     >

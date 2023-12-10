@@ -105,7 +105,7 @@ const DataUnregister = () => {
   return (
     <div>
       <Container>
-        {(isFetching) && <Loading />}
+        {isFetching && <Loading />}
         <h1 className="font-bold text-[32px] ">Unregister</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -138,7 +138,7 @@ const DataUnregister = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Bulan" />
+                      <Input {...field} type="text" placeholder="Masukkan Bulan" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -184,7 +184,7 @@ const DataUnregister = () => {
         </Form>
         <section className="border rounded-xl mt-5 overflow-hidden">
           <Table>
-            <TableHeader className="bg-zinc-300">
+            <TableHeader className="bg-white">
               <TableRow>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">No. </TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
@@ -232,9 +232,8 @@ const DataUnregister = () => {
             </TableBody>
           </Table>
         </section>
-        {(unregisters?.meta?.total as number) > 10 ? (
+        {(unregisters?.meta?.total as number) > 30 ? (
           <Pagination
-            className="px-5 py-5 flex justify-end"
             currentPage={page !== '' ? parseInt(page) : 1}
             totalCount={unregisters?.meta.total as number}
             pageSize={30}
@@ -243,50 +242,50 @@ const DataUnregister = () => {
         ) : null}
       </Container>
       <Modal isShow={isShow} className="md:max-w-4xl">
-          <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-            <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data Unregister</h3>
-            <p className="text-sm text-[#A1A1A1]">View Data Detail Data Unregister</p>
-          </Modal.Header>
-          {isLoadingUnregister && <Loading />}
-          <div className="grid grid-cols-3 gap-y-5">
-            <div>
-              <p className="text-sm font-bold">Nama</p>
-              <p className="text-base capitalize">{unregister?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Usia</p>
-              <p className="text-base capitalize">{unregister?.age ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Jenis Kelamin</p>
-              <p className="text-base capitalize">{unregister?.gender ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Nomor Surat Dinas Sosial</p>
-              <p className="text-base capitalize">{unregister?.dinsosLetterNumber ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tanggal Surat Dinas Sosial</p>
-              <p className="text-base capitalize">{unregister?.dinsosLetterDate ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Diagnosa Penyakit</p>
-              <p className="text-base capitalize">{unregister?.deseaseDiagnosis ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tanggal Masuk Rumah Sakit</p>
-              <p className="text-base capitalize">{unregister?.hospitalEntryDate ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Nomor Surat Rumah Sakit</p>
-              <p className="text-base capitalize">{unregister?.hospitalLetterNumber ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tanggal Surat Rumah Sakit</p>
-              <p className="text-base capitalize">{unregister?.hospitalLetterDate ?? '-'}</p>
-            </div>
+        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data Unregister</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data Unregister</p>
+        </Modal.Header>
+        {isLoadingUnregister && <Loading />}
+        <div className="grid grid-cols-3 gap-y-5">
+          <div>
+            <p className="text-sm font-bold">Nama</p>
+            <p className="text-base capitalize">{unregister?.name ?? '-'}</p>
           </div>
-        </Modal>
+          <div>
+            <p className="text-sm font-bold">Usia</p>
+            <p className="text-base capitalize">{unregister?.age ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Jenis Kelamin</p>
+            <p className="text-base capitalize">{unregister?.gender ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Nomor Surat Dinas Sosial</p>
+            <p className="text-base capitalize">{unregister?.dinsosLetterNumber ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tanggal Surat Dinas Sosial</p>
+            <p className="text-base capitalize">{unregister?.dinsosLetterDate ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Diagnosa Penyakit</p>
+            <p className="text-base capitalize">{unregister?.deseaseDiagnosis ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tanggal Masuk Rumah Sakit</p>
+            <p className="text-base capitalize">{unregister?.hospitalEntryDate ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Nomor Surat Rumah Sakit</p>
+            <p className="text-base capitalize">{unregister?.hospitalLetterNumber ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tanggal Surat Rumah Sakit</p>
+            <p className="text-base capitalize">{unregister?.hospitalLetterDate ?? '-'}</p>
+          </div>
+        </div>
+      </Modal>
     </div>
   )
 }

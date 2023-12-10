@@ -161,9 +161,8 @@ const DataBpnt = () => {
             </TableBody>
           </Table>
         </section>
-        {(NonCashFoodAssistanceBeneficiarys?.meta?.total as number) > 10 ? (
+        {(NonCashFoodAssistanceBeneficiarys?.meta?.total as number) > 30 ? (
           <Pagination
-            className="px-5 py-5 flex justify-end"
             currentPage={page !== '' ? parseInt(page) : 1}
             totalCount={NonCashFoodAssistanceBeneficiarys?.meta.total as number}
             pageSize={30}

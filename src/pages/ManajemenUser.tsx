@@ -142,7 +142,6 @@ const ManajemenUser = () => {
       </Table>
 
       <Pagination
-        className="px-5 py-5 flex justify-end"
         currentPage={currentPage}
         totalCount={100}
         pageSize={10}

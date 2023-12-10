@@ -38,33 +38,46 @@ export default function Pagination(props: PaginationProps) {
   const lastPage = paginationRange[paginationRange.length - 1]
 
   return (
-    <div className={cn('flex items-center gap-2', className)}>
-      <Button variant="outline" size="icon" className="rounded-lg" onClick={onPrevious} disabled={currentPage === 1}>
-        <HiChevronDoubleLeft />
-      </Button>
-      {paginationRange.map((pageNumber, index) => {
-        if (pageNumber === DOTS) {
+    <section className={cn('flex justify-between items-center pt-5 px-5', className)}>
+      <p className="text-zinc-500">
+        Showing <span className="font-bold">{(currentPage - 1) * pageSize + 1}</span> to{' '}
+        <span className="font-bold">{currentPage * pageSize > totalCount ? totalCount : currentPage * pageSize}</span>{' '}
+        of <span className="font-bold">{totalCount}</span> results.
+      </p>
+      <div className="flex items-center gap-2">
+        <Button variant="outline" size="icon" className="rounded-lg" onClick={onPrevious} disabled={currentPage === 1}>
+          <HiChevronDoubleLeft />
+        </Button>
+        {paginationRange.map((pageNumber, index) => {
+          if (pageNumber === DOTS) {
+            return (
+              <Button variant="outline" size="icon" className="rounded-lg" key={index} disabled>
+                &#8230;
+              </Button>
+            )
+          }
+
           return (
-            <Button variant="outline" size="icon" className="rounded-lg" key={index} disabled>
-              &#8230;
+            <Button
+              key={index}
+              variant="outline"
+              className={cn(pageNumber === currentPage && 'bg-[#F9F9F9] text-primary border-primary', 'rounded-lg')}
+              onClick={() => onPageChange(Number(pageNumber))}
+            >
+              {pageNumber}
             </Button>
           )
-        }
-
-        return (
-          <Button
-            key={index}
-            variant="outline"
-            className={cn(pageNumber === currentPage && 'bg-[#F9F9F9] text-primary border-primary', 'rounded-lg')}
-            onClick={() => onPageChange(Number(pageNumber))}
-          >
-            {pageNumber}
-          </Button>
-        )
-      })}
-      <Button variant="outline" size="icon" className="rounded-lg" onClick={onNext} disabled={currentPage === lastPage}>
-        <HiChevronDoubleLeft className="rotate-180" />
-      </Button>
-    </div>
+        })}
+        <Button
+          variant="outline"
+          size="icon"
+          className="rounded-lg"
+          onClick={onNext}
+          disabled={currentPage === lastPage}
+        >
+          <HiChevronDoubleLeft className="rotate-180" />
+        </Button>
+      </div>
+    </section>
   )
 }

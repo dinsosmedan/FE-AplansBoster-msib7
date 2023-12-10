@@ -69,7 +69,7 @@ export const getVulnerableGroupHandlingFn = async ({
   year
 }: VulnerableGroupHandlingQuery): Promise<IVulnerableGroupHandling> => {
   const response = await api.get(
-    `/vulnerable-group-handling?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&budget_year=${year}&limit=10`
+    `/vulnerable-group-handling?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&budget_year=${year}`
   )
   return response.data
 }
@@ -104,7 +104,7 @@ export const getUnregisterFn = async ({
   year
 }: UnregisterQuery): Promise<IUnregister> => {
   const response = await api.get(
-    `/unregister?page=${page}&month=${month}&dinsos_letter_number=${letterNumber}&q=${q}&year=${year}&limit=10`
+    `/unregister?page=${page}&month=${month}&dinsos_letter_number=${letterNumber}&q=${q}&year=${year}`
   )
   return response.data
 }
@@ -139,7 +139,7 @@ export const getIndigencyCertificateFn = async ({
   statusDtks
 }: IndigencyCertificateQuery): Promise<IIndigencyCertificate> => {
   const response = await api.get(
-    `/indigency-certificate?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&issue_year=${year}&status_dtks=${statusDtks}&limit=10`
+    `/indigency-certificate?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&issue_year=${year}&status_dtks=${statusDtks}`
   )
   return response.data
 }
@@ -159,7 +159,7 @@ export const getPremiumAssistanceBenefitFn = async ({
   q
 }: PremiumAssistanceBenefitQuery): Promise<IPremiumAssistanceBenefit> => {
   const response = await api.get(
-    `/premium-assistance-beneficiary?page=${page}&type=${type}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&limit=10`
+    `/premium-assistance-beneficiary?page=${page}&type=${type}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}`
   )
   return response.data
 }
@@ -176,7 +176,7 @@ export const getFamilyHopeFn = async ({
   type
 }: FamilyHopeQuery): Promise<IFamilyHope> => {
   const response = await api.get(
-    `/family-hope-program?page=${page}&q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&type=${type}&limit=10`
+    `/family-hope-program?page=${page}&q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&type=${type}`
   )
   return response.data
 }
@@ -196,7 +196,7 @@ export const getTuitionAssistanceFn = async ({
   status
 }: TuitionAssistanceQuery): Promise<ITuitionAssistance> => {
   const response = await api.get(
-    `/tuition-assistance?q=${q}&page=${page}&event=${event}&area_level_4=${idKelurahan}&area_level_3=${idKecamatan}&budget_year=${year}&disbursement_status=${status}&limit=10`
+    `/tuition-assistance?q=${q}&page=${page}&event=${event}&area_level_4=${idKelurahan}&area_level_3=${idKecamatan}&budget_year=${year}&disbursement_status=${status}`
   )
   return response.data
 }

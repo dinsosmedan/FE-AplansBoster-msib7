@@ -58,7 +58,7 @@ export default function Header() {
                     />
                     <div className="flex flex-col">
                       <p className="font-bold">{user?.data.name}</p>
-                      <p className="text-sm text-[#8F8F8F]">{user?.data.role.name}</p>
+                      <p className="text-sm text-[#8F8F8F] text-left">{user?.data.role.name}</p>
                     </div>
                   </>
                 )}

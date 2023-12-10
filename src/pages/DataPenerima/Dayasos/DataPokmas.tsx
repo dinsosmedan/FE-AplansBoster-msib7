@@ -275,7 +275,7 @@ const DataPokmas = () => {
         </Form>
         <section className="border rounded-xl mt-5 overflow-hidden">
           <Table>
-            <TableHeader className="bg-zinc-300">
+            <TableHeader className="bg-white">
               <TableRow>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Kode Kegiatan</TableHead>
@@ -325,12 +325,11 @@ const DataPokmas = () => {
             </TableBody>
           </Table>
         </section>
-        {(communityGroups?.meta?.total as number) > 10 ? (
+        {(communityGroups?.meta?.total as number) > 30 ? (
           <Pagination
-            className="px-5 py-5 flex justify-end"
             currentPage={page !== '' ? parseInt(page) : 1}
             totalCount={communityGroups?.meta.total as number}
-            pageSize={10}
+            pageSize={30}
             onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
           />
         ) : null}

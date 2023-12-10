@@ -128,7 +128,11 @@ const DataHibah = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Search {...field} placeholder="Masukkan Nama Lembaga/ NIK Ketua" />
+                    <Search
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder="Masukkan Nama Lembaga/ NIK Ketua"
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -139,7 +143,7 @@ const DataHibah = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Search {...field} placeholder="Masukkan Tahun" />
+                    <Search value={field.value} onChange={field.onChange} placeholder="Masukkan Tahun" />
                   </FormControl>
                 </FormItem>
               )}
@@ -208,7 +212,6 @@ const DataHibah = () => {
       </section>
       {(organizationGrantAssistances?.meta?.total as number) > 30 ? (
         <Pagination
-          className="px-5 py-5 flex justify-end"
           currentPage={page !== '' ? parseInt(page) : 1}
           totalCount={organizationGrantAssistances?.meta.total as number}
           pageSize={30}

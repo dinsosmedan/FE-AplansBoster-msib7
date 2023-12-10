@@ -12,7 +12,7 @@ const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
       retry: 1,
-      staleTime: 5 * 60 * 1000
+      staleTime: 30 * 60 * 1000 // 30 minutes
     }
   }
 })

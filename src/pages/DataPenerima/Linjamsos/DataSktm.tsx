@@ -10,7 +10,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useNavigate } from 'react-router-dom'
-import { useGetIndigencyCertificateByID, useGetIndigencyCertificateFn, useGetKecamatan, useGetKelurahan, useDeleteSktm } from '@/store/server'
+import {
+  useGetIndigencyCertificateByID,
+  useGetIndigencyCertificateFn,
+  useGetKecamatan,
+  useGetKelurahan,
+  useDeleteSktm
+} from '@/store/server'
 import { Action, Loading, Modal } from '@/components'
 import React from 'react'
 import { useAlert } from '@/store/client'
@@ -29,7 +35,14 @@ const DataSktm = () => {
   const createParams = useCreateParams()
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
-  const { q, kecamatan, kelurahan, page, year, statusDtks } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'year', 'statusDtks'])
+  const { q, kecamatan, kelurahan, page, year, statusDtks } = useGetParams([
+    'q',
+    'kecamatan',
+    'kelurahan',
+    'page',
+    'year',
+    'statusDtks'
+  ])
   const forms = useForm<FormValues>({
     defaultValues: {
       q: '',
@@ -98,24 +111,24 @@ const DataSktm = () => {
   if (isLoading && isLoadingIndigencyCertificate) {
     return <Loading />
   }
-function ubahFormatDateTime(dateTimeString: string): string {
-  const regex = /^(\d{4})-(\d{2})-(\d{2})T.*$/
-  const match = regex.exec(dateTimeString)
+  function ubahFormatDateTime(dateTimeString: string): string {
+    const regex = /^(\d{4})-(\d{2})-(\d{2})T.*$/
+    const match = regex.exec(dateTimeString)
 
-  if (!match) {
-    return 'Format DateTime tidak valid'
+    if (!match) {
+      return 'Format DateTime tidak valid'
+    }
+
+    const year = match[1]
+    const month = match[2]
+    const day = match[3]
+
+    return `${day}-${month}-${year}`
   }
-
-  const year = match[1]
-  const month = match[2]
-  const day = match[3]
-
-  return `${day}-${month}-${year}`
-}
 
   return (
     <Container>
-        {(isFetching) && <Loading />}
+      {isFetching && <Loading />}
       <h1 className="font-bold text-2xl ">Surat Keterangan Tidak Mampu (SKTM)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -148,20 +161,14 @@ function ubahFormatDateTime(dateTimeString: string): string {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Status DTKS" />
-                        </SelectTrigger>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Status DTKS" />
+                      </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value='dtks'>
-                          DTKS
-                        </SelectItem>
-                        <SelectItem value='non-dtks'>
-                          Non DTKS
-                        </SelectItem>
-                        <SelectItem value='prelist'>
-                          PRELIST
-                        </SelectItem>
+                        <SelectItem value="dtks">DTKS</SelectItem>
+                        <SelectItem value="non-dtks">Non DTKS</SelectItem>
+                        <SelectItem value="prelist">PRELIST</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -200,7 +207,11 @@ function ubahFormatDateTime(dateTimeString: string): string {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={areaLevel3 === '' && kecamatan === ''}>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      disabled={areaLevel3 === '' && kecamatan === ''}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Kelurahan" />
@@ -229,7 +240,7 @@ function ubahFormatDateTime(dateTimeString: string): string {
                 <SelectItem value=".csv">.csv</SelectItem>
               </SelectContent>
             </Select>
-            <div className='flex gap-3'>
+            <div className="flex gap-3">
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
                 <HiArrowPath className="text-lg" />
                 <span>Reset</span>
@@ -267,35 +278,44 @@ function ubahFormatDateTime(dateTimeString: string): string {
                   <TableCell className="text-center bg-[#F9FAFC]">{item.applicant?.name ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.peopleConcerned?.name ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.issueYear ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{ubahFormatDateTime(item.issueDate) ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {ubahFormatDateTime(item.issueDate) ?? '-'}
+                  </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.isDtks ? 'DTKS' : 'Non DTKS'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.applicant?.address.areaLevel3?.name ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.applicant?.address.areaLevel4?.name ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {item.applicant?.address.areaLevel3?.name ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {item.applicant?.address.areaLevel4?.name ?? '-'}
+                  </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Action onDelete={async() => await handleDelete(item.id)} onDetail={() => showDetail(item.id)} onEdit={() => console.log('detail')}/>
-        </TableCell>
-        </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={9} className="text-center">
-                    Tidak ada data
+                    <Action
+                      onDelete={async () => await handleDelete(item.id)}
+                      onDetail={() => showDetail(item.id)}
+                      onEdit={() => console.log('detail')}
+                    />
                   </TableCell>
                 </TableRow>
-              )}
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center">
+                  Tidak ada data
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </section>
-      {(indigencys?.meta?.total as number) > 10 ? (
-          <Pagination
-            className="px-5 py-5 flex justify-end"
-            currentPage={page !== '' ? parseInt(page) : 1}
-            totalCount={indigencys?.meta.total as number}
-            pageSize={30}
-            onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
-          />
-        ) : null}
-        <Modal isShow={isShow} className="md:max-w-4xl max-h-[calc(100vh-50px)] overflow-y-auto">
+      {(indigencys?.meta?.total as number) > 30 ? (
+        <Pagination
+          currentPage={page !== '' ? parseInt(page) : 1}
+          totalCount={indigencys?.meta.total as number}
+          pageSize={30}
+          onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
+        />
+      ) : null}
+      <Modal isShow={isShow} className="md:max-w-4xl max-h-[calc(100vh-50px)] overflow-y-auto">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data SKTM</h3>
           <p className="text-sm text-[#A1A1A1]">View Data Detail Data SKTM</p>
@@ -303,109 +323,113 @@ function ubahFormatDateTime(dateTimeString: string): string {
         {isLoadingIndigencyCertificate && <Loading />}
         <div className="grid grid-cols-3 gap-y-5">
           <div>
-              <p className="text-sm font-bold">Nama Pemohon</p>
-              <p className="text-base capitalize">{indigency?.applicant.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">NIK Pemohon</p>
-              <p className="text-base capitalize">{indigency?.applicant.identityNumber ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">No. KK Pemohon</p>
-              <p className="text-base capitalize">{indigency?.applicant.familyCardNumber ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kecamatan Pemohon</p>
-              <p className="text-base capitalize">{indigency?.applicant.address.areaLevel3?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kelurahan Pemohon</p>
-              <p className="text-base capitalize">{indigency?.applicant.address.areaLevel4?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Alamat Lengkap Pemohon</p>
-              <p className="text-base capitalize">{indigency?.applicant.address.fullAddress ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Pekerjaan Pemohon</p>
-              <p className="text-base capitalize">{indigency?.applicant.occupation ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tempat / Tanggal Lahir Pemohon</p>
-              <p className="text-base capitalize">{indigency?.applicant.birthPlace ?? '-'} / {indigency?.applicant.birthDate ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Status DTKS Pemohon</p>
-              <p className="text-base capitalize">{indigency?.applicant.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Usia Pemohon</p>
-              <p className="text-base capitalize">{indigency?.applicant.age ?? '-'}</p>
-            </div>
+            <p className="text-sm font-bold">Nama Pemohon</p>
+            <p className="text-base capitalize">{indigency?.applicant.name ?? '-'}</p>
+          </div>
           <div>
-              <p className="text-sm font-bold">Nama Yang Bersangkutan</p>
-              <p className="text-base capitalize">{indigency?.peopleConcerned.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">NIK Yang Bersangkutan</p>
-              <p className="text-base capitalize">{indigency?.peopleConcerned.identityNumber ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">No. KK Yang Bersangkutan</p>
-              <p className="text-base capitalize">{indigency?.peopleConcerned.familyCardNumber ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kecamatan Yang Bersangkutan</p>
-              <p className="text-base capitalize">{indigency?.peopleConcerned.address.areaLevel3?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Kelurahan Yang Bersangkutan</p>
-              <p className="text-base capitalize">{indigency?.peopleConcerned.address.areaLevel4?.name ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Alamat Lengkap Yang Bersangkutan</p>
-              <p className="text-base capitalize">{indigency?.peopleConcerned.address.fullAddress ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Pekerjaan Yang Bersangkutan</p>
-              <p className="text-base capitalize">{indigency?.peopleConcerned.occupation ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tempat / Tanggal Lahir Yang Bersangkutan</p>
-              <p className="text-base capitalize">{indigency?.peopleConcerned.birthPlace ?? '-'} / {indigency?.peopleConcerned.birthDate ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Status DTKS Yang Bersangkutan</p>
-              <p className="text-base capitalize">{indigency?.peopleConcerned.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Usia Yang Bersangkutan</p>
-              <p className="text-base capitalize">{indigency?.peopleConcerned.age ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Permohonan</p>
-              <p className="text-base capitalize">{indigency?.application ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tujuan Permohonan</p>
-              <p className="text-base capitalize">{indigency?.certificateDestination ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tanggal Pengajuan</p>
-              <p className="text-base capitalize">{indigency?.issueDate ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Tahun Pengajuan</p>
-              <p className="text-base capitalize">{indigency?.issueYear ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Status DTKS</p>
-              <p className="text-base capitalize">{indigency?.statusDtks ?? '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-bold">Pengajuan Online</p>
-              <p className="text-base capitalize">{indigency?.isApplicationOnline ? 'Ya' : 'Tida'}</p>
-            </div>
+            <p className="text-sm font-bold">NIK Pemohon</p>
+            <p className="text-base capitalize">{indigency?.applicant.identityNumber ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">No. KK Pemohon</p>
+            <p className="text-base capitalize">{indigency?.applicant.familyCardNumber ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kecamatan Pemohon</p>
+            <p className="text-base capitalize">{indigency?.applicant.address.areaLevel3?.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kelurahan Pemohon</p>
+            <p className="text-base capitalize">{indigency?.applicant.address.areaLevel4?.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Alamat Lengkap Pemohon</p>
+            <p className="text-base capitalize">{indigency?.applicant.address.fullAddress ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Pekerjaan Pemohon</p>
+            <p className="text-base capitalize">{indigency?.applicant.occupation ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tempat / Tanggal Lahir Pemohon</p>
+            <p className="text-base capitalize">
+              {indigency?.applicant.birthPlace ?? '-'} / {indigency?.applicant.birthDate ?? '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Status DTKS Pemohon</p>
+            <p className="text-base capitalize">{indigency?.applicant.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Usia Pemohon</p>
+            <p className="text-base capitalize">{indigency?.applicant.age ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Nama Yang Bersangkutan</p>
+            <p className="text-base capitalize">{indigency?.peopleConcerned.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">NIK Yang Bersangkutan</p>
+            <p className="text-base capitalize">{indigency?.peopleConcerned.identityNumber ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">No. KK Yang Bersangkutan</p>
+            <p className="text-base capitalize">{indigency?.peopleConcerned.familyCardNumber ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kecamatan Yang Bersangkutan</p>
+            <p className="text-base capitalize">{indigency?.peopleConcerned.address.areaLevel3?.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kelurahan Yang Bersangkutan</p>
+            <p className="text-base capitalize">{indigency?.peopleConcerned.address.areaLevel4?.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Alamat Lengkap Yang Bersangkutan</p>
+            <p className="text-base capitalize">{indigency?.peopleConcerned.address.fullAddress ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Pekerjaan Yang Bersangkutan</p>
+            <p className="text-base capitalize">{indigency?.peopleConcerned.occupation ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tempat / Tanggal Lahir Yang Bersangkutan</p>
+            <p className="text-base capitalize">
+              {indigency?.peopleConcerned.birthPlace ?? '-'} / {indigency?.peopleConcerned.birthDate ?? '-'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Status DTKS Yang Bersangkutan</p>
+            <p className="text-base capitalize">{indigency?.peopleConcerned.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Usia Yang Bersangkutan</p>
+            <p className="text-base capitalize">{indigency?.peopleConcerned.age ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Permohonan</p>
+            <p className="text-base capitalize">{indigency?.application ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tujuan Permohonan</p>
+            <p className="text-base capitalize">{indigency?.certificateDestination ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tanggal Pengajuan</p>
+            <p className="text-base capitalize">{indigency?.issueDate ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tahun Pengajuan</p>
+            <p className="text-base capitalize">{indigency?.issueYear ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Status DTKS</p>
+            <p className="text-base capitalize">{indigency?.statusDtks ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Pengajuan Online</p>
+            <p className="text-base capitalize">{indigency?.isApplicationOnline ? 'Ya' : 'Tida'}</p>
+          </div>
         </div>
       </Modal>
     </Container>

@@ -9,7 +9,13 @@ import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import { useNavigate } from 'react-router-dom'
-import { useDeletePkr, useGetDetailVulnerableGroupHandling, useGetKecamatan, useGetKelurahan, useVulnerableGroupHandlings } from '@/store/server'
+import {
+  useDeletePkr,
+  useGetDetailVulnerableGroupHandling,
+  useGetKecamatan,
+  useGetKelurahan,
+  useVulnerableGroupHandlings
+} from '@/store/server'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { Action, ExportButton, Loading, Modal } from '@/components'
 import { useAlert } from '@/store/client'
@@ -98,7 +104,7 @@ const DataPkr = () => {
   return (
     <div>
       <Container>
-        {(isFetching) && <Loading />}
+        {isFetching && <Loading />}
         <h1 className="font-bold text-[32px] ">Penanganan Kelompok Rentan (PKR)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -148,7 +154,11 @@ const DataPkr = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value} disabled={areaLevel3 === '' && kecamatan === ''}>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        disabled={areaLevel3 === '' && kecamatan === ''}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Kelurahan" />
@@ -180,7 +190,7 @@ const DataPkr = () => {
             </div>
             <div className="mb-6 flex justify-between">
               <div className="w-[20%]">
-                <ExportButton onExportFirst={() => { }} onExportSecond={() => { }} />
+                <ExportButton onExportFirst={() => {}} onExportSecond={() => {}} />
               </div>
               <div className="flex gap-3">
                 <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
@@ -197,7 +207,7 @@ const DataPkr = () => {
         </Form>
         <section className="border rounded-xl mt-5 overflow-hidden">
           <Table>
-            <TableHeader className="bg-zinc-300">
+            <TableHeader className="bg-white">
               <TableRow>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">No. </TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Pemohon</TableHead>
@@ -233,9 +243,7 @@ const DataPkr = () => {
                     <TableCell className="text-center bg-[#F9FAFC]">
                       {item.beneficiary?.address.areaLevel4?.name ?? '-'}
                     </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">
-                      {item.budgetYear ?? '-'}
-                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.budgetYear ?? '-'}</TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       <Action
                         onDelete={async () => await handleDelete(item.id)}
@@ -255,9 +263,8 @@ const DataPkr = () => {
             </TableBody>
           </Table>
         </section>
-        {(vulnerables?.meta?.total as number) > 10 ? (
+        {(vulnerables?.meta?.total as number) > 30 ? (
           <Pagination
-            className="px-5 py-5 flex justify-end"
             currentPage={page !== '' ? parseInt(page) : 1}
             totalCount={vulnerables?.meta.total as number}
             pageSize={30}
@@ -301,7 +308,9 @@ const DataPkr = () => {
             </div>
             <div>
               <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
-              <p className="text-base capitalize">{vulnerable?.beneficiary.birthPlace ?? '-'} / {vulnerable?.beneficiary.birthDate ?? '-'}</p>
+              <p className="text-base capitalize">
+                {vulnerable?.beneficiary.birthPlace ?? '-'} / {vulnerable?.beneficiary.birthDate ?? '-'}
+              </p>
             </div>
             <div>
               <p className="text-sm font-bold">Status DTKS</p>

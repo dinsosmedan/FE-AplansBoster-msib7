@@ -22,7 +22,7 @@ export default function Sidebar() {
     <aside
       className={cn(
         'flex flex-col pt-[42px] pb-5 gap-10 border-r border-[#E9E9E9] h-screen sticky top-0 z-50',
-        isMinimize ? 'w-24' : 'flex-[1.4] px-[33px]'
+        isMinimize ? 'w-24' : 'w-[300px] px-[33px]'
       )}
     >
       <div className={cn('flex items-center relative', isMinimize && 'px-[33px]')}>

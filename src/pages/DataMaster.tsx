@@ -56,7 +56,7 @@ const DataMaster = () => {
     }
   })
 
-const areaLevel3 = forms.watch('kecamatan')
+  const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
   const {
@@ -98,133 +98,133 @@ const areaLevel3 = forms.watch('kecamatan')
   }
 
   const onSubmit = async (values: FormValues) => {
-  console.log(values)
+    console.log(values)
   }
   return (
     <div className="container bg-white py-5">
       {isFetching && <Loading />}
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmitSearch)} className="flex flex-col gap-[18px]">
-      <div className="w-full flex flex-row justify-between">
-      <FormField
+          <div className="w-full flex flex-row justify-between">
+            <FormField
               name="q"
               control={forms.control}
               render={({ field }) => (
-                <FormItem className='w-[40%]'>
+                <FormItem className="w-[40%]">
                   <FormControl>
                     <Input {...field} placeholder="Cari berdasarkan NIK atau Nama" />
                   </FormControl>
                 </FormItem>
               )}
             />
-        <Button type='button' className="bg-primary w-[140px] flex rounded-xl py-4" onClick={() => setIsShow(true)}>
-          <HiPlus className="w-6 h-6 text-white" />
-          <p className="font-bold text-sm text-white">Tambah Data</p>
-        </Button>
-      </div>
-      <div className="w-full flex flex-row gap-5 my-5">
-        <div className="w-[20%]">
-        <FormField
-              name="kecamatan"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kecamatan" />
+            <Button type="button" className="bg-primary w-[140px] flex rounded-xl py-4" onClick={() => setIsShow(true)}>
+              <HiPlus className="w-6 h-6 text-white" />
+              <p className="font-bold text-sm text-white">Tambah Data</p>
+            </Button>
+          </div>
+          <div className="w-full flex flex-row gap-5 my-5">
+            <div className="w-[20%]">
+              <FormField
+                name="kecamatan"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Pilih Kecamatan" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {listKecamatan?.map((item, index) => (
+                            <SelectItem key={index} value={item.id}>
+                              {item.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="w-[20%]">
+              <FormField
+                name="kelurahan"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Select
+                        disabled={areaLevel3 === '' && kecamatan === ''}
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Pilih Kelurahan" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {listKelurahan?.map((item, index) => (
+                            <SelectItem key={index} value={item.id}>
+                              {item.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="w-[20%]">
+              <FormField
+                name="isDtks"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger className=" bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0">
+                          <SelectValue placeholder="Status" />
                         </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKecamatan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-        </div>
-        <div className="w-[20%]">
-        <FormField
-              name="kelurahan"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Select
-                      disabled={areaLevel3 === '' && kecamatan === ''}
-                      onValueChange={field.onChange}
-                      value={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kelurahan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKelurahan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-        </div>
-        <div className="w-[20%]">
-        <FormField
-              name="isDtks"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-          <Select onValueChange={field.onChange} value={field.value}>
-            <SelectTrigger className=" bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="true">DTKS</SelectItem>
-              <SelectItem value="false">Non DTKS</SelectItem>
-            </SelectContent>
-          </Select>
-          </FormControl>
-          </FormItem>
-          )}
-          />
-        </div>
-        <div className="flex items-center gap-3 w-[40%] justify-end">
+                        <SelectContent>
+                          <SelectItem value="true">DTKS</SelectItem>
+                          <SelectItem value="false">Non DTKS</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="flex items-center gap-3 w-[40%] justify-end">
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
                 <HiArrowPath className="text-lg" />
                 <span>Reset</span>
               </Button>
-              <Button type='submit' className="gap-2 border-none rounded-lg">
+              <Button type="submit" className="gap-2 border-none rounded-lg">
                 <HiMagnifyingGlass className="text-lg" />
                 <span>Cari Data</span>
               </Button>
             </div>
-      </div>
-      </form>
+          </div>
+        </form>
       </Form>
       <section className="border rounded-xl mt-5 overflow-hidden">
         <Table>
           <TableHeader className="bg-white">
             <TableRow>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">No.KK</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">Status</TableHead>
-            <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">No.KK</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Status</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -241,11 +241,11 @@ const areaLevel3 = forms.watch('kecamatan')
                   <TableCell className="text-center bg-[#F9FAFC]">{item.address.areaLevel4?.name ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.isDtks ? 'DTKS' : 'Non DTKS'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Link to={`/data-master/info-datamaster/${item.id}`}>
-                <Button variant="base" size="icon">
-                  <HiOutlineExclamationCircle className="h-7 w-7" />
-                </Button>
-              </Link>
+                    <Link to={`/data-master/info-datamaster/${item.id}`}>
+                      <Button variant="base" size="icon">
+                        <HiOutlineExclamationCircle className="h-7 w-7" />
+                      </Button>
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))
@@ -259,14 +259,13 @@ const areaLevel3 = forms.watch('kecamatan')
           </TableBody>
         </Table>
         {(beneficiary?.meta?.total as number) > 30 ? (
-        <Pagination
-          className="pt-5 flex justify-end"
-          currentPage={page !== '' ? parseInt(page) : 1}
-          totalCount={beneficiary?.meta.total as number}
-          pageSize={30}
-          onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
-        />
-      ) : null}
+          <Pagination
+            currentPage={page !== '' ? parseInt(page) : 1}
+            totalCount={beneficiary?.meta.total as number}
+            pageSize={30}
+            onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
+          />
+        ) : null}
       </section>
       <Modal isShow={isShow} className="md:max-w-4xl max-h-[calc(100vh-50px)] overflow-y-auto scroll-custom">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">

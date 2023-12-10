@@ -295,12 +295,11 @@ const DataKube = () => {
             </TableBody>
           </Table>
         </section>
-        {(businessGroups?.meta?.total as number) > 10 ? (
+        {(businessGroups?.meta?.total as number) > 30 ? (
           <Pagination
-            className="px-5 py-5 flex justify-end"
             currentPage={page !== '' ? parseInt(page) : 1}
             totalCount={businessGroups?.meta.total as number}
-            pageSize={10}
+            pageSize={30}
             onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
           />
         ) : null}
