@@ -24,6 +24,8 @@ const CekDataDukcapil = () => {
     }
   }, [isError])
 
+  console.log(identityCheck)
+
   return (
     <>
       {isFetching && <Loading />}
