@@ -11,6 +11,7 @@ import HeaderUser from './landingPage/HeaderUser'
 import CardSub from './CardSub'
 import FormAuthContainer from './landingPage/FormAuthContainer'
 import NoData from './landingPage/NoData'
+import CreateDataMaster from './dataMaster/CreateDataMaster'
 
 export {
   Header,
@@ -25,5 +26,6 @@ export {
   HeaderUser,
   CardSub,
   FormAuthContainer,
-  NoData
+  NoData,
+  CreateDataMaster
 }

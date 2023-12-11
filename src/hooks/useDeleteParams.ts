@@ -7,7 +7,7 @@ export default function useDeleteParams() {
     const params = searchParams.get(param)
     if (params) {
       searchParams.delete(param)
-      setSearchParams(searchParams, { replace: true })
+      setSearchParams(searchParams.toString(), { replace: true })
     }
   }
 

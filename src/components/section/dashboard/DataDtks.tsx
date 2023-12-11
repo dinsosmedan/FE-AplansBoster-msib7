@@ -18,8 +18,8 @@ const SectionDataDtks = () => {
         </div>
         <div className="grid grid-cols-3 gap-5 mt-5">
           <ChartDtks />
-          <ChartJenisKelamin />
-          <TabelDtks />
+          {/* <ChartJenisKelamin /> */}
+          {/* <TabelDtks /> */}
         </div>
       </div>
     </>
@@ -37,7 +37,7 @@ const TabelDtks = () => {
   const [order, setorder] = useState('Menurun')
   const { data, refetch, isLoading } = useGetAdministrativeArea(order)
 
-  if (isLoading) return <Loading />
+  // if (isLoading) return <Loading />
 
   const onChange = async (values: any) => {
     forms.setValue('filter', values)
@@ -58,7 +58,7 @@ const TabelDtks = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">Cari Berdasarkan</FormLabel>
-                      <Select defaultValue='Menurun' onValueChange={onChange} value={field.value}>
+                      <Select defaultValue="Menurun" onValueChange={onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Menurun" />
@@ -85,15 +85,15 @@ const TabelDtks = () => {
 const ChartJenisKelamin = () => {
   const { data, isLoading } = useGetGenderDtks()
 
-  if (isLoading) return <Loading />
+  // if (isLoading) return <Loading />
 
-  const values = Object.values(data)
+  // const values = Object.values(data)
 
   return (
     <>
       <LongCard props={['Jenis Kelamin', 'Persentasi Data DTKS Berdasarkan Jenis Kelamin']}>
         <LongCard.Chart
-          data={values}
+          data={Object.values(data)}
           isPercent={true}
           label={['Perempuan', 'Laki-laki']}
           backgroundColor={['#F94144', '#F3722C']}
@@ -105,19 +105,21 @@ const ChartJenisKelamin = () => {
 const ChartDtks = () => {
   const { data, isLoading } = useGetDataDtks()
 
-  if (isLoading) return <Loading />
-
-  const values = Object.values(data)
-
   return (
     <>
       <LongCard props={['Data DTKS', 'Persentasi Data DTKS']}>
-        <LongCard.Chart
-          data={values}
-          isPercent={true}
-          label={['DTKS', 'Non DTKS']}
-          backgroundColor={['#F94144', '#F3722C']}
-        />
+        {isLoading ? (
+          <div className="py-8 ">
+            <Skeleton className="w-[300px] h-[300px] rounded-full" />
+          </div>
+        ) : (
+          <LongCard.Chart
+            data={Object.values(data)}
+            isPercent={true}
+            label={['DTKS', 'Non DTKS']}
+            backgroundColor={['#F94144', '#F3722C']}
+          />
+        )}
       </LongCard>
     </>
   )
@@ -125,10 +127,10 @@ const ChartDtks = () => {
 const CardData = () => {
   const { data, isLoading } = useCountDataDtks()
 
-  if (isLoading) return <Loading />
+  // if (isLoading) return <Loading />
 
   // console.log({ beneficiaries, nonbeneficiaries, familybeneficiaries })
-  const { beneficiaries, nonBeneficiaries, familyBeneficiaries } = data
+  // const { beneficiaries, nonBeneficiaries, familyBeneficiaries } = data
   // console.log({ beneficiaries, nonBeneficiaries, familyBeneficiaries })
 
   return (
@@ -141,12 +143,13 @@ const CardData = () => {
             <Skeleton className="w-[80px] h-3 rounded-[14px]" />
           </div>
         </>
-      ) : <>
-        <BasicCard props={['Total Data DTKS', beneficiaries, 'Jiwa']} />
-        <BasicCard props={['Jumlah data Non DTKS', nonBeneficiaries, 'Data']} />
-        <BasicCard props={['Jumlah Keluarga Penerima', familyBeneficiaries, 'Data']} />
-      </>
-      }
+      ) : (
+        <>
+          <BasicCard props={['Total Data DTKS', data?.beneficiaries, 'Jiwa']} />
+          <BasicCard props={['Jumlah data Non DTKS', data?.nonBeneficiaries, 'Data']} />
+          <BasicCard props={['Jumlah Keluarga Penerima', data?.familyBeneficiaries, 'Data']} />
+        </>
+      )}
     </>
   )
 }

@@ -15,10 +15,13 @@ import {
 import { Action, ExportButton, Loading, Modal, Search, Pagination } from '@/components'
 import { useAlert } from '@/store/client'
 import { exportOrganizationGrantAssistance } from '@/api/dayasos.api'
+import { useNavigate } from 'react-router-dom'
 
 const DataHibah = () => {
   useTitle('Data Penerima / Dayasos / Bansos Hibah Organisasi/Lembaga (BHO) ')
   const { alert } = useAlert()
+  const navigate = useNavigate()
+
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
   const createParams = useCreateParams()
@@ -183,20 +186,24 @@ const DataHibah = () => {
             {organizationGrantAssistances?.data?.length !== 0 ? (
               organizationGrantAssistances?.data.map((item, index) => (
                 <TableRow key={item.id}>
-                  <TableCell className="text-center bg-[#F9FAFC]">
+                  <TableCell className="bg-[#F9FAFC]" position="center">
                     {(organizationGrantAssistances.meta.currentPage - 1) * organizationGrantAssistances.meta.perPage +
                       index +
                       1}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.chairmanName}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.chairmanIdentityNumber}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.address.fullAddress}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.contactNumber}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.aprrovedAmount}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.budgetYear}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.name ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.chairmanName ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.chairmanIdentityNumber ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.address.fullAddress ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.contactNumber ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.aprrovedAmount ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.budgetYear ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Action onDelete={() => handleDelete(item.id)} onDetail={() => showDetail(item.id)} />
+                    <Action
+                      onDelete={() => handleDelete(item.id)}
+                      onDetail={() => showDetail(item.id)}
+                      onEdit={() => navigate(`/layanan/dayasos/hibah/${item.id}`)}
+                    />
                   </TableCell>
                 </TableRow>
               ))
