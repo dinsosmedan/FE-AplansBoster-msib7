@@ -26,7 +26,7 @@ export const beneficaryValidation = Yup.object({
   isDtks: Yup.mixed().test('isDtks', 'Status DTKS harus diisi', function (value) {
     return (
       value instanceof Boolean || // Check if it's a Boolean object
-      (typeof value === 'string' && !isNaN(Number(value))) // Check if it's a parseable string
+      (typeof value === 'string' && !isNaN(Boolean(value))) // Check if it's a parseable string
     )
   })
 })

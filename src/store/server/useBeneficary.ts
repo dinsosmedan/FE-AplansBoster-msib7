@@ -16,7 +16,17 @@ import { useMutation, useQuery, useQueryClient } from 'react-query'
 
 export const useGetBeneficaryByNIK = (nik: string, enabled: boolean) => {
   return useQuery(['beneficary', nik], async () => await showBeneficaryByNIKFn(nik), {
-    enabled
+    enabled,
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: 'NIK tidak ditemukan',
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
+    }
   })
 }
 export const useGetBeneficaryById = (id?: string) => {

@@ -217,7 +217,7 @@ export default function DataMaster() {
           {beneficiary?.data?.length !== 0 ? (
             beneficiary?.data.map((item, index) => (
               <TableRow key={item.id}>
-                <TableCell className="text-center bg-[#F9FAFC]">
+                <TableCell className="text-center bg-[#F9FAFC]" position="center">
                   {(beneficiary.meta.currentPage - 1) * beneficiary.meta.perPage + index + 1}
                 </TableCell>
                 <TableCell className="text-center bg-[#F9FAFC]">{item.identityNumber}</TableCell>
@@ -225,7 +225,9 @@ export default function DataMaster() {
                 <TableCell className="text-center bg-[#F9FAFC]">{item.name ?? '-'}</TableCell>
                 <TableCell className="text-center bg-[#F9FAFC]">{item.address.areaLevel3?.name ?? '-'}</TableCell>
                 <TableCell className="text-center bg-[#F9FAFC]">{item.address.areaLevel4?.name ?? '-'}</TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]">{item.isDtks ? 'DTKS' : 'Non DTKS'}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                  {item.isDtks ? 'DTKS' : 'Non DTKS'}
+                </TableCell>
                 <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                   <Link to={`/data-master/info-datamaster/${item.id}`}>
                     <Button variant="base" size="icon">
