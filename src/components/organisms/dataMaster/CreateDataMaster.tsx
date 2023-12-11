@@ -1,34 +1,73 @@
-import { type beneficaryFields } from '@/lib/validations/beneficary.validation'
+import { beneficaryValidation, type beneficaryFields } from '@/lib/validations/beneficary.validation'
 import { useForm } from 'react-hook-form'
 import { Modal } from '..'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { DatePicker } from '@/components'
-import { useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { useCreateBeneficary, useGetBeneficaryByNIK, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { HiMagnifyingGlass } from 'react-icons/hi2'
+import * as React from 'react'
+import { formatDateToString, formatStringToDate } from '@/lib/formatDate'
+import { citizenshipLists, lastEducationLists, relationshipLists, religionLists } from '@/lib/data'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 interface CreateDataMasterProps {
   isShow: boolean
   setIsShow: (isShow: boolean) => void
 }
 
-const lastEducationLists = [
-  { value: 'TIDAK/BLM SEKOLAH', label: 'Tidak/belum sekolah' },
-  { value: 'BELUM TAMAT SD/SEDERAJAT', label: 'BSD/sederajat' }
-]
-
 export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMasterProps) {
   const forms = useForm<beneficaryFields>({
-    mode: 'onTouched'
+    mode: 'onTouched',
+    resolver: yupResolver(beneficaryValidation)
   })
 
+  const nik = forms.watch('identityNumber')
   const areaLevel3 = forms.watch('areaLevel3')
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3)
+  const { data: beneficary, isLoading, isSuccess, refetch } = useGetBeneficaryByNIK(nik, false)
+  const { mutate: createBeneficary, isLoading: isLoadingCreate } = useCreateBeneficary()
+
+  React.useEffect(() => {
+    forms.reset({
+      identityNumber: beneficary?.identityNumber,
+      familyCardNumber: beneficary?.familyCardNumber,
+      name: beneficary?.name,
+      address: beneficary?.address.fullAddress,
+      areaLevel3: beneficary?.address.areaLevel3?.id as string,
+      areaLevel4: beneficary?.address.areaLevel4?.id as string,
+      birthPlace: beneficary?.birthPlace,
+      birthDate: beneficary?.birthDate && formatStringToDate(beneficary?.birthDate),
+      gender: beneficary?.gender,
+      lastEducation: beneficary?.lastEducation as string,
+      religion: beneficary?.religion,
+      occupation: beneficary?.occupation,
+      martialStatus: beneficary?.maritalStatus as string,
+      citizenship: beneficary?.citizenship as string,
+      familyRelationship: beneficary?.familyRelationship,
+      bloodType: beneficary?.bloodType as string,
+      fatherName: beneficary?.fatherName as string,
+      motherName: beneficary?.motherName as string,
+      isDtks: beneficary?.isDtks
+    })
+  }, [isSuccess])
 
   const onSubmit = async (values: beneficaryFields) => {
-    console.log(values)
+    const newData = {
+      ...values,
+      birthDate: formatDateToString(values.birthDate as Date),
+      isDtks: values.isDtks === 'true'
+    }
+
+    createBeneficary(newData, {
+      onSuccess: () => {
+        forms.reset()
+        setIsShow(false)
+      }
+    })
   }
 
   return (
@@ -50,13 +89,17 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                     <FormControl>
                       <Input {...field} type="number" placeholder="Masukkan NIK Masyarakat" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
 
-            <div className="w-1/12 flex items-end justify-end">
-              <Button className="w-full">Cari</Button>
+            <div className="w-fit flex items-end justify-end" onClick={async () => await refetch()}>
+              <Button className="w-full gap-2" loading={isLoading} type="button">
+                <HiMagnifyingGlass className="text-lg" />
+                <span>Cari</span>
+              </Button>
             </div>
           </div>
           <div className="flex-row flex-wrap grid grid-cols-2 gap-y-4 gap-x-8">
@@ -69,6 +112,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                   <FormControl>
                     <Input {...field} type="number" placeholder="Masukkan No.KK" />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -82,6 +126,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                   <FormControl>
                     <Input {...field} type="text" placeholder="Masukkan Nama" />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -95,6 +140,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                   <FormControl>
                     <Input {...field} type="text" placeholder="Masukkan Alamat" />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -119,6 +165,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -144,6 +191,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                       </SelectContent>
                     </Select>
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -153,9 +201,21 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Agama</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Agama" />
-                  </FormControl>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Agama" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {religionLists.map((religion, index) => (
+                        <SelectItem key={index} value={religion.value}>
+                          {religion.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -169,6 +229,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                   <FormControl>
                     <Input {...field} type="text" placeholder="Masukkan Tempat Lahir" />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -182,6 +243,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                   <FormControl>
                     <DatePicker selected={field.value as Date} onChange={field.onChange} placeholder="dd/mm/yyyy" />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -192,20 +254,18 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Jenis Kelamin</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Jenis Kelamin" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                        <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                        <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Jenis Kelamin" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="LAKI-LAKI">Laki-laki</SelectItem>
+                      <SelectItem value="PEREMPUAN">Perempuan</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -216,20 +276,21 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Pendidikan Terakhir</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Pendidikan Terakhir" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                        <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                        <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Pendidikan Terakhir" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {lastEducationLists.map((lastEducation, index) => (
+                        <SelectItem key={index} value={lastEducation.value}>
+                          {lastEducation.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -243,6 +304,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                   <FormControl>
                     <Input {...field} type="text" placeholder="Masukkan Pekerjaan" />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -256,6 +318,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                   <FormControl>
                     <Input {...field} type="text" placeholder="Masukkan Golongan Darah" />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -266,21 +329,45 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Status Kawin</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Status Kawin" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="MENIKAH">Menikah</SelectItem>
-                        <SelectItem value="BELUM MENIKAH">Belum menikah</SelectItem>
-                        <SelectItem value="CERAI HIDUP">Cerai hidup</SelectItem>
-                        <SelectItem value="CERAI MATI">Cerai mati</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Status Kawin" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="MENIKAH">Menikah</SelectItem>
+                      <SelectItem value="BELUM MENIKAH">Belum menikah</SelectItem>
+                      <SelectItem value="CERAI HIDUP">Cerai hidup</SelectItem>
+                      <SelectItem value="CERAI MATI">Cerai mati</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="familyRelationship"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold dark:text-white">Status Keluarga</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Status Keluarga" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {relationshipLists.map((relationship, index) => (
+                        <SelectItem key={index} value={relationship} className="capitalize">
+                          {relationship}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -291,9 +378,21 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Kewarganegaraan</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Kewarganegaraan" />
-                  </FormControl>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Kewarganegaraan" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {citizenshipLists.map((citizenship, index) => (
+                        <SelectItem key={index} value={citizenship.value}>
+                          {citizenship.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -307,6 +406,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                   <FormControl>
                     <Input {...field} type="text" placeholder="Masukkan Nama Ibu" />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -320,6 +420,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                   <FormControl>
                     <Input {...field} type="text" placeholder="Masukkan Nama Bapak" />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -330,38 +431,38 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Status DTKS</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value as string}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Status DTKS" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="true">DTKS</SelectItem>
-                        <SelectItem value="false">Non DTKS</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+
+                  <Select onValueChange={field.onChange} value={field.value as string}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Status DTKS" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="true">DTKS</SelectItem>
+                      <SelectItem value="false">Non DTKS</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
           </div>
+          <Modal.Footer>
+            <Button
+              variant="outline"
+              className="rounded-lg text-primary border-primary"
+              onClick={() => setIsShow(false)}
+              type="button"
+            >
+              Cancel
+            </Button>
+            <Button className="rounded-lg" type="submit" loading={isLoadingCreate}>
+              Tambah Data
+            </Button>
+          </Modal.Footer>
         </form>
       </Form>
-      <Modal.Footer>
-        <Button
-          variant="outline"
-          className="rounded-lg text-primary border-primary"
-          onClick={() => setIsShow(false)}
-          type="button"
-        >
-          Cancel
-        </Button>
-        <Button className="rounded-lg" type="submit">
-          Tambah Data
-        </Button>
-      </Modal.Footer>
     </Modal>
   )
 }
