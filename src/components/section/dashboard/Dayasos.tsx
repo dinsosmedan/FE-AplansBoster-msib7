@@ -3,9 +3,11 @@ import BasicCard from '@/components/ui/dashboard/BasicCard'
 import BigCard from '@/components/ui/dashboard/BigCard'
 import LongCard from '@/components/ui/dashboard/LongCard'
 import TitleSign from '@/components/ui/dashboard/TitleSign'
-import { useBusinessGroupAssistance, useCommunityGroupAssistance, useCountDataDayasos, useCountServiceFund } from '@/store/server'
+import { Skeleton } from '@/components/ui/skeleton'
+import { useBusinessGroupAssistance, useCommunityGroupAssistance, useCountDataDayasos, useCountServiceFund, useDataWorshipPlace } from '@/store/server'
 
 const SectionDayasos = () => {
+
   return (
     <>
       <div className=" my-12 ">
@@ -17,11 +19,9 @@ const SectionDayasos = () => {
           <CardDjpm />
         </div>
         <div className="grid grid-cols-3 gap-5 mt-5">
-
           <ChartPokmas />
           <ChartKube />
           <ChartRi />
-
         </div>
       </div>
     </>
@@ -61,7 +61,10 @@ const CardDjpm = () => {
 
   return (
     <>
-      <BigCard data={values}></BigCard>
+      {
+        isLoading ? <Skeleton className="w-[300px] h-[300px]" /> :
+          <BigCard data={values}></BigCard>
+      }
     </>
 
   )
@@ -71,20 +74,24 @@ const ChartPokmas = () => {
 
   if (isLoading) return <Loading />
 
-  // const data = CommunityGroup.map((val: any) => val.count)
-  const label = CommunityGroup.map((val: any) => val.applicationYear.toString())
   // console.log(data)
+  const data = CommunityGroup.map((val: any) => val.count)
+  const label = CommunityGroup.map((val: any) => val.applicationYear.toString())
   const color = ['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']
   const title = ['POKMAS', 'Perkembangan Data POKMAS']
 
   return (
     <>
       <LongCard props={title}>
-        <LongCard.Chart
-          data={[20, 10, 12, 13, 21]}
-          label={label}
-          backgroundColor={color}
-        />
+        {isLoading ?
+          <Skeleton className="w-[300px] h-[300px] rounded-full" /> :
+          <LongCard.Chart
+            // data={[20, 10, 12, 13, 21]}
+            data={data}
+            label={label}
+            backgroundColor={color}
+          />
+        }
       </LongCard>
     </>
 
@@ -96,46 +103,50 @@ const ChartKube = () => {
   if (isLoading) return <Loading />
 
   // return
-  // const data = BusinessGroup.map((valdata: any) => valdata.count)
+  const data = BusinessGroup.map((valdata: any) => valdata.count)
   const label = BusinessGroup.map((val: any) => val.budgetYear)
-  // console.log(label)
   const color = ['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']
   const title = ['KUBE', 'Perkembangan Data KUBE']
-
   return (
     <>
       <LongCard props={title}>
-        <LongCard.Chart
-          data={[20, 10, 12, 13, 21]}
-          label={label}
-          backgroundColor={color}
-        />
+        {isLoading ? <Skeleton className="w-[300px] h-[300px] rounded-full" /> :
+          <LongCard.Chart
+            // data={[20, 10, 12, 13, 21]}
+            data={data}
+            label={label}
+            backgroundColor={color}
+          />
+        }
       </LongCard>
     </>
 
   )
 }
 const ChartRi = () => {
-  // const { data: WorshipPlace, isLoading } = useDataWorshipPlace()
+  const { data: WorshipPlace, isLoading } = useDataWorshipPlace()
 
-  // if (isLoading) return <Loading />
+  if (isLoading) return <Loading />
 
   // return
   // const data = BusinessGroup.map((valdata: any) => valdata.count)
   // const label = BusinessGroup.map((val: any) => val.budgetYear)
-  // console.log(WorshipPlace)
+  console.log(WorshipPlace)
   // const color = ['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']
   // const title = ['KUBE', 'Perkembangan Data KUBE']
 
   return (
     <>
       <LongCard props={['Rumah Ibadah', 'Persentasi Rumah Ibadah']}>
-        <LongCard.Chart
-          data={[20, 5, 13, 13, 22, 15, 12]}
-          label={['Mesjid', 'Gereja', 'Kuil Hindu', 'Gereja Khatolik', 'Kuil Budha', 'Musholla', 'Kuil Budha']}
-          isPercent={true}
-          backgroundColor={['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E', '#2D9CDB', '#DD2153']}
-        />
+        {
+          isLoading ? <Skeleton className="w-[300px] h-[300px] rounded-full" /> :
+            <LongCard.Chart
+              data={[20, 5, 13, 13, 22, 15, 12]}
+              label={['Mesjid', 'Gereja', 'Kuil Hindu', 'Gereja Khatolik', 'Kuil Budha', 'Musholla', 'Kuil Budha']}
+              isPercent={true}
+              backgroundColor={['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E', '#2D9CDB', '#DD2153']}
+            />
+        }
       </LongCard>
     </>
 

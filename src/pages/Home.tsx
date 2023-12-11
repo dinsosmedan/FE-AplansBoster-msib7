@@ -9,8 +9,8 @@ const Home = () => {
   return (
     <>
       <SectionDataDtks />
-      {/* <SectionDayasos />
-      <SectionLinjamsos /> */}
+      <SectionDayasos />
+      <SectionLinjamsos />
     </>
   )
 }

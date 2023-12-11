@@ -1,6 +1,7 @@
 import { Loading } from '@/components'
 import LongCard from '@/components/ui/dashboard/LongCard'
 import TitleSign from '@/components/ui/dashboard/TitleSign'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useVulnerableGroup } from '@/store/server'
 
 const SectionLinjamsos = () => {
@@ -33,25 +34,38 @@ const SectionLinjamsos = () => {
         </div> */}
         <div className="grid grid-cols-3 gap-5 mt-5">
           <ChartPenanganan />
-          <LongCard props={['Bantuan Biaya Pendidikan', 'Persentasi Data Biaya Pendidikan']}>
-            <LongCard.Chart
-              data={[20, 5, 13]}
-              isPercent={true}
-              label={['Diterima', 'Diterima', 'Prelist']}
-              backgroundColor={['#F94144', '#F3722C', '#F9C74F']}
-            />
-          </LongCard>
-          <LongCard props={['SKTM', 'Persentasi Data SKTM Berdasarkan DTKS']}>
-            <LongCard.Chart
-              data={[30, 15]}
-              isPercent={true}
-              label={['DTKS', 'Non DTKS']}
-              backgroundColor={['#F94144', '#F3722C']}
-            />
-          </LongCard>
+          <ChartBbp />
+          <ChartSktm />
+
         </div>
       </div>
     </>
+  )
+}
+const ChartSktm = () => {
+
+  return (
+    <LongCard props={['SKTM', 'Persentasi Data SKTM Berdasarkan DTKS']}>
+      <LongCard.Chart
+        data={[30, 15]}
+        isPercent={true}
+        label={['DTKS', 'Non DTKS']}
+        backgroundColor={['#F94144', '#F3722C']}
+      />
+    </LongCard>
+  )
+}
+const ChartBbp = () => {
+
+  return (
+    <LongCard props={['Bantuan Biaya Pendidikan', 'Persentasi Data Biaya Pendidikan']}>
+      <LongCard.Chart
+        data={[20, 5, 13]}
+        isPercent={true}
+        label={['Diterima', 'Diterima', 'Prelist']}
+        backgroundColor={['#F94144', '#F3722C', '#F9C74F']}
+      />
+    </LongCard>
   )
 }
 const ChartPenanganan = () => {
@@ -66,11 +80,18 @@ const ChartPenanganan = () => {
   return (
     <>
       <LongCard props={['Penangan Kelompok Rentan', 'Perkembangan Data PKR']}>
-        <LongCard.Chart
-          data={[12, 21, 22, 31, 21]}
-          label={label}
-          backgroundColor={['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']}
-        />
+        {
+          isLoading ? (
+            <>
+              <Skeleton className="w-[300px] h-[300px] rounded-full" />
+            </>
+          ) :
+            <LongCard.Chart
+              data={[12, 21, 22, 31, 21]}
+              label={label}
+              backgroundColor={['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']}
+            />
+        }
       </LongCard>
     </>
   )
