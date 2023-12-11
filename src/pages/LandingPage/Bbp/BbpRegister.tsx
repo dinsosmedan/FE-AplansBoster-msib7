@@ -8,6 +8,7 @@ import { HiDocumentArrowUp, HiMagnifyingGlass, HiPaperAirplane } from 'react-ico
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from '@/components/ui/select'
 import DropZone, { type FileWithPreview } from '../../../components/atoms/DropZone'
+import DatePicker from './../../../components/atoms/DatePicker';
 
 interface FormValues {
   nik: string
@@ -77,14 +78,13 @@ export default function BbpRegister() {
           </div>
           <div className="grid grid-cols-3 gap-5">
             <FormField
-              name="nik"
+              name="datpicker"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Tanggal Lahir</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="text" placeholder="Masukan Tanggal Lahir" />
-                  </FormControl>
+                  <FormLabel>Jadwal Pelaksaaan</FormLabel>
+                  <DatePicker selected={field.value as Date} onChange={field.onChange} placeholder="dd/mm/yyy" />
+                  <FormMessage />
                 </FormItem>
               )}
             />

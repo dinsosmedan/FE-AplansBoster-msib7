@@ -8,5 +8,5 @@ import Title from './Title'
 import Breadcrumbs from './Breadcrumbs'
 import Password from './Password'
 import ExportButton from './ExportButton'
-
-export { Loading, MultiSelect, Search, Pagination, Container, DatePicker, Title, Breadcrumbs, Password, ExportButton }
+import FilterLayanan from './FilterLayanan'
+export { Loading, MultiSelect, Search, Pagination, Container, DatePicker, Title, Breadcrumbs, Password, ExportButton, FilterLayanan }
