@@ -13,10 +13,10 @@ interface CreateDataMasterProps {
   setIsShow: (isShow: boolean) => void
 }
 
-const lastEducationLists = [
-  { value: 'TIDAK/BLM SEKOLAH', label: 'Tidak/belum sekolah' },
-  { value: 'BELUM TAMAT SD/SEDERAJAT', label: 'BSD/sederajat' }
-]
+// const lastEducationLists = [
+//   { value: 'TIDAK/BLM SEKOLAH', label: 'Tidak/belum sekolah' },
+//   { value: 'BELUM TAMAT SD/SEDERAJAT', label: 'BSD/sederajat' }
+// ]
 
 export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMasterProps) {
   const forms = useForm<beneficaryFields>({
