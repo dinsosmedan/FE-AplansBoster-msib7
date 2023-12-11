@@ -50,6 +50,8 @@ import SktmReligious from './LandingPage/Sktm/SktmRegisterReligious'
 import SktmUnregisterReligious from './LandingPage/Sktm/SktmUnregisterReligious'
 import BbpUser from './LandingPage/Bbp/BbpUser'
 import BbpRegister from './LandingPage/Bbp/BbpRegister'
+import BbpFilterBatch from './Layanan/BbpFilterBatch'
+import LayananBbp from './Layanan/LayananBbp'
 
 export {
   Home,
@@ -103,5 +105,7 @@ export {
   SktmReligious,
   SktmUnregisterReligious,
   BbpUser,
-  BbpRegister
+  BbpRegister,
+  BbpFilterBatch,
+  LayananBbp
 }

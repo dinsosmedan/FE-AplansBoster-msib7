@@ -50,7 +50,6 @@ import {
   UserProtectedAuth
 } from './components'
 import BansosLansia from './pages/Layanan/BansosLansia'
-import LayananRehabsos from './pages/Layanan/LayananRehabsos'
 import LayananLinjamsos from './pages/Layanan/LayananLinjamsos'
 import LayananDayasos from './pages/Layanan/LayananDayasos'
 import CekRiwayatBansos from './pages/CekRiwayatBansos'
@@ -76,6 +75,8 @@ import SktmReligious from './pages/LandingPage/Sktm/SktmRegisterReligious'
 import SktmUnregisterReligious from './pages/LandingPage/Sktm/SktmUnregisterReligious'
 import BbpUser from './pages/LandingPage/Bbp/BbpUser'
 import BbpRegister from './pages/LandingPage/Bbp/BbpRegister'
+import BbpFilterBatch from './pages/Layanan/BbpFilterBatch'
+import LayananBbp from './pages/Layanan/LayananBbp'
 
 export default function App() {
   const { alertOptions, handleClose, handleSubmit } = useAlert()
@@ -94,7 +95,8 @@ export default function App() {
             <Route path="/dashboard" element={<Home />} />
             <Route path="/layanan">
               <Route index element={<Layanan />} />
-              <Route path="rehabsos" element={<LayananRehabsos />} />
+              <Route path="bbp-filter" element={<BbpFilterBatch />} />
+              <Route path="layanan-bbp" element={<LayananBbp />} />
               <Route path="linjamsos" element={<LayananLinjamsos />} />
               <Route path="dayasos" element={<LayananDayasos />} />
             </Route>
