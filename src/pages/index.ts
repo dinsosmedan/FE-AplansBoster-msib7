@@ -43,11 +43,13 @@ import UpdatePasswordUser from './LandingPage/UpdatePasswordUser'
 import CekBansosUser from './LandingPage/CekBansosUser'
 import DataPkh from './DataPenerima/Linjamsos/DataPkh'
 import Unregister from './Layanan/Linjamsos/Unregister'
-import UserSktm from './LandingPage/SKTM/DataSktm'
-import SktmUnregister from './LandingPage/SKTM/SktmUnregister'
-import SktmRegister from './LandingPage/SKTM/SktmRegister'
-import SktmReligious from './LandingPage/SKTM/SktmRegisterReligious'
-import SktmUnregisterReligious from './LandingPage/SKTM/SktmUnregisterReligious'
+import UserSktm from './LandingPage/Sktm/SktmUser'
+import SktmUnregister from './LandingPage/Sktm/SktmUnregister'
+import SktmRegister from './LandingPage/Sktm/SktmRegister'
+import SktmReligious from './LandingPage/Sktm/SktmRegisterReligious'
+import SktmUnregisterReligious from './LandingPage/Sktm/SktmUnregisterReligious'
+import BbpUser from './LandingPage/Bbp/BbpUser'
+import BbpRegister from './LandingPage/Bbp/BbpRegister'
 
 export {
   Home,
@@ -99,5 +101,7 @@ export {
   SktmUnregister,
   SktmRegister,
   SktmReligious,
-  SktmUnregisterReligious
+  SktmUnregisterReligious,
+  BbpUser,
+  BbpRegister
 }

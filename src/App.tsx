@@ -69,11 +69,13 @@ import DataBpnt from './pages/DataPenerima/Dayasos/DataBpnt'
 import DataPbi from './pages/DataPenerima/Linjamsos/DataPbi'
 import Unregister from './pages/Layanan/Linjamsos/Unregister'
 // import DataPkr from './pages/DataPenerima/Linjamsos/DataPkr'
-import UserSktm from './pages/LandingPage/SKTM/DataSktm'
-import SktmUnregister from './pages/LandingPage/SKTM/SktmUnregister'
-import SktmRegister from './pages/LandingPage/SKTM/SktmRegister'
-import SktmReligious from './pages/LandingPage/SKTM/SktmRegisterReligious'
-import SktmUnregisterReligious from './pages/LandingPage/SKTM/SktmUnregisterReligious'
+import UserSktm from './pages/LandingPage/Sktm/SktmUser'
+import SktmUnregister from './pages/LandingPage/Sktm/SktmUnregister'
+import SktmRegister from './pages/LandingPage/Sktm/SktmRegister'
+import SktmReligious from './pages/LandingPage/Sktm/SktmRegisterReligious'
+import SktmUnregisterReligious from './pages/LandingPage/Sktm/SktmUnregisterReligious'
+import BbpUser from './pages/LandingPage/Bbp/BbpUser'
+import BbpRegister from './pages/LandingPage/Bbp/BbpRegister'
 
 export default function App() {
   const { alertOptions, handleClose, handleSubmit } = useAlert()
@@ -185,6 +187,10 @@ export default function App() {
               <Route path="unregister" element={<SktmUnregister />} />
               <Route path="register-religious" element={<SktmReligious />} />
               <Route path="unregister-religious" element={<SktmUnregisterReligious />} />
+            </Route>
+            <Route path="bbp">
+              <Route index element={<BbpUser />} />
+              <Route path="register-bbp" element={<BbpRegister />} />
             </Route>
             <Route path="cek-bansos" element={<CekBansosUser />} />
           </Route>
