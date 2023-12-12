@@ -20,15 +20,24 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { HiTrash } from 'react-icons/hi2'
 import { cn } from '@/lib/utils'
 import * as React from 'react'
-import { useToast } from '@/components/ui/use-toast'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useTitleHeader } from '@/store/client'
+import { useNotFound, useToastNik } from '@/hooks'
 
 const Kube = () => {
-  useTitle('Kelompok Usaha Bersama (KUBE)')
-  const { id } = useParams<{ id: string }>()
-
   const navigate = useNavigate()
-  const { toast } = useToast()
+
+  const { id } = useParams<{ id: string }>()
+  useTitle(`${id ? 'Ubah' : 'Tambah'} Data`)
+  const setBreadcrumb = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumb([
+      { label: 'Dayasos & PFM', url: '/data-penerima/dayasos' },
+      { label: 'Kube', url: '/data-penerima/dayasos/kube' }
+    ])
+  }, [])
+
   const [NIK, setNIK] = React.useState('')
   const [index, setIndex] = React.useState(0)
 
@@ -57,11 +66,20 @@ const Kube = () => {
   const areaLevel3 = forms.watch('areaLevel3')
   const { data: kecamatan } = useGetKecamatan()
   const { data: kelurahan } = useGetKelurahan(areaLevel3 ?? '')
-  const { data: beneficiary, refetch, isFetching, isError } = useGetBeneficaryByNIK(NIK, false)
+  const { data: beneficiary, refetch, isLoading, isError: isErrorBeneficary } = useGetBeneficaryByNIK(NIK, false)
   const { mutate: createKube, isLoading: isLoadingCreate } = useCreateBusinessGroup()
   const { mutate: UpdateJointBusiness, isLoading: isLoadingUpdate } = useUpdateJointBusiness()
+  const { data: BusinessGroup, isSuccess, isLoading: isLoadingBusinessGroupById, isError } = useGetBusinessGroupById(id)
 
-  const { data: BusinessGroup, isSuccess, isLoading: isLoadingBusinessGroupById } = useGetBusinessGroupById(id)
+  useNotFound(isError)
+
+  useToastNik({
+    successCondition: !isLoading && beneficiary != null,
+    onSuccess: () => forms.setValue(`members.${index}.beneficiary`, beneficiary?.id as string),
+    notFoundCondition: isErrorBeneficary,
+    notRegisteredCondition:
+      forms.getValues(`members.${index}.beneficiary`) === '' && NIK !== '' && forms.formState.isSubmitted
+  })
 
   React.useEffect(() => {
     if (NIK !== '') void refetch()
@@ -85,29 +103,9 @@ const Kube = () => {
     }
   }, [isSuccess, BusinessGroup])
 
-  React.useEffect(() => {
-    if (isError) {
-      toast({
-        title: 'NIK tidak terdaftar',
-        description: 'Maaf NIK tidak terdaftar silahkan daftarkan NIK pada menu Data Master',
-        variant: 'destructive'
-      })
-    }
-  }, [isError])
-
-  React.useEffect(() => {
-    if (beneficiary != null) {
-      forms.setValue(`members.${index}.beneficiary`, beneficiary?.id)
-      toast({
-        title: 'NIK terdaftar',
-        description: 'NIK terdaftar, silahkan isi form berikut'
-      })
-    }
-  }, [beneficiary])
-
   const onSuccess = () => {
     forms.reset()
-    navigate('/data-penerima/dayasos/data-kube')
+    navigate('/data-penerima/dayasos/kube')
   }
 
   const onSubmit = async (values: kubeFields) => {
@@ -131,9 +129,7 @@ const Kube = () => {
     }
   }
 
-  if (isLoadingBusinessGroupById) {
-    return <Loading />
-  }
+  if (isLoadingBusinessGroupById) return <Loading />
 
   return (
     <Container className="py-10 px-[47px]">
@@ -306,7 +302,7 @@ const Kube = () => {
                   className="w-full"
                   type="button"
                   onClick={async () => await handleFetchNik(index)}
-                  loading={isFetching}
+                  loading={isLoading}
                 >
                   Cari
                 </Button>

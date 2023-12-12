@@ -19,7 +19,7 @@ import {
 } from '@/store/server'
 import { Action, Loading, Modal } from '@/components'
 import React from 'react'
-import { useAlert } from '@/store/client'
+import { useAlert, useTitleHeader } from '@/store/client'
 
 interface FormValues {
   q: string
@@ -29,7 +29,15 @@ interface FormValues {
   statusDtks: string
 }
 const DataSktm = () => {
-  useTitle('Data Penerima / Linjamsos / SKTM ')
+  useTitle('Data Penerima')
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/linjamsos', label: 'Linjamsos' },
+      { url: '/data-penerima/linjamsos/sktm', label: 'SKTM' }
+    ])
+  }, [])
   const navigate = useNavigate()
   const { alert } = useAlert()
   const createParams = useCreateParams()
@@ -105,7 +113,7 @@ const DataSktm = () => {
   }
 
   const handleReset = () => {
-    navigate('/data-penerima/linjamsos/data-sktm')
+    navigate('/data-penerima/linjamsos/sktm')
     forms.reset()
   }
   if (isLoading && isLoadingIndigencyCertificate) {

@@ -17,13 +17,13 @@ const LayananDayasos = () => {
         <CardSub
           title={'Bantuan Langsung Tunai BBM'}
           subTitle={'Fuel Cash Assistance'}
-          href={'/data-penerima/dayasos/data-bltbbm'}
+          href={'/data-penerima/dayasos/bltbbm'}
         />
         <CardSub title={'Kelompok Masyarakat (POKMAS)'} subTitle={'Community Group'} href={'/layanan/dayasos/pokmas'} />
         <CardSub
           title={'Bantuan Pangan Non Tunai (BPNT)'}
           subTitle={'Joint Business Group'}
-          href={'/data-penerima/dayasos/data-bpnt'}
+          href={'/data-penerima/dayasos/bpnt'}
         />
         <CardSub
           title={'Bansos Hibah Organisasi/ Lembaga'}

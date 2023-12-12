@@ -12,8 +12,8 @@ import { useNavigate } from 'react-router-dom'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useDeleteUnregister, useGetDetailUnregister, useUnregisters } from '@/store/server'
 import { Action, Loading, Modal } from '@/components'
-import { useAlert } from '@/store/client'
-import React from 'react'
+import { useAlert, useTitleHeader } from '@/store/client'
+import * as React from 'react'
 interface FormValues {
   q: string
   letterNumber: string
@@ -21,7 +21,16 @@ interface FormValues {
   year: string
 }
 const DataUnregister = () => {
-  useTitle('Data Penerima / Unregister) ')
+  useTitle('Data Penerima')
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/linjamsos', label: 'Linjamsos' },
+      { url: '/data-penerima/linjamsos/unregister', label: 'Unregister' }
+    ])
+  }, [])
+
   const navigate = useNavigate()
   const createParams = useCreateParams()
 
@@ -96,7 +105,7 @@ const DataUnregister = () => {
     await refetch()
   }
   const handleReset = () => {
-    navigate('/data-penerima/linjamsos/data-unregister')
+    navigate('/data-penerima/linjamsos/unregister')
     forms.reset()
   }
   if (isLoading) {
@@ -217,7 +226,7 @@ const DataUnregister = () => {
                       <Action
                         onDelete={async () => await handleDelete(item.id)}
                         onDetail={() => showDetail(item.id)}
-                        onEdit={() => navigate(`/layanan/linjamsos/unregister/${item.id}`)}
+                        onEdit={() => navigate(`/data-penerima/linjamsos/unregister/${item.id}`)}
                       />
                     </TableCell>
                   </TableRow>

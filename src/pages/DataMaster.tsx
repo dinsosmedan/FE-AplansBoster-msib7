@@ -51,7 +51,7 @@ export default function DataMaster() {
     isDtks
   })
 
-  useDisableBodyScroll(isFetching)
+  useDisableBodyScroll(isFetching || isShow)
 
   const shouldDisplayResetButton = (variant: 'with-page' | 'without-page' = 'without-page') => {
     if (variant === 'with-page') return q || kecamatan || kelurahan || page || isDtks
@@ -229,7 +229,7 @@ export default function DataMaster() {
                   {item.isDtks ? 'DTKS' : 'Non DTKS'}
                 </TableCell>
                 <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Link to={`/data-master/info-datamaster/${item.id}`}>
+                  <Link to={`/data-master/info-data-master/${item.id}`}>
                     <Button variant="base" size="icon">
                       <HiOutlineExclamationCircle className="h-7 w-7" />
                     </Button>

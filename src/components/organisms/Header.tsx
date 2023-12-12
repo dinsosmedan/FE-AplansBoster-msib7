@@ -9,12 +9,18 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { useGetMe, useLogout } from '@/store/server'
-import { useAlert } from '@/store/client'
+import { useAlert, useTitleHeader } from '@/store/client'
 import { Breadcrumbs } from '..'
 import { Skeleton } from '../ui/skeleton'
 
 export default function Header() {
   const { alert } = useAlert()
+  const { title, breadcrumbs, isHadBreadcrumbs } = useTitleHeader((state) => ({
+    title: state.title,
+    isHadBreadcrumbs: state.isHadBreadcrumbs,
+    breadcrumbs: state.breadcrumbs
+  }))
+
   const { data: user, isLoading } = useGetMe()
   const { mutate: logout } = useLogout()
 
@@ -27,13 +33,12 @@ export default function Header() {
     }).then(() => logout())
   }
 
-  console.log(user)
-
   return (
-    <header className="h-20 flex items-center px-8 z-[20] sticky top-0 bg-white border-b border-[#E9E9E9] text-font">
+    <header className="h-24 flex items-center px-8 z-[20] sticky top-0 bg-white border-b border-[#E9E9E9] text-font">
       <nav className="flex items-center justify-between flex-1">
-        <div>
-          <Breadcrumbs />
+        <div className="flex flex-col">
+          <h4 className="font-bold text-2xl">{title}</h4>
+          {isHadBreadcrumbs ? <Breadcrumbs breadcrumbs={breadcrumbs} /> : null}
         </div>
         <div className="flex items-center gap-6">
           <Button size="icon" variant="ghost" className="rounded-full">

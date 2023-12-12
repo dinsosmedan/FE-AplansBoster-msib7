@@ -12,6 +12,7 @@ import CardSub from './CardSub'
 import FormAuthContainer from './landingPage/FormAuthContainer'
 import NoData from './landingPage/NoData'
 import CreateDataMaster from './dataMaster/CreateDataMaster'
+import CreateEvent from './event/CreateEvent'
 
 export {
   Header,
@@ -27,5 +28,6 @@ export {
   CardSub,
   FormAuthContainer,
   NoData,
-  CreateDataMaster
+  CreateDataMaster,
+  CreateEvent
 }

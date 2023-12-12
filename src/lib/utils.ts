@@ -1,5 +1,8 @@
+import { toast } from '@/components/ui/use-toast'
+import { type AxiosError } from 'axios'
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { type IErrorResponse } from './types/user.type'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -19,4 +22,16 @@ export const bytesToSize = (bytes: number): string => {
 
   const i: number = parseInt(String(Math.floor(Math.log(bytes) / Math.log(1024))))
   return Math.round((bytes / Math.pow(1024, i)) * 100) / 100 + ' ' + sizes[i]
+}
+
+export const handleOnError = (error: AxiosError, message?: string) => {
+  const errorResponse = error.response?.data as IErrorResponse
+
+  if (errorResponse !== undefined) {
+    toast({
+      variant: 'destructive',
+      title: message ?? errorResponse.message ?? 'Gagal',
+      description: 'Terjadi masalah dengan permintaan Anda.'
+    })
+  }
 }

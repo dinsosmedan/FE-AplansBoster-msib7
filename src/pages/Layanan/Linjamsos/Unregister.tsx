@@ -9,17 +9,27 @@ import { unregisterValidation, type unregisterFields } from '@/lib/validations/l
 import { DatePicker, Loading } from '@/components'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useCreateUnregister, useGetDetailUnregister, useUpdateUnregister } from '@/store/server'
-import { formatDateToString, formatStringToDate } from '@/lib/formatDate'
+import { formatDateToString, formatStringToDate } from '@/lib/services/formatDate'
 import { useNavigate, useParams } from 'react-router-dom'
 import * as React from 'react'
+import { useTitleHeader } from '@/store/client'
+import { useNotFound } from '@/hooks'
 
 const Unregister = () => {
-  useTitle('Unregister)')
-
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
+  useTitle(`${id ? ' Ubah' : 'Tambah'} Data`)
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/linjamsos', label: 'Linjamsos' },
+      { url: '/data-penerima/linjamsos/unregister', label: 'Unregister' }
+    ])
+  }, [])
+
   const { mutate: createUnregister, isLoading } = useCreateUnregister()
-  const { data: unregister, isLoading: isLoadingDetail, isSuccess } = useGetDetailUnregister(id as string)
+  const { data: unregister, isLoading: isLoadingDetail, isSuccess, isError } = useGetDetailUnregister(id as string)
   const { mutate: updateUnregister, isLoading: isLoadingUpdate } = useUpdateUnregister()
 
   const forms = useForm<unregisterFields>({
@@ -27,22 +37,7 @@ const Unregister = () => {
     resolver: yupResolver(unregisterValidation)
   })
 
-  const onSuccess = () => {
-    forms.reset()
-    navigate('/data-penerima/linjamsos/data-unregister')
-  }
-
-  const onSubmit = async (values: unregisterFields) => {
-    const newData = {
-      ...values,
-      dinsosLetterDate: formatDateToString(values.dinsosLetterDate as Date),
-      hospitalEntryDate: formatDateToString(values.hospitalEntryDate as Date),
-      hospitalLetterDate: formatDateToString(values.hospitalLetterDate as Date)
-    }
-
-    if (!id) return createUnregister(newData, { onSuccess })
-    updateUnregister({ id, fields: newData }, { onSuccess })
-  }
+  useNotFound(isError)
 
   React.useEffect(() => {
     if (isSuccess) {
@@ -60,9 +55,24 @@ const Unregister = () => {
     }
   }, [isSuccess])
 
-  if (isLoadingDetail) {
-    return <Loading />
+  const onSuccess = () => {
+    forms.reset()
+    navigate('/data-penerima/linjamsos/unregister')
   }
+
+  const onSubmit = async (values: unregisterFields) => {
+    const newData = {
+      ...values,
+      dinsosLetterDate: formatDateToString(values.dinsosLetterDate as Date),
+      hospitalEntryDate: formatDateToString(values.hospitalEntryDate as Date),
+      hospitalLetterDate: formatDateToString(values.hospitalLetterDate as Date)
+    }
+
+    if (!id) return createUnregister(newData, { onSuccess })
+    updateUnregister({ id, fields: newData }, { onSuccess })
+  }
+
+  if (isLoadingDetail) return <Loading />
 
   return (
     <Container className="px-[47px]">

@@ -6,9 +6,21 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import useTitle from '@/hooks/useTitle'
 import { Container } from '@/components'
 import { HiMagnifyingGlass } from 'react-icons/hi2'
+import { useParams } from 'react-router-dom'
+import { useTitleHeader } from '@/store/client'
+import * as React from 'react'
 
 const Pkr = () => {
-  useTitle('Surat Keterangan Tidak Mampu (SKTM)')
+  const { id } = useParams<{ id: string }>()
+  useTitle(`${id ? ' Ubah' : 'Tambah'} Data`)
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/linjamsos', label: 'Linjamsos' },
+      { url: '/data-penerima/linjamsos/sktm', label: 'SKTM' }
+    ])
+  }, [])
 
   interface FormValues {
     nik: string

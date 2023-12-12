@@ -11,12 +11,12 @@ const LayananLinjamsos = () => {
         <CardSub
           title="Bantuan Biaya Pendidikan"
           subTitle="Education Financial Aid"
-          href="/data-penerima/linjamsos/data-bbp"
+          href="/data-penerima/linjamsos/bbp"
         />
         <CardSub
           title="Penerima Bantuan Iuran (PBI)"
           subTitle="Premium Assistance Beneficiary"
-          href="/data-penerima/linjamsos/data-pbi"
+          href="/data-penerima/linjamsos/pbi"
         />
         <CardSub
           title="Penanganan Kelompok Rentan"
@@ -26,7 +26,7 @@ const LayananLinjamsos = () => {
         <CardSub
           title="Program Keluarga Harapan (PKH)"
           subTitle="Family Home Program"
-          href="/data-penerima/linjamsos/data-pkh"
+          href="/data-penerima/linjamsos/pkh"
         />
         <CardSub
           title="Surat Keterangan Tidak Mampu (SKTM)"

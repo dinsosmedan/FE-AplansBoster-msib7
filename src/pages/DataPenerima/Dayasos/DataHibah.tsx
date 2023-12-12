@@ -1,50 +1,50 @@
+import { Button } from '@/components/ui/button'
 import Container from '@/components/atoms/Container'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
-import useTitle from '@/hooks/useTitle'
-import { useForm } from 'react-hook-form'
-import { Button } from '@/components/ui/button'
-import { HiMagnifyingGlass } from 'react-icons/hi2'
+import { Action, ExportButton, Loading, Modal, Search, Pagination } from '@/components'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+
 import * as React from 'react'
-import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
+
 import {
   useDeleteOrganizationGrantAssistance,
   useGetOrganizationGrantAssistance,
   useGetOrganizationGrantAssistanceById
 } from '@/store/server/useDayasos'
-import { Action, ExportButton, Loading, Modal, Search, Pagination } from '@/components'
-import { useAlert } from '@/store/client'
+import { useAlert, useTitleHeader } from '@/store/client'
 import { exportOrganizationGrantAssistance } from '@/api/dayasos.api'
-import { useNavigate } from 'react-router-dom'
+import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
+
+interface FormValues {
+  q: string
+  budgetYear: string
+}
 
 const DataHibah = () => {
-  useTitle('Data Penerima / Dayasos / Bansos Hibah Organisasi/Lembaga (BHO) ')
   const { alert } = useAlert()
   const navigate = useNavigate()
 
+  useTitle('Data Penerima')
+  const setBreadcrumb = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumb([
+      { label: 'Dayasos & PFM', url: '/data-penerima/dayasos' },
+      { label: 'BHO', url: '/data-penerima/dayasos/bho' }
+    ])
+  }, [])
+
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
+
   const createParams = useCreateParams()
   const { q, budgetYear, page } = useGetParams(['q', 'budgetYear', 'page'])
+  const forms = useForm<FormValues>({ defaultValues: { q: '', budgetYear: '' } })
 
-  interface FormValues {
-    q: string
-    budgetYear: string
-  }
-
-  const [isLoadingPage, setIsLoadingPage] = React.useState(false)
-  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
-  const showDetail = (id: string) => {
-    setSelectedId(id)
-    setIsShow(true)
-  }
-  const forms = useForm<FormValues>({
-    defaultValues: {
-      q: '',
-      budgetYear: ''
-      // batch: ''
-    }
-  })
   const { data: organizationGrantAssistance, isLoading: isLoadingOrganization } =
     useGetOrganizationGrantAssistanceById(selectedId)
 
@@ -63,20 +63,14 @@ const DataHibah = () => {
 
   const onSubmit = async (values: FormValues) => {
     if (values.q !== '') {
-      createParams({
-        key: 'q',
-        value: values.q !== '' ? values.q : ''
-      })
-      createParams({ key: 'page', value: '' }) // Set page to empty string when searching
+      createParams({ key: 'q', value: values.q !== '' ? values.q : '' })
+      createParams({ key: 'page', value: '' })
     } else {
-      createParams({ key: 'q', value: '' }) // Set q to empty string if the search query is empty
+      createParams({ key: 'q', value: '' })
     }
 
     if (values.budgetYear !== '') {
-      createParams({
-        key: 'budgetYear',
-        value: values.budgetYear !== '' ? values.budgetYear : ''
-      })
+      createParams({ key: 'budgetYear', value: values.budgetYear !== '' ? values.budgetYear : '' })
     } else {
       createParams({ key: 'budgetYear', value: '' }) // Set budgetYear to empty string if it's empty
     }
@@ -84,6 +78,7 @@ const DataHibah = () => {
     await refetch()
   }
   const { mutateAsync: deleteOrganizationGrantAssistance } = useDeleteOrganizationGrantAssistance()
+
   const handleDelete = (id: string) => {
     void alert({
       title: 'Hapus Data HIBAH',
@@ -94,29 +89,25 @@ const DataHibah = () => {
       await deleteOrganizationGrantAssistance(id)
     })
   }
-  React.useEffect(() => {
-    if (isFetching) {
-      setIsLoadingPage(true)
-    } else {
-      setIsLoadingPage(false)
-    }
-  }, [isLoadingPage, isFetching])
 
-  if (isLoading && isLoadingOrganization) {
-    return <Loading />
+  const showDetail = (id: string) => {
+    setSelectedId(id)
+    setIsShow(true)
   }
 
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    await exportOrganizationGrantAssistance('data-hibah', 'csv')
+    await exportOrganizationGrantAssistance('bho', 'csv')
     setIsLoadingExport(false)
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    await exportOrganizationGrantAssistance('data-hibah', 'xlsx')
+    await exportOrganizationGrantAssistance('bho', 'xlsx')
     setIsLoadingExport(false)
   }
+
+  if (isLoading && isLoadingOrganization) return <Loading />
 
   return (
     <Container>
@@ -153,7 +144,15 @@ const DataHibah = () => {
             />
           </div>
           <section className="flex items-center justify-between">
-            <div>
+            <div className="flex items-center gap-3">
+              <Button
+                type="button"
+                className="gap-2 border-none rounded-lg"
+                onClick={() => navigate('/data-penerima/dayasos/bho/create')}
+              >
+                <HiPlus className="text-lg" />
+                <span>Tambah Data</span>
+              </Button>
               {organizationGrantAssistances?.data?.length !== 0 ? (
                 <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
               ) : null}
@@ -202,7 +201,7 @@ const DataHibah = () => {
                     <Action
                       onDelete={() => handleDelete(item.id)}
                       onDetail={() => showDetail(item.id)}
-                      onEdit={() => navigate(`/layanan/dayasos/hibah/${item.id}`)}
+                      onEdit={() => navigate(`/data-penerima/dayasos/bho/create/${item.id}`)}
                     />
                   </TableCell>
                 </TableRow>

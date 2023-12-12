@@ -1,21 +1,21 @@
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
-import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
-import { Action, Container, ExportButton, Loading, Modal, Pagination } from '@/components'
-import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
-import { JENIS_RUMAH_IBADAH } from '@/pages/Layanan/Dayasos/RumahIbadah'
-
-import { useDeleteWorshipPlace, useGetWorshipPlace, useGetWorshipPlaces } from '@/store/server/useDayasos'
-import { useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { useNavigate } from 'react-router-dom'
+import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
+import { Action, Container, ExportButton, Loading, Modal, Pagination } from '@/components'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { useAlert } from '@/store/client'
-import { useNavigate } from 'react-router-dom'
+
+import { JENIS_RUMAH_IBADAH } from '@/lib/data'
 import { exportWorshipPlaceFn } from '@/api/dayasos.api'
+import { useAlert, useTitleHeader } from '@/store/client'
+import { useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
+import { useDeleteWorshipPlace, useGetWorshipPlace, useGetWorshipPlaces } from '@/store/server/useDayasos'
 
 interface FormValues {
   q: string
@@ -25,32 +25,32 @@ interface FormValues {
 }
 
 const DataRumahIbadah = () => {
-  useTitle('Data Penerima / Dayasos / Rumah Ibadah (RI) ')
   const { alert } = useAlert()
   const navigate = useNavigate()
-  const createParams = useCreateParams()
+
+  useTitle('Data Penerima')
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/dayasos', label: 'Dayasos & PFM' },
+      { url: '/data-penerima/dayasos/rumah-ibadah', label: 'RI' }
+    ])
+  }, [])
+
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
   const [isLoadingExport, setIsLoadingExport] = React.useState(false)
-  const { page, q, kecamatan, kelurahan, type } = useGetParams(['page', 'q', 'type', 'kecamatan', 'kelurahan'])
-  const { data: worshipPlace, isLoading: isLoadingWorshipPlace } = useGetWorshipPlace(selectedId)
 
-  const forms = useForm<FormValues>({
-    defaultValues: {
-      q: '',
-      type: '',
-      kecamatan: '',
-      kelurahan: ''
-    }
-  })
+  const createParams = useCreateParams()
+  const { page, q, kecamatan, kelurahan, type } = useGetParams(['page', 'q', 'type', 'kecamatan', 'kelurahan'])
+  const forms = useForm<FormValues>({ defaultValues: { q: '', type: '', kecamatan: '', kelurahan: '' } })
 
   const areaLevel3 = forms.watch('kecamatan')
-  const showDetail = (id: string) => {
-    setSelectedId(id)
-    setIsShow(true)
-  }
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
+  const { mutateAsync: deleteWorshipPlace } = useDeleteWorshipPlace()
+  const { data: worshipPlace, isLoading: isLoadingWorshipPlace } = useGetWorshipPlace(selectedId)
   const {
     data: worshipPlaces,
     refetch,
@@ -63,13 +63,19 @@ const DataRumahIbadah = () => {
     type,
     q
   })
+
   useDisableBodyScroll(isFetching)
-  const [isLoadingPage, setIsLoadingPage] = React.useState(false)
+
+  const showDetail = (id: string) => {
+    setSelectedId(id)
+    setIsShow(true)
+  }
 
   const handleReset = () => {
-    navigate('/data-penerima/dayasos/data-rumah-ibadah')
+    navigate('/data-penerima/dayasos/rumah-ibadah')
     forms.reset()
   }
+
   const updateParam = (key: any, value: any) => {
     if (value !== '') {
       createParams({ key, value })
@@ -87,7 +93,7 @@ const DataRumahIbadah = () => {
 
     await refetch()
   }
-  const { mutateAsync: deleteWorshipPlace } = useDeleteWorshipPlace()
+
   const handleDelete = (id: string) => {
     void alert({
       title: 'Hapus Data RUMAH IBADAH',
@@ -98,29 +104,20 @@ const DataRumahIbadah = () => {
       await deleteWorshipPlace(id)
     })
   }
-  React.useEffect(() => {
-    if (isFetching) {
-      setIsLoadingPage(true)
-    } else {
-      setIsLoadingPage(false)
-    }
-  }, [isLoadingPage, isFetching])
-
-  if (isLoading && isLoadingWorshipPlace) {
-    return <Loading />
-  }
 
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    await exportWorshipPlaceFn('data-rumah-ibadah', 'csv')
+    await exportWorshipPlaceFn('rumah-ibadah', 'csv')
     setIsLoadingExport(false)
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    await exportWorshipPlaceFn('data-rumah-ibadah', 'xlsx')
+    await exportWorshipPlaceFn('rumah-ibadah', 'xlsx')
     setIsLoadingExport(false)
   }
+
+  if (isLoading && isLoadingWorshipPlace) return <Loading />
 
   return (
     <Container>
@@ -145,22 +142,20 @@ const DataRumahIbadah = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Jenis Rumah Ibadah" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {JENIS_RUMAH_IBADAH.map((item, index) => (
-                          <SelectItem key={index} value={item}>
-                            {item}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Jenis Rumah Ibadah" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {JENIS_RUMAH_IBADAH.map((item, index) => (
+                        <SelectItem key={index} value={item}>
+                          {item}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />
@@ -169,22 +164,20 @@ const DataRumahIbadah = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value || ''}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kecamatan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKecamatan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                  <Select onValueChange={field.onChange} value={field.value || ''}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Kecamatan" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {listKecamatan?.map((item, index) => (
+                        <SelectItem key={index} value={item.id}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />
@@ -193,32 +186,38 @@ const DataRumahIbadah = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      disabled={areaLevel3 === '' && kecamatan === ''}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kelurahan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKelurahan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={areaLevel3 === '' && kecamatan === ''}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Kelurahan" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {listKelurahan?.map((item, index) => (
+                        <SelectItem key={index} value={item.id}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />
           </div>
           <section className="flex items-center justify-between">
-            <div>
+            <div className="flex items-center gap-3">
+              <Button
+                type="button"
+                className="gap-2 border-none rounded-lg"
+                onClick={() => navigate('/data-penerima/dayasos/rumah-ibadah/create')}
+              >
+                <HiPlus className="text-lg" />
+                <span>Tambah Data</span>
+              </Button>
               {worshipPlaces?.data?.length !== 0 ? (
                 <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
               ) : null}
@@ -273,7 +272,7 @@ const DataRumahIbadah = () => {
                     <Action
                       onDelete={() => handleDelete(item.id)}
                       onDetail={() => showDetail(item.id)}
-                      onEdit={() => console.log('detail')}
+                      onEdit={() => navigate(`/data-penerima/dayasos/rumah-ibadah/create/${item.id}`)}
                     />
                   </TableCell>
                 </TableRow>
