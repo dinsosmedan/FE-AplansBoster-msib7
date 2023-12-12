@@ -1,4 +1,3 @@
-import { Loading } from '@/components'
 import LongCard from '@/components/ui/dashboard/LongCard'
 import TitleSign from '@/components/ui/dashboard/TitleSign'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -71,9 +70,9 @@ const ChartBbp = () => {
 const ChartPenanganan = () => {
   const { data, isLoading } = useVulnerableGroup()
 
-  if (isLoading) return <Loading />
+  // if (isLoading) return <Loading />
   // const total = data.map((val: any) => val.count)
-  const label = data.map((val: any) => val.budgetYear.toString())
+  const label = data ? data.map((val: any) => val.budgetYear.toString()) : []
   // const values = Object.values(data)
 
   // console.log(total)
