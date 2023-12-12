@@ -52,6 +52,7 @@ import BbpUser from './LandingPage/Bbp/BbpUser'
 import BbpRegister from './LandingPage/Bbp/BbpRegister'
 import BbpFilterBatch from './Layanan/BbpFilterBatch'
 import LayananBbp from './Layanan/LayananBbp'
+import LayananSktm from './Layanan/LayananSktm'
 
 export {
   Home,
@@ -107,5 +108,6 @@ export {
   BbpUser,
   BbpRegister,
   BbpFilterBatch,
-  LayananBbp
+  LayananBbp,
+  LayananSktm
 }
