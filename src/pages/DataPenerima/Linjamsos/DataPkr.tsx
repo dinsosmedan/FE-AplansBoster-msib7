@@ -20,6 +20,7 @@ import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { Action, ExportButton, Loading, Modal } from '@/components'
 import { useAlert, useTitleHeader } from '@/store/client'
 import React from 'react'
+import { exportVulnerableGroupHandlingFn } from '@/api/linjamsos.api'
 interface FormValues {
   q: string
   kelurahan: string
@@ -39,6 +40,7 @@ const DataPkr = () => {
 
   const navigate = useNavigate()
   const createParams = useCreateParams()
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
   const { q, kecamatan, kelurahan, page, year } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'year'])
@@ -106,6 +108,45 @@ const DataPkr = () => {
     navigate('/data-penerima/linjamsos/pkr')
     forms.reset()
   }
+  const exportAsCsv = async () => {
+    setIsLoadingExport(true)
+    const response = await exportVulnerableGroupHandlingFn('csv',
+    {
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    year,
+    q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
+  }
+
+  const exportAsXlsx = async () => {
+    setIsLoadingExport(true)
+    const response = await exportVulnerableGroupHandlingFn('xlsx',
+    {
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    year,
+    q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
+  }
   if (isLoading && isLoadingVulnerable) {
     return <Loading />
   }
@@ -113,7 +154,7 @@ const DataPkr = () => {
   return (
     <div>
       <Container>
-        {isFetching && <Loading />}
+        {(isFetching || isLoadingExport) && <Loading />}
         <h1 className="font-bold text-[32px] ">Penanganan Kelompok Rentan (PKR)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -199,7 +240,9 @@ const DataPkr = () => {
             </div>
             <div className="mb-6 flex justify-between">
               <div className="w-[20%]">
-                <ExportButton onExportFirst={() => {}} onExportSecond={() => {}} />
+              {vulnerables?.data?.length !== 0 ? (
+                  <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+                ) : null}
               </div>
               <div className="flex gap-3">
                 <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
