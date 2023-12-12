@@ -17,8 +17,10 @@ import {
   useGetTuitionAssistanceFn,
   useGetTuitionAssistanceID
 } from '@/store/server'
-import { Action, Loading, Modal } from '@/components'
+import { Action, ExportButton, Loading, Modal } from '@/components'
 import React from 'react'
+import { exportTuitionAssistanceFn } from '@/api/linjamsos.api'
+import { useAlert } from '@/store/client'
 interface FormValues {
   q: string
   kelurahan: string
@@ -31,6 +33,8 @@ const DataBbp = () => {
   useTitle('Data Penerima / Linjamsos / BBP ')
   const navigate = useNavigate()
   const createParams = useCreateParams()
+  const { alert } = useAlert()
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
   const { q, kecamatan, kelurahan, page, year, status, event } = useGetParams([
@@ -96,7 +100,49 @@ const DataBbp = () => {
 
     await refetch()
   }
+  const exportAsCsv = async () => {
+    setIsLoadingExport(true)
+    const response = await exportTuitionAssistanceFn('csv',
+    {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+      year,
+      status,
+      event,
+      q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
+  }
 
+  const exportAsXlsx = async () => {
+    setIsLoadingExport(true)
+    const response = await exportTuitionAssistanceFn('xlsx',
+    {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+      year,
+      status,
+      event,
+      q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
+  }
   const handleReset = () => {
     navigate('/data-penerima/linjamsos/data-bbp')
     forms.reset()
@@ -107,7 +153,7 @@ const DataBbp = () => {
 
   return (
     <Container>
-      {isFetching && <Loading />}
+      {(isFetching || isLoadingExport) && <Loading />}
       <h1 className="font-bold text-[32px] ">Bantuan Biaya Pendidikan (BBP)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -238,15 +284,9 @@ const DataBbp = () => {
             />
           </div>
           <section className="flex items-center justify-between">
-            <Select>
-              <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
-                <SelectValue placeholder="Export" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value=".clsx">.clsx</SelectItem>
-                <SelectItem value=".csv">.csv</SelectItem>
-              </SelectContent>
-            </Select>
+          {tuitions?.data?.length !== 0 ? (
+                  <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+                ) : null}
             <div className="flex gap-3">
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
                 <HiArrowPath className="text-lg" />

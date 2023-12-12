@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
-import { Action, Loading, Modal } from '@/components'
+import { Action, ExportButton, Loading, Modal } from '@/components'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import {
   useGetKecamatan,
@@ -18,12 +18,14 @@ import {
 } from '@/store/server'
 import { useNavigate } from 'react-router-dom'
 import React from 'react'
+import { exportPremiumAssistanceBenefitFn } from '@/api/linjamsos.api'
 
 const DataPbi = () => {
   useTitle('Data Penerima / Linjamsos / PBI ')
   const navigate = useNavigate()
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
   interface FormValues {
     q: string
     kelurahan: string
@@ -54,7 +56,7 @@ const DataPbi = () => {
     page: parseInt(page) ?? 1,
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
-    type,
+    budget: type,
     q
   })
   useDisableBodyScroll(isFetching)
@@ -86,14 +88,48 @@ const DataPbi = () => {
   if (isLoading && isLoadingPremium) {
     return <Loading />
   }
-  // const handleReset = () => {
-  //   navigate('/data-penerima/dayasos/data-djp')
-  //   forms.reset()
-  // }
+  const exportAsCsv = async () => {
+    setIsLoadingExport(true)
+    const response = await exportPremiumAssistanceBenefitFn('csv',
+    {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+      budget: type,
+      q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
+  }
 
+  const exportAsXlsx = async () => {
+    setIsLoadingExport(true)
+    const response = await exportPremiumAssistanceBenefitFn('xlsx',
+    {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+      budget: type,
+      q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
+  }
   return (
     <Container>
-      {isFetching && <Loading />}
+      {(isFetching || isLoadingExport) && <Loading />}
       <h1 className="font-bold text-2xl ">Penerima Bantuan Iuran (PBI)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -184,15 +220,11 @@ const DataPbi = () => {
             />
           </div>
           <section className="flex items-center justify-between">
-            <Select>
-              <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
-                <SelectValue placeholder="Export" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value=".clsx">.clsx</SelectItem>
-                <SelectItem value=".csv">.csv</SelectItem>
-              </SelectContent>
-            </Select>
+            <div>
+            {premiums?.data?.length !== 0 ? (
+                  <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+                ) : null}
+            </div>
             <div className="flex gap-3">
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
                 <HiArrowPath className="text-lg" />
