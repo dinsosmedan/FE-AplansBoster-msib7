@@ -51,7 +51,7 @@ export default function LandingPage() {
             title="DTKS (Data Terpadu Kesejahteraan Sosial)"
             desc="Layanan Pengajuan DTKS (Data Terpadu Kesejahteraan Sosial)"
             btnText="Pendaftaran Pengajuan"
-            href="/"
+            href="/user/dtks/register-dtks"
             icon={HiGift}
           />
           <CardLandingPage
@@ -59,14 +59,14 @@ export default function LandingPage() {
             title="Bantuan Biaya Pendidikan"
             desc="Layanan Pengajuan Bantuan Biaya Pendidikan"
             btnText="Pendaftaran Pengajuan"
-            href="/"
+            href="/user/bbp/register-bbp"
             icon={HiAcademicCap}
           />
           <CardLandingPage
             title="SKTM (Surat Keterangan Tidak Mampu)"
             desc="Layanan Pengajuan SKTM (Surat Keterangan Tidak Mampu)"
             btnText="Pendaftaran Pengajuan"
-            href="/"
+            href="/user/sktm"
             icon={HiDocumentText}
           />
         </div>
