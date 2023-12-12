@@ -73,6 +73,9 @@ import BbpUser from './pages/LandingPage/Bbp/BbpUser'
 import BbpRegister from './pages/LandingPage/Bbp/BbpRegister'
 import BbpFilterBatch from './pages/Layanan/BbpFilterBatch'
 import LayananBbp from './pages/Layanan/LayananBbp'
+import LayananSktm from './pages/Layanan/LayananSktm'
+import LayananDtks from './pages/Layanan/LayananDtks'
+import DtksUser from './pages/LandingPage/Dtks/DtksUser'
 
 export default function App() {
   const { alertOptions, handleClose, handleSubmit } = useAlert()
@@ -96,6 +99,8 @@ export default function App() {
               <Route path="layanan-bbp" element={<LayananBbp />} />
               <Route path="linjamsos" element={<LayananLinjamsos />} />
               <Route path="dayasos" element={<LayananDayasos />} />
+              <Route path="layanan-sktm" element={<LayananSktm />} />
+              <Route path="layanan-dtks" element={<LayananDtks />} />
             </Route>
 
             <Route path="/data-master">
@@ -203,6 +208,10 @@ export default function App() {
             </Route>
             <Route path="bbp">
               <Route index element={<BbpUser />} />
+              <Route path="register-bbp" element={<BbpRegister />} />
+            </Route>
+            <Route path="dtks">
+              <Route index element={<DtksUser />} />
               <Route path="register-bbp" element={<BbpRegister />} />
             </Route>
             <Route path="cek-bansos" element={<CekBansosUser />} />

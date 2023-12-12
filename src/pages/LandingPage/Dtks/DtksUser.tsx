@@ -1,14 +1,14 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { HiAcademicCap, HiArrowDownTray } from 'react-icons/hi2'
+import { HiAcademicCap, HiArrowDownTray, HiGift } from 'react-icons/hi2'
 import CardLandingPage from '../../../components/organisms/landingPage/CardLandingPage'
 import { Button } from '@/components/ui/button'
 
-export default function BbpUser() {
+export default function DtksUser() {
   return (
     <section className="bg-[#F9F9F9] px-10 py-[38px]">
       <Tabs defaultValue="open">
         <div className="w-full bg-[#FFFFFF] border border-[#E4E4E4] rounded-lg">
-          <p className="text-[26px] font-semibold mb-7 px-10 mt-9">Bantuan Biaya Pendidikan </p>
+          <p className="text-[26px] font-semibold mb-7 px-10 mt-9">DTKS (Data Terpadu Kesejahteraan Sosial)</p>
           <TabsList className="p-0 h-auto bg-white gap-5 px-7">
             <TabsTrigger
               value="open"
@@ -28,18 +28,10 @@ export default function BbpUser() {
           <div className="flex flex-col gap-8">
             <CardLandingPage
               className="w-[400px]"
-              title={'Bantuan Biaya Pendidikan Gelombang I 2023 '}
-              desc={''}
+              title={'DTKS (Data Terpadu Kesejahteraan Sosial) '}
+              desc={'Layanan Pengajuan DTKS (Data Terpadu Kesejahteraan Sosial)'}
               btnText={'Pendaftaran Pengajuan'}
-              icon={HiAcademicCap}
-              href={'/'}
-            />
-            <CardLandingPage
-              className="w-[400px]"
-              title={'Bantuan Biaya Pendidikan Gelombang II 2023 '}
-              desc={''}
-              btnText={'Pendaftaran Pengajuan'}
-              icon={HiAcademicCap}
+              icon={HiGift}
               href={'/'}
             />
           </div>
@@ -229,7 +221,7 @@ export default function BbpUser() {
           <div className="w-[40%] h-[349] bg-white rounded-lg bg-[url('@/assets/images/line-curve.svg')] bg-no-repeat">
             <div className="py-14 px-7">
               <HiAcademicCap className="w-[70px] h-[70px] text-primary" />
-              <p className="text-xl  font-semibold py-[26px]">Bantuan Biaya Pendidikan Gelombang I 2023 </p>
+              <p className="text-xl  font-semibold py-[26px]">DTKS (Data Terpadu Kesejahteraan Sosial) </p>
               <Button className="disabled:bg-black w-full h-[60px]  " disabled>
                 <p className="text-xl text-white">Diproses</p>
               </Button>

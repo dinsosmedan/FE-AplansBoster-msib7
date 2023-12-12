@@ -11,7 +11,7 @@ import { HiOutlineExclamationCircle, HiOutlineEye } from 'react-icons/hi2'
 import { Link } from 'react-router-dom'
 import FilterLayanan from './../../components/atoms/FilterLayanan'
 
-export default function LayananBbp() {
+export default function LayananDtks() {
   interface FormValues {
     nik: string
   }
@@ -40,28 +40,18 @@ export default function LayananBbp() {
     <Container>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="flex flex-row justify-between gap-3 py-6 items-center">
-            <div className="w-6/12">
-              <FormField
-                name="nik"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Search value={field.value} onChange={field.onChange} placeholder="Masukkan Nama / NIK" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex items-end justify-end m">
-              <Button className="bg-primary w-[143px] h-[56px] rounded-xl mr-4">
-                <p className="text-white text-base font-bold">Kirim Notifikasi</p>
-              </Button>
-              <div className="bg-primary px-5 py-4 rounded-xl">
-                <p className="text-white text-base font-bold">Total Kuota : 20/100</p>
-              </div>
-            </div>
+          <div className="w-12/12">
+            <FormField
+              name="nik"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Search value={field.value} onChange={field.onChange} placeholder="Masukkan Nama / NIK" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
           </div>
         </form>
       </Form>
@@ -71,12 +61,12 @@ export default function LayananBbp() {
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
               <TableHead className="text-white font-bold text-[15px] bg-primary">NIK</TableHead>
+              <TableHead className="text-white font-bold text-[15px] bg-primary">No. KK</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">Nama</TableHead>
-              <TableHead className="text-white font-bold text-[15px] bg-primary">Status DTKS</TableHead>
-              <TableHead className="text-white font-bold text-[15px] bg-primary">Alamat</TableHead>
-              <TableHead className="text-white font-bold text-[15px] bg-primary">BPNT</TableHead>
-              <TableHead className="text-white font-bold text-[15px] bg-primary">BLT BBM</TableHead>
-              <TableHead className="text-white font-bold text-[15px] bg-primary">BPI</TableHead>
+              <TableHead className="text-white font-bold text-[15px] bg-primary">Kecamatan</TableHead>
+              <TableHead className="text-white font-bold text-[15px] bg-primary">Kelurahan</TableHead>
+              <TableHead className="text-white font-bold text-[15px] bg-primary">Program Bansos</TableHead>
+              <TableHead className="text-white font-bold text-[15px] bg-primary">Status</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -108,26 +98,15 @@ export default function LayananBbp() {
         </Table>
         <Modal isShow={isShow} className="md:max-w-3xl max-h-[calc(100vh-50px)] overflow-y-auto">
           <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-            <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Data Pengajuan</h3>
-            <p className="text-sm text-[#A1A1A1]">Data Pengajuan BBP</p>
+            <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Data Pengajuan DTKS</h3>
+            <p className="text-sm text-[#A1A1A1]">Data Pengajuan SKTM</p>
           </Modal.Header>
           <Form {...forms}>
             <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-3">
+              <p className="text-2xl font-bold text-center pb-2">Data Individu</p>
               <div className="grid grid-cols-2 gap-3">
                 <FormField
                   name="jadwalAwal"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="" disabled />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  name="jadwalAkhir"
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem className="flex-1">
@@ -143,7 +122,7 @@ export default function LayananBbp() {
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
+                      <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="" disabled />
                       </FormControl>
@@ -155,7 +134,7 @@ export default function LayananBbp() {
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">IPK</FormLabel>
+                      <FormLabel className="font-semibold dark:text-white">No. KK</FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="" disabled />
                       </FormControl>
@@ -164,66 +143,6 @@ export default function LayananBbp() {
                 />
                 <FormField
                   name="jumlahPeserta"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">Perguruan Tinggi</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="" disabled />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  name="batch"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">Prodi</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="" disabled />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  name="jumlahPeserta"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">No. HP</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="" disabled />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  name="batch"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">Jenis Kelamin</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="" disabled />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  name="jumlahPeserta"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">Tempat Lahir</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="" disabled />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  name="batch"
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem className="flex-1">
@@ -235,11 +154,23 @@ export default function LayananBbp() {
                   )}
                 />
                 <FormField
+                  name="batch"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold dark:text-white">Nama Ibu Kandung</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="" disabled />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
                   name="jumlahPeserta"
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">Alamat</FormLabel>
+                      <FormLabel className="font-semibold dark:text-white">Jenis Kelamin</FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="" disabled />
                       </FormControl>
@@ -251,7 +182,7 @@ export default function LayananBbp() {
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">Semester</FormLabel>
+                      <FormLabel className="font-semibold dark:text-white">Jenis Pekerjaan</FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="" disabled />
                       </FormControl>
@@ -259,7 +190,19 @@ export default function LayananBbp() {
                   )}
                 />
                 <FormField
-                  name="jumlahPeserta"
+                  name="jadwalAkhir"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold dark:text-white">Status Pernikahan</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="" disabled />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="jadwalAkhir"
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem className="flex-1">
@@ -271,7 +214,7 @@ export default function LayananBbp() {
                   )}
                 />
                 <FormField
-                  name="batch"
+                  name="jadwalAkhir"
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem className="flex-1">
@@ -282,12 +225,71 @@ export default function LayananBbp() {
                     </FormItem>
                   )}
                 />
+              </div>
+              <FormField
+                name="jadwalAkhir"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="" disabled />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <p className="text-2xl font-bold text-center py-3">Survey Kriteria</p>
+              <div className="grid grid-cols-2 gap-x-12 gap-y-3">
+                <FormField
+                  name="jadwalAwal"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold text-base dark:text-white">
+                        1. Apakah Memiliki Tempat Berteduh Tetap Sehari-Hari ?
+                      </FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="" disabled />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="tahunNotifikasi"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold text-base dark:text-white">
+                        2. Apakah target Survey Tinggal Bersama Anggota Keluarga ?
+                      </FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="" disabled />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="tahunAnggaran"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold text-base dark:text-white">
+                        3. Apakah Kepala Keluarga Atau Pengurus Keluarga Masih Bekerja ?
+                      </FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="" disabled />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   name="jumlahPeserta"
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">UKT</FormLabel>
+                      <FormLabel className="font-semibold text-base dark:text-white">
+                        4. Apakah Pernah Khawatir Atau Pernah Tidak Makan Dalam Setahun Terakhir ?
+                      </FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="" disabled />
                       </FormControl>
@@ -299,7 +301,79 @@ export default function LayananBbp() {
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">Batch</FormLabel>
+                      <FormLabel className="font-semibold text-base dark:text-white">
+                        5. Apakah Pengeluaran Pangan Lebih Besar (&gt;70) Dari Total Pengeluaran ?
+                      </FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="" disabled />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="jumlahPeserta"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold dark:text-white text-base">
+                        6. Apakah Ada Pengeluaran Untuk Pakaian Selama 1 (Satu) Tahun Terakhir
+                      </FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="" disabled />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="jumlahPeserta"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold dark:text-white text-base">
+                        7. Apakah Tempat Tinggal Sebagaian Besar Berlantai Tanah dan/Atau Plasteran ?
+                      </FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="" disabled />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="jumlahPeserta"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold dark:text-white text-base">
+                        8. Apakah Tempat Tinggal Sebagai Besar Berdinding Batu/Kawat/Kayu ?
+                      </FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="" disabled />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="jumlahPeserta"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold dark:text-white text-base">
+                        9. Apakah Tempat Tinggal Memiliki Fasilitas Buang Air Kecil/Besar Sendiri ?
+                      </FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="" disabled />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="jumlahPeserta"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold dark:text-white text-base">
+                        10. Apakah Sumber Penerangan Berasal Dari Listrik PLN 450 Watt Atau Bukan Listrik ?
+                      </FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="" disabled />
                       </FormControl>
@@ -307,26 +381,14 @@ export default function LayananBbp() {
                   )}
                 />
               </div>
-              <p className="text-2xl font-bold py-5 text-center">Data Bank</p>
-              <div className="grid grid-cols-2 gap-3">
+              <p className="text-2xl font-bold text-center py-5">Survey Kriteria</p>
+              <div className="grid grid-cols-2 gap-4 pb-5">
                 <FormField
                   name="jumlahPeserta"
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">No Rekening/Bank</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="" disabled />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  name="batch"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">Jumlah Yang Dibantu</FormLabel>
+                      <FormLabel className="font-semibold dark:text-white text-base">Program Bansos </FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="" disabled />
                       </FormControl>
@@ -338,7 +400,7 @@ export default function LayananBbp() {
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">Tahun Anggaran</FormLabel>
+                      <FormLabel className="font-semibold dark:text-white text-base">Status Disabilitas </FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="" disabled />
                       </FormControl>
@@ -350,7 +412,43 @@ export default function LayananBbp() {
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">Status DTKS</FormLabel>
+                      <FormLabel className="font-semibold dark:text-white text-base">Tanggal Hamil </FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="" disabled />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="jumlahPeserta"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold dark:text-white text-base">Status Orang Tua </FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="" disabled />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="jumlahPeserta"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold dark:text-white text-base">Status Adat Terpencil </FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="" disabled />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="jumlahPeserta"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold dark:text-white text-base">Nama Suku </FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="" disabled />
                       </FormControl>
@@ -359,87 +457,17 @@ export default function LayananBbp() {
                 />
               </div>
               <div className="w-full text-center bg-primary py-3">
-                <p className="text-base font-bold text-white">Berkas Mahasiswa</p>
+                <p className="text-base font-bold text-white">Berkas </p>
               </div>
               <div className="flex justify-between w-full border-b-2 pb-6">
-                <p className="text-base px-[10px]">SURAT PERMOHONAN</p>
+                <p className="text-base px-[10px]">KTP/KARTU KELUARGA</p>
                 <Button className="w-[ h-[28px] rounded-md gap-2 mr-24 ">
                   <HiOutlineEye className="h-4 w-4" />
                   <p className="text-xs ">View</p>
                 </Button>
               </div>
               <div className="flex justify-between w-full border-b-2 pb-6">
-                <p className="text-base px-[10px]">PAS FOTO</p>
-                <Button className="w-[ h-[28px] rounded-md gap-2 mr-24 ">
-                  <HiOutlineEye className="h-4 w-4" />
-                  <p className="text-xs ">View</p>
-                </Button>
-              </div>
-              <div className="flex justify-between w-full border-b-2 pb-6">
-                <p className="text-base px-[10px]">KARTU KELUARGA</p>
-                <Button className="w-[ h-[28px] rounded-md gap-2 mr-24 ">
-                  <HiOutlineEye className="h-4 w-4" />
-                  <p className="text-xs ">View</p>
-                </Button>
-              </div>
-              <div className="flex justify-between w-full border-b-2 pb-6">
-                <p className="text-base px-[10px]">KTP</p>
-                <Button className="w-[ h-[28px] rounded-md gap-2 mr-24 ">
-                  <HiOutlineEye className="h-4 w-4" />
-                  <p className="text-xs ">View</p>
-                </Button>
-              </div>
-              <div className="flex justify-between w-full border-b-2 pb-6">
-                <p className="text-base px-[10px]">KTM</p>
-                <Button className="w-[ h-[28px] rounded-md gap-2 mr-24 ">
-                  <HiOutlineEye className="h-4 w-4" />
-                  <p className="text-xs ">View</p>
-                </Button>
-              </div>
-              <div className="flex justify-between w-full border-b-2 pb-6">
-                <p className="text-base px-[10px]">SURAT AKTIF KULIAH</p>
-                <Button className="w-[ h-[28px] rounded-md gap-2 mr-24 ">
-                  <HiOutlineEye className="h-4 w-4" />
-                  <p className="text-xs ">View</p>
-                </Button>
-              </div>
-              <div className="flex justify-between w-full border-b-2 pb-6">
-                <p className="text-base px-[10px]">SCAN PRINTOUT DTKS</p>
-                <Button className="w-[ h-[28px] rounded-md gap-2 mr-24 ">
-                  <HiOutlineEye className="h-4 w-4" />
-                  <p className="text-xs ">View</p>
-                </Button>
-              </div>
-              <div className="flex justify-between w-full border-b-2 pb-6">
-                <p className="text-base px-[10px]">SURAT PERNYATAAN TIDAK MENDAPATKAN BEASISWA</p>
-                <Button className="w-[ h-[28px] rounded-md gap-2 mr-24 ">
-                  <HiOutlineEye className="h-4 w-4" />
-                  <p className="text-xs ">View</p>
-                </Button>
-              </div>
-              <div className="flex justify-between w-full border-b-2 pb-6">
-                <p className="text-base px-[10px]">SURAT PERNYATAAN BUKAN ASN</p>
-                <Button className="w-[ h-[28px] rounded-md gap-2 mr-24 ">
-                  <HiOutlineEye className="h-4 w-4" />
-                  <p className="text-xs ">View</p>
-                </Button>
-              </div>
-              <div className="flex justify-between w-full border-b-2 pb-6">
-                <p className="text-base px-[10px]">TRANSKRIP NILAI</p>
-                <Button className="w-[ h-[28px] rounded-md gap-2 mr-24 ">
-                  <HiOutlineEye className="h-4 w-4" />
-                  <p className="text-xs ">View</p>
-                </Button>
-              </div>
-              <div className="flex justify-between w-full border-b-2 pb-6">
-                <p className="text-base px-[10px]">SCAN BUKU TABUNGAN</p>
-                <Button className="w-[ h-[28px] rounded-md gap-2 mr-24 ">
-                  <HiOutlineEye className="h-4 w-4" />
-                  <p className="text-xs ">View</p>
-                </Button>
-              </div>
-              <div className="flex justify-between w-full border-b-2 pb-6">
-                <p className="text-base px-[10px]">BUKTI PEMBAYARAN UKT TERAKHIR</p>
+                <p className="text-base px-[10px]">FOTO RUMAH</p>
                 <Button className="w-[ h-[28px] rounded-md gap-2 mr-24 ">
                   <HiOutlineEye className="h-4 w-4" />
                   <p className="text-xs ">View</p>
@@ -450,7 +478,7 @@ export default function LayananBbp() {
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Status</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">Status Pengajuan</FormLabel>
                     <FormControl>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
