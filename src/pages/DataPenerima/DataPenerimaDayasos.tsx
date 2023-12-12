@@ -1,9 +1,14 @@
 import { CardSub, Container } from '@/components'
 import useTitle from '@/hooks/useTitle'
-// import { Link } from 'react-router-dom'
+import { useTitleHeader } from '@/store/client'
+import * as React from 'react'
 
 const DataPenerimaDayasos = () => {
-  useTitle('Data Penerima / Dayasos ')
+  useTitle('Data Penerima')
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+  React.useEffect(() => {
+    setBreadcrumbs([{ url: '/data-penerima/dayasos', label: 'Dayasos & PFM' }])
+  }, [])
 
   return (
     <Container className="px-[120px]">
@@ -12,39 +17,35 @@ const DataPenerimaDayasos = () => {
         <CardSub
           title={'Bansos Dana Jasa Pelayanan (DJP)'}
           subTitle={'Service Fund Assistance'}
-          href={'/data-penerima/dayasos/data-djp'}
+          href={'/data-penerima/dayasos/djpm'}
         />
         <CardSub
           title={'Bantuan Langsung Tunai BBM'}
           subTitle={'Fuel Cash Assistance'}
-          href={'/data-penerima/dayasos/data-bltbbm'}
+          href={'/data-penerima/dayasos/bltbbm'}
         />
         <CardSub
           title={'Bantuan Pangan Non Tunai (BPNT)'}
           subTitle={'Joint Business Group'}
-          href={'/data-penerima/dayasos/data-bpnt'}
+          href={'/data-penerima/dayasos/bpnt'}
         />
         <CardSub
           title={'Bansos Hibah Organisasi/ Lembaga'}
           subTitle={'Organization Grant Assistance'}
-          href={'/data-penerima/dayasos/data-hibah'}
+          href={'/data-penerima/dayasos/bho'}
         />
         <CardSub
           title={'Kelompok Usaha Bersama (KUBE)'}
           subTitle={'Joint Business Group'}
-          href={'/data-penerima/dayasos/data-kube'}
+          href={'/data-penerima/dayasos/kube'}
         />
         <CardSub
           title={'Kelompok Masyarakat (POKMAS)'}
           subTitle={'Community Group'}
-          href={'/data-penerima/dayasos/data-pokmas'}
+          href={'/data-penerima/dayasos/pokmas'}
         />
-        <CardSub
-          title={'Rumah Ibadah'}
-          subTitle={'House of Worship'}
-          href={'/data-penerima/dayasos/data-rumah-ibadah'}
-        />
-        <CardSub title={'Veteran'} subTitle={'Veteran'} href={'/data-penerima/dayasos/data-veteran'} />
+        <CardSub title={'Rumah Ibadah'} subTitle={'House of Worship'} href={'/data-penerima/dayasos/rumah-ibadah'} />
+        <CardSub title={'Veteran'} subTitle={'Veteran'} href={'/data-penerima/dayasos/veteran'} />
       </div>
     </Container>
   )

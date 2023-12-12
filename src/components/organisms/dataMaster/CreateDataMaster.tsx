@@ -9,7 +9,7 @@ import { DatePicker } from '@/components'
 import { useCreateBeneficary, useGetBeneficaryByNIK, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import { HiMagnifyingGlass } from 'react-icons/hi2'
 import * as React from 'react'
-import { formatDateToString, formatStringToDate } from '@/lib/formatDate'
+import { formatDateToString, formatStringToDate } from '@/lib/services/formatDate'
 import { citizenshipLists, lastEducationLists, relationshipLists, religionLists } from '@/lib/data'
 import { yupResolver } from '@hookform/resolvers/yup'
 

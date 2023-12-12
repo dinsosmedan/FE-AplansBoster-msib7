@@ -1,66 +1,66 @@
-import Container from '@/components/atoms/Container'
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
-import useTitle from '@/hooks/useTitle'
-import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { HiMagnifyingGlass } from 'react-icons/hi2'
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
+import { Action, ExportButton, Loading, Modal, Pagination, Container } from '@/components'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import Pagination from './../../../components/atoms/Pagination'
+
 import * as React from 'react'
-import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useDeleteVeteran, useGetVeteran, useGetVeteranById } from '@/store/server'
-import { Action, ExportButton, Loading, Modal } from '@/components'
-import { useAlert } from '@/store/client'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
+
 import { exportVeteranFn } from '@/api/dayasos.api'
+import { useAlert, useTitleHeader } from '@/store/client'
+import { useDeleteVeteran, useGetVeteran, useGetVeteranById } from '@/store/server'
+import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
+
+interface FormValues {
+  q: string
+}
 
 const DataVeteran = () => {
-  useTitle('Data Penerima / Dayasos / Veteran ')
   const { alert } = useAlert()
+  const navigate = useNavigate()
+
+  useTitle('Data Penerima')
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/dayasos', label: 'Dayasos' },
+      { url: '/data-penerima/dayasos/veteran', label: 'Veteran' }
+    ])
+  }, [])
+
   const createParams = useCreateParams()
   const { q, page } = useGetParams(['q', 'page'])
-  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
-  const [isShow, setIsShow] = React.useState(false)
-  const [selectedId, setSelectedId] = React.useState('')
-  interface FormValues {
-    q: string
-  }
-  const forms = useForm<FormValues>({
-    defaultValues: {
-      q: ''
-      // batch: ''
-    }
-  })
-  const { data: veteran, isLoading: isLoadingVeteran } = useGetVeteranById(selectedId)
+  const forms = useForm<FormValues>({ defaultValues: { q: '' } })
 
-  const {
-    data: veterans,
-    refetch,
-    isFetching,
-    isLoading
-  } = useGetVeteran({
-    page: parseInt(page) ?? 1,
-    q
-  })
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
+  const [selectedId, setSelectedId] = React.useState('')
+  const [isShow, setIsShow] = React.useState(false)
+
+  const { mutateAsync: deleteVeteran } = useDeleteVeteran()
+  const { data: veteran, isLoading: isLoadingVeteran } = useGetVeteranById(selectedId)
+  const { data: veterans, refetch, isFetching, isLoading } = useGetVeteran({ page: parseInt(page) ?? 1, q })
+
   useDisableBodyScroll(isFetching)
 
   const onSubmit = async (values: FormValues) => {
     if (values.q !== '') {
-      createParams({
-        key: 'q',
-        value: values.q !== '' ? values.q : ''
-      })
+      createParams({ key: 'q', value: values.q !== '' ? values.q : '' })
       createParams({ key: 'page', value: '' })
     } else {
       createParams({ key: 'q', value: '' })
     }
     await refetch()
   }
+
   const showDetail = (id: string) => {
     setSelectedId(id)
     setIsShow(true)
   }
-  const { mutateAsync: deleteVeteran } = useDeleteVeteran()
+
   const handleDelete = (id: string) => {
     void alert({
       title: 'Hapus Data Veteran',
@@ -72,21 +72,19 @@ const DataVeteran = () => {
     })
   }
 
-  if (isLoading) {
-    return <Loading />
-  }
-
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    await exportVeteranFn('data-veteran', 'csv')
+    await exportVeteranFn('veteran', 'csv')
     setIsLoadingExport(false)
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    await exportVeteranFn('data-veteran', 'xlsx')
+    await exportVeteranFn('veteran', 'xlsx')
     setIsLoadingExport(false)
   }
+
+  if (isLoading) return <Loading />
 
   return (
     <Container>
@@ -108,7 +106,15 @@ const DataVeteran = () => {
             />
           </div>
           <section className="flex items-center justify-between">
-            <div>
+            <div className="flex items-center gap-3">
+              <Button
+                type="button"
+                className="gap-2 border-none rounded-lg"
+                onClick={() => navigate('/data-penerima/dayasos/veteran/create')}
+              >
+                <HiPlus className="text-lg" />
+                <span>Tambah Data</span>
+              </Button>
               {veterans?.data?.length !== 0 ? (
                 <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
               ) : null}
@@ -153,7 +159,7 @@ const DataVeteran = () => {
                     <Action
                       onDelete={() => handleDelete(item.id)}
                       onDetail={() => showDetail(item.id)}
-                      onEdit={() => console.log('detail')}
+                      onEdit={() => navigate(`/data-penerima/dayasos/veteran/create/${item.id}`)}
                     />
                   </TableCell>
                 </TableRow>

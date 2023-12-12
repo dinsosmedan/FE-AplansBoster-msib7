@@ -18,9 +18,19 @@ import {
 } from '@/store/server'
 import { useNavigate } from 'react-router-dom'
 import React from 'react'
+import { useTitleHeader } from '@/store/client'
 
 const DataPbi = () => {
-  useTitle('Data Penerima / Linjamsos / PBI ')
+  useTitle('Data Penerima')
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/linjamsos', label: 'Linjamsos' },
+      { url: '/data-penerima/dayasos/pbi', label: 'PBI' }
+    ])
+  }, [])
+
   const navigate = useNavigate()
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
@@ -80,14 +90,14 @@ const DataPbi = () => {
     setIsShow(true)
   }
   const handleReset = () => {
-    navigate('/data-penerima/linjamsos/data-pbi')
+    navigate('/data-penerima/linjamsos/pbi')
     forms.reset()
   }
   if (isLoading && isLoadingPremium) {
     return <Loading />
   }
   // const handleReset = () => {
-  //   navigate('/data-penerima/dayasos/data-djp')
+  //   navigate('/data-penerima/dayasos/djpm')
   //   forms.reset()
   // }
 

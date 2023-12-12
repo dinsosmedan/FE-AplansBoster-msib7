@@ -111,28 +111,8 @@ export default function DropZone({
 
   return (
     <div className="flex w-full flex-col gap-1.5 xl:gap-2.5 relative">
-      <div className="relative" {...getRootProps()} ref={dropzoneRef}>
-        <input id={id} {...getInputProps()} />
-        <div
-          className={cn(
-            'flex min-h-[140px] xl:min-h-[160px] w-full cursor-pointer rounded-lg border-2 border-dashed border-primary p-4 bg-[#F7FBFF]'
-          )}
-        >
-          <div className="flex w-full flex-col items-center justify-center">
-            <div className="w-14 h-14 rounded-full bg-primary flex">
-              <Icon className="flex text-2xl text-white md:text-4xl m-auto" />
-            </div>
-            <span className="mt-3 text-center text-sm text-black md:text-base font-semibold">
-              Drag and drop or Upload File
-            </span>
-            {subTitle && <p className="mt-1 text-[10px] xl:text-xs text-slate-400">{subTitle}</p>}
-          </div>
-        </div>
-        {helperText && <p className="mt-1 text-[10px] xl:text-xs text-zinc-500">{helperText}</p>}
-      </div>
-
-      {!!files?.length && (
-        <div className="mt-3 flex w-full flex-col gap-3">
+      {files?.length ? (
+        <div className="flex w-full flex-col gap-3">
           {files.map((file, id) => (
             <div
               key={id}
@@ -152,7 +132,30 @@ export default function DropZone({
             </div>
           ))}
         </div>
+      ) : (
+        <React.Fragment>
+          <div className="relative" {...getRootProps()} ref={dropzoneRef}>
+            <input id={id} {...getInputProps()} />
+            <div
+              className={cn(
+                'flex min-h-[140px] xl:min-h-[160px] w-full cursor-pointer rounded-lg border-2 border-dashed border-primary p-4 bg-[#F7FBFF]'
+              )}
+            >
+              <div className="flex w-full flex-col items-center justify-center">
+                <div className="w-16 h-16 rounded-full bg-primary flex">
+                  <Icon className="flex text-xl text-white md:text-4xl m-auto" />
+                </div>
+                <span className="mt-3 text-center text-sm text-black md:text-base font-semibold">
+                  Drag and drop or Upload File
+                </span>
+                {subTitle && <p className="mt-1 text-[10px] xl:text-xs text-slate-400">{subTitle}</p>}
+              </div>
+            </div>
+          </div>
+          {helperText && <p className="-mt-2 text-[10px] xl:text-xs text-zinc-500">{helperText}</p>}
+        </React.Fragment>
       )}
+
       {errors[id] && (
         <span className="text-sm font-medium text-red-500 dark:text-red-900">{errors[id]?.message?.toString()}</span>
       )}

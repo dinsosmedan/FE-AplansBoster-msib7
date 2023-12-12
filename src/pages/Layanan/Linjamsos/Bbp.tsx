@@ -5,9 +5,22 @@ import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import useTitle from '@/hooks/useTitle'
 import Container from '@/components/atoms/Container'
+import { useParams } from 'react-router-dom'
+import { useTitleHeader } from '@/store/client'
+
+import * as React from 'react'
 
 const Bbp = () => {
-  useTitle('Bantuan Biaya Pendidikan (BBP)')
+  const { id } = useParams<{ id: string }>()
+  useTitle(`${id ? ' Ubah' : 'Tambah'} Data`)
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/linjamsos', label: 'Linjamsos' },
+      { url: '/data-penerima/dayasos/bbp', label: 'BBP' }
+    ])
+  }, [])
   // ini komentar
   interface FormValues {
     nik: string

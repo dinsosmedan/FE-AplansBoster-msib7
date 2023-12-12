@@ -7,7 +7,7 @@ import useDebounce from './useDebounce'
 import useToastNik from './useToastNik'
 import { formatRibuan, hitungPersentase } from './useAngka'
 import useDeleteParams from './useDeleteParams'
-export { formatRibuan, hitungPersentase }
+import useNotFound from './useNotFound'
 
 export {
   useDisableBodyScroll,
@@ -17,5 +17,8 @@ export {
   useCreateParams,
   useDebounce,
   useToastNik,
-  useDeleteParams
+  useDeleteParams,
+  formatRibuan,
+  hitungPersentase,
+  useNotFound
 }

@@ -1,35 +1,35 @@
+import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useNavigate, useParams } from 'react-router-dom'
 
-import { Container, Loading } from '@/components'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Container, Loading } from '@/components'
 import { Textarea } from '@/components/ui/textarea'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
-import { useTitle } from '@/hooks'
-import { worshipPlaceValidation, type worshipPlaceFields } from '@/lib/validations/dayasos.validation'
-
+import { JENIS_RUMAH_IBADAH } from '@/lib/data'
+import { useNotFound, useTitle } from '@/hooks'
+import { useTitleHeader } from '@/store/client'
 import { useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { worshipPlaceValidation, type worshipPlaceFields } from '@/lib/validations/dayasos.validation'
 import { useCreateWorshipPlace, useGetWorshipPlace, useUpdateWorshipPlace } from '@/store/server/useDayasos'
-import { useNavigate, useParams } from 'react-router-dom'
-import React from 'react'
-
-export const JENIS_RUMAH_IBADAH = [
-  'MESJID',
-  'MUSHOLLA',
-  'GEREJA',
-  'GEREJA KATOLIK',
-  'KUIL BUDHA',
-  'KUIL HINDU',
-  'KONG HU CHU'
-]
 
 const Ri = () => {
-  useTitle('Rumah Ibadah ')
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
+
+  useTitle(`${id ? 'Edit' : 'Tambah'} Data`)
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/dayasos', label: 'Dayasos & PFM' },
+      { url: '/data-penerima/dayasos/rumah-ibadah', label: 'RI' }
+    ])
+  }, [])
 
   const forms = useForm<worshipPlaceFields>({
     mode: 'onTouched',
@@ -53,17 +53,9 @@ const Ri = () => {
 
   const { mutate: storeWorshipPlace, isLoading } = useCreateWorshipPlace()
   const { mutate: UpdateWorshipPlace, isLoading: isLoadingUpdate } = useUpdateWorshipPlace()
-  const { data: WorshipPlace, isSuccess, isLoading: isLoadingWorshipPlace } = useGetWorshipPlace(id)
+  const { data: WorshipPlace, isSuccess, isLoading: isLoadingWorshipPlace, isError } = useGetWorshipPlace(id)
 
-  const onSuccess = () => {
-    forms.reset()
-    navigate('/data-penerima/dayasos/data-rumah-ibadah')
-  }
-
-  const onSubmit = (values: worshipPlaceFields) => {
-    if (!id) return storeWorshipPlace(values, { onSuccess })
-    UpdateWorshipPlace({ id, fields: values }, { onSuccess })
-  }
+  useNotFound(isError)
 
   React.useEffect(() => {
     if (isSuccess) {
@@ -81,9 +73,17 @@ const Ri = () => {
     }
   }, [isSuccess, WorshipPlace])
 
-  if (isLoadingUpdate || isLoadingWorshipPlace) {
-    return <Loading />
+  const onSuccess = () => {
+    forms.reset()
+    navigate('/data-penerima/dayasos/rumah-ibadah')
   }
+
+  const onSubmit = (values: worshipPlaceFields) => {
+    if (!id) return storeWorshipPlace(values, { onSuccess })
+    UpdateWorshipPlace({ id, fields: values }, { onSuccess })
+  }
+
+  if (isLoadingUpdate || isLoadingWorshipPlace) return <Loading />
 
   return (
     <Container className="py-10">
@@ -246,19 +246,17 @@ const Ri = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Status</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Status" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="aktif">Aktif</SelectItem>
-                          <SelectItem value="tidak aktif">Tidak Aktif</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Status" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="aktif">Aktif</SelectItem>
+                        <SelectItem value="tidak aktif">Tidak Aktif</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

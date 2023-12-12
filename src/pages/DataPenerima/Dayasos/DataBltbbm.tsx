@@ -12,29 +12,34 @@ import { useGetFuelCashAssistance, useGetFuelCashAssistanceDetail } from '@/stor
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { Action, ExportButton, Loading, Modal } from '@/components'
 import { exportFuelCashAssistanceFn } from '@/api/dayasos.api'
+import { useTitleHeader } from '@/store/client'
 
 interface FormValues {
   q: string
 }
 
 const DataBltbbm = () => {
-  useTitle('Data Penerima / Dayasos / BLTBBM ')
+  useTitle('Data Penerima')
+  const setBreadcrumb = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumb([
+      { url: '/data-penerima/dayasos', label: 'Dayasos & PFM' },
+      { url: '/data-penerima/dayasos/bltbbm', label: 'BLTBBM' }
+    ])
+  }, [])
+
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
   const [isLoadingExport, setIsLoadingExport] = React.useState(false)
+
   const createParams = useCreateParams()
   const { page, q } = useGetParams(['page', 'q'])
+  const forms = useForm<FormValues>({ defaultValues: { q: '' } })
+
   const { data: fuelCashAssistance, isLoading: isLoadingFuelCashAssistance } =
     useGetFuelCashAssistanceDetail(selectedId)
-  const forms = useForm<FormValues>({
-    defaultValues: {
-      q: ''
-    }
-  })
-  const showDetail = (id: string) => {
-    setSelectedId(id)
-    setIsShow(true)
-  }
+
   const {
     data: fuelCashAssistances,
     refetch,
@@ -44,14 +49,17 @@ const DataBltbbm = () => {
     page: parseInt(page) ?? 1,
     q
   })
+
   useDisableBodyScroll(isFetching)
+
+  const showDetail = (id: string) => {
+    setSelectedId(id)
+    setIsShow(true)
+  }
 
   const onSubmit = async (values: FormValues) => {
     if (values.q !== '') {
-      createParams({
-        key: 'q',
-        value: values.q !== '' ? values.q : ''
-      })
+      createParams({ key: 'q', value: values.q !== '' ? values.q : '' })
       createParams({ key: 'page', value: '' }) // Set page to empty string when searching
     } else {
       createParams({ key: 'q', value: '' }) // Set q to empty string if the search query is empty
@@ -71,9 +79,7 @@ const DataBltbbm = () => {
     setIsLoadingExport(false)
   }
 
-  if (isLoading && isLoadingFuelCashAssistance) {
-    return <Loading />
-  }
+  if (isLoading && isLoadingFuelCashAssistance) return <Loading />
 
   return (
     <div>

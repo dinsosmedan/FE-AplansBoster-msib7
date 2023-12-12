@@ -8,25 +8,15 @@ import {
   showBeneficaryByIdFn,
   storeDataMaster
 } from '@/api/beneficary.api'
-import { toast } from '@/components/ui/use-toast'
+import { handleMessage } from '@/lib/services/handleMessage'
 import { type DtksParams } from '@/lib/types/beneficary.type'
-import { type IErrorResponse } from '@/lib/types/user.type'
+import { handleOnError } from '@/lib/utils'
 import { type AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
 export const useGetBeneficaryByNIK = (nik: string, enabled: boolean) => {
   return useQuery(['beneficary', nik], async () => await showBeneficaryByNIKFn(nik), {
-    enabled,
-    onError: (error: AxiosError) => {
-      const errorResponse = error.response?.data as IErrorResponse
-      if (errorResponse !== undefined) {
-        toast({
-          variant: 'destructive',
-          title: 'NIK tidak ditemukan',
-          description: 'Terjadi masalah dengan permintaan Anda.'
-        })
-      }
-    }
+    enabled
   })
 }
 export const useGetBeneficaryById = (id?: string) => {
@@ -80,20 +70,8 @@ export const useCreateBeneficary = () => {
   return useMutation(storeDataMaster, {
     onSuccess: () => {
       void queryClient.invalidateQueries('veterans')
-      toast({
-        title: 'Proses Berhasil',
-        description: 'Data Master yang baru berhasil ditambahkan'
-      })
+      handleMessage({ title: 'Data Master', variant: 'create' })
     },
-    onError: (error: AxiosError) => {
-      const errorResponse = error.response?.data as IErrorResponse
-      if (errorResponse !== undefined) {
-        toast({
-          variant: 'destructive',
-          title: errorResponse.message ?? 'Gagal',
-          description: 'Terjadi masalah dengan permintaan Anda.'
-        })
-      }
-    }
+    onError: (error: AxiosError) => handleOnError(error)
   })
 }

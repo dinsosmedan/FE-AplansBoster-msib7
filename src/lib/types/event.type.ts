@@ -1,3 +1,5 @@
+import { type IMeta } from './dayasos.type'
+
 export interface IType {
   id: string
   name: string
@@ -6,16 +8,21 @@ export interface IType {
   updatedAt: string
 }
 export interface IEvent {
-  success: boolean
-  message: string
   id: string
   type: IType
   eventDescription: string
   startDate: string
   endDate: string
-  isActive: boolean
+  status: string
   batch: string
-  quota: string
+  quota: number
+  filledQuota: number
+  requiredDocuments: null | string
   createdAt: string
   updatedAt: string
+}
+
+export interface IEvents {
+  data: IEvent[]
+  meta: IMeta
 }

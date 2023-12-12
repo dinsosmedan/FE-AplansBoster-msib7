@@ -8,7 +8,7 @@ import Modal from '@/components/organisms/Modal'
 import * as React from 'react'
 import { HiOutlinePencilAlt, HiUserAdd } from 'react-icons/hi'
 import useTitle from '@/hooks/useTitle'
-import { Container, Loading, Pagination, Search } from '@/components'
+import { Container, Loading, Pagination, Search, Status } from '@/components'
 import { useAlert } from '@/store/client'
 import { useCreateUser, useGetRole, useGetUser } from '@/store/server/useUserManagement'
 import { type userFields } from '@/lib/validations/user.validation'
@@ -104,20 +104,11 @@ const ManajemenUser = () => {
                 <TableCell className="font-semibold">{item.employeeIdentityNumber || '-'}</TableCell>
                 <TableCell className="font-semibold">{item.identityNumber || '-'}</TableCell>
                 <TableCell className="font-semibold">{item.name}</TableCell>
-                <TableCell className="text-center">{item.email || '-'}</TableCell>
-                <TableCell className="text-center">{item.phoneNumber || '-'}</TableCell>
-                <TableCell className="text-center">{item.role?.name || 'Guest'}</TableCell>
-                <TableCell>
-                  <div
-                    className={`${
-                      item.isActive ? '[#E9FFEF]' : '[#FFD6E1]'
-                    } rounded-full flex items-center w-fit gap-2 py-1 px-2 mx-auto`}
-                  >
-                    <div className={`w-2 h-2 rounded-full bg-${item.isActive ? '[#409261]' : 'red-500'}`} />
-                    <p className={`text-${item.isActive ? '[#409261]' : 'red-500'} text-xs`}>
-                      {item.isActive ? 'Active' : 'Inactive'}
-                    </p>
-                  </div>
+                <TableCell>{item.email || '-'}</TableCell>
+                <TableCell>{item.phoneNumber || '-'}</TableCell>
+                <TableCell>{item.role?.name || 'Guest'}</TableCell>
+                <TableCell position="center">
+                  <Status label={item.isActive ? 'Active' : 'Inactive'} isSuccess="Active" isDanger="Inactive" />
                 </TableCell>
                 <TableCell className="flex items-center justify-center">
                   <Button

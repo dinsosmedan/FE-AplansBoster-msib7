@@ -1,15 +1,15 @@
-import Container from '@/components/atoms/Container'
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
-import useTitle from '@/hooks/useTitle'
-import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
+import { Action, ExportButton, Loading, Modal, Container, Pagination } from '@/components'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import Pagination from './../../../components/atoms/Pagination'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
 import * as React from 'react'
-import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
+
 import {
   useDeleteCommunityGroups,
   useGetCommunityGroup,
@@ -17,10 +17,9 @@ import {
   useGetKecamatan,
   useGetKelurahan
 } from '@/store/server'
-import { Action, ExportButton, Loading, Modal } from '@/components'
-import { useAlert } from '@/store/client'
-import { useNavigate } from 'react-router-dom'
+import { useAlert, useTitleHeader } from '@/store/client'
 import { exportJointBussinessFn } from '@/api/dayasos.api'
+import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 interface FormValues {
   q: string
   communityActivityCode: string
@@ -29,24 +28,24 @@ interface FormValues {
   kelurahan: string
   application_year: string
 }
+
 const DataPokmas = () => {
-  useTitle('Data Penerima / Dayasos / Pokmas ')
   const { alert } = useAlert()
   const navigate = useNavigate()
+
+  useTitle('Data Penerima')
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/dayasos', label: 'Dayasos & PFM' },
+      { url: '/data-penerima/dayasos/pokmas', label: 'Pokmas' }
+    ])
+  }, [])
+
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
   const [isLoadingExport, setIsLoadingExport] = React.useState(false)
-  const createParams = useCreateParams()
-  const {
-    page,
-    q,
-    kecamatan,
-    kelurahan,
-    community_activity_code: communityActivityCode,
-    status,
-    application_year: applicationYear
-  } = useGetParams(['page', 'q', 'kecamatan', 'kelurahan', 'community_activity_code', 'status', 'application_year'])
-  const { data: communityGroup, isLoading: isLoadingCommunityGroup } = useGetCommunityGroup(selectedId)
 
   const forms = useForm<FormValues>({
     defaultValues: {
@@ -58,11 +57,23 @@ const DataPokmas = () => {
       application_year: ''
     }
   })
-  const [isLoadingPage, setIsLoadingPage] = React.useState(false)
+
+  const createParams = useCreateParams()
+  const {
+    page,
+    q,
+    kecamatan,
+    kelurahan,
+    community_activity_code: communityActivityCode,
+    status,
+    application_year: applicationYear
+  } = useGetParams(['page', 'q', 'kecamatan', 'kelurahan', 'community_activity_code', 'status', 'application_year'])
+
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
-
+  const { data: communityGroup, isLoading: isLoadingCommunityGroup } = useGetCommunityGroup(selectedId)
+  const { mutateAsync: deleteCommunityGroups } = useDeleteCommunityGroups()
   const {
     data: communityGroups,
     refetch,
@@ -77,15 +88,19 @@ const DataPokmas = () => {
     status,
     applicationYear
   })
+
   useDisableBodyScroll(isFetching)
+
   const showDetail = (id: string) => {
     setSelectedId(id)
     setIsShow(true)
   }
+
   const handleReset = () => {
-    navigate('/data-penerima/dayasos/data-pokmas')
+    navigate('/data-penerima/dayasos/pokmas')
     forms.reset()
   }
+
   const updateParam = (key: any, value: any) => {
     if (value !== '') {
       createParams({ key, value })
@@ -105,7 +120,7 @@ const DataPokmas = () => {
 
     await refetch()
   }
-  const { mutateAsync: deleteCommunityGroups } = useDeleteCommunityGroups()
+
   const handleDelete = (id: string) => {
     void alert({
       title: 'Hapus Data POKMAS',
@@ -116,29 +131,21 @@ const DataPokmas = () => {
       await deleteCommunityGroups(id)
     })
   }
-  React.useEffect(() => {
-    if (isFetching) {
-      setIsLoadingPage(true)
-    } else {
-      setIsLoadingPage(false)
-    }
-  }, [isLoadingPage, isFetching])
-
-  if (isLoading) {
-    return <Loading />
-  }
 
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    await exportJointBussinessFn('data-pokmas', 'csv')
+    await exportJointBussinessFn('pokmas', 'csv')
     setIsLoadingExport(false)
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    await exportJointBussinessFn('data-pokmas', 'xlsx')
+    await exportJointBussinessFn('pokmas', 'xlsx')
     setIsLoadingExport(false)
   }
+
+  if (isLoading) return <Loading />
+
   return (
     <div>
       <Container>
@@ -255,7 +262,15 @@ const DataPokmas = () => {
               />
             </div>
             <section className="flex items-center justify-between">
-              <div>
+              <div className="flex items-center gap-3">
+                <Button
+                  type="button"
+                  className="gap-2 border-none rounded-lg"
+                  onClick={() => navigate('/data-penerima/dayasos/pokmas/create')}
+                >
+                  <HiPlus className="text-lg" />
+                  <span>Tambah Data</span>
+                </Button>
                 {communityGroups?.data?.length !== 0 ? (
                   <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
                 ) : null}
@@ -310,7 +325,7 @@ const DataPokmas = () => {
                       <Action
                         onDelete={() => handleDelete(item.id)}
                         onDetail={() => showDetail(item.id)}
-                        onEdit={() => navigate(`/layanan/dayasos/pokmas/${item.id}`)}
+                        onEdit={() => navigate(`/data-penerima/dayasos/pokmas/create/${item.id}`)}
                       />
                     </TableCell>
                   </TableRow>
