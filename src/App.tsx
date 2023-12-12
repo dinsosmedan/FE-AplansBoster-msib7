@@ -77,6 +77,7 @@ import BbpUser from './pages/LandingPage/Bbp/BbpUser'
 import BbpRegister from './pages/LandingPage/Bbp/BbpRegister'
 import BbpFilterBatch from './pages/Layanan/BbpFilterBatch'
 import LayananBbp from './pages/Layanan/LayananBbp'
+import LayananSktm from './pages/Layanan/LayananSktm';
 
 export default function App() {
   const { alertOptions, handleClose, handleSubmit } = useAlert()
@@ -99,6 +100,7 @@ export default function App() {
               <Route path="layanan-bbp" element={<LayananBbp />} />
               <Route path="linjamsos" element={<LayananLinjamsos />} />
               <Route path="dayasos" element={<LayananDayasos />} />
+              <Route path="layanan-sktm" element={<LayananSktm />} />
             </Route>
             <Route path="/cek-riwayat-bansos" element={<CekRiwayatBansos />} />
             <Route path="/data-penerima">
