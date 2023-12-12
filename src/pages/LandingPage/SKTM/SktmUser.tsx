@@ -101,25 +101,25 @@ export default function UserSktm() {
               </Button>
             </div>
           </div>
-          <div className="bg-white w-full">
+          <div className="bg-white w-[925px]">
             <div className="pt-24 px-[90px] flex flex-row">
               <div className="bg-primary rounded-full w-[70px] h-[70px] flex items-center justify-center">
                 <p className="text-white text-[26px]">1</p>
               </div>
               <div className="flex items-center px-2 ">
-                <div className="border-2 border-dashed w-[280px] h-0 border-primary " />
+                <div className="border-2 border-dashed w-[250px] h-0 border-primary " />
               </div>
               <div className="bg-white border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center">
                 <p className="text-primary text-[26px]">2</p>
               </div>
               <div className="flex items-center px-2 ">
-                <div className="border-2 border-dashed w-[280px] h-0 border-primary " />
+                <div className="border-2 border-dashed w-[250px] h-0 border-primary " />
               </div>
               <div className="bg-white border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center">
                 <p className="text-primary text-[26px]">3</p>
               </div>
             </div>
-            <div className="flex flex-row items-center justify-center pt-3 gap-[225px] ">
+            <div className="flex flex-row items-center justify-center pt-3 gap-[200px] ">
               <div className="w-[135px] h-[60px] bg-primary rounded-lg flex items-center">
                 <p className="text-base text-white text-center">Pengajuan Terkirim</p>
               </div>

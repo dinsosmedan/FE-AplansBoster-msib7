@@ -154,3 +154,13 @@ export const relationshipLists = [
   'MENANTU',
   'PEMBANTU'
 ]
+
+export const JENIS_RUMAH_IBADAH = [
+  'MESJID',
+  'MUSHOLLA',
+  'GEREJA',
+  'GEREJA KATOLIK',
+  'KUIL BUDHA',
+  'KUIL HINDU',
+  'KONG HU CHU'
+]

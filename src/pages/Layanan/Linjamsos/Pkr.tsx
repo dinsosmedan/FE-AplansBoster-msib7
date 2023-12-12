@@ -19,13 +19,23 @@ import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { formatDateToString, formatStringToDate } from '@/lib/formatDate'
+import { formatDateToString, formatStringToDate } from '@/lib/services/formatDate'
 import { HiMagnifyingGlass } from 'react-icons/hi2'
+import { useTitleHeader } from '@/store/client'
 
 const Pkr = () => {
-  useTitle('Penanganan Kelompok Rentan (PKR)')
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
+  useTitle(`${id ? ' Ubah' : 'Tambah'} Data`)
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/linjamsos', label: 'Linjamsos' },
+      { url: '/data-penerima/dayasos/pkr', label: 'PKR' }
+    ])
+  }, [])
+
   const [NIK, setNIK] = React.useState('')
 
   const { mutate: createVulnerableGroupHandling, isLoading: isLoadingCreate } = useCreateVulnerableGroupHandling()
@@ -45,7 +55,7 @@ const Pkr = () => {
 
   const onSuccess = () => {
     forms.reset()
-    navigate('/data-penerima/linjamsos/data-pkr')
+    navigate('/data-penerima/linjamsos/pkr')
   }
 
   const onSubmit = async (values: vulnerableGroupHandlingFields) => {

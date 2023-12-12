@@ -44,7 +44,7 @@ export default function BbpUser() {
             />
           </div>
           <section className="flex flex-col gap-8">
-            <div className="bg-white rounded-lg px-10 py-14">
+            <div className="bg-white rounded-lg px-10 py-14 h-fit">
               <p className="font-semibold text-xl">Informasi Tentang Beasiswa</p>
               <p className="py-6 text-xl indent-24">
                 Seluruh Berkas Diunggah/Diupload Soft File Berkas Berjenis Pdf File Jika Pemohon Dinyatakan Lulus
@@ -225,35 +225,35 @@ export default function BbpUser() {
             </Button>
           </section>
         </TabsContent>
-        <TabsContent value="request" className="flex flex-row gap-10 ">
+        <TabsContent value="request" className="flex flex-row gap-10">
           <div className="w-[40%] h-[349] bg-white rounded-lg bg-[url('@/assets/images/line-curve.svg')] bg-no-repeat">
             <div className="py-14 px-7">
               <HiAcademicCap className="w-[70px] h-[70px] text-primary" />
-              <p className="text-xl font-semibold py-[26px]">Bantuan Biaya Pendidikan Gelombang I 2023 </p>
+              <p className="text-xl  font-semibold py-[26px]">Bantuan Biaya Pendidikan Gelombang I 2023 </p>
               <Button className="disabled:bg-black w-full h-[60px]  " disabled>
                 <p className="text-xl text-white">Diproses</p>
               </Button>
             </div>
           </div>
-          <div className="bg-white w-full">
+          <div className="bg-white w-[925px]">
             <div className="pt-24 px-[90px] flex flex-row">
               <div className="bg-primary rounded-full w-[70px] h-[70px] flex items-center justify-center">
                 <p className="text-white text-[26px]">1</p>
               </div>
-              <div className="flex items-center px-2 ">
-                <div className="border-2 border-dashed w-[280px] h-0 border-primary " />
+              <div className="flex items-center ">
+                <div className="border-2 border-dashed w-[250px] h-0 border-primary " />
               </div>
               <div className="bg-white border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center">
                 <p className="text-primary text-[26px]">2</p>
               </div>
               <div className="flex items-center px-2 ">
-                <div className="border-2 border-dashed w-[280px] h-0 border-primary " />
+                <div className="border-2 border-dashed w-[250px] h-0 border-primary " />
               </div>
               <div className="bg-white border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center">
                 <p className="text-primary text-[26px]">3</p>
               </div>
             </div>
-            <div className="flex flex-row items-center justify-center pt-3 gap-[225px] ">
+            <div className="flex flex-row items-center justify-center pt-3 gap-[200px] ">
               <div className="w-[135px] h-[60px] bg-primary rounded-lg flex items-center">
                 <p className="text-base text-white text-center">Pengajuan Terkirim</p>
               </div>

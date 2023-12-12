@@ -1,15 +1,13 @@
-import Container from '@/components/atoms/Container'
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
-import useTitle from '@/hooks/useTitle'
-import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
+import Container from '@/components/atoms/Container'
+import { Action, ExportButton, Loading, Modal, Pagination } from '@/components'
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import Pagination from './../../../components/atoms/Pagination'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
+import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import {
   useGetEvent,
   useGetKecamatan,
@@ -17,10 +15,10 @@ import {
   useGetTuitionAssistanceFn,
   useGetTuitionAssistanceID
 } from '@/store/server'
-import { Action, ExportButton, Loading, Modal } from '@/components'
 import React from 'react'
 import { exportTuitionAssistanceFn } from '@/api/linjamsos.api'
-import { useAlert } from '@/store/client'
+import { useAlert, useTitleHeader } from '@/store/client'
+import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 interface FormValues {
   q: string
   kelurahan: string
@@ -30,7 +28,16 @@ interface FormValues {
   event: string
 }
 const DataBbp = () => {
-  useTitle('Data Penerima / Linjamsos / BBP ')
+  useTitle('Data Penerima')
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/linjamsos', label: 'Linjamsos' },
+      { url: '/data-penerima/dayasos/bbp', label: 'BBP' }
+    ])
+  }, [])
+
   const navigate = useNavigate()
   const createParams = useCreateParams()
   const { alert } = useAlert()
@@ -46,6 +53,7 @@ const DataBbp = () => {
     'status',
     'event'
   ])
+
   const forms = useForm<FormValues>({
     defaultValues: {
       q: '',
@@ -144,7 +152,7 @@ const DataBbp = () => {
     setIsLoadingExport(false)
   }
   const handleReset = () => {
-    navigate('/data-penerima/linjamsos/data-bbp')
+    navigate('/data-penerima/linjamsos/bbp')
     forms.reset()
   }
   if (isLoading && isLoadingTuition) {
@@ -238,7 +246,7 @@ const DataBbp = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {listEvent?.map((item, index) => (
+                        {listEvent?.data.map((item, index) => (
                           <SelectItem key={index} value={item.id}>
                             {item.type.name}
                           </SelectItem>

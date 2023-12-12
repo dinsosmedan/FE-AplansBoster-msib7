@@ -18,7 +18,7 @@ import {
 } from '@/store/server'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { Action, ExportButton, Loading, Modal } from '@/components'
-import { useAlert } from '@/store/client'
+import { useAlert, useTitleHeader } from '@/store/client'
 import React from 'react'
 import { exportVulnerableGroupHandlingFn } from '@/api/linjamsos.api'
 interface FormValues {
@@ -28,7 +28,16 @@ interface FormValues {
   year: string
 }
 const DataPkr = () => {
-  useTitle('Data Penerima / Linjamsos / Penanganan Kelompok Rentan (PKR) ')
+  useTitle('Data Penerima')
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/linjamsos', label: 'Linjamsos' },
+      { url: '/data-penerima/linjamsos/pkr', label: 'PKR' }
+    ])
+  }, [])
+
   const navigate = useNavigate()
   const createParams = useCreateParams()
   const [isLoadingExport, setIsLoadingExport] = React.useState(false)
@@ -96,7 +105,7 @@ const DataPkr = () => {
     await refetch()
   }
   const handleReset = () => {
-    navigate('/data-penerima/linjamsos/data-pkr')
+    navigate('/data-penerima/linjamsos/pkr')
     forms.reset()
   }
   const exportAsCsv = async () => {
@@ -291,7 +300,7 @@ const DataPkr = () => {
                       <Action
                         onDelete={async () => await handleDelete(item.id)}
                         onDetail={() => showDetail(item.id)}
-                        onEdit={() => navigate(`/layanan/linjamsos/Pkr/${item.id}`)}
+                        onEdit={() => navigate(`/data-penerima/linjamsos/pkr/${item.id}`)}
                       />
                     </TableCell>
                   </TableRow>

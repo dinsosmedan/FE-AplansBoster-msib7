@@ -17,11 +17,22 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Container, Loading } from '@/components'
 import { useNavigate, useParams } from 'react-router-dom'
 import * as React from 'react'
+import { useTitleHeader } from '@/store/client'
+import { useNotFound } from '@/hooks'
 
 const Hibah = () => {
-  useTitle('Bansos Hibah Organisasi/Lembaga (BHO)')
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
+
+  useTitle(`${id ? 'Ubah' : 'Tambah'} Data`)
+  const setBreadcrumb = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumb([
+      { label: 'Dayasos & PFM', url: '/data-penerima/dayasos' },
+      { label: 'BHO', url: '/data-penerima/dayasos/bho' }
+    ])
+  }, [])
 
   const forms = useForm<hibahFields>({
     mode: 'onTouched',
@@ -51,8 +62,10 @@ const Hibah = () => {
   const { data: kelurahan } = useGetKelurahan(areaLevel3 ?? '')
   const { mutate: createHibah, isLoading } = useCreateOrganizationGrantAssistance()
 
-  const { data: hibah, isSuccess, isLoading: isLoadingHibah } = useGetOrganizationGrantAssistanceById(id)
+  const { data: hibah, isSuccess, isLoading: isLoadingHibah, isError } = useGetOrganizationGrantAssistanceById(id)
   const { mutate: updateHibah, isLoading: isLoadingUpdate } = useUpdateOrganizationGrantAssistance()
+
+  useNotFound(isError)
 
   React.useEffect(() => {
     if (isSuccess) {
@@ -84,7 +97,7 @@ const Hibah = () => {
 
   const onSuccess = () => {
     forms.reset()
-    navigate('/data-penerima/dayasos/data-hibah')
+    navigate('/data-penerima/dayasos/bho')
   }
 
   const onSubmit = async (values: hibahFields) => {
@@ -92,9 +105,7 @@ const Hibah = () => {
     updateHibah({ id, fields: values }, { onSuccess })
   }
 
-  if (isLoadingHibah) {
-    return <Loading />
-  }
+  if (isLoadingHibah) return <Loading />
 
   return (
     <Container className="px-[47px]">

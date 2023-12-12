@@ -14,6 +14,7 @@ import { useGetFamilyHopeByID, useGetFamilyHopeFn, useGetKecamatan, useGetKelura
 import { Action, ExportButton, Loading, Modal } from '@/components'
 import React from 'react'
 import { exportFamilyHopeFn } from '@/api/linjamsos.api'
+import { useTitleHeader } from '@/store/client'
 interface FormValues {
   q: string
   kelurahan: string
@@ -21,7 +22,15 @@ interface FormValues {
   type: string
 }
 const DataPkh = () => {
-  useTitle('Data Penerima / Linjamsos / PKH ')
+  useTitle('Data Penerima')
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/linjamsos', label: 'Linjamsos' },
+      { url: '/data-penerima/linjamsos/pkh', label: 'PKH' }
+    ])
+  }, [])
   const navigate = useNavigate()
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
@@ -75,7 +84,7 @@ const DataPkh = () => {
     setIsShow(true)
   }
   const handleReset = () => {
-    navigate('/data-penerima/linjamsos/data-pkh')
+    navigate('/data-penerima/linjamsos/pkh')
     forms.reset()
   }
   if (isLoading && isLoadingFamilyHope) {

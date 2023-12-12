@@ -4,7 +4,6 @@ import ForgotPassword from './ForgotPassword'
 import Layanan from './Layanan'
 import DataPenerima from './DataPenerima'
 import DataMaster from './DataMaster'
-import ProfilingMasyarakat from './ProfilingMasyarakat'
 import ManajemenUser from './ManajemenUser'
 import ManajemenRole from './ManajemenRole'
 import Bpnt from './Layanan/Dayasos/Bpnt'
@@ -13,7 +12,6 @@ import Hibah from './Layanan/Dayasos/Hibah'
 import Djp from './Layanan/Dayasos/Djp'
 import Ri from './Layanan/Dayasos/RumahIbadah'
 import Bbp from './Layanan/Linjamsos/Bbp'
-import Pkh from './Pkh'
 import Djpm from './Djpm'
 import Veteran from './Layanan/Dayasos/Veteran'
 import CekDataDukcapil from './CekDataDukcapil'
@@ -52,6 +50,11 @@ import BbpUser from './LandingPage/Bbp/BbpUser'
 import BbpRegister from './LandingPage/Bbp/BbpRegister'
 import BbpFilterBatch from './Layanan/BbpFilterBatch'
 import LayananBbp from './Layanan/LayananBbp'
+import LayananSktm from './Layanan/LayananSktm'
+import LayananDtks from './Layanan/LayananDtks'
+import DtksUser from './LandingPage/Dtks/DtksUser'
+import NotFound from './NotFound'
+import DtksRegister from './LandingPage/Dtks/DtksRegister'
 
 export {
   Home,
@@ -61,7 +64,6 @@ export {
   DataPenerima,
   DataMaster,
   Event,
-  ProfilingMasyarakat,
   ManajemenRole,
   ManajemenUser,
   Bpnt,
@@ -70,7 +72,6 @@ export {
   Djp,
   Ri,
   Bbp,
-  Pkh,
   Djpm,
   Veteran,
   CekDataDukcapil,
@@ -107,5 +108,10 @@ export {
   BbpUser,
   BbpRegister,
   BbpFilterBatch,
-  LayananBbp
+  LayananBbp,
+  NotFound,
+  LayananSktm,
+  LayananDtks,
+  DtksUser,
+  DtksRegister
 }

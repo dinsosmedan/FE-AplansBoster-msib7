@@ -15,12 +15,12 @@ export default function DataPenerima() {
         <CardSub
           title={'Surat Keterangan Tidak Mampu'}
           subTitle={'Indigency Certificate'}
-          href={'/layanan/dayasos/Djp'}
+          href={'/layanan/layanan-sktm'}
         />
         <CardSub
           title={'Data Terpadu Kesejahteraan Sosial'}
           subTitle={'Integrated Social Welfare Data'}
-          href={'/layanan/dayasos/Djp'}
+          href={'/layanan/layanan-dtks'}
         />
       </div>
     </Container>
