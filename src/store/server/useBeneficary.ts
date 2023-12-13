@@ -19,6 +19,20 @@ export const useGetBeneficaryByNIK = (nik: string, enabled: boolean) => {
     enabled
   })
 }
+
+export const useMutationGetBeneficaryByNIK = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(showBeneficaryByNIKFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('beneficary')
+    },
+    onError: (error: AxiosError) => {
+      console.log(error)
+    }
+  })
+}
+
 export const useGetBeneficaryById = (id?: string) => {
   return useQuery(['beneficary', id], async () => await showBeneficaryByIdFn(id as string))
 }

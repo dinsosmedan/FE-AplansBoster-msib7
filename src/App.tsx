@@ -95,8 +95,10 @@ export default function App() {
 
             <Route path="/layanan">
               <Route index element={<Layanan />} />
-              <Route path="bbp-filter" element={<BbpFilterBatch />} />
-              <Route path="layanan-bbp" element={<LayananBbp />} />
+              <Route path="bbp">
+                <Route index element={<BbpFilterBatch />} />
+                <Route path=":id" element={<LayananBbp />} />
+              </Route>
               <Route path="linjamsos" element={<LayananLinjamsos />} />
               <Route path="dayasos" element={<LayananDayasos />} />
               <Route path="layanan-sktm" element={<LayananSktm />} />

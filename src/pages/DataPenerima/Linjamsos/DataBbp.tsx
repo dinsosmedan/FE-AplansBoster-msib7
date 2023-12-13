@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
+import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
 
 import {
   useGetEvent,
@@ -63,15 +63,13 @@ const DataBbp = () => {
       event: ''
     }
   })
+
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listEvent } = useGetEvent()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
   const { data: tuition, isLoading: isLoadingTuition } = useGetTuitionAssistanceID(selectedId)
-  const showDetail = (id: string) => {
-    setSelectedId(id)
-    setIsShow(true)
-  }
+
   const {
     data: tuitions,
     refetch,
@@ -87,6 +85,11 @@ const DataBbp = () => {
     q
   })
   useDisableBodyScroll(isFetching)
+
+  const showDetail = (id: string) => {
+    setSelectedId(id)
+    setIsShow(true)
+  }
 
   const updateParam = (key: any, value: any) => {
     if (value !== '') {
@@ -112,9 +115,8 @@ const DataBbp = () => {
     navigate('/data-penerima/linjamsos/bbp')
     forms.reset()
   }
-  if (isLoading && isLoadingTuition) {
-    return <Loading />
-  }
+
+  if (isLoading && isLoadingTuition) return <Loading />
 
   return (
     <Container>
@@ -143,22 +145,20 @@ const DataBbp = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kecamatan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKecamatan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Kecamatan" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {listKecamatan?.map((item, index) => (
+                        <SelectItem key={index} value={item.id}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />
@@ -167,26 +167,24 @@ const DataBbp = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      disabled={areaLevel3 === '' && kecamatan === ''}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kelurahan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKelurahan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={areaLevel3 === '' && kecamatan === ''}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Kelurahan" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {listKelurahan?.map((item, index) => (
+                        <SelectItem key={index} value={item.id}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />
@@ -195,22 +193,20 @@ const DataBbp = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Jenis Event" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listEvent?.data.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.type.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Jenis Event" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {listEvent?.data.map((item, index) => (
+                        <SelectItem key={index} value={item.id}>
+                          {item.type.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />
@@ -230,34 +226,42 @@ const DataBbp = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Status Pencairan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="pending">Ditunda</SelectItem>
-                        <SelectItem value="processed">Diproses</SelectItem>
-                        <SelectItem value="disbursed">Dicairkan</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Status Pencairan" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="pending">Ditunda</SelectItem>
+                      <SelectItem value="processed">Diproses</SelectItem>
+                      <SelectItem value="disbursed">Dicairkan</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />
           </div>
           <section className="flex items-center justify-between">
-            <Select>
-              <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
-                <SelectValue placeholder="Export" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value=".clsx">.clsx</SelectItem>
-                <SelectItem value=".csv">.csv</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex items-center gap-3">
+              <Button
+                type="button"
+                className="gap-2 border-none rounded-lg"
+                onClick={() => navigate('/data-penerima/linjamsos/bbp/create')}
+              >
+                <HiPlus className="text-lg" />
+                <span>Tambah Data</span>
+              </Button>
+              <Select>
+                <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
+                  <SelectValue placeholder="Export" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value=".clsx">.clsx</SelectItem>
+                  <SelectItem value=".csv">.csv</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
             <div className="flex gap-3">
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
                 <HiArrowPath className="text-lg" />
@@ -323,7 +327,10 @@ const DataBbp = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{item.application.phoneNumber ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.budgetYear ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Action onDetail={() => showDetail(item.id)} />
+                    <Action
+                      onDetail={() => showDetail(item.id)}
+                      onEdit={() => navigate(`/data-penerima/linjamsos/bbp/create/${item.id}`)}
+                    />
                   </TableCell>
                 </TableRow>
               ))

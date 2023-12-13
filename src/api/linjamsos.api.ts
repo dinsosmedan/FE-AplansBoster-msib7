@@ -13,7 +13,12 @@ import {
   type ITuitionAssistanceID
 } from '@/lib/types/linjamsos.type'
 import api from './axiosInstance'
-import { type unregisterFields, type vulnerableGroupHandlingFields } from '@/lib/validations/linjamsos.validation'
+import {
+  type indigencyCertificateFields,
+  type tuitionAssistanceFields,
+  type unregisterFields,
+  type vulnerableGroupHandlingFields
+} from '@/lib/validations/linjamsos.validation'
 
 export interface VulnerableGroupHandlingQuery {
   page?: number
@@ -203,4 +208,12 @@ export const getTuitionAssistanceFn = async ({
 export const getTuitionAssistanceByIdFn = async (id: string): Promise<ITuitionAssistanceID> => {
   const response = await api.get(`/tuition-assistance/${id}`)
   return response.data?.data
+}
+
+export const storeTuitionAssistanceFn = async (fields: tuitionAssistanceFields) => {
+  await api.post('/service/tuition-assistance-application', fields)
+}
+
+export const storeIndigencyCertificate = async (fields: indigencyCertificateFields) => {
+  await api.post('/service/indigency-certificate', fields)
 }

@@ -35,14 +35,12 @@ const SectionLinjamsos = () => {
           <ChartPenanganan />
           <ChartBbp />
           <ChartSktm />
-
         </div>
       </div>
     </>
   )
 }
 const ChartSktm = () => {
-
   return (
     <LongCard props={['SKTM', 'Persentasi Data SKTM Berdasarkan DTKS']}>
       <LongCard.Chart
@@ -55,7 +53,6 @@ const ChartSktm = () => {
   )
 }
 const ChartBbp = () => {
-
   return (
     <LongCard props={['Bantuan Biaya Pendidikan', 'Persentasi Data Biaya Pendidikan']}>
       <LongCard.Chart
@@ -79,18 +76,17 @@ const ChartPenanganan = () => {
   return (
     <>
       <LongCard props={['Penangan Kelompok Rentan', 'Perkembangan Data PKR']}>
-        {
-          isLoading ? (
-            <>
-              <Skeleton className="w-[300px] h-[300px] rounded-full" />
-            </>
-          ) :
-            <LongCard.Chart
-              data={[12, 21, 22, 31, 21]}
-              label={label}
-              backgroundColor={['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']}
-            />
-        }
+        {isLoading ? (
+          <>
+            <Skeleton className="w-[300px] h-[300px] rounded-full" />
+          </>
+        ) : (
+          <LongCard.Chart
+            data={[12, 21, 22, 31, 21]}
+            label={label}
+            backgroundColor={['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']}
+          />
+        )}
       </LongCard>
     </>
   )

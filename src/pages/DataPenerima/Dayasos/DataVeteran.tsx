@@ -27,7 +27,7 @@ const DataVeteran = () => {
 
   React.useEffect(() => {
     setBreadcrumbs([
-      { url: '/data-penerima/dayasos', label: 'Dayasos' },
+      { url: '/data-penerima/dayasos', label: 'Dayasos & PFM' },
       { url: '/data-penerima/dayasos/veteran', label: 'Veteran' }
     ])
   }, [])
@@ -89,7 +89,7 @@ const DataVeteran = () => {
   return (
     <Container>
       {(isFetching || isLoadingExport) && <Loading />}
-      <h1 className="font-bold text-2xl ">Veteran (VET)</h1>
+      <h1 className="font-bold text-2xl ">Veteran</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="grid gap-x-10 gap-y-5 pt-10">

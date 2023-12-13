@@ -215,8 +215,8 @@ export interface IApplication {
   university: IUniversity
   studyProgram: IStudyProgram
   semester: number
-  gpa: string
-  tuitionFee: string
+  gpa: number
+  tuitionFee: number | null
   bankAccNumber: string
   bankAccName: string
   application_status: string
@@ -241,8 +241,6 @@ export interface ITuitionAssistance {
   meta: IMeta
 }
 export interface ITuitionAssistanceID {
-  success: boolean
-  message: string
   id: string
   application: IApplication
   assistanceAmount: number
@@ -250,5 +248,4 @@ export interface ITuitionAssistanceID {
   budgetYear: string
   createdAt: string
   updatedAt: string
-  meta: IMeta
 }

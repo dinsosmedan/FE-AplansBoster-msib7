@@ -164,3 +164,11 @@ export const JENIS_RUMAH_IBADAH = [
   'KUIL HINDU',
   'KONG HU CHU'
 ]
+
+export const STATUS_DTKS = ['pending', 'processed', 'rejected', 'approved', 'revision']
+export const CATEGORY_APPLICATION = [
+  { value: 'dtks-schools' },
+  { value: 'non-dtks-schools' },
+  { value: 'dtks-courts' },
+  { value: 'non-dtks-courts' }
+]

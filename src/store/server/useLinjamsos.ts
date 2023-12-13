@@ -22,13 +22,16 @@ import {
   deleteUnregisterFn,
   getTuitionAssistanceFn,
   type TuitionAssistanceQuery,
-  getTuitionAssistanceByIdFn
+  getTuitionAssistanceByIdFn,
+  storeTuitionAssistanceFn
 } from '@/api/linjamsos.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
 import { type AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { getPremiumAssistanceBenefitByIdFn } from '../../api/linjamsos.api'
+import { handleMessage } from '@/lib/services/handleMessage'
+import { handleOnError } from '@/lib/utils'
 
 // Penanganan Kelompok Rentan//
 export const useVulnerableGroupHandlings = ({
@@ -326,5 +329,17 @@ export const useGetTuitionAssistanceFn = ({
 export const useGetTuitionAssistanceID = (id?: string) => {
   return useQuery(['tuition-assistances', id], async () => await getTuitionAssistanceByIdFn(id as string), {
     enabled: !!id
+  })
+}
+
+export const useCreateTuitionAssistance = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(storeTuitionAssistanceFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('tuition-assistances')
+      handleMessage({ title: 'Data BBP', variant: 'create' })
+    },
+    onError: (error: AxiosError) => handleOnError(error)
   })
 }

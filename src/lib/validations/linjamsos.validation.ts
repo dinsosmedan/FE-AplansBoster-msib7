@@ -1,5 +1,8 @@
 import * as Yup from 'yup'
 
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+
 export const vulnerableGroupHandlingValidation = Yup.object({
   beneficiary: Yup.string().required('NIK harus diisi'),
   incidentDate: Yup.mixed().test('incidentDate', 'Tanggal kejadian wajib diisi', function (value) {
@@ -45,3 +48,36 @@ export const unregisterValidation = Yup.object({
 })
 
 export type unregisterFields = Yup.InferType<typeof unregisterValidation>
+
+export const tuitionAssistanceValidation = Yup.object({
+  beneficiary: Yup.string().required('NIK harus diisi'),
+  event: Yup.string().required('Nama kegiatan wajib diisi'),
+  phoneNumber: Yup.string()
+    .matches(phoneRegExp, 'Nomor telepon tidak valid')
+    .min(7, 'Nomor telepon minimal 7 karakter')
+    .max(20, 'Nomor telepon maksimal 20 karakter')
+    .required('Nomor Telepon wajib diisi'),
+  email: Yup.string().email('Email tidak valid').required('Email wajib diisi'),
+  universityId: Yup.string().required('Nama universitas wajib diisi'),
+  universityName: Yup.string().required('Nama universitas wajib diisi'),
+  studyProgramId: Yup.string().required('Nama program studi wajib diisi'),
+  studyProgramName: Yup.string().required('Nama program studi wajib diisi'),
+  semester: Yup.number().required('Semester wajib diisi'),
+  gpa: Yup.number().required('IPK wajib diisi'),
+  tuitionFee: Yup.number().required('Biaya kuliah wajib diisi'),
+  bankAccountNumber: Yup.string().required('Nomor rekening wajib diisi'),
+  bankAccountName: Yup.string().required('Nama pemilik rekening wajib diisi'),
+  bank: Yup.string().required('Nama bank wajib diisi')
+})
+
+export type tuitionAssistanceFields = Yup.InferType<typeof tuitionAssistanceValidation>
+
+export const indigencyCertificateValidation = Yup.object({
+  applicant: Yup.string().required('NIK harus diisi'),
+  peopleConcerned: Yup.string().required('Nama yang bersangkutan harus diisi'),
+  certificateDestination: Yup.string().required('Tujuan surat keterangan harus diisi'),
+  statusDtks: Yup.string().required('Status DTKS harus diisi'),
+  categoryApplication: Yup.string().required('Kategori permohonan harus diisi')
+})
+
+export type indigencyCertificateFields = Yup.InferType<typeof indigencyCertificateValidation>

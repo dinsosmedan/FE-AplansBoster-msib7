@@ -24,7 +24,7 @@ export default function useToastNik({
       onSuccess && onSuccess()
       toast({
         title: 'NIK terdaftar',
-        description: 'NIK terdaftar, silahkan isi form berikut',
+        description: 'NIK terdaftar, silahkan isi inputan selanjutnya',
         variant: 'default'
       })
     }
