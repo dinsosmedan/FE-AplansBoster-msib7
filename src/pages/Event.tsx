@@ -62,26 +62,34 @@ const Event = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {events?.data.map((event, index) => (
-            <TableRow key={event.id}>
-              <TableCell className="bg-[#F9FAFC]" position="center">
-                {(events.meta.currentPage - 1) * events.meta.perPage + index + 1}
-              </TableCell>
-              <TableCell className="bg-[#F9FAFC]">{event.type.name ?? '-'}</TableCell>
-              <TableCell className="bg-[#F9FAFC]">{event.startDate ? formatToView(event.startDate) : '-'}</TableCell>
-              <TableCell className="bg-[#F9FAFC]">{event.endDate ? formatToView(event.startDate) : '-'}</TableCell>
-              <TableCell className="bg-[#F9FAFC]">{event.batch ?? '-'}</TableCell>
-              <TableCell className="bg-[#F9FAFC]">{event.quota ?? '-'}</TableCell>
-              <TableCell className="bg-[#F9FAFC] capitalize" position="center">
-                {event.status && (
-                  <Status label={event.status} isSuccess="active" isWarning="in-progress" isDanger="inactive" />
-                )}
-              </TableCell>
-              <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                <Action onDelete={() => handleDelete(event.id)} onEdit={() => handleEdit(event.id)} />
+          {events?.data?.length !== 0 ? (
+            events?.data.map((event, index) => (
+              <TableRow key={event.id}>
+                <TableCell className="bg-[#F9FAFC]" position="center">
+                  {(events.meta.currentPage - 1) * events.meta.perPage + index + 1}
+                </TableCell>
+                <TableCell className="bg-[#F9FAFC]">{event.type.name ?? '-'}</TableCell>
+                <TableCell className="bg-[#F9FAFC]">{event.startDate ? formatToView(event.startDate) : '-'}</TableCell>
+                <TableCell className="bg-[#F9FAFC]">{event.endDate ? formatToView(event.startDate) : '-'}</TableCell>
+                <TableCell className="bg-[#F9FAFC]">{event.batch ?? '-'}</TableCell>
+                <TableCell className="bg-[#F9FAFC]">{event.quota ?? '-'}</TableCell>
+                <TableCell className="bg-[#F9FAFC] capitalize" position="center">
+                  {event.status && (
+                    <Status label={event.status} isSuccess="active" isWarning="in-progress" isDanger="inactive" />
+                  )}
+                </TableCell>
+                <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                  <Action onDelete={() => handleDelete(event.id)} onEdit={() => handleEdit(event.id)} />
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={9} className="text-center">
+                Tidak ada data
               </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
       {(events?.meta?.total as number) > 30 ? (

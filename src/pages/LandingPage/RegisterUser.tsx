@@ -123,7 +123,7 @@ export default function RegisterUser() {
                     helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
                     accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
                     maxFiles={1}
-                    id="fotoKtp"
+                    id="identityCard"
                     Icon={HiDocumentArrowUp}
                   />
                 </FormControl>
@@ -148,7 +148,7 @@ export default function RegisterUser() {
                     fileValue={field.value as unknown as FileWithPreview[]}
                     helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
                     maxFiles={1}
-                    id="swafotoKtp"
+                    id="selfie"
                     accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
                     Icon={HiDocumentArrowUp}
                   />
@@ -175,7 +175,7 @@ export default function RegisterUser() {
               </FormItem>
             )}
           />
-          <Button className="rounded-lg w-full py-6 text-lg" loading={isLoading}>
+          <Button className="rounded-lg w-full py-6 text-lg" type="submit" loading={isLoading}>
             Buat Akun
           </Button>
           <Link to="/user/login" className="text-primary">

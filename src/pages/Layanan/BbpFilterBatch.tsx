@@ -1,18 +1,23 @@
-import { Container } from '@/components'
+import { Container, Loading, Status } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import React from 'react'
+import { useTitle } from '@/hooks'
+import { formatToView } from '@/lib/services/formatDate'
+import { useGetEvent } from '@/store/server'
 import { useForm } from 'react-hook-form'
 import { HiOutlineExclamationCircle } from 'react-icons/hi2'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+
+interface FormValues {
+  nik: string
+}
 
 export default function BbpFilterBatch() {
-  interface FormValues {
-    nik: string
-  }
-
+  useTitle('Bantuan Biaya Pendidikan (BBP)')
+  const navigate = useNavigate()
+  const { data: events, isLoading } = useGetEvent()
   const forms = useForm<FormValues>({
     mode: 'onTouched'
   })
@@ -20,6 +25,9 @@ export default function BbpFilterBatch() {
   const onSubmit = async (values: FormValues) => {
     console.log(values)
   }
+
+  if (isLoading) return <Loading />
+
   return (
     <Container>
       <Form {...forms}>
@@ -48,6 +56,7 @@ export default function BbpFilterBatch() {
         <Table>
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">No</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Batch</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kuota</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Dibuka</TableHead>
@@ -57,44 +66,38 @@ export default function BbpFilterBatch() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="text-left bg-[#F9FAFC]">Batch 3</TableCell>
-              <TableCell className="text-left bg-[#F9FAFC]">100/100</TableCell>
-              <TableCell className="text-left bg-[#F9FAFC]">11-11-2022</TableCell>
-              <TableCell className="text-left bg-[#F9FAFC]">11-11-2022</TableCell>
-              <TableCell className="text-center bg-[#F9FAFC]">
-                <div className="bg-[#E9FFEF] rounded-full flex items-center w-fit gap-2 py-1 px-2 mx-auto">
-                  <div className="w-2 h-2 rounded-full bg-[#409261]" />
-                  <p className="text-[#409261] text-xs">Aktif</p>
-                </div>
-              </TableCell>
-              <TableCell className="flex items-center justify-center text-left bg-[#F9FAFC] ">
-                <Link to={'/layanan/layanan-bbp'}>
-                  <Button className="py-6">
-                    <p className="text-base font-bold pr-3">Action</p>
-                    <HiOutlineExclamationCircle className="h-6 w-6" />
-                  </Button>
-                </Link>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="text-left bg-[#F9FAFC]">Batch 3</TableCell>
-              <TableCell className="text-left bg-[#F9FAFC]">100/100</TableCell>
-              <TableCell className="text-left bg-[#F9FAFC]">11-11-2022</TableCell>
-              <TableCell className="text-left bg-[#F9FAFC]">11-11-2022</TableCell>
-              <TableCell className="text-center bg-[#F9FAFC]">
-                <div className="bg-[#FFD6E1] rounded-full flex items-center w-fit gap-2 py-1 px-2 mx-auto">
-                  <div className="w-2 h-2 rounded-full bg-primary" />
-                  <p className="text-primary text-xs">Tidak Aktif</p>
-                </div>
-              </TableCell>
-              <TableCell className="flex items-center justify-center text-left bg-[#F9FAFC] ">
-                <Button className="py-6">
-                  <p className="text-base font-bold pr-3">Action</p>
-                  <HiOutlineExclamationCircle className="h-6 w-6" />
-                </Button>
-              </TableCell>
-            </TableRow>
+            {events?.data?.length !== 0 ? (
+              events?.data.map((event, index) => (
+                <TableRow key={event.id}>
+                  <TableCell className="bg-[#F9FAFC]">
+                    {(events.meta.currentPage - 1) * events.meta.perPage + index + 1}
+                  </TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{event.batch}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{event.quota}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">
+                    {event.startDate ? formatToView(event.startDate) : '-'}
+                  </TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{event.endDate ? formatToView(event.startDate) : '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC] capitalize">
+                    {event.status && (
+                      <Status label={event.status} isSuccess="active" isWarning="in-progress" isDanger="inactive" />
+                    )}
+                  </TableCell>
+                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                    <Button className="py-6 rounded-lg" onClick={() => navigate(`/layanan/bbp/${event.id}`)}>
+                      <p className="font-bold pr-3">Action</p>
+                      <HiOutlineExclamationCircle className="h-5 w-5" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center">
+                  Tidak ada data
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </section>

@@ -7,11 +7,7 @@ export default function DataPenerima() {
   return (
     <Container className="flex flex-col items-center">
       <div className="grid grid-cols-2 gap-x-20 gap-y-10">
-        <CardSub
-          title={'Bantuan Biaya Pendidikan'}
-          subTitle={'Education Financial Aid'}
-          href={'/layanan/bbp-filter'}
-        />
+        <CardSub title={'Bantuan Biaya Pendidikan'} subTitle={'Education Financial Aid'} href={'/layanan/bbp'} />
         <CardSub
           title={'Surat Keterangan Tidak Mampu'}
           subTitle={'Indigency Certificate'}

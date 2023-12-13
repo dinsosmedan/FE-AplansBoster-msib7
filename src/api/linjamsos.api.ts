@@ -13,7 +13,12 @@ import {
   type ITuitionAssistanceID
 } from '@/lib/types/linjamsos.type'
 import api from './axiosInstance'
-import { type unregisterFields, type vulnerableGroupHandlingFields } from '@/lib/validations/linjamsos.validation'
+import {
+  type indigencyCertificateFields,
+  type tuitionAssistanceFields,
+  type unregisterFields,
+  type vulnerableGroupHandlingFields
+} from '@/lib/validations/linjamsos.validation'
 
 export interface VulnerableGroupHandlingQuery {
   page?: number
@@ -245,6 +250,11 @@ export const getTuitionAssistanceByIdFn = async (id: string): Promise<ITuitionAs
   const response = await api.get(`/tuition-assistance/${id}`)
   return response.data?.data
 }
+
+export const storeTuitionAssistanceFn = async (fields: tuitionAssistanceFields) => {
+  await api.post('/service/tuition-assistance-application', fields)
+}
+
 export const exportTuitionAssistanceFn = async (
   type: 'xlsx' | 'csv',
   { q, event, idKecamatan, idKelurahan, year, status }: TuitionAssistanceQuery
@@ -253,4 +263,8 @@ export const exportTuitionAssistanceFn = async (
     `/tuition-assistance/export/${type}?q=${q}&event=${event}&area_level_4=${idKelurahan}&area_level_3=${idKecamatan}&budget_year=${year}&disbursement_status=${status}`
   )
   return response.data
+}
+
+export const storeIndigencyCertificateFn = async (fields: indigencyCertificateFields) => {
+  await api.post('/service/indigency-certificate', fields)
 }

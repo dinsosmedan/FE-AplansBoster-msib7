@@ -8,14 +8,38 @@ import { useAlert } from '@/store/client'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { HiOutlineExclamationCircle, HiOutlineEye } from 'react-icons/hi2'
-import { Link } from 'react-router-dom'
 import FilterLayanan from './../../components/atoms/FilterLayanan'
+import { useCreateParams, useGetParams, useTitle } from '@/hooks'
+import { useGetTuitionAssistanceByEventId } from '@/store/server/useService'
+import { useParams } from 'react-router-dom'
+import { useGetEventById } from '@/store/server'
+
+interface FormValues {
+  nik: string
+}
 
 export default function LayananBbp() {
-  interface FormValues {
-    nik: string
-  }
+  useTitle('Bantuan Biaya Pendidikan (BBP)')
+  const { id } = useParams<{ id: string }>()
+
   const { alert } = useAlert()
+  const [isShow, setIsShow] = React.useState(false)
+
+  const createParams = useCreateParams()
+  const { search, page, applicationStatus } = useGetParams(['search', 'page', 'applicationStatus'])
+
+  const { data: event } = useGetEventById(id as string)
+  const { data } = useGetTuitionAssistanceByEventId({
+    eventId: id as string,
+    applicationStatus,
+    search,
+    page: parseInt(page) || 1
+  })
+
+  const forms = useForm<FormValues>({
+    mode: 'onTouched'
+  })
+
   const showAlert = () => {
     void alert({
       title: 'User ditambahkan',
@@ -26,12 +50,6 @@ export default function LayananBbp() {
       console.log('oke')
     })
   }
-  const [isShow, setIsShow] = React.useState(false)
-  const [currentPage, setCurrentPage] = React.useState(1)
-  const [isActive, setIsActive] = React.useState('Data Pengajuan')
-  const forms = useForm<FormValues>({
-    mode: 'onTouched'
-  })
 
   const onSubmit = async (values: FormValues) => {
     console.log(values)
@@ -59,7 +77,9 @@ export default function LayananBbp() {
                 <p className="text-white text-base font-bold">Kirim Notifikasi</p>
               </Button>
               <div className="bg-primary px-5 py-4 rounded-xl">
-                <p className="text-white text-base font-bold">Total Kuota : 20/100</p>
+                <p className="text-white text-base font-bold">
+                  Total Kuota : {event?.filledQuota}/{event?.quota}
+                </p>
               </div>
             </div>
           </div>
@@ -70,6 +90,7 @@ export default function LayananBbp() {
         <Table>
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
+              <TableHead className="text-white font-bold text-[15px] bg-primary">No</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">NIK</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">Nama</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">Status DTKS</TableHead>
@@ -81,31 +102,44 @@ export default function LayananBbp() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="text-left bg-[#F9FAFC]">Batch 3</TableCell>
-              <TableCell className="text-left bg-[#F9FAFC]">100/100</TableCell>
-              <TableCell className="text-left bg-[#F9FAFC]">11-11-2022</TableCell>
-              <TableCell className="text-left bg-[#F9FAFC]">11-11-2022</TableCell>
-              <TableCell className="text-center bg-[#F9FAFC]">
-                <div className="bg-[#E9FFEF] rounded-full flex items-center w-fit gap-2 py-1 px-2 mx-auto">
-                  <div className="w-2 h-2 rounded-full bg-[#409261]" />
-                  <p className="text-[#409261] text-xs">Aktif</p>
-                </div>
-              </TableCell>
-              <TableCell className="text-left bg-[#F9FAFC]">11-11-2022</TableCell>
-              <TableCell className="text-left bg-[#F9FAFC]">11-11-2022</TableCell>
-              <TableCell
-                className="flex items-center justify-center text-left bg-[#F9FAFC] "
-                onClick={() => setIsShow(true)}
-              >
-                <Button className="py-6">
-                  <p className="text-base font-bold pr-3">Action</p>
-                  <HiOutlineExclamationCircle className="h-6 w-6" />
-                </Button>
-              </TableCell>
-            </TableRow>
+            {data?.data?.length !== 0 ? (
+              data?.data.map((item, index) => (
+                <TableRow key={item.id}>
+                  <TableCell className="bg-[#F9FAFC]">
+                    {(data.meta.currentPage - 1) * data.meta.perPage + index + 1}
+                  </TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.application.beneficiary.identityNumber}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.application.beneficiary.name}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.application.dtksStatus}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.application.beneficiary.address.fullAddress}</TableCell>
+                  <TableCell className="bg-[#F9FAFC] capitalize">-</TableCell>
+                  <TableCell className="bg-[#F9FAFC] capitalize">-</TableCell>
+                  <TableCell className="bg-[#F9FAFC] capitalize">-</TableCell>
+                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                    <Button className="py-6 rounded-lg" onClick={() => setIsShow(true)}>
+                      <p className="font-bold pr-3">Action</p>
+                      <HiOutlineExclamationCircle className="h-5 w-5" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center">
+                  Tidak ada data
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
+        {(data?.meta?.total as number) > 30 ? (
+          <Pagination
+            currentPage={page !== '' ? parseInt(page) : 1}
+            totalCount={data?.meta.total as number}
+            pageSize={30}
+            onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
+          />
+        ) : null}
         <Modal isShow={isShow} className="md:max-w-3xl max-h-[calc(100vh-50px)] overflow-y-auto">
           <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
             <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Data Pengajuan</h3>
@@ -496,12 +530,6 @@ export default function LayananBbp() {
           </Modal.Footer>
         </Modal>
       </section>
-      <Pagination
-        currentPage={currentPage}
-        totalCount={100}
-        pageSize={10}
-        onPageChange={(page) => setCurrentPage(page)}
-      />
     </Container>
   )
 }

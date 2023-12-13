@@ -5,13 +5,29 @@ import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import useTitle from '@/hooks/useTitle'
 import Container from '@/components/atoms/Container'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useTitleHeader } from '@/store/client'
 
 import * as React from 'react'
+import { tuitionAssistanceValidation, type tuitionAssistanceFields } from '@/lib/validations/linjamsos.validation'
+import { HiMagnifyingGlass } from 'react-icons/hi2'
+import {
+  useCreateTuitionAssistance,
+  useGetBank,
+  useGetBeneficaryByNIK,
+  useGetEvent,
+  useGetStudyPrograms,
+  useGetTuitionAssistanceID,
+  useGetUniversities
+} from '@/store/server'
+import { useNotFound, useToastNik } from '@/hooks'
+import { Loading } from '@/components'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 const Bbp = () => {
+  const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
+
   useTitle(`${id ? ' Ubah' : 'Tambah'} Data`)
   const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
 
@@ -21,28 +37,69 @@ const Bbp = () => {
       { url: '/data-penerima/dayasos/bbp', label: 'BBP' }
     ])
   }, [])
-  // ini komentar
-  interface FormValues {
-    nik: string
-    email: string
-    ipk: string
-    universitas: string
-    prodi: string
-    semester: string
-    tahun: string
-    noHp: string
-    namaBank: string
-    noRekening: string
-    jumlah: string
-  }
+  const [NIK, setNIK] = React.useState('')
 
-  const forms = useForm<FormValues>({
-    mode: 'onTouched'
+  const forms = useForm<tuitionAssistanceFields>({
+    mode: 'onTouched',
+    resolver: yupResolver(tuitionAssistanceValidation)
   })
 
-  const onSubmit = async (values: FormValues) => {
-    console.log(values)
+  const university = forms.watch('universityId')
+  const { data: beneficiary, refetch, isLoading, isError } = useGetBeneficaryByNIK(NIK, false)
+  const { data: events } = useGetEvent()
+  const { data: universities } = useGetUniversities()
+  const { data: studyPrograms } = useGetStudyPrograms(university)
+  const { data: bankLists } = useGetBank()
+
+  const { mutate: createTuitionAssistance, isLoading: isLoadingCreate } = useCreateTuitionAssistance()
+  const {
+    data: tuitionAssistance,
+    isLoading: isLoadingGet,
+    isError: isErrorGet,
+    isSuccess: isSuccessGet
+  } = useGetTuitionAssistanceID(id as string)
+
+  useNotFound(isErrorGet)
+
+  useToastNik({
+    successCondition: !isLoading && beneficiary != null,
+    onSuccess: () => forms.setValue('beneficiary', beneficiary?.id as string),
+    notFoundCondition: isError,
+    notRegisteredCondition: forms.getValues('beneficiary') === '' && NIK !== '' && forms.formState.isSubmitted
+  })
+
+  React.useEffect(() => {
+    if (isSuccessGet) {
+      forms.reset({
+        beneficiary: tuitionAssistance.application.beneficiary.id,
+        event: tuitionAssistance.application.event.id,
+        phoneNumber: tuitionAssistance.application.phoneNumber,
+        email: tuitionAssistance.application.email,
+        universityId: tuitionAssistance.application.university.id,
+        universityName: tuitionAssistance.application.university.name,
+        studyProgramId: tuitionAssistance.application.studyProgram.id,
+        studyProgramName: tuitionAssistance.application.studyProgram.name,
+        semester: tuitionAssistance.application.semester,
+        gpa: tuitionAssistance.application.gpa,
+        tuitionFee: tuitionAssistance.application.tuitionFee as number,
+        bankAccountNumber: tuitionAssistance.application.bankAccNumber,
+        bankAccountName: tuitionAssistance.application.bankAccName,
+        bank: tuitionAssistance.application.id
+      })
+    }
+  }, [isSuccessGet])
+
+  const onSuccess = () => {
+    forms.reset()
+    setNIK('')
+    navigate('/data-penerima/linjamsos/bbp')
   }
+
+  const onSubmit = async (values: tuitionAssistanceFields) => {
+    if (!id) return createTuitionAssistance(values, { onSuccess })
+  }
+
+  if (isLoadingGet) return <Loading />
 
   return (
     <Container className="px-[47px]">
@@ -51,25 +108,34 @@ const Bbp = () => {
       </div>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="flex flex-row justify-between gap-3">
-            <div className="w-11/12">
-              <FormField
-                name="nik"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan NIK Masyarakat" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+          {!id && (
+            <div className="flex flex-row justify-between gap-3">
+              <div className="w-11/12">
+                <FormItem>
+                  <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      value={NIK}
+                      onChange={(e) => setNIK(e.target.value)}
+                      placeholder="Masukkan NIK Masyarakat"
+                    />
+                  </FormControl>
+                </FormItem>
+              </div>
+              <div className="w-fit flex items-end justify-end">
+                <Button
+                  className="w-full gap-2"
+                  type="button"
+                  loading={isLoading}
+                  onClick={async () => await refetch()}
+                >
+                  <HiMagnifyingGlass className="text-lg" />
+                  <span>Cari</span>
+                </Button>
+              </div>
             </div>
-            <div className="w-1/12 flex items-end justify-end">
-              <Button className="w-full">Cari</Button>
-            </div>
-          </div>
+          )}
           <div className="flex flex-row gap-4">
             <div className="w-6/12">
               <FormField
@@ -84,27 +150,27 @@ const Bbp = () => {
                   </FormItem>
                 )}
               />
+              <FormField
+                name="beneficiary"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input {...field} hidden className="hidden" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
             </div>
             <div className="w-6/12">
               <FormField
-                name="ipk"
+                name="gpa"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Masukkan IPK</FormLabel>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Masukkan IPK" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Input {...field} type="number" placeholder=" Masukkan IPK Anda" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -114,50 +180,62 @@ const Bbp = () => {
           <div className="flex flex-row gap-4">
             <div className="w-6/12">
               <FormField
-                name="universitas"
+                name="universityId"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Universitas</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Universitas" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Universitas" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {universities?.map((university) => (
+                          <SelectItem
+                            key={university.id}
+                            value={university.id}
+                            onClick={() => forms.setValue('universityName', university.name)}
+                          >
+                            {university.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />
             </div>
             <div className="w-6/12">
               <FormField
-                name="prodi"
+                name="studyProgramId"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Prodi</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Prodi" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
+                    <FormLabel className="font-semibold dark:text-white">Program Studi</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      disabled={!universities || !studyPrograms}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Program Studi" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {studyPrograms?.map((studyProgram) => (
+                          <SelectItem
+                            key={studyProgram.id}
+                            value={studyProgram.id}
+                            onClick={() => forms.setValue('studyProgramName', studyProgram.name)}
+                          >
+                            {studyProgram.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />
@@ -172,7 +250,7 @@ const Bbp = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Semester</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Semester" />
+                      <Input {...field} type="number" placeholder="Masukkan Semester" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -180,32 +258,59 @@ const Bbp = () => {
             </div>
             <div className="w-6/12">
               <FormField
-                name="tahun"
+                name="event"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Masukkan Tahun Anggran</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Tahun Anggran" />
-                    </FormControl>
+                    <FormLabel className="font-semibold dark:text-white">Batch</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Batch" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {events?.data.map((event) => (
+                          <SelectItem key={event.id} value={event.id}>
+                            {event.batch}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />
             </div>
           </div>
-          <div className="w-12/12">
-            <FormField
-              name="noHp"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Masukkan No. HP</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="number" placeholder="Masukkan No. HP" />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+          <div className="flex flex-row gap-4">
+            <div className="w-6/12">
+              <FormField
+                name="phoneNumber"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Masukkan No. HP</FormLabel>
+                    <FormControl>
+                      <Input {...field} type="number" placeholder="Masukkan No. HP" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="w-6/12">
+              <FormField
+                name="tuitionFee"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">UKT</FormLabel>
+                    <FormControl>
+                      <Input {...field} type="number" placeholder="Masukan UKT" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
           <div className="w-full text-center">
             <p className="text-2xl font-bold">Data Bank</p>
@@ -213,21 +318,36 @@ const Bbp = () => {
           <div className="flex flex-row gap-4">
             <div className="w-6/12">
               <FormField
-                name="namaBank"
+                name="bank"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nama Bank</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama Bank" />
-                    </FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Bank" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {bankLists?.map((bank) => (
+                          <SelectItem
+                            key={bank.id}
+                            value={bank.id}
+                            onClick={() => forms.setValue('bankAccountName', bank.name)}
+                          >
+                            {bank.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />
             </div>
             <div className="w-6/12">
               <FormField
-                name="noRekening"
+                name="bankAccountNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -240,23 +360,13 @@ const Bbp = () => {
               />
             </div>
           </div>
-          <div className="w-12/12">
-            <FormField
-              name="jumlah"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Jumlah Yang Di bantu</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="text" placeholder="Masukan Jumlah Yang Di bantu" />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex justify-end gap-5">
-            <Button variant="cancel">Cancel</Button>
-            <Button>Submit</Button>
+          <div className="flex justify-end gap-4">
+            <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
+              Cancel
+            </Button>
+            <Button className="font-bold" type="submit" loading={isLoadingCreate}>
+              {id ? 'Ubah Data' : 'Submit'}
+            </Button>
           </div>
         </form>
       </Form>
