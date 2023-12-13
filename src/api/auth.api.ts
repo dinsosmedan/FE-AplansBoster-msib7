@@ -40,7 +40,7 @@ export const getMePublicFn = async (): Promise<IUser> => {
 }
 
 export const logoutUserFn = async () => {
-  await apiPublic.post('/auth/logout')
+  await axiosPublic.post('/public/auth/logout')
 }
 
 export const registerUserFn = async (fields: RegisterUserFields) => {
