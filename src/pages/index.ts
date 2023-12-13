@@ -55,6 +55,9 @@ import LayananDtks from './Layanan/LayananDtks'
 import DtksUser from './LandingPage/Dtks/DtksUser'
 import NotFound from './NotFound'
 import DtksRegister from './LandingPage/Dtks/DtksRegister'
+import SubmissionHistory from './LandingPage/SubmissionHistory'
+import ChangePassword from './LandingPage/Profile/ChangePassword'
+import ChangeProfile from './LandingPage/Profile/ChangeProfile'
 
 export {
   Home,
@@ -113,5 +116,8 @@ export {
   LayananSktm,
   LayananDtks,
   DtksUser,
-  DtksRegister
+  DtksRegister,
+  SubmissionHistory,
+  ChangePassword,
+  ChangeProfile
 }

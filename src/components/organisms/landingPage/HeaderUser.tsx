@@ -41,7 +41,7 @@ export default function HeaderUser() {
               Beranda
             </Link>
             {token && (
-              <Link to="/" className="hover:text-primary">
+              <Link to="/user/submission-history" className="hover:text-primary">
                 Riwayat Pengajuan
               </Link>
             )}
@@ -70,7 +70,9 @@ export default function HeaderUser() {
                           <div className="flex w-11 h-11 rounded-full bg-[#FCE9EE]">
                             <HiCog6Tooth className="m-auto text-primary text-3xl" />
                           </div>
-                          <p className="font-poppins font-medium text-[#494949]">Pengaturan</p>
+                          <Link to={'/user/profile'}>
+                            <p className="font-poppins font-medium text-[#494949]">Pengaturan</p>
+                          </Link>
                         </div>
                         <HiChevronRight className="text-2xl text-[#484848]" />
                       </DropdownMenuLabel>
