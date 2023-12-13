@@ -60,7 +60,7 @@ const DataRumahIbadah = () => {
     page: parseInt(page) ?? 1,
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
-    type,
+    place: type,
     q
   })
 
@@ -107,14 +107,46 @@ const DataRumahIbadah = () => {
 
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    await exportWorshipPlaceFn('rumah-ibadah', 'csv')
+    const response = await exportWorshipPlaceFn('csv',
+    {
+    page: parseInt(page) ?? 1,
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    place: type,
+    q
+  }
+    )
+    if (response.success) {
+    void alert({
+      title: 'Berhasil Export',
+      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+      submitText: 'Oke',
+      variant: 'success'
+    })
     setIsLoadingExport(false)
+  }
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    await exportWorshipPlaceFn('rumah-ibadah', 'xlsx')
+    const response = await exportWorshipPlaceFn('xlsx',
+    {
+    page: parseInt(page) ?? 1,
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    place: type,
+    q
+  }
+    )
+    if (response.success) {
+    void alert({
+      title: 'Berhasil Export',
+      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+      submitText: 'Oke',
+      variant: 'success'
+    })
     setIsLoadingExport(false)
+  }
   }
 
   if (isLoading && isLoadingWorshipPlace) return <Loading />

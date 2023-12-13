@@ -18,7 +18,7 @@ import {
   useGetKelurahan
 } from '@/store/server'
 import { useAlert, useTitleHeader } from '@/store/client'
-import { exportJointBussinessFn } from '@/api/dayasos.api'
+import { exportCommunityGroupFn } from '@/api/dayasos.api'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 interface FormValues {
   q: string
@@ -134,14 +134,48 @@ const DataPokmas = () => {
 
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    await exportJointBussinessFn('pokmas', 'csv')
+    const response = await exportCommunityGroupFn('csv',
+    {
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    q,
+    communityActivityCode,
+    status,
+    applicationYear
+  }
+  )
+    if (response.success) {
+    void alert({
+      title: 'Berhasil Export',
+      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+      submitText: 'Oke',
+      variant: 'success'
+    })
     setIsLoadingExport(false)
+  }
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    await exportJointBussinessFn('pokmas', 'xlsx')
+    const response = await exportCommunityGroupFn('xlsx',
+    {
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    q,
+    communityActivityCode,
+    status,
+    applicationYear
+  }
+  )
+    if (response.success) {
+    void alert({
+      title: 'Berhasil Export',
+      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+      submitText: 'Oke',
+      variant: 'success'
+    })
     setIsLoadingExport(false)
+  }
   }
 
   if (isLoading) return <Loading />
