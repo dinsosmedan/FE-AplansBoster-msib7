@@ -77,9 +77,15 @@ import LayananSktm from './pages/Layanan/LayananSktm'
 import LayananDtks from './pages/Layanan/LayananDtks'
 import DtksUser from './pages/LandingPage/Dtks/DtksUser'
 import DtksRegister from './pages/LandingPage/Dtks/DtksRegister'
+import SubmissionHistory from './pages/LandingPage/SubmissionHistory'
+import useScrollToTop from './hooks/useScrolltoTop'
+import ChangePassword from './pages/LandingPage/Profile/ChangePassword'
+import ChangeProfile from './pages/LandingPage/Profile/ChangeProfile'
+import ProfileLayout from './components/layouts/landingPage/ProfileLayout'
 
 export default function App() {
   const { alertOptions, handleClose, handleSubmit } = useAlert()
+  useScrollToTop()
   return (
     <>
       <Alert
@@ -217,7 +223,13 @@ export default function App() {
               <Route index element={<DtksUser />} />
               <Route path="register-dtks" element={<DtksRegister />} />
             </Route>
+            <Route path="submission-history" element={<SubmissionHistory />} />
             <Route path="cek-bansos" element={<CekBansosUser />} />
+            <Route path="submission-history" element={<SubmissionHistory />} />
+            <Route path="profile" element={<ProfileLayout />}>
+              <Route index element={<ChangeProfile />} />
+              <Route path="change-password" element={<ChangePassword />} />
+            </Route>
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />
