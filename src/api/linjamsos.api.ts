@@ -255,10 +255,6 @@ export const storeTuitionAssistanceFn = async (fields: tuitionAssistanceFields) 
   await api.post('/service/tuition-assistance-application', fields)
 }
 
-export const storeIndigencyCertificate = async (fields: indigencyCertificateFields) => {
-  await api.post('/service/indigency-certificate', fields)
-}
-
 export const exportTuitionAssistanceFn = async (
   type: 'xlsx' | 'csv',
   { q, event, idKecamatan, idKelurahan, year, status }: TuitionAssistanceQuery
@@ -267,4 +263,8 @@ export const exportTuitionAssistanceFn = async (
     `/tuition-assistance/export/${type}?q=${q}&event=${event}&area_level_4=${idKelurahan}&area_level_3=${idKecamatan}&budget_year=${year}&disbursement_status=${status}`
   )
   return response.data
+}
+
+export const storeIndigencyCertificateFn = async (fields: indigencyCertificateFields) => {
+  await api.post('/service/indigency-certificate', fields)
 }

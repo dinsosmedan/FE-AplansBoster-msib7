@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
+import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
 
 import {
   useGetEvent,
@@ -285,9 +285,19 @@ const DataBbp = () => {
             />
           </div>
           <section className="flex items-center justify-between">
-            {tuitions?.data?.length !== 0 ? (
-              <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
-            ) : null}
+            <div className="flex items-center gap-3">
+              <Button
+                type="button"
+                className="gap-2 border-none rounded-lg"
+                onClick={() => navigate('/data-penerima/linjamsos/bbp/create')}
+              >
+                <HiPlus className="text-lg" />
+                <span>Tambah Data</span>
+              </Button>
+              {tuitions?.data?.length !== 0 ? (
+                <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+              ) : null}
+            </div>
             <div className="flex gap-3">
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
                 <HiArrowPath className="text-lg" />

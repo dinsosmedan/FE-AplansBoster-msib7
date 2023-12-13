@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
+import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
@@ -281,7 +281,15 @@ const DataSktm = () => {
             />
           </div>
           <section className="flex items-center justify-between">
-            <div className="w-[20%]">
+            <div className="flex items-center gap-3">
+              <Button
+                type="button"
+                className="gap-2 border-none rounded-lg"
+                onClick={() => navigate('/data-penerima/linjamsos/sktm/create')}
+              >
+                <HiPlus className="text-lg" />
+                <span>Tambah Data</span>
+              </Button>
               {indigencys?.data?.length !== 0 ? (
                 <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
               ) : null}

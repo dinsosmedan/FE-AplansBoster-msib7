@@ -23,7 +23,8 @@ import {
   getTuitionAssistanceFn,
   type TuitionAssistanceQuery,
   getTuitionAssistanceByIdFn,
-  storeTuitionAssistanceFn
+  storeTuitionAssistanceFn,
+  storeIndigencyCertificateFn
 } from '@/api/linjamsos.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -339,6 +340,18 @@ export const useCreateTuitionAssistance = () => {
     onSuccess: () => {
       void queryClient.invalidateQueries('tuition-assistances')
       handleMessage({ title: 'Data BBP', variant: 'create' })
+    },
+    onError: (error: AxiosError) => handleOnError(error)
+  })
+}
+
+export const useCreateIndegencyCertificate = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(storeIndigencyCertificateFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('indigency-certificates')
+      handleMessage({ title: 'Data SKTM', variant: 'create' })
     },
     onError: (error: AxiosError) => handleOnError(error)
   })

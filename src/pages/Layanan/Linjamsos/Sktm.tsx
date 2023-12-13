@@ -6,16 +6,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import useTitle from '@/hooks/useTitle'
 import { Container } from '@/components'
 import { HiMagnifyingGlass } from 'react-icons/hi2'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useTitleHeader } from '@/store/client'
 import * as React from 'react'
-import { useMutationGetBeneficaryByNIK } from '@/store/server'
+import { useCreateIndegencyCertificate, useMutationGetBeneficaryByNIK } from '@/store/server'
 import { useToastNik } from '@/hooks'
 import { indigencyCertificateValidation, type indigencyCertificateFields } from '@/lib/validations/linjamsos.validation'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { CATEGORY_APPLICATION, STATUS_DTKS } from '@/lib/data'
 
 const Pkr = () => {
+  const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   useTitle(`${id ? ' Ubah' : 'Tambah'} Data`)
   const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
@@ -33,6 +34,7 @@ const Pkr = () => {
   })
 
   const { mutate: searchNik, isLoading, isError, isSuccess } = useMutationGetBeneficaryByNIK()
+  const { mutate: createIndegencyCertificate, isLoading: isLoadingCreate } = useCreateIndegencyCertificate()
 
   useToastNik({
     successCondition: !isLoading && isSuccess,
@@ -69,13 +71,13 @@ const Pkr = () => {
     }
   }
 
-  // const onSuccess = () => {
-  //   forms.reset()
-  //   navigate('/data-penerima/linjamsos/bbp')
-  // }
+  const onSuccess = () => {
+    forms.reset()
+    navigate('/data-penerima/linjamsos/sktm')
+  }
 
   const onSubmit = async (values: indigencyCertificateFields) => {
-    console.log(values)
+    if (!id) return createIndegencyCertificate(values, { onSuccess })
   }
 
   return (
@@ -93,7 +95,12 @@ const Pkr = () => {
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">NIK Pemohon</FormLabel>
                       <FormControl>
-                        <Input {...field} type="number" placeholder="Masukkan NIK Masyarakat" />
+                        <Input
+                          {...field}
+                          value={field.value ?? ''}
+                          type="number"
+                          placeholder="Masukkan NIK Masyarakat"
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -116,7 +123,7 @@ const Pkr = () => {
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">NIK Yang Bersangkutan</FormLabel>
                       <FormControl>
-                        <Input {...field} type="number" placeholder="Masukkan NIK " />
+                        <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan NIK " />
                       </FormControl>
                     </FormItem>
                   )}
@@ -171,7 +178,7 @@ const Pkr = () => {
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">Tujuan SKTM</FormLabel>
                       <FormControl>
-                        <Input {...field} type="text" placeholder="Masukkan Tujuan SKTM" />
+                        <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tujuan SKTM" />
                       </FormControl>
                     </FormItem>
                   )}
@@ -207,7 +214,7 @@ const Pkr = () => {
               <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
                 Cancel
               </Button>
-              <Button className="font-bold" type="submit">
+              <Button className="font-bold" type="submit" loading={isLoadingCreate}>
                 {id ? 'Ubah Data' : 'Submit'}
               </Button>
             </div>
