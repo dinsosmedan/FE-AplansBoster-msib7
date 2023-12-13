@@ -1,4 +1,4 @@
-import { Container, Modal, Pagination, Search } from '@/components'
+import { Action, Container, Loading, Modal, Pagination, Search, Status } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -29,7 +29,7 @@ export default function LayananBbp() {
   const { search, page, applicationStatus } = useGetParams(['search', 'page', 'applicationStatus'])
 
   const { data: event } = useGetEventById(id as string)
-  const { data } = useGetTuitionAssistanceByEventId({
+  const { data, isLoading } = useGetTuitionAssistanceByEventId({
     eventId: id as string,
     applicationStatus,
     search,
@@ -40,20 +40,12 @@ export default function LayananBbp() {
     mode: 'onTouched'
   })
 
-  const showAlert = () => {
-    void alert({
-      title: 'User ditambahkan',
-      description: 'User berhasil ditambahkan',
-      submitText: 'Oke',
-      variant: 'success'
-    }).then(() => {
-      console.log('oke')
-    })
-  }
-
   const onSubmit = async (values: FormValues) => {
     console.log(values)
   }
+
+  if (isLoading) return <Loading />
+
   return (
     <Container>
       <Form {...forms}>
@@ -93,11 +85,13 @@ export default function LayananBbp() {
               <TableHead className="text-white font-bold text-[15px] bg-primary">No</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">NIK</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">Nama</TableHead>
-              <TableHead className="text-white font-bold text-[15px] bg-primary">Status DTKS</TableHead>
+              <TableHead className="text-white font-bold text-[15px] bg-primary">Status</TableHead>
+              <TableHead className="text-white font-bold text-[15px] bg-primary">Jenis Kelamin</TableHead>
+              <TableHead className="text-white font-bold text-[15px] bg-primary">Kecamatan</TableHead>
+              <TableHead className="text-white font-bold text-[15px] bg-primary">Kalurahan</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">Alamat</TableHead>
-              <TableHead className="text-white font-bold text-[15px] bg-primary">BPNT</TableHead>
-              <TableHead className="text-white font-bold text-[15px] bg-primary">BLT BBM</TableHead>
-              <TableHead className="text-white font-bold text-[15px] bg-primary">BPI</TableHead>
+              <TableHead className="text-white font-bold text-[15px] bg-primary">No Hp</TableHead>
+              <TableHead className="text-white font-bold text-[15px] bg-primary">Status DTKS</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -105,21 +99,31 @@ export default function LayananBbp() {
             {data?.data?.length !== 0 ? (
               data?.data.map((item, index) => (
                 <TableRow key={item.id}>
-                  <TableCell className="bg-[#F9FAFC]">
+                  <TableCell className="bg-[#F9FAFC]" position="center">
                     {(data.meta.currentPage - 1) * data.meta.perPage + index + 1}
                   </TableCell>
-                  <TableCell className="bg-[#F9FAFC]">{item.application.beneficiary.identityNumber}</TableCell>
-                  <TableCell className="bg-[#F9FAFC]">{item.application.beneficiary.name}</TableCell>
-                  <TableCell className="bg-[#F9FAFC]">{item.application.dtksStatus}</TableCell>
-                  <TableCell className="bg-[#F9FAFC]">{item.application.beneficiary.address.fullAddress}</TableCell>
-                  <TableCell className="bg-[#F9FAFC] capitalize">-</TableCell>
-                  <TableCell className="bg-[#F9FAFC] capitalize">-</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.beneficiary.identityNumber}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">
+                    {item.dtksStatus ? (
+                      <Status label={item.dtksStatus} isWarning="prelist" isDanger="non-dtks" isSuccess="dtks" />
+                    ) : (
+                      '-'
+                    )}
+                  </TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.beneficiary.gender}</TableCell>
+                  <TableCell className="bg-[#F9FAFC] capitalize">{item.beneficiary.address.areaLevel3?.name}</TableCell>
+                  <TableCell className="bg-[#F9FAFC] capitalize">{item.beneficiary.address.areaLevel4?.name}</TableCell>
+                  <TableCell className="bg-[#F9FAFC] capitalize">{item.beneficiary.address.fullAddress}</TableCell>
+                  <TableCell className="bg-[#F9FAFC] capitalize">{item.phoneNumber}</TableCell>
                   <TableCell className="bg-[#F9FAFC] capitalize">-</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Button className="py-6 rounded-lg" onClick={() => setIsShow(true)}>
-                      <p className="font-bold pr-3">Action</p>
-                      <HiOutlineExclamationCircle className="h-5 w-5" />
-                    </Button>
+                    <Action
+                      onEdit={() => setIsShow(true)}
+                      onDetail={() => setIsShow(true)}
+                      editText="Edit data"
+                      detailText="Edit Pengajuan"
+                    />
                   </TableCell>
                 </TableRow>
               ))
@@ -140,7 +144,7 @@ export default function LayananBbp() {
             onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
           />
         ) : null}
-        <Modal isShow={isShow} className="md:max-w-3xl max-h-[calc(100vh-50px)] overflow-y-auto">
+        {/* <Modal isShow={isShow} className="md:max-w-3xl max-h-[calc(100vh-50px)] overflow-y-auto">
           <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
             <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Data Pengajuan</h3>
             <p className="text-sm text-[#A1A1A1]">Data Pengajuan BBP</p>
@@ -528,7 +532,7 @@ export default function LayananBbp() {
               <p className="text-white font-bold">Update</p>
             </Button>
           </Modal.Footer>
-        </Modal>
+        </Modal> */}
       </section>
     </Container>
   )

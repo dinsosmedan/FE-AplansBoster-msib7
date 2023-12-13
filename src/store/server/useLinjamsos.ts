@@ -24,7 +24,8 @@ import {
   type TuitionAssistanceQuery,
   getTuitionAssistanceByIdFn,
   storeTuitionAssistanceFn,
-  storeIndigencyCertificateFn
+  storeIndigencyCertificateFn,
+  updateTuitionsAssistanceFn
 } from '@/api/linjamsos.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -253,17 +254,17 @@ export const useGetPremiumAssistanceBenefitFn = ({
   idKecamatan,
   idKelurahan,
   q,
-  type
+  budget
 }: PremiumAssistanceBenefitQuery) => {
   return useQuery(
-    ['premium-assistances', page, idKecamatan, idKelurahan, q, type],
+    ['premium-assistances', page, idKecamatan, idKelurahan, q, budget],
     async () =>
       await getPremiumAssistanceBenefitFn({
         page,
         idKecamatan,
         idKelurahan,
         q,
-        type
+        budget
       }),
     {
       keepPreviousData: true,
@@ -277,16 +278,16 @@ export const useGetPremiumAssistanceBenefitByID = (id?: string) => {
   })
 }
 // PKH //
-export const useGetFamilyHopeFn = ({ page, type, idKecamatan, idKelurahan, q }: FamilyHopeQuery) => {
+export const useGetFamilyHopeFn = ({ page, member, idKecamatan, idKelurahan, q }: FamilyHopeQuery) => {
   return useQuery(
-    ['family-hopes', page, idKecamatan, idKelurahan, q, type],
+    ['family-hopes', page, idKecamatan, idKelurahan, q, member],
     async () =>
       await getFamilyHopeFn({
         page,
         idKecamatan,
         idKelurahan,
         q,
-        type
+        member
       }),
     {
       keepPreviousData: true,
@@ -352,6 +353,18 @@ export const useCreateIndegencyCertificate = () => {
     onSuccess: () => {
       void queryClient.invalidateQueries('indigency-certificates')
       handleMessage({ title: 'Data SKTM', variant: 'create' })
+    },
+    onError: (error: AxiosError) => handleOnError(error)
+  })
+}
+
+export const useUpdateTuitionAssistance = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(updateTuitionsAssistanceFn, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries('tuition-assistances')
+      handleMessage({ title: 'Data BBP', variant: 'update' })
     },
     onError: (error: AxiosError) => handleOnError(error)
   })

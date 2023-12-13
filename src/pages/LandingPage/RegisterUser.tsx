@@ -24,9 +24,11 @@ export default function RegisterUser() {
   })
 
   const onSubmit = async (data: RegisterUserFields) => {
-    register(data, {
-      onSuccess: () => forms.reset()
-    })
+    console.log(data)
+
+    // register(data, {
+    //   onSuccess: () => forms.reset()
+    // })
   }
 
   return (
@@ -109,28 +111,6 @@ export default function RegisterUser() {
               </FormItem>
             )}
           />
-
-          <FormField
-            name="identityCard"
-            control={forms.control}
-            render={({ field }) => (
-              <FormItem className="">
-                <FormLabel>Foto KTP</FormLabel>
-                <FormControl className="w-[522px]">
-                  <DropZone
-                    setValue={field.onChange}
-                    fileValue={field.value as unknown as FileWithPreview[]}
-                    helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
-                    accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
-                    maxFiles={1}
-                    id="identityCard"
-                    Icon={HiDocumentArrowUp}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             name="selfie"
             control={forms.control}
@@ -157,6 +137,28 @@ export default function RegisterUser() {
               </FormItem>
             )}
           />
+          <FormField
+            name="identityCard"
+            control={forms.control}
+            render={({ field }) => (
+              <FormItem className="">
+                <FormLabel>Foto KTP</FormLabel>
+                <FormControl className="w-[522px]">
+                  <DropZone
+                    setValue={field.onChange}
+                    fileValue={field.value as unknown as FileWithPreview[]}
+                    helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                    accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
+                    maxFiles={1}
+                    id="identityCard"
+                    Icon={HiDocumentArrowUp}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             name="password"
             control={forms.control}

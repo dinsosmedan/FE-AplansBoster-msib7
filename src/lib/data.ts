@@ -165,7 +165,11 @@ export const JENIS_RUMAH_IBADAH = [
   'KONG HU CHU'
 ]
 
-export const STATUS_DTKS = ['pending', 'processed', 'rejected', 'approved', 'revision']
+export const STATUS_DTKS = [
+  { value: 'prelist', label: 'Prelist' },
+  { value: 'dtks', label: 'DKTS' },
+  { value: 'non-dtks', label: 'Non DTKS' }
+]
 export const CATEGORY_APPLICATION = [
   { value: 'dtks-schools' },
   { value: 'non-dtks-schools' },
