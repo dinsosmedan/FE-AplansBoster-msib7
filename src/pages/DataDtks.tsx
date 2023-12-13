@@ -278,16 +278,24 @@ export default function DataDtks() {
             {dtks?.data?.length !== 0 ? (
               dtks?.data.map((item, index) => (
                 <TableRow key={item.id}>
-                  <TableCell className="text-center bg-[#F9FAFC]">
+                  <TableCell className="bg-[#F9FAFC]" position="center">
                     {(dtks.meta.currentPage - 1) * dtks.meta.perPage + index + 1}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.identityNumber}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.address.fullAddress}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.assistances.bpnt ? 'Ya' : 'Tidak'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.assistances.bltbbm ? 'Ya' : 'Tidak'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.assistances.pbi ? 'Ya' : 'Tidak'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.assistances.pkh ? 'Ya' : 'Tidak'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.identityNumber}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.name}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.address.fullAddress}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]" position="center">
+                    {item.assistances.bpnt ? 'Ya' : 'Tidak'}
+                  </TableCell>
+                  <TableCell className="bg-[#F9FAFC]" position="center">
+                    {item.assistances.bltbbm ? 'Ya' : 'Tidak'}
+                  </TableCell>
+                  <TableCell className="bg-[#F9FAFC]" position="center">
+                    {item.assistances.pbi ? 'Ya' : 'Tidak'}
+                  </TableCell>
+                  <TableCell className="bg-[#F9FAFC]" position="center">
+                    {item.assistances.pkh ? 'Ya' : 'Tidak'}
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
@@ -301,7 +309,6 @@ export default function DataDtks() {
         </Table>
         {(dtks?.meta?.total as number) > 30 ? (
           <Pagination
-            className="pt-5 flex justify-end"
             currentPage={page !== '' ? parseInt(page) : 1}
             totalCount={dtks?.meta.total as number}
             pageSize={30}

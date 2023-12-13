@@ -102,6 +102,22 @@ export interface IIndigencyCertificate {
   }>
   meta: IMeta
 }
+export interface IIndigencyCertificateByID {
+  success: boolean
+  message: string
+  id: string
+  applicant: IApplicant
+  peopleConcerned: IPeopleConcerned
+  application: string
+  certificateDestination: string
+  issueDate: string
+  issueYear: string
+  statusDtks: string
+  isApplicationOnline: string
+  createdAt: string
+  updatedAt: string
+  meta: IMeta
+}
 export interface IPremiumAssistanceBenefit {
   success: boolean
   message: string
@@ -145,4 +161,91 @@ export interface IFamilyHopeId {
   createdAt: string
   updatedAt: string
   meta: IMeta
+}
+interface IType {
+  id: string
+  name: string
+  code: string
+  createdAt: string
+  updatedAt: string
+}
+interface IEvent {
+  id: string
+  type: IType
+  eventDescription: string
+  startDate: string
+  endDate: string
+  isActive: boolean
+  batch: string
+  quota: string
+  createdAt: string
+  updatedAt: string
+}
+export interface IUniversity {
+  id: string
+  code: string
+  name: string
+}
+export interface IStudyProgram {
+  id: string
+  name: string
+}
+export interface IDocument {
+  applicationLetter: string
+  photo: string
+  familyCard: string
+  identityCard: string
+  studentCard: string
+  activeStudentCertificate: string
+  noScholarshipStatement: string
+  noGovernmentEmployeeStatement: string
+  biodata: string
+  dtksPrintout: string
+  passBook: string
+  tuitionReceipt: string
+  createdAt: string
+  updatedAt: string
+}
+export interface IApplication {
+  id: string
+  beneficiary: IBeneficary
+  event: IEvent
+  email: string
+  phoneNumber: string
+  university: IUniversity
+  studyProgram: IStudyProgram
+  semester: number
+  gpa: number
+  tuitionFee: number | null
+  bankAccNumber: string
+  bankAccName: string
+  application_status: string
+  message: string
+  dtksStatus: string
+  documents: IDocument
+  createdAt: string
+  updatedAt: string
+}
+export interface ITuitionAssistance {
+  success: boolean
+  message: string
+  data: Array<{
+    id: string
+    application: IApplication
+    assistanceAmount: number
+    disbursementStatus: string
+    budgetYear: string
+    createdAt: string
+    updatedAt: string
+  }>
+  meta: IMeta
+}
+export interface ITuitionAssistanceID {
+  id: string
+  application: IApplication
+  assistanceAmount: number
+  disbursementStatus: string
+  budgetYear: string
+  createdAt: string
+  updatedAt: string
 }

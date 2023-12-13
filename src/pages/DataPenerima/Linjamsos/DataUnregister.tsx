@@ -3,31 +3,41 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import useTitle from '@/hooks/useTitle'
 import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
-import DatePicker from '@/components/atoms/DatePicker'
 import { useNavigate } from 'react-router-dom'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useDeleteUnregister, useUnregisters } from '@/store/server'
-import { Action, Loading } from '@/components'
-import { useAlert } from '@/store/client'
+import { useDeleteUnregister, useGetDetailUnregister, useUnregisters } from '@/store/server'
+import { Action, ExportButton, Loading, Modal } from '@/components'
+import { exportUnregisterFn } from '@/api/linjamsos.api'
+import { useAlert, useTitleHeader } from '@/store/client'
+import * as React from 'react'
 interface FormValues {
   q: string
   letterNumber: string
-  date: string | Date
+  month: string
   year: string
 }
 const DataUnregister = () => {
-  useTitle('Data Penerima / Unregister) ')
+  useTitle('Data Penerima')
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/linjamsos', label: 'Linjamsos' },
+      { url: '/data-penerima/linjamsos/unregister', label: 'Unregister' }
+    ])
+  }, [])
+
   const navigate = useNavigate()
   const createParams = useCreateParams()
-
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
   const { alert } = useAlert()
-
-  const { page, date, letterNumber, q, year } = useGetParams(['q', 'letterNumber', 'date', 'page', 'year'])
+  const [isShow, setIsShow] = React.useState(false)
+  const [selectedId, setSelectedId] = React.useState('')
+  const { page, month, letterNumber, q, year } = useGetParams(['q', 'letterNumber', 'month', 'page', 'year'])
   function getYearFromDate(dateString: string): string | null {
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/
     if (!dateRegex.test(dateString)) {
@@ -42,7 +52,7 @@ const DataUnregister = () => {
   const forms = useForm<FormValues>({
     defaultValues: {
       q: '',
-      date: '',
+      month: '',
       letterNumber: '',
       year: ''
     }
@@ -54,12 +64,17 @@ const DataUnregister = () => {
     isLoading
   } = useUnregisters({
     page: parseInt(page) ?? 1,
-    date,
+    month,
     letterNumber,
     year,
     q
   })
+  const { data: unregister, isLoading: isLoadingUnregister } = useGetDetailUnregister(selectedId)
 
+  const showDetail = (id: string) => {
+    setSelectedId(id)
+    setIsShow(true)
+  }
   const { mutateAsync: deletePkr } = useDeleteUnregister()
   const handleDelete = async (id: string) => {
     await alert({
@@ -83,15 +98,54 @@ const DataUnregister = () => {
 
   const onSubmit = async (values: FormValues) => {
     updateParam('q', values.q)
-    updateParam('date', values.date)
+    updateParam('month', values.month)
     updateParam('letterNumber', values.letterNumber)
     updateParam('year', values.year)
 
     await refetch()
   }
   const handleReset = () => {
-    navigate('/data-penerima/linjamsos/data-unregister')
+    navigate('/data-penerima/linjamsos/unregister')
     forms.reset()
+  }
+  const exportAsCsv = async () => {
+    setIsLoadingExport(true)
+    const response = await exportUnregisterFn('csv',
+    {
+    month,
+    letterNumber,
+    year,
+    q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
+  }
+
+  const exportAsXlsx = async () => {
+    setIsLoadingExport(true)
+    const response = await exportUnregisterFn('xlsx',
+    {
+    month,
+    letterNumber,
+    year,
+    q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
   }
   if (isLoading) {
     return <Loading />
@@ -99,6 +153,7 @@ const DataUnregister = () => {
   return (
     <div>
       <Container>
+        {(isFetching || isLoadingExport) && <Loading />}
         <h1 className="font-bold text-[32px] ">Unregister</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -109,7 +164,7 @@ const DataUnregister = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Nama Kelompok Masyarakat" />
+                      <Input {...field} type="text" placeholder="Nama Atau Diagnosa Penyakit" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -120,22 +175,18 @@ const DataUnregister = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Kode Kegiatan" />
+                      <Input {...field} type="text" placeholder="Nomor Surat" />
                     </FormControl>
                   </FormItem>
                 )}
               />
               <FormField
-                name="date"
+                name="month"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <DatePicker
-                        onChange={field.onChange}
-                        selected={field.value as Date}
-                        placeholder="Tanggal Masuk Rumah Sakit"
-                      />
+                      <Input {...field} type="text" placeholder="Masukkan Bulan" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -154,17 +205,10 @@ const DataUnregister = () => {
               />
             </div>
             <div className="flex justify-between">
-              <div className="w-[20%] mb-6">
-                <Select>
-                  <SelectTrigger className="border-primary bg-white text-primary focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ">
-                    <SelectValue placeholder="Export Data" />
-                  </SelectTrigger>
-                  <SelectContent className="border-primary text-primary">
-                    <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                    <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                    <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                  </SelectContent>
-                </Select>
+            <div className="w-[20%]">
+              {unregisters?.data?.length !== 0 ? (
+                  <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+                ) : null}
               </div>
               <div className="flex gap-3">
                 <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
@@ -181,7 +225,7 @@ const DataUnregister = () => {
         </Form>
         <section className="border rounded-xl mt-5 overflow-hidden">
           <Table>
-            <TableHeader className="bg-zinc-300">
+            <TableHeader className="bg-white">
               <TableRow>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">No. </TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
@@ -213,8 +257,8 @@ const DataUnregister = () => {
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       <Action
                         onDelete={async () => await handleDelete(item.id)}
-                        onDetail={() => console.log('edit')}
-                        onEdit={() => navigate(`/layanan/linjamsos/unregister/${item.id}`)}
+                        onDetail={() => showDetail(item.id)}
+                        onEdit={() => navigate(`/data-penerima/linjamsos/unregister/${item.id}`)}
                       />
                     </TableCell>
                   </TableRow>
@@ -229,9 +273,8 @@ const DataUnregister = () => {
             </TableBody>
           </Table>
         </section>
-        {(unregisters?.meta?.total as number) > 10 ? (
+        {(unregisters?.meta?.total as number) > 30 ? (
           <Pagination
-            className="px-5 py-5 flex justify-end"
             currentPage={page !== '' ? parseInt(page) : 1}
             totalCount={unregisters?.meta.total as number}
             pageSize={30}
@@ -239,6 +282,51 @@ const DataUnregister = () => {
           />
         ) : null}
       </Container>
+      <Modal isShow={isShow} className="md:max-w-4xl">
+        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data Unregister</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data Unregister</p>
+        </Modal.Header>
+        {isLoadingUnregister && <Loading />}
+        <div className="grid grid-cols-3 gap-y-5">
+          <div>
+            <p className="text-sm font-bold">Nama</p>
+            <p className="text-base capitalize">{unregister?.name ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Usia</p>
+            <p className="text-base capitalize">{unregister?.age ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Jenis Kelamin</p>
+            <p className="text-base capitalize">{unregister?.gender ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Nomor Surat Dinas Sosial</p>
+            <p className="text-base capitalize">{unregister?.dinsosLetterNumber ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tanggal Surat Dinas Sosial</p>
+            <p className="text-base capitalize">{unregister?.dinsosLetterDate ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Diagnosa Penyakit</p>
+            <p className="text-base capitalize">{unregister?.deseaseDiagnosis ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tanggal Masuk Rumah Sakit</p>
+            <p className="text-base capitalize">{unregister?.hospitalEntryDate ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Nomor Surat Rumah Sakit</p>
+            <p className="text-base capitalize">{unregister?.hospitalLetterNumber ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tanggal Surat Rumah Sakit</p>
+            <p className="text-base capitalize">{unregister?.hospitalLetterDate ?? '-'}</p>
+          </div>
+        </div>
+      </Modal>
     </div>
   )
 }

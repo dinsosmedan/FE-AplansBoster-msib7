@@ -6,6 +6,7 @@ import {
   type IAllDtks
 } from '@/lib/types/beneficary.type'
 import api from './axiosInstance'
+import { type beneficaryFields } from '@/lib/validations/beneficary.validation'
 
 export interface BeneficiaryQuery {
   page?: number
@@ -60,4 +61,8 @@ export const showDTKS = async ({
     `/dtks?area_level_3id=${kecamatan}&area_level_4=${kelurahan}&name=${nama}&identity_number=${nik}&family_card_number=${kk}&bpnt=${bpnt}&bltbbm=${blt}&pbi=${pbi}&pkh=${pkh}&page=${page}`
   )
   return response.data
+}
+
+export const storeDataMaster = async (fields: beneficaryFields) => {
+  await api.post('/beneficiary', fields)
 }

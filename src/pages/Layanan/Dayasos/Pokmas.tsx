@@ -1,17 +1,15 @@
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
+import { Container, DatePicker, Loading } from '@/components'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 import * as React from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { HiTrash, HiPlus } from 'react-icons/hi2'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useFieldArray, useForm } from 'react-hook-form'
-
-import { useToastNik, useTitle } from '@/hooks'
-import { Container, DatePicker, Loading } from '@/components'
 
 import {
   useCreateCommunityGroups,
@@ -23,14 +21,24 @@ import {
 } from '@/store/server'
 
 import { cn } from '@/lib/utils'
-import { formatDateToString, formatStringToDate } from '@/lib/formatDate'
 import { POKMAS_DEFAULT_VALUES } from '@/lib/defaultValues'
 import { COMMUNITY_ACTIVITY_CODE, COMMUNITY_ASSISTANCE_TYPE } from '@/lib/data'
+import { formatDateToString, formatStringToDate } from '@/lib/services/formatDate'
 import { type pokmasFields, pokmasValidation } from '@/lib/validations/dayasos.validation'
 
+import { useToastNik, useTitle, useNotFound } from '@/hooks'
+import { useTitleHeader } from '@/store/client'
+
 const Pokmas = () => {
-  useTitle('Kelompok Masyarakat (Pokmas)')
+  const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
+  useTitle(`${id ? 'Update' : 'Tambah'} Data`)
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  setBreadcrumbs([
+    { url: '/data-penerima/dayasos', label: 'Dayasos & PFM' },
+    { url: '/data-penerima/dayasos/pokmas', label: 'Pokmas' }
+  ])
 
   const [NIK, setNIK] = React.useState('')
   const [index, setIndex] = React.useState(0)
@@ -52,8 +60,10 @@ const Pokmas = () => {
   const { data: beneficiary, refetch, isFetching, isError, isLoading } = useGetBeneficaryByNIK(NIK, false)
   const { mutate: createPokmas, isLoading: isLoadingCreate } = useCreateCommunityGroups()
 
-  const { data: communityGroup, isSuccess, isLoading: isLoadingGet } = useGetCommunityGroup(id)
+  const { data: communityGroup, isSuccess, isLoading: isLoadingGet, isError: isErrorGet } = useGetCommunityGroup(id)
   const { mutate: updateCommunityGroup, isLoading: isLoadingUpdate } = useUpdateCommunityGroups()
+
+  useNotFound(isErrorGet)
 
   useToastNik({
     successCondition: !isLoading && beneficiary != null,
@@ -76,6 +86,7 @@ const Pokmas = () => {
 
   const onSuccess = () => {
     forms.reset()
+    navigate('/data-penerima/dayasos/pokmas')
   }
 
   const onSubmit = async (values: pokmasFields) => {
@@ -126,9 +137,7 @@ const Pokmas = () => {
     }
   }, [isSuccess, communityGroup])
 
-  if (isLoadingGet) {
-    return <Loading />
-  }
+  if (isLoadingGet) return <Loading />
 
   return (
     <Container className="py-10 px-16">
@@ -161,7 +170,7 @@ const Pokmas = () => {
                 <FormItem>
                   <FormLabel>No. HP Pemohon</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan No. HP Pemohon" />
+                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan No. HP Pemohon" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -409,7 +418,7 @@ const Pokmas = () => {
                 <FormItem>
                   <FormLabel>Nomor Rekening</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nomor Rekening" />
+                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Nomor Rekening" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -481,7 +490,7 @@ const Pokmas = () => {
                   <FormItem className="flex-1">
                     <FormLabel>NIK</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan NIK" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan NIK" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

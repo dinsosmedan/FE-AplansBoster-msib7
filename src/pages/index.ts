@@ -4,7 +4,6 @@ import ForgotPassword from './ForgotPassword'
 import Layanan from './Layanan'
 import DataPenerima from './DataPenerima'
 import DataMaster from './DataMaster'
-import ProfilingMasyarakat from './ProfilingMasyarakat'
 import ManajemenUser from './ManajemenUser'
 import ManajemenRole from './ManajemenRole'
 import Bpnt from './Layanan/Dayasos/Bpnt'
@@ -13,7 +12,6 @@ import Hibah from './Layanan/Dayasos/Hibah'
 import Djp from './Layanan/Dayasos/Djp'
 import Ri from './Layanan/Dayasos/RumahIbadah'
 import Bbp from './Layanan/Linjamsos/Bbp'
-import Pkh from './Pkh'
 import Djpm from './Djpm'
 import Veteran from './Layanan/Dayasos/Veteran'
 import CekDataDukcapil from './CekDataDukcapil'
@@ -43,8 +41,23 @@ import UpdatePasswordUser from './LandingPage/UpdatePasswordUser'
 import CekBansosUser from './LandingPage/CekBansosUser'
 import DataPkh from './DataPenerima/Linjamsos/DataPkh'
 import Unregister from './Layanan/Linjamsos/Unregister'
-import UserSktm from './LandingPage/SKTM/DataSktm'
-import FormSktmTerdaftar from './LandingPage/SKTM/SktmRegistered'
+import UserSktm from './LandingPage/Sktm/SktmUser'
+import SktmUnregister from './LandingPage/Sktm/SktmUnregister'
+import SktmRegister from './LandingPage/Sktm/SktmRegister'
+import SktmReligious from './LandingPage/Sktm/SktmRegisterReligious'
+import SktmUnregisterReligious from './LandingPage/Sktm/SktmUnregisterReligious'
+import BbpUser from './LandingPage/Bbp/BbpUser'
+import BbpRegister from './LandingPage/Bbp/BbpRegister'
+import BbpFilterBatch from './Layanan/BbpFilterBatch'
+import LayananBbp from './Layanan/LayananBbp'
+import LayananSktm from './Layanan/LayananSktm'
+import LayananDtks from './Layanan/LayananDtks'
+import DtksUser from './LandingPage/Dtks/DtksUser'
+import NotFound from './NotFound'
+import DtksRegister from './LandingPage/Dtks/DtksRegister'
+import SubmissionHistory from './LandingPage/SubmissionHistory'
+import ChangePassword from './LandingPage/Profile/ChangePassword'
+import ChangeProfile from './LandingPage/Profile/ChangeProfile'
 
 export {
   Home,
@@ -54,7 +67,6 @@ export {
   DataPenerima,
   DataMaster,
   Event,
-  ProfilingMasyarakat,
   ManajemenRole,
   ManajemenUser,
   Bpnt,
@@ -63,7 +75,6 @@ export {
   Djp,
   Ri,
   Bbp,
-  Pkh,
   Djpm,
   Veteran,
   CekDataDukcapil,
@@ -93,5 +104,20 @@ export {
   Unregister,
   CekBansosUser,
   UserSktm,
-  FormSktmTerdaftar
+  SktmUnregister,
+  SktmRegister,
+  SktmReligious,
+  SktmUnregisterReligious,
+  BbpUser,
+  BbpRegister,
+  BbpFilterBatch,
+  LayananBbp,
+  NotFound,
+  LayananSktm,
+  LayananDtks,
+  DtksUser,
+  DtksRegister,
+  SubmissionHistory,
+  ChangePassword,
+  ChangeProfile
 }

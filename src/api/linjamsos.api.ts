@@ -7,10 +7,18 @@ import {
   type IPremiumAssistanceBenefitById,
   type IFamilyHopeId,
   type IVulnerableGroupHandlingDetail,
-  type IUnregisterDetail
+  type IUnregisterDetail,
+  type IIndigencyCertificateByID,
+  type ITuitionAssistance,
+  type ITuitionAssistanceID
 } from '@/lib/types/linjamsos.type'
 import api from './axiosInstance'
-import { type unregisterFields, type vulnerableGroupHandlingFields } from '@/lib/validations/linjamsos.validation'
+import {
+  type indigencyCertificateFields,
+  type tuitionAssistanceFields,
+  type unregisterFields,
+  type vulnerableGroupHandlingFields
+} from '@/lib/validations/linjamsos.validation'
 
 export interface VulnerableGroupHandlingQuery {
   page?: number
@@ -21,7 +29,7 @@ export interface VulnerableGroupHandlingQuery {
 }
 export interface UnregisterQuery {
   page?: number
-  date?: string
+  month?: string
   letterNumber?: string
   q?: string
   year?: string
@@ -32,19 +40,28 @@ export interface IndigencyCertificateQuery {
   idKelurahan?: string
   q?: string
   year?: string
-  status?: string
+  statusDtks: string
 }
 export interface PremiumAssistanceBenefitQuery {
   page?: number
   q?: string
-  type?: string
+  budget?: string
   idKecamatan?: string
   idKelurahan?: string
 }
 export interface FamilyHopeQuery {
   page?: number
   q?: string
-  type?: string
+  member?: string
+  idKecamatan?: string
+  idKelurahan?: string
+}
+export interface TuitionAssistanceQuery {
+  page?: number
+  q?: string
+  event?: string
+  status?: string
+  year?: string
   idKecamatan?: string
   idKelurahan?: string
 }
@@ -57,7 +74,7 @@ export const getVulnerableGroupHandlingFn = async ({
   year
 }: VulnerableGroupHandlingQuery): Promise<IVulnerableGroupHandling> => {
   const response = await api.get(
-    `/vulnerable-group-handling?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&budget_year=${year}&limit=10`
+    `/vulnerable-group-handling?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&budget_year=${year}`
   )
   return response.data
 }
@@ -71,12 +88,6 @@ export const showDetailVulnerableGroupHandlingFn = async (id: string): Promise<I
   return response.data?.data
 }
 
-export const deleteSktmFn = async (id: string) => {
-  await api.delete(`/indigency-certificate/${id}`)
-}
-export const deleteUnregisterFn = async (id: string) => {
-  await api.delete(`/unregister/${id}`)
-}
 export const deletePkrFn = async (id: string) => {
   await api.delete(`/vulnerable-group-handling/${id}`)
 }
@@ -89,10 +100,25 @@ export const updateVulnerableGroupHandlingFn = async ({ id, fields }: IVulnerabl
   await api.put(`/vulnerable-group-handling/${id}`, fields)
 }
 
-// Unregister //
-export const getUnregisterFn = async ({ page, date, letterNumber, q, year }: UnregisterQuery): Promise<IUnregister> => {
+export const exportVulnerableGroupHandlingFn = async (
+  type: 'xlsx' | 'csv',
+  { page, idKecamatan, idKelurahan, q, year }: VulnerableGroupHandlingQuery
+) => {
   const response = await api.get(
-    `/unregister?page=${page}&hospital_entry_date=${date}&dinsos_letter_number=${letterNumber}&q=${q}&year=${year}&limit=10`
+    `/vulnerable-group-handling/export/${type}?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&budget_year=${year}`
+  )
+  return response.data
+}
+// Unregister //
+export const getUnregisterFn = async ({
+  page,
+  month,
+  letterNumber,
+  q,
+  year
+}: UnregisterQuery): Promise<IUnregister> => {
+  const response = await api.get(
+    `/unregister?page=${page}&month=${month}&dinsos_letter_number=${letterNumber}&q=${q}&year=${year}`
   )
   return response.data
 }
@@ -105,7 +131,9 @@ export const showDetailUnregisterFn = async (id: string): Promise<IUnregisterDet
   const response = await api.get(`/unregister/${id}`)
   return response.data?.data
 }
-
+export const deleteUnregisterFn = async (id: string) => {
+  await api.delete(`/unregister/${id}`)
+}
 interface IUnregisterUpdate {
   id: string
   fields: unregisterFields
@@ -114,7 +142,12 @@ interface IUnregisterUpdate {
 export const updateUnregisterFn = async ({ id, fields }: IUnregisterUpdate) => {
   await api.put(`/unregister/${id}`, fields)
 }
-
+export const exportUnregisterFn = async (type: 'xlsx' | 'csv', { month, letterNumber, q, year }: UnregisterQuery) => {
+  const response = await api.get(
+    `/unregister/export/${type}?month=${month}&dinsos_letter_number=${letterNumber}&q=${q}&year=${year}`
+  )
+  return response.data
+}
 // SKTM //
 export const getIndigencyCertificateFn = async ({
   page,
@@ -122,23 +155,40 @@ export const getIndigencyCertificateFn = async ({
   idKelurahan,
   q,
   year,
-  status
+  statusDtks
 }: IndigencyCertificateQuery): Promise<IIndigencyCertificate> => {
   const response = await api.get(
-    `/indigency-certificate?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&issue_year=${year}&is_dtks=${status}&limit=10`
+    `/indigency-certificate?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&issue_year=${year}&status_dtks=${statusDtks}`
   )
   return response.data
 }
+export const showDetailIndigencyCertificateFn = async (id: string): Promise<IIndigencyCertificateByID> => {
+  const response = await api.get(`/indigency-certificate/${id}`)
+  return response.data?.data
+}
+export const deleteSktmFn = async (id: string) => {
+  await api.delete(`/indigency-certificate/${id}`)
+}
+export const exportIndigencyCertificateFn = async (
+  type: 'xlsx' | 'csv',
+  { idKecamatan, idKelurahan, q, year, statusDtks }: IndigencyCertificateQuery
+) => {
+  const response = await api.get(
+    `/indigency-certificate/export/${type}?area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&issue_year=${year}&status_dtks=${statusDtks}`
+  )
+  return response.data
+}
+
 // PBI //
 export const getPremiumAssistanceBenefitFn = async ({
   page,
-  type,
+  budget,
   idKecamatan,
   idKelurahan,
   q
 }: PremiumAssistanceBenefitQuery): Promise<IPremiumAssistanceBenefit> => {
   const response = await api.get(
-    `/premium-assistance-beneficiary?page=${page}&type=${type}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&limit=10`
+    `/premium-assistance-beneficiary?page=${page}&type=${budget}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}`
   )
   return response.data
 }
@@ -146,20 +196,75 @@ export const getPremiumAssistanceBenefitByIdFn = async (id: string): Promise<IPr
   const response = await api.get(`/premium-assistance-beneficiary/${id}`)
   return response.data?.data
 }
+export const exportPremiumAssistanceBenefitFn = async (
+  type: 'xlsx' | 'csv',
+  { budget, idKecamatan, idKelurahan, q }: PremiumAssistanceBenefitQuery
+) => {
+  const response = await api.get(
+    `/premium-assistance-beneficiary/export/${type}?&type=${budget}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}`
+  )
+  return response.data
+}
 // PKH //
 export const getFamilyHopeFn = async ({
   page,
   q,
   idKecamatan,
   idKelurahan,
-  type
+  member
 }: FamilyHopeQuery): Promise<IFamilyHope> => {
   const response = await api.get(
-    `/family-hope-program?page=${page}&q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&type=${type}&limit=10`
+    `/family-hope-program?page=${page}&q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&type=${member}`
   )
   return response.data
 }
 export const getFamilyHopeByIdFn = async (id: string): Promise<IFamilyHopeId> => {
   const response = await api.get(`/family-hope-program/${id}`)
   return response.data?.data
+}
+export const exportFamilyHopeFn = async (
+  type: 'xlsx' | 'csv',
+  { page, q, idKecamatan, idKelurahan, member }: FamilyHopeQuery
+) => {
+  const response = await api.get(
+    `/family-hope-program/export/${type}?page=${page}&q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&type=${member}`
+  )
+  return response.data
+}
+// BBP //
+export const getTuitionAssistanceFn = async ({
+  page,
+  q,
+  event,
+  idKecamatan,
+  idKelurahan,
+  year,
+  status
+}: TuitionAssistanceQuery): Promise<ITuitionAssistance> => {
+  const response = await api.get(
+    `/tuition-assistance?q=${q}&page=${page}&event=${event}&area_level_4=${idKelurahan}&area_level_3=${idKecamatan}&budget_year=${year}&disbursement_status=${status}`
+  )
+  return response.data
+}
+export const getTuitionAssistanceByIdFn = async (id: string): Promise<ITuitionAssistanceID> => {
+  const response = await api.get(`/tuition-assistance/${id}`)
+  return response.data?.data
+}
+
+export const storeTuitionAssistanceFn = async (fields: tuitionAssistanceFields) => {
+  await api.post('/service/tuition-assistance-application', fields)
+}
+
+export const exportTuitionAssistanceFn = async (
+  type: 'xlsx' | 'csv',
+  { q, event, idKecamatan, idKelurahan, year, status }: TuitionAssistanceQuery
+) => {
+  const response = await api.get(
+    `/tuition-assistance/export/${type}?q=${q}&event=${event}&area_level_4=${idKelurahan}&area_level_3=${idKecamatan}&budget_year=${year}&disbursement_status=${status}`
+  )
+  return response.data
+}
+
+export const storeIndigencyCertificateFn = async (fields: indigencyCertificateFields) => {
+  await api.post('/service/indigency-certificate', fields)
 }

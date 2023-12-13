@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import * as React from 'react'
 
-import { useTitle, useToastNik } from '@/hooks'
+import { useNotFound, useTitle, useToastNik } from '@/hooks'
 import { Container, Loading } from '@/components'
 import { veteranValidation, type veteranFields } from '@/lib/validations/dayasos.validation'
 
@@ -11,14 +11,23 @@ import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { useCreateVeteran, useGetBeneficaryByNIK, useGetVeteranById, useUpdateVeteran } from '@/store/server'
 import { useNavigate, useParams } from 'react-router-dom'
+import { HiMagnifyingGlass } from 'react-icons/hi2'
+import { useTitleHeader } from '@/store/client'
 
 const Veteran = () => {
-  useTitle('Veteran')
-
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
-  const [NIK, setNIK] = React.useState('')
+  useTitle(`${id ? 'Update' : 'Tambah'} Data`)
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
 
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/dayasos', label: 'Dayasos' },
+      { url: '/data-penerima/dayasos/veteran', label: 'Veteran' }
+    ])
+  }, [])
+
+  const [NIK, setNIK] = React.useState('')
   const forms = useForm<veteranFields>({
     mode: 'onTouched',
     resolver: yupResolver(veteranValidation),
@@ -30,16 +39,17 @@ const Veteran = () => {
     }
   })
 
-  const { data: beneficiary, refetch, isLoading, isError } = useGetBeneficaryByNIK(NIK, false)
+  const { data: beneficiary, refetch, isLoading, isError: isErrorBeneficary } = useGetBeneficaryByNIK(NIK, false)
+  const { data: veteran, isLoading: isLoadingVeteran, isSuccess, isError } = useGetVeteranById(id)
   const { mutate: createVeteran, isLoading: isLoadingCreate } = useCreateVeteran()
-
-  const { data: veteran, isLoading: isLoadingVeteran, isSuccess } = useGetVeteranById(id)
   const { mutate: updateVeteran, isLoading: isLoadingUpdate } = useUpdateVeteran()
+
+  useNotFound(isError)
 
   useToastNik({
     successCondition: !isLoading && beneficiary != null,
     onSuccess: () => forms.setValue('beneficiary', beneficiary?.id as string),
-    notFoundCondition: isError,
+    notFoundCondition: isErrorBeneficary,
     notRegisteredCondition: forms.getValues('beneficiary') === '' && NIK !== '' && forms.formState.isSubmitted
   })
 
@@ -57,7 +67,7 @@ const Veteran = () => {
 
   const onSuccess = () => {
     forms.reset()
-    navigate('/data-penerima/dayasos/data-veteran')
+    navigate('/data-penerima/dayasos/veteran')
   }
 
   const onSubmit = async (values: veteranFields) => {
@@ -65,9 +75,7 @@ const Veteran = () => {
     updateVeteran({ id, fields: values }, { onSuccess })
   }
 
-  if (isLoadingVeteran) {
-    return <Loading />
-  }
+  if (isLoadingVeteran) return <Loading />
 
   return (
     <Container className="py-10">
@@ -89,8 +97,9 @@ const Veteran = () => {
                   </FormControl>
                 </FormItem>
                 <div className="w-fit flex items-end justify-end" onClick={async () => await refetch()}>
-                  <Button className="w-full" loading={isLoading} type="button">
-                    Cari
+                  <Button className="w-full gap-2" loading={isLoading} type="button">
+                    <HiMagnifyingGlass className="text-lg" />
+                    <span>Cari</span>
                   </Button>
                 </div>
               </div>
