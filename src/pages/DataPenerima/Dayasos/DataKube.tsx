@@ -123,14 +123,42 @@ const DataKube = () => {
 
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    await exportJointBussinessFn('kube', 'csv')
+    const response = await exportJointBussinessFn('csv',
+    {
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    q,
+    year
+  })
+    if (response.success) {
+    void alert({
+      title: 'Berhasil Export',
+      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+      submitText: 'Oke',
+      variant: 'success'
+    })
     setIsLoadingExport(false)
+  }
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    await exportJointBussinessFn('kube', 'xlsx')
+    const response = await exportJointBussinessFn('xlsx',
+    {
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    q,
+    year
+  })
+    if (response.success) {
+    void alert({
+      title: 'Berhasil Export',
+      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+      submitText: 'Oke',
+      variant: 'success'
+    })
     setIsLoadingExport(false)
+  }
   }
 
   if (isLoading && isLoadingBusinessGroup) return <Loading />

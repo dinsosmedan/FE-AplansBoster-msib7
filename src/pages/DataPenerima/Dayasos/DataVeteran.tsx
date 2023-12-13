@@ -74,14 +74,38 @@ const DataVeteran = () => {
 
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    await exportVeteranFn('veteran', 'csv')
+    const response = await exportVeteranFn('csv',
+    {
+      q
+    }
+    )
+    if (response.success) {
+    void alert({
+      title: 'Berhasil Export',
+      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+      submitText: 'Oke',
+      variant: 'success'
+    })
     setIsLoadingExport(false)
+  }
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    await exportVeteranFn('veteran', 'xlsx')
+    const response = await exportVeteranFn('xlsx',
+    {
+      q
+    }
+    )
+    if (response.success) {
+    void alert({
+      title: 'Berhasil Export',
+      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+      submitText: 'Oke',
+      variant: 'success'
+    })
     setIsLoadingExport(false)
+  }
   }
 
   if (isLoading) return <Loading />

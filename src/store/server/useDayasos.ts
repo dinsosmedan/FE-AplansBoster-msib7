@@ -61,10 +61,10 @@ import { type AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
 /* RUMAH IBADAH */
-export const useGetWorshipPlaces = ({ page, idKecamatan, idKelurahan, type, q }: WorshipPlaceQuery) => {
+export const useGetWorshipPlaces = ({ page, idKecamatan, idKelurahan, place, q }: WorshipPlaceQuery) => {
   return useQuery(
-    ['worship-places', page, idKecamatan, idKelurahan, type, q],
-    async () => await getWorshipPlacesFn({ page, idKecamatan, idKelurahan, type, q }),
+    ['worship-places', page, idKecamatan, idKelurahan, place, q],
+    async () => await getWorshipPlacesFn({ page, idKecamatan, idKelurahan, place, q }),
     {
       keepPreviousData: true,
       staleTime: 10 * 60 * 1000
@@ -187,10 +187,10 @@ export const useGetServiceTypes = () => {
   return useQuery('service-types', async () => await getServiceTypesFn())
 }
 
-export const useGetServiceFunds = ({ page, idKecamatan, idKelurahan, name, type }: ServiceFundQuery) => {
+export const useGetServiceFunds = ({ page, idKecamatan, idKelurahan, name, assistance }: ServiceFundQuery) => {
   return useQuery(
-    ['service-funds', page, idKecamatan, idKelurahan, name, type],
-    async () => await getServiceFundsFn({ page, idKecamatan, idKelurahan, name, type }),
+    ['service-funds', page, idKecamatan, idKelurahan, name, assistance],
+    async () => await getServiceFundsFn({ page, idKecamatan, idKelurahan, name, assistance }),
     {
       keepPreviousData: true,
       staleTime: 10 * 60 * 1000
