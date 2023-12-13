@@ -35,7 +35,9 @@ import {
   CekBansosUser,
   DataPkh,
   DataPenerima,
-  NotFound
+  NotFound,
+  ResetPassword,
+  ManajemenAdmin
 } from './pages'
 
 import {
@@ -189,12 +191,14 @@ export default function App() {
             <Route path="/cek-data-dukcapil" element={<CekDataDukcapil />} />
             <Route path="/manajemen-role" element={<ManajemenRole />} />
             <Route path="/manajemen-user" element={<ManajemenUser />} />
+            <Route path="/manajemen-admin" element={<ManajemenAdmin />} />
           </Route>
         </Route>
 
         <Route element={<ProtectedAuth />}>
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Route>
 
         <Route element={<UserLayout />}>
@@ -205,6 +209,7 @@ export default function App() {
                 <Route path="login" element={<LoginUser />} />
                 <Route path="register" element={<RegisterUser />} />
                 <Route path="forgot-password" element={<ForgotPasswordUser />} />
+                <Route path="reset-password" element={<UpdatePasswordUser />} />
                 <Route path="reset-password" element={<UpdatePasswordUser />} />
               </Route>
             </Route>
