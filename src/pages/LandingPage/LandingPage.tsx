@@ -18,12 +18,11 @@ export default function LandingPage() {
         <div className="flex-1 flex justify-center items-center">
           <div className="max-w-[450px]">
             <div className="flex flex-col items-start text-white">
-              <h1 className="font-volkhov max-w-[300px] font-bold text-[64px]">
-                Pelayanan <span className="text-[#FFB60A]">Online</span> with us.
+              <h1 className="font-volkhov max-w-[500px] font-bold text-[64px]">
+                Pelayanan Online <br /><span className="text-[#FFB60A]">Aplans Boster</span>
               </h1>
               <p className="text-lg mt-8 mb-16 leading-relaxed">
-                A Team of experienced tourism professionals will provide you with the best advice and tips for your
-                desire place.
+                Selamat datang di di Aplikasi Pelayanan Sosial Berbasis Online Terintegrasi. <br /> Dinas Sosial Kota Medan
               </p>
               <Button
                 variant="ghost"
@@ -52,7 +51,7 @@ export default function LandingPage() {
             title="DTKS (Data Terpadu Kesejahteraan Sosial)"
             desc="Layanan Pengajuan DTKS (Data Terpadu Kesejahteraan Sosial)"
             btnText="Pendaftaran Pengajuan"
-            href="/"
+            href="/user/dtks/register-dtks"
             icon={HiGift}
           />
           <CardLandingPage
@@ -60,14 +59,14 @@ export default function LandingPage() {
             title="Bantuan Biaya Pendidikan"
             desc="Layanan Pengajuan Bantuan Biaya Pendidikan"
             btnText="Pendaftaran Pengajuan"
-            href="/"
+            href="/user/bbp/register-bbp"
             icon={HiAcademicCap}
           />
           <CardLandingPage
             title="SKTM (Surat Keterangan Tidak Mampu)"
             desc="Layanan Pengajuan SKTM (Surat Keterangan Tidak Mampu)"
             btnText="Pendaftaran Pengajuan"
-            href="/"
+            href="/user/sktm"
             icon={HiDocumentText}
           />
         </div>

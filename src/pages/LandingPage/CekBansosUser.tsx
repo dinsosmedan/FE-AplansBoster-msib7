@@ -58,7 +58,7 @@ export default function CekBansosUser() {
       <section className="h-[250px] w-full bg-[url('@/assets/images/bg-cek-bansos.svg')] bg-cover relative">
         <div className="flex items-center justify-center h-full">
           <h1 className="text-5xl font-bold text-white">
-            Cek Bansos <span className="text-[#FFB60A]">Sosial</span>
+            Cek Bantuan <span className="text-[#FFB60A]">Sosial</span>
           </h1>
         </div>
 

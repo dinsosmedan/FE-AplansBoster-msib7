@@ -1,15 +1,13 @@
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import Container from '@/components/atoms/Container'
-import { Action, Loading, Modal, Pagination } from '@/components'
+import { Action, ExportButton, Loading, Modal, Pagination } from '@/components'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-
-import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
+import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 
 import {
   useGetEvent,
@@ -18,8 +16,10 @@ import {
   useGetTuitionAssistanceFn,
   useGetTuitionAssistanceID
 } from '@/store/server'
+import React from 'react'
+import { exportTuitionAssistanceFn } from '@/api/linjamsos.api'
+import { useAlert, useTitleHeader } from '@/store/client'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
-import { useTitleHeader } from '@/store/client'
 interface FormValues {
   q: string
   kelurahan: string
@@ -41,6 +41,8 @@ const DataBbp = () => {
 
   const navigate = useNavigate()
   const createParams = useCreateParams()
+  const { alert } = useAlert()
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
   const { q, kecamatan, kelurahan, page, year, status, event } = useGetParams([
@@ -110,7 +112,47 @@ const DataBbp = () => {
 
     await refetch()
   }
+  const exportAsCsv = async () => {
+    setIsLoadingExport(true)
+    const response = await exportTuitionAssistanceFn('csv', {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+      year,
+      status,
+      event,
+      q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
+  }
 
+  const exportAsXlsx = async () => {
+    setIsLoadingExport(true)
+    const response = await exportTuitionAssistanceFn('xlsx', {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+      year,
+      status,
+      event,
+      q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
+  }
   const handleReset = () => {
     navigate('/data-penerima/linjamsos/bbp')
     forms.reset()
@@ -120,7 +162,7 @@ const DataBbp = () => {
 
   return (
     <Container>
-      {isFetching && <Loading />}
+      {(isFetching || isLoadingExport) && <Loading />}
       <h1 className="font-bold text-[32px] ">Bantuan Biaya Pendidikan (BBP)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -243,25 +285,9 @@ const DataBbp = () => {
             />
           </div>
           <section className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Button
-                type="button"
-                className="gap-2 border-none rounded-lg"
-                onClick={() => navigate('/data-penerima/linjamsos/bbp/create')}
-              >
-                <HiPlus className="text-lg" />
-                <span>Tambah Data</span>
-              </Button>
-              <Select>
-                <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
-                  <SelectValue placeholder="Export" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value=".clsx">.clsx</SelectItem>
-                  <SelectItem value=".csv">.csv</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            {tuitions?.data?.length !== 0 ? (
+              <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+            ) : null}
             <div className="flex gap-3">
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
                 <HiArrowPath className="text-lg" />

@@ -11,8 +11,9 @@ import Pagination from './../../../components/atoms/Pagination'
 import { useNavigate } from 'react-router-dom'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useGetFamilyHopeByID, useGetFamilyHopeFn, useGetKecamatan, useGetKelurahan } from '@/store/server'
-import { Action, Loading, Modal } from '@/components'
+import { Action, ExportButton, Loading, Modal } from '@/components'
 import React from 'react'
+import { exportFamilyHopeFn } from '@/api/linjamsos.api'
 import { useTitleHeader } from '@/store/client'
 interface FormValues {
   q: string
@@ -44,6 +45,7 @@ const DataPkh = () => {
     }
   })
   const areaLevel3 = forms.watch('kecamatan')
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
   const { data: family, isLoading: isLoadingFamilyHope } = useGetFamilyHopeByID(selectedId)
@@ -56,7 +58,7 @@ const DataPkh = () => {
     page: parseInt(page) ?? 1,
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
-    type,
+    member: type,
     q
   })
   useDisableBodyScroll(isFetching)
@@ -88,14 +90,49 @@ const DataPkh = () => {
   if (isLoading && isLoadingFamilyHope) {
     return <Loading />
   }
-  // const handleReset = () => {
-  //   navigate('/data-penerima/dayasos/djpm')
-  //   forms.reset()
-  // }
+  const exportAsCsv = async () => {
+    setIsLoadingExport(true)
+    const response = await exportFamilyHopeFn('csv',
+    {
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    member: type,
+    q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
+  }
+
+  const exportAsXlsx = async () => {
+    setIsLoadingExport(true)
+    const response = await exportFamilyHopeFn('xlsx',
+    {
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    member: type,
+    q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
+  }
 
   return (
     <Container>
-      {isFetching && <Loading />}
+      {(isFetching || isLoadingExport) && <Loading />}
       <h1 className="font-bold text-2xl ">Program Keluarga Harapan (PKH)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -189,15 +226,11 @@ const DataPkh = () => {
           </div>
 
           <section className="flex items-center justify-between">
-            <Select>
-              <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
-                <SelectValue placeholder="Export" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value=".clsx">.clsx</SelectItem>
-                <SelectItem value=".csv">.csv</SelectItem>
-              </SelectContent>
-            </Select>
+          <div className="w-[20%]">
+              {familys?.data?.length !== 0 ? (
+                  <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+                ) : null}
+              </div>
             <div className="flex gap-3">
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
                 <HiArrowPath className="text-lg" />

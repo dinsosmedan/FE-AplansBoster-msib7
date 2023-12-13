@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
+import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
@@ -17,8 +17,9 @@ import {
   useGetKelurahan,
   useDeleteSktm
 } from '@/store/server'
-import { Action, Loading, Modal } from '@/components'
+import { Action, ExportButton, Loading, Modal } from '@/components'
 import React from 'react'
+import { exportIndigencyCertificateFn } from '@/api/linjamsos.api'
 import { useAlert, useTitleHeader } from '@/store/client'
 
 interface FormValues {
@@ -41,6 +42,7 @@ const DataSktm = () => {
   const navigate = useNavigate()
   const { alert } = useAlert()
   const createParams = useCreateParams()
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
   const { q, kecamatan, kelurahan, page, year, statusDtks } = useGetParams([
@@ -116,6 +118,46 @@ const DataSktm = () => {
     navigate('/data-penerima/linjamsos/sktm')
     forms.reset()
   }
+
+  const exportAsCsv = async () => {
+    setIsLoadingExport(true)
+    const response = await exportIndigencyCertificateFn('csv', {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+      year,
+      statusDtks,
+      q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
+  }
+
+  const exportAsXlsx = async () => {
+    setIsLoadingExport(true)
+    const response = await exportIndigencyCertificateFn('xlsx', {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+      year,
+      statusDtks,
+      q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
+  }
   if (isLoading && isLoadingIndigencyCertificate) {
     return <Loading />
   }
@@ -136,7 +178,7 @@ const DataSktm = () => {
 
   return (
     <Container>
-      {isFetching && <Loading />}
+      {(isFetching || isLoadingExport) && <Loading />}
       <h1 className="font-bold text-2xl ">Surat Keterangan Tidak Mampu (SKTM)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -239,24 +281,10 @@ const DataSktm = () => {
             />
           </div>
           <section className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Button
-                type="button"
-                className="gap-2 border-none rounded-lg"
-                onClick={() => navigate('/data-penerima/linjamsos/sktm/create')}
-              >
-                <HiPlus className="text-lg" />
-                <span>Tambah Data</span>
-              </Button>
-              <Select>
-                <SelectTrigger className="border-primary flex gap-5 rounded-lg font-bold w-fit bg-white text-primary focus:ring-0">
-                  <SelectValue placeholder="Export" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value=".clsx">.clsx</SelectItem>
-                  <SelectItem value=".csv">.csv</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="w-[20%]">
+              {indigencys?.data?.length !== 0 ? (
+                <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+              ) : null}
             </div>
             <div className="flex gap-3">
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>

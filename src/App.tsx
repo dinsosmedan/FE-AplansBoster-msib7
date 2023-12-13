@@ -64,11 +64,11 @@ import { Toaster } from './components/ui/toaster'
 import DataBpnt from './pages/DataPenerima/Dayasos/DataBpnt'
 import DataPbi from './pages/DataPenerima/Linjamsos/DataPbi'
 import Unregister from './pages/Layanan/Linjamsos/Unregister'
-import UserSktm from './pages/LandingPage/SKTM/SktmUser'
-import SktmUnregister from './pages/LandingPage/SKTM/SktmUnregister'
-import SktmRegister from './pages/LandingPage/SKTM/SktmRegister'
-import SktmReligious from './pages/LandingPage/SKTM/SktmRegisterReligious'
-import SktmUnregisterReligious from './pages/LandingPage/SKTM/SktmUnregisterReligious'
+import UserSktm from './pages/LandingPage/Sktm/SktmUser'
+import SktmUnregister from './pages/LandingPage/Sktm/SktmUnregister'
+import SktmRegister from './pages/LandingPage/Sktm/SktmRegister'
+import SktmReligious from './pages/LandingPage/Sktm/SktmRegisterReligious'
+import SktmUnregisterReligious from './pages/LandingPage/Sktm/SktmUnregisterReligious'
 import BbpUser from './pages/LandingPage/Bbp/BbpUser'
 import BbpRegister from './pages/LandingPage/Bbp/BbpRegister'
 import BbpFilterBatch from './pages/Layanan/BbpFilterBatch'
@@ -76,6 +76,7 @@ import LayananBbp from './pages/Layanan/LayananBbp'
 import LayananSktm from './pages/Layanan/LayananSktm'
 import LayananDtks from './pages/Layanan/LayananDtks'
 import DtksUser from './pages/LandingPage/Dtks/DtksUser'
+import DtksRegister from './pages/LandingPage/Dtks/DtksRegister'
 
 export default function App() {
   const { alertOptions, handleClose, handleSubmit } = useAlert()
@@ -214,7 +215,7 @@ export default function App() {
             </Route>
             <Route path="dtks">
               <Route index element={<DtksUser />} />
-              <Route path="register-bbp" element={<BbpRegister />} />
+              <Route path="register-dtks" element={<DtksRegister />} />
             </Route>
             <Route path="cek-bansos" element={<CekBansosUser />} />
           </Route>

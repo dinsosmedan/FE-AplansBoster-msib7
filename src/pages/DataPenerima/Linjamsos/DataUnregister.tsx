@@ -3,7 +3,6 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import useTitle from '@/hooks/useTitle'
 import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
@@ -11,7 +10,8 @@ import Pagination from './../../../components/atoms/Pagination'
 import { useNavigate } from 'react-router-dom'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useDeleteUnregister, useGetDetailUnregister, useUnregisters } from '@/store/server'
-import { Action, Loading, Modal } from '@/components'
+import { Action, ExportButton, Loading, Modal } from '@/components'
+import { exportUnregisterFn } from '@/api/linjamsos.api'
 import { useAlert, useTitleHeader } from '@/store/client'
 import * as React from 'react'
 interface FormValues {
@@ -33,7 +33,7 @@ const DataUnregister = () => {
 
   const navigate = useNavigate()
   const createParams = useCreateParams()
-
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
   const { alert } = useAlert()
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
@@ -108,13 +108,52 @@ const DataUnregister = () => {
     navigate('/data-penerima/linjamsos/unregister')
     forms.reset()
   }
+  const exportAsCsv = async () => {
+    setIsLoadingExport(true)
+    const response = await exportUnregisterFn('csv',
+    {
+    month,
+    letterNumber,
+    year,
+    q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
+  }
+
+  const exportAsXlsx = async () => {
+    setIsLoadingExport(true)
+    const response = await exportUnregisterFn('xlsx',
+    {
+    month,
+    letterNumber,
+    year,
+    q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
+  }
   if (isLoading) {
     return <Loading />
   }
   return (
     <div>
       <Container>
-        {isFetching && <Loading />}
+        {(isFetching || isLoadingExport) && <Loading />}
         <h1 className="font-bold text-[32px] ">Unregister</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -166,17 +205,10 @@ const DataUnregister = () => {
               />
             </div>
             <div className="flex justify-between">
-              <div className="w-[20%] mb-6">
-                <Select>
-                  <SelectTrigger className="border-primary bg-white text-primary focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 ">
-                    <SelectValue placeholder="Export Data" />
-                  </SelectTrigger>
-                  <SelectContent className="border-primary text-primary">
-                    <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                    <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                    <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                  </SelectContent>
-                </Select>
+            <div className="w-[20%]">
+              {unregisters?.data?.length !== 0 ? (
+                  <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+                ) : null}
               </div>
               <div className="flex gap-3">
                 <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
