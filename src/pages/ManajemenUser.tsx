@@ -6,72 +6,95 @@ import { useForm } from 'react-hook-form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import Modal from '@/components/organisms/Modal'
 import * as React from 'react'
-import { HiOutlinePencilAlt, HiUserAdd } from 'react-icons/hi'
+import { HiOutlinePencilAlt, HiUserAdd, HiTrash } from 'react-icons/hi'
 import useTitle from '@/hooks/useTitle'
 import { Container, Loading, Pagination, Search } from '@/components'
+import { useCreateUser, useDeleteUser, useGetRole, useGetUser, useGetUserById, useUpdateUser } from '@/store/server/useUserManagement'
+import { userValidation, type userFields } from '@/lib/validations/user.validation'
+// import { toast } from '@/components/ui/use-toast'
 import { useAlert } from '@/store/client'
-import { useCreateUser, useGetRole, useGetUser } from '@/store/server/useUserManagement'
-import { type userFields } from '@/lib/validations/user.validation'
-import { toast } from '@/components/ui/use-toast'
-import { type IErrorResponse } from '@/lib/types/user.type'
-import { type AxiosError } from 'axios'
-
-// interface FormValues {
-//   employeeIdentityNumber: string
-//   email: string
-//   name: string
-//   phoneNumber: string
-//   password: string
-//   role: string
-//   status: string
-// }
+import { useNavigate } from 'react-router-dom'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 const ManajemenUser = () => {
   useTitle('Manajemen User ')
+  const navigate = useNavigate()
+  // const { id } = useParams<{ id: string }>()
+
   const { alert } = useAlert()
 
-  const { data: user, isLoading } = useGetUser()
   const { data: role } = useGetRole()
+  const { data: users, isLoading } = useGetUser()
+
+  const forms = useForm<userFields>({
+     mode: 'onTouched',
+     resolver: yupResolver(userValidation),
+     defaultValues: {
+      employeeIdentityNumber: '',
+      email: '',
+      name: '',
+      phoneNumber: '',
+      password: '',
+      role: '',
+      isActive: ''
+     }
+    })
   const [isShow, setIsShow] = React.useState(false)
+  const { mutate: Register, isLoading: isLoadingCreate } = useCreateUser()
+
   const [currentPage, setCurrentPage] = React.useState(1)
-  const forms = useForm<userFields>({ mode: 'onTouched' })
-  const { mutate: Register } = useCreateUser()
-  // console.log(user)
+  const { mutateAsync: deleteUser, isLoading: isLoadingDelete } = useDeleteUser()
 
-  const onSubmit = async (values: userFields) => {
-    Register(values, {
-      onError: (error: AxiosError) => {
-        const errorResponse = error.response?.data as IErrorResponse
+  const [userId, setUserId] = React.useState('')
+  const { data: user, isSuccess, isLoading: isLoadingUser } = useGetUserById(userId)
+  const { mutate: updateUser, isLoading: isLoadingUpdate } = useUpdateUser()
 
-        if (errorResponse !== undefined) {
-          toast({
-            variant: 'destructive',
-            title: errorResponse.message,
-            description: 'There was a problem with your request.'
-          })
-        }
-      },
-      onSuccess: () => {
-        toast({
-          title: 'Registration Success',
-          description: 'You have successfully Registered an account.'
-        })
-      }
-    })
+  React.useEffect(() => {
+    if (isSuccess && user) {
+      forms.reset({
+        employeeIdentityNumber: user?.employeeIdentityNumber,
+        email: user?.email,
+        name: user?.name,
+        phoneNumber: user?.phoneNumber,
+        password: '',
+        role: user?.role.id,
+        isActive: user?.isActive
+      })
+    }
+  }, [isSuccess, user])
+
+  const handleUpdateUser = (id: string) => {
+    setUserId(id)
+    setIsShow(true)
   }
 
-  const showAlert = () => {
+  const handleDeleteUser = (id: string) => {
     void alert({
-      title: 'User ditambahkan',
-      description: 'User berhasil ditambahkan',
-      submitText: 'Oke',
-      variant: 'success'
-    }).then(() => {
-      console.log('oke')
+      title: 'Hapus User',
+      description: 'Apakah kamu yakin ingin menghapus data ini?',
+      variant: 'danger',
+      submitText: 'Delete'
+    }).then(async () => {
+      await deleteUser(id)
     })
   }
+  const onSubmit = async (values: userFields) => {
+    const newData = {
+      ...values,
+      isActive: values.isActive ? '1' : '0'
+    }
+    if (!userId) {
+      return Register(newData, { onSuccess })
+    }
+    updateUser({ id: userId, fields: newData }, { onSuccess })
+  }
+  const onSuccess = () => {
+    forms.reset()
+    setIsShow(false)
+    navigate('/manajemen-user')
+  }
 
-  if (isLoading) {
+  if (isLoading && isLoadingDelete && isLoadingUser) {
     return <Loading />
   }
   return (
@@ -98,8 +121,8 @@ const ManajemenUser = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {user?.data?.length !== 0 ? (
-            user?.data.map((item: any) => (
+          {users?.data?.length !== 0 ? (
+            users?.data.map((item: any) => (
               <TableRow key={item.id}>
                 <TableCell className="font-semibold">{item.employeeIdentityNumber || '-'}</TableCell>
                 <TableCell className="font-semibold">{item.identityNumber || '-'}</TableCell>
@@ -124,9 +147,19 @@ const ManajemenUser = () => {
                     size="icon"
                     variant="base"
                     className="bg-[#959595] text-white hover:bg-[#828282] hover:text-white"
-                    onClick={showAlert}
+                    onClick={() => {
+                      handleUpdateUser(item.id)
+                    }}
                   >
                     <HiOutlinePencilAlt className="text-lg" />
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="base"
+                    className="bg-red-500 text-white hover:bg-red-300 hover:text-white ms-2"
+                    onClick={() => handleDeleteUser(item.id)}
+                  >
+                    <HiTrash className="text-lg" />
                   </Button>
                 </TableCell>
               </TableRow>
@@ -151,8 +184,8 @@ const ManajemenUser = () => {
 
       <Modal isShow={isShow} className="max-h-[calc(100vh-200px)] overflow-y-auto">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Tambah User</h3>
-          <p className="text-sm text-[#A1A1A1]">Masukkan Data User Baru</p>
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">{userId ? 'Perbaharui' : 'Tambah'} Pengguna</h3>
+          <p className="text-sm text-[#A1A1A1]">{userId ? 'Perbaharui data pengguna.' : 'Masukkan data pengguna baru.'}</p>
         </Modal.Header>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-3">
@@ -164,7 +197,11 @@ const ManajemenUser = () => {
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">NIP</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Masukkan NIP" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        placeholder="Masukkan NIP"
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -176,7 +213,11 @@ const ManajemenUser = () => {
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Masukkan Email" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        placeholder="Masukkan Email"
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -188,7 +229,11 @@ const ManajemenUser = () => {
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Masukkan Nama" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        placeholder="Masukkan Nama"
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -200,23 +245,33 @@ const ManajemenUser = () => {
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">No. HP</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Masukkan No. HP" />
+                      <Input
+                        {...field}
+                        value={field.value}
+                        placeholder="Masukkan No. HP"
+                      />
                     </FormControl>
                   </FormItem>
                 )}
               />
-              <FormField
+              {!userId
+              ? <FormField
                 name="password"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">Password</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Masukkan Password (default)" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        placeholder="Masukkan Password (default)"
+                      />
                     </FormControl>
                   </FormItem>
                 )}
-              />
+              /> : null
+              }
               <FormField
                 name="role"
                 control={forms.control}
@@ -248,15 +303,15 @@ const ManajemenUser = () => {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Status</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Status" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="1">Aktif</SelectItem>
-                        <SelectItem value="0">Tidak Aktif</SelectItem>
+                        <SelectItem value="true">Aktif</SelectItem>
+                        <SelectItem value="false">Tidak Aktif</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -271,8 +326,8 @@ const ManajemenUser = () => {
               >
                 Cancel
               </Button>
-              <Button className="rounded-lg" type="submit" loading={isLoading}>
-                Tambah Data
+              <Button className="rounded-lg" type="submit" loading={isLoadingCreate || isLoadingUpdate}>
+                {userId ? 'Ubah' : 'Tambah'}
               </Button>
             </Modal.Footer>
           </form>
