@@ -11,7 +11,7 @@ import {
   HiOutlineArrowRightOnRectangle,
   HiOutlineBell
 } from 'react-icons/hi2'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function HeaderUser() {
   const { alert } = useAlert()
@@ -28,6 +28,8 @@ export default function HeaderUser() {
       variant: 'danger'
     }).then(() => logout())
   }
+
+  const navigate = useNavigate()
 
   return (
     <header className="h-20 fixed inset-x-0 top-0 bg-white flex items-center px-14 z-50 font-poppins">
@@ -65,14 +67,15 @@ export default function HeaderUser() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="min-w-[300px] rounded-xl px-5 py-6 mt-8 mr-24">
                     <DropdownMenuItem>
-                      <DropdownMenuLabel className="flex items-center justify-between outline-none border-none ring-0 hover:bg-zinc-100 rounded-lg cursor-pointer">
+                      <DropdownMenuLabel
+                        className="flex items-center justify-between outline-none border-none ring-0 hover:bg-zinc-100 rounded-lg cursor-pointer"
+                        onClick={() => navigate('/user/profile')}
+                      >
                         <div className="flex items-center gap-[22px]">
                           <div className="flex w-11 h-11 rounded-full bg-[#FCE9EE]">
                             <HiCog6Tooth className="m-auto text-primary text-3xl" />
                           </div>
-                          <Link to={'/user/profile'}>
-                            <p className="font-poppins font-medium text-[#494949]">Pengaturan</p>
-                          </Link>
+                          <p className="font-poppins font-medium text-[#494949]">Pengaturan</p>
                         </div>
                         <HiChevronRight className="text-2xl text-[#484848]" />
                       </DropdownMenuLabel>
