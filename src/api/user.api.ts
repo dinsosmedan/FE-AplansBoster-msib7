@@ -31,7 +31,7 @@ export const updateUserFn = async ({ id, fields }: UpdateUserParams) => {
 }
 
 export const getUserDetailFn = async (id: string) => {
-  const response = await api.get(`/management/user/${id}`)
+  const response = await api.get(`/management/admin/${id}`)
   return response.data?.data
 }
 

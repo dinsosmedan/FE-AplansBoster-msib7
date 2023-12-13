@@ -55,8 +55,8 @@ export const useUpdateUser = () => {
   const { toast } = useToast()
 
   return useMutation(updateUserFn, {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries('management-user')
+    onSuccess: () => {
+      void queryClient.invalidateQueries('management-user')
       toast({
         title: 'Proses Berhasil.',
         description: 'Data User Berhasil Diubah.'
