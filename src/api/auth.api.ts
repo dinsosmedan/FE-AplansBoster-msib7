@@ -4,6 +4,7 @@ import { type LoginInput } from '@/lib/validations/auth.validation'
 import axios from 'axios'
 import api from './axiosInstance'
 import axiosPublic from './axiosPublicInstance'
+import { type LoginUserFields, type RegisterUserFields } from '@/lib/validations/landingPage/auth.validation'
 
 const apiPublic = axios.create({
   baseURL: ENV.apiUrl,
@@ -28,12 +29,33 @@ export const getMeFn = async (): Promise<IUser> => {
 }
 
 // LANDING PAGE
-export const loginUserFn = async (fields: LoginInput): Promise<IAuthResponse> => {
-  const response = await apiPublic.post('/auth/login', fields)
+export const loginUserFn = async (fields: LoginUserFields): Promise<IAuthResponse> => {
+  const response = await apiPublic.post('/public/auth/login', fields)
   return response.data
 }
 
 export const getMePublicFn = async (): Promise<IUser> => {
   const response = await axiosPublic.get('/auth/me')
   return response.data
+}
+
+export const logoutUserFn = async () => {
+  await axiosPublic.post('/public/auth/logout')
+}
+
+export const registerUserFn = async (fields: RegisterUserFields) => {
+  const formData = new FormData()
+  formData.append('name', fields.name)
+  formData.append('email', fields.email)
+  formData.append('identityNumber', fields.identityNumber)
+  formData.append('phoneNumber', fields.phoneNumber)
+  formData.append('password', fields.password)
+  formData.append('photoIdentityCard', fields.identityCard[0] as File)
+  formData.append('selfieIdentityCard', fields.selfie[0] as File)
+
+  await apiPublic.post('/public/auth/register', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
 }

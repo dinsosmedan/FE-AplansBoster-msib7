@@ -11,19 +11,31 @@ import { HiMagnifyingGlass } from 'react-icons/hi2'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { exportNonCashFoodAssistanceFn } from '@/api/dayasos.api'
+import { useTitleHeader } from '@/store/client'
 
 interface FormValues {
   q: string
 }
 
 const DataBpnt = () => {
-  useTitle('Data Penerima / Dayasos / Bantuan Pangan Non Tunai (BPNT) ')
+  useTitle('Data Penerima')
+  const setBreadcrumb = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumb([
+      { url: '/data-penerima/dayasos', label: 'Dayasos & PFM' },
+      { url: '/data-penerima/dayasos/bpnt', label: 'BPNT' }
+    ])
+  }, [])
+
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
   const [isLoadingExport, setIsLoadingExport] = React.useState(false)
+
   const createParams = useCreateParams()
   const { page, q } = useGetParams(['page', 'q'])
-  const [isLoadingPage, setIsLoadingPage] = React.useState(false)
+  const forms = useForm<FormValues>({ defaultValues: { q: '' } })
+
   const { data: NonCashFoodAssistanceBeneficiary, isLoading: isLoadingNonCash } =
     useGetNonCashFoodAssistanceDetail(selectedId)
 
@@ -36,36 +48,17 @@ const DataBpnt = () => {
     page: parseInt(page) ?? 1,
     q
   })
+
+  useDisableBodyScroll(isFetching)
+
   const showDetail = (id: string) => {
     setSelectedId(id)
     setIsShow(true)
   }
-  useDisableBodyScroll(isFetching)
-
-  React.useEffect(() => {
-    if (isFetching) {
-      setIsLoadingPage(true)
-    } else {
-      setIsLoadingPage(false)
-    }
-  }, [isLoadingPage, isFetching, refetch])
-
-  if (isLoading && isLoadingNonCash) {
-    return <Loading />
-  }
-
-  const forms = useForm<FormValues>({
-    defaultValues: {
-      q: ''
-    }
-  })
 
   const onSubmit = async (values: FormValues) => {
     if (values.q !== '') {
-      createParams({
-        key: 'q',
-        value: values.q !== '' ? values.q : ''
-      })
+      createParams({ key: 'q', value: values.q !== '' ? values.q : '' })
       createParams({ key: 'page', value: '' }) // Set page to empty string when searching
     } else {
       createParams({ key: 'q', value: '' }) // Set q to empty string if the search query is empty
@@ -75,15 +68,39 @@ const DataBpnt = () => {
 
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    await exportNonCashFoodAssistanceFn('data-bpnt', 'csv')
+    const response = await exportNonCashFoodAssistanceFn('csv',
+    {
+    q
+  })
+    if (response.success) {
+    void alert({
+      title: 'Berhasil Export',
+      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+      submitText: 'Oke',
+      variant: 'success'
+    })
     setIsLoadingExport(false)
+  }
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    await exportNonCashFoodAssistanceFn('data-bpnt', 'xlsx')
+    const response = await exportNonCashFoodAssistanceFn('xlsx',
+    {
+    q
+  })
+    if (response.success) {
+    void alert({
+      title: 'Berhasil Export',
+      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+      submitText: 'Oke',
+      variant: 'success'
+    })
     setIsLoadingExport(false)
   }
+  }
+
+  if (isLoading && isLoadingNonCash) return <Loading />
 
   return (
     <div>
@@ -161,9 +178,8 @@ const DataBpnt = () => {
             </TableBody>
           </Table>
         </section>
-        {(NonCashFoodAssistanceBeneficiarys?.meta?.total as number) > 10 ? (
+        {(NonCashFoodAssistanceBeneficiarys?.meta?.total as number) > 30 ? (
           <Pagination
-            className="px-5 py-5 flex justify-end"
             currentPage={page !== '' ? parseInt(page) : 1}
             totalCount={NonCashFoodAssistanceBeneficiarys?.meta.total as number}
             pageSize={30}
@@ -173,8 +189,8 @@ const DataBpnt = () => {
       </Container>
       <Modal isShow={isShow} className="md:max-w-4xl">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
-          <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data BPNT</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data BPNT</p>
         </Modal.Header>
         {isLoadingNonCash && <Loading />}
         <div className="grid grid-cols-3 gap-y-5">

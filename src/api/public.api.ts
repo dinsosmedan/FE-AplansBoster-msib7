@@ -1,5 +1,6 @@
 import ENV from '@/lib/environment'
-import { type IAssistanceCheck } from '@/lib/types/public.type'
+import { type IUniversity } from '@/lib/types/linjamsos.type'
+import { type IBank, type IAssistanceCheck } from '@/lib/types/public.type'
 import axios from 'axios'
 
 const apiPublic = axios.create({
@@ -9,7 +10,22 @@ const apiPublic = axios.create({
 
 apiPublic.defaults.headers.post['Content-Type'] = 'application/json'
 
-export const showAssistanceCheck = async (nik: string): Promise<IAssistanceCheck> => {
+export const showAssistanceCheckFn = async (nik: string): Promise<IAssistanceCheck> => {
   const response = await apiPublic.get(`/public/assistance-check/${nik}`)
+  return response.data?.data
+}
+
+export const getUniversitiesFn = async (): Promise<IUniversity[]> => {
+  const response = await apiPublic.get('/public/university')
+  return response.data?.data
+}
+
+export const getStudyProgramsFn = async (universityId: string): Promise<IUniversity[]> => {
+  const response = await apiPublic.get(`/public/university/${universityId}/study-program`)
+  return response.data?.data
+}
+
+export const getBankListFn = async (): Promise<IBank[]> => {
+  const response = await apiPublic.get('/bank')
   return response.data?.data
 }

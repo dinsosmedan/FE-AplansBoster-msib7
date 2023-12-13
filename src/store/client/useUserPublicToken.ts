@@ -3,7 +3,7 @@ import { type TokenStore } from './useToken'
 import { type IUser } from '@/lib/types/user.type'
 
 interface UserPublicTokenStore extends TokenStore {
-  user: IUser['data']
+  user?: IUser['data']
   storeUser: (user: IUser['data']) => void
 }
 

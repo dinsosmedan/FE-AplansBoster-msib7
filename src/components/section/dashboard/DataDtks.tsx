@@ -1,4 +1,3 @@
-import { Loading } from '@/components'
 import BasicCard from '@/components/ui/dashboard/BasicCard'
 import LongCard from '@/components/ui/dashboard/LongCard'
 import TitleSign from '@/components/ui/dashboard/TitleSign'
@@ -8,6 +7,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
+
+
 const SectionDataDtks = () => {
   return (
     <>
@@ -37,7 +38,7 @@ const TabelDtks = () => {
   const [order, setorder] = useState('Menurun')
   const { data, refetch, isLoading } = useGetAdministrativeArea(order)
 
-  if (isLoading) return <Loading />
+  // if (isLoading) return <Loading />
 
   const onChange = async (values: any) => {
     forms.setValue('filter', values)
@@ -48,36 +49,49 @@ const TabelDtks = () => {
   return (
     <>
       <LongCard props={['Prevalensi DTKS Perkecamatan', 'Prevalensi DTKS Perkecamatan']}>
-        <div className=" w-[340px] my-5">
-          <div className="my-2">
-            <Form {...forms}>
-              <form className="flex flex-col">
-                <FormField
-                  name="filter"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-semibold dark:text-white">Cari Berdasarkan</FormLabel>
-                      <Select defaultValue='Menurun' onValueChange={onChange} value={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Menurun" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="Menurun">Menurun</SelectItem>
-                          <SelectItem value="Menaik">Menaik</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </form>
-            </Form>
-          </div>
-          <LongCard.Tabel data={data} />
-        </div>
+        {
+          isLoading ? (
+            <div className="py-8">
+              <div className="flex flex-col gap-3">
+                <Skeleton className="w-[300px] h-[60px]" />
+                <Skeleton className="w-[300px] h-[60px]" />
+                <Skeleton className="w-[300px] h-[60px]" />
+                <Skeleton className="w-[300px] h-[60px]" />
+              </div>
+            </div>
+          ) :
+            (<div className=" w-[340px] my-5">
+              <div className="my-2">
+                <Form {...forms}>
+                  <form className="flex flex-col">
+                    <FormField
+                      name="filter"
+                      control={forms.control}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="font-semibold dark:text-white">Cari Berdasarkan</FormLabel>
+                          <Select defaultValue="Menurun" onValueChange={onChange} value={field.value}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Menurun" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="Menurun">Menurun</SelectItem>
+                              <SelectItem value="Menaik">Menaik</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </form>
+                </Form>
+              </div>
+              <LongCard.Tabel data={data} />
+            </div>)
+        }
+
       </LongCard>
     </>
   )
@@ -85,39 +99,52 @@ const TabelDtks = () => {
 const ChartJenisKelamin = () => {
   const { data, isLoading } = useGetGenderDtks()
 
-  if (isLoading) return <Loading />
+  // if (isLoading) return <Loading />
 
-  const values = Object.values(data)
+  // const values = Object.values(data)
+
+  // console.log(Object.values(data))
 
   return (
     <>
       <LongCard props={['Jenis Kelamin', 'Persentasi Data DTKS Berdasarkan Jenis Kelamin']}>
-        <LongCard.Chart
-          data={values}
-          isPercent={true}
-          label={['Perempuan', 'Laki-laki']}
-          backgroundColor={['#F94144', '#F3722C']}
-        />
+        {
+          isLoading ? (
+            <div className="py-8 ">
+              <Skeleton className="w-[300px] h-[300px] rounded-full" />
+            </div>
+          ) : (
+            <LongCard.Chart
+              data={Object.values(data)}
+              isPercent={true}
+              label={['Perempuan', 'Laki-laki']}
+              backgroundColor={['#F94144', '#F3722C']}
+            />
+          )
+        }
       </LongCard>
+
     </>
   )
 }
 const ChartDtks = () => {
   const { data, isLoading } = useGetDataDtks()
 
-  if (isLoading) return <Loading />
-
-  const values = Object.values(data)
-
   return (
     <>
       <LongCard props={['Data DTKS', 'Persentasi Data DTKS']}>
-        <LongCard.Chart
-          data={values}
-          isPercent={true}
-          label={['DTKS', 'Non DTKS']}
-          backgroundColor={['#F94144', '#F3722C']}
-        />
+        {isLoading ? (
+          <div className="py-8 ">
+            <Skeleton className="w-[300px] h-[300px] rounded-full" />
+          </div>
+        ) : (
+          <LongCard.Chart
+            data={Object.values(data)}
+            isPercent={true}
+            label={['DTKS', 'Non DTKS']}
+            backgroundColor={['#F94144', '#F3722C']}
+          />
+        )}
       </LongCard>
     </>
   )
@@ -125,10 +152,10 @@ const ChartDtks = () => {
 const CardData = () => {
   const { data, isLoading } = useCountDataDtks()
 
-  if (isLoading) return <Loading />
+  // if (isLoading) return <Loading />
 
   // console.log({ beneficiaries, nonbeneficiaries, familybeneficiaries })
-  const { beneficiaries, nonBeneficiaries, familyBeneficiaries } = data
+  // const { beneficiaries, nonBeneficiaries, familyBeneficiaries } = data
   // console.log({ beneficiaries, nonBeneficiaries, familyBeneficiaries })
 
   return (
@@ -139,14 +166,16 @@ const CardData = () => {
           <div className="flex flex-col gap-3">
             <Skeleton className="w-[120px] h-3 rounded-[14px]" />
             <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+            <Skeleton className="w-[80px] h-3 rounded-[14px]" />
           </div>
         </>
-      ) : <>
-        <BasicCard props={['Total Data DTKS', beneficiaries, 'Jiwa']} />
-        <BasicCard props={['Jumlah data Non DTKS', nonBeneficiaries, 'Data']} />
-        <BasicCard props={['Jumlah Keluarga Penerima', familyBeneficiaries, 'Data']} />
-      </>
-      }
+      ) : (
+        <>
+          <BasicCard props={['Total Data DTKS', data?.beneficiaries, 'Jiwa']} />
+          <BasicCard props={['Jumlah data Non DTKS', data?.nonBeneficiaries, 'Data']} />
+          <BasicCard props={['Jumlah Keluarga Penerima', data?.familyBeneficiaries, 'Data']} />
+        </>
+      )}
     </>
   )
 }

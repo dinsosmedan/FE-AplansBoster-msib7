@@ -1,5 +1,5 @@
 import ContainerUser from '@/components/organisms/landingPage/ContainerUser'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
@@ -7,23 +7,15 @@ import { Button } from '@/components/ui/button'
 import { HiDocumentArrowUp, HiMagnifyingGlass, HiPaperAirplane } from 'react-icons/hi2'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from '@/components/ui/select'
-import DropZone from '../../../components/atoms/DropZone'
+import DropZone, { type FileWithPreview } from '../../../components/atoms/DropZone'
 
 interface FormValues {
   nik: string
-  email: string
-  ipk: string
-  universitas: string
   prodi: string
-  semester: string
-  tahun: string
-  noHp: string
-  namaBank: string
-  noRekening: string
-  jumlah: string
+  identityCard: FileWithPreview[]
 }
 
-export default function FormSktmTerdaftar() {
+export default function SktmRegister() {
   const forms = useForm<FormValues>({
     mode: 'onTouched'
   })
@@ -43,7 +35,7 @@ export default function FormSktmTerdaftar() {
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-semibold dark:text-white">NIK Pemohon</FormLabel>
+                      <FormLabel className="font-semibold dark:text-white">NIK </FormLabel>
                       <FormControl>
                         <Input className="rounded-r-none" {...field} type="number" placeholder="Cari NIK Masyarakat" />
                       </FormControl>
@@ -161,23 +153,116 @@ export default function FormSktmTerdaftar() {
           <p className="text-[18px] text-primary">
             *Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB
           </p>
-          <div className="grid grid-cols-2 gap-y-5">
-            <DropZone title="Upload File" subtitle="Scan Surat Permohonan" icon={HiDocumentArrowUp} />
-            <DropZone
-              title="Upload File"
-              subtitle="Scan Foto Copy Surat Domisili Dari Kelurahan Setempat"
-              icon={HiDocumentArrowUp}
+          <div className="grid grid-cols-2 gap-12">
+            <FormField
+              name="identityCard"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="">
+                  <FormLabel className="text-xl">Scan Surat Permohonan</FormLabel>
+                  <FormControl className="w-[522px]">
+                    <DropZone
+                      setValue={field.onChange}
+                      fileValue={field.value as unknown as FileWithPreview[]}
+                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                      accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
+                      maxFiles={1}
+                      id="fotoKtp"
+                      Icon={HiDocumentArrowUp}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            <DropZone title="Upload File" subtitle="Scan Kartu Keluarga" icon={HiDocumentArrowUp} />
-            <DropZone title="Upload File" subtitle="Scan Kartu Tanda Penduduk (KTP)" icon={HiDocumentArrowUp} />
+            <FormField
+              name="identityCard"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="">
+                  <FormLabel className="text-xl">Scan Foto Copy Surat Domisili Dari Kelurahan Setempat</FormLabel>
+                  <FormControl className="w-[522px]">
+                    <DropZone
+                      setValue={field.onChange}
+                      fileValue={field.value as unknown as FileWithPreview[]}
+                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                      accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
+                      maxFiles={1}
+                      id="fotoKtp"
+                      Icon={HiDocumentArrowUp}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="identityCard"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="">
+                  <FormLabel className="text-xl">Scan Kartu Keluarga</FormLabel>
+                  <FormControl className="w-[522px]">
+                    <DropZone
+                      setValue={field.onChange}
+                      fileValue={field.value as unknown as FileWithPreview[]}
+                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                      accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
+                      maxFiles={1}
+                      id="fotoKtp"
+                      Icon={HiDocumentArrowUp}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="identityCard"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="">
+                  <FormLabel className="text-xl">Scan Kartu Tanda Penduduk (KTP)</FormLabel>
+                  <FormControl className="w-[522px]">
+                    <DropZone
+                      setValue={field.onChange}
+                      fileValue={field.value as unknown as FileWithPreview[]}
+                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                      accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
+                      maxFiles={1}
+                      id="fotoKtp"
+                      Icon={HiDocumentArrowUp}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
-          <DropZone
-            className="w-full mb-[60px]"
-            title="Upload File"
-            subtitle="Scan Kartu Tanda Penduduk (KTP)"
-            icon={HiDocumentArrowUp}
+          <FormField
+            name="identityCard"
+            control={forms.control}
+            render={({ field }) => (
+              <FormItem className="">
+                <FormLabel className="text-xl">
+                  Surat Keterangan Dari Sekolah / Surat Pengumuman dari pihak Universitas
+                </FormLabel>
+                <FormControl className="w-[522px]">
+                  <DropZone
+                    setValue={field.onChange}
+                    fileValue={field.value as unknown as FileWithPreview[]}
+                    helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                    accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
+                    maxFiles={1}
+                    id="fotoKtp"
+                    Icon={HiDocumentArrowUp}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <div className="flex justify-end gap-7 items-center">
+          <div className="flex justify-end gap-7 items-center pt-10">
             <Button variant="outline" className="border-primary text-primary w-[165px] h-[60px]">
               <p className="text-xl font-semibold">Kembali</p>
             </Button>

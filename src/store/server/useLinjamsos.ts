@@ -16,15 +16,23 @@ import {
   updateVulnerableGroupHandlingFn,
   updateUnregisterFn,
   showDetailVulnerableGroupHandlingFn,
+  showDetailIndigencyCertificateFn,
   deletePkrFn,
   deleteSktmFn,
-  deleteUnregisterFn
+  deleteUnregisterFn,
+  getTuitionAssistanceFn,
+  type TuitionAssistanceQuery,
+  getTuitionAssistanceByIdFn,
+  storeTuitionAssistanceFn,
+  storeIndigencyCertificateFn
 } from '@/api/linjamsos.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
 import { type AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { getPremiumAssistanceBenefitByIdFn } from '../../api/linjamsos.api'
+import { handleMessage } from '@/lib/services/handleMessage'
+import { handleOnError } from '@/lib/utils'
 
 // Penanganan Kelompok Rentan//
 export const useVulnerableGroupHandlings = ({
@@ -39,7 +47,7 @@ export const useVulnerableGroupHandlings = ({
     async () => await getVulnerableGroupHandlingFn({ page, idKecamatan, idKelurahan, q, year }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
 }
@@ -97,15 +105,29 @@ export const useUpdateVulnerableGroupHandling = () => {
     }
   })
 }
+export const useDeletePkr = () => {
+  const queryClient = useQueryClient()
 
+  return useMutation(deletePkrFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('vulnerable')
+      toast({
+        variant: 'default',
+        duration: 1500,
+        title: 'Proses Berhasil',
+        description: 'Data PKR Berhasil Dihapus'
+      })
+    }
+  })
+}
 // Unregister //
-export const useUnregisters = ({ page, date, letterNumber, q, year }: UnregisterQuery) => {
+export const useUnregisters = ({ page, letterNumber, q, month, year }: UnregisterQuery) => {
   return useQuery(
-    ['unregisters', page, date, letterNumber, q, year],
-    async () => await getUnregisterFn({ page, date, letterNumber, q, year }),
+    ['unregisters', page, letterNumber, q, month, year],
+    async () => await getUnregisterFn({ page, letterNumber, q, month, year }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
 }
@@ -136,7 +158,7 @@ export const useCreateUnregister = () => {
 }
 
 export const useGetDetailUnregister = (id: string) => {
-  return useQuery(['unregister', id], async () => await showDetailUnregisterFn(id), {
+  return useQuery(['unregisters', id], async () => await showDetailUnregisterFn(id), {
     enabled: !!id
   })
 }
@@ -164,48 +186,17 @@ export const useUpdateUnregister = () => {
     }
   })
 }
-
-export const useDeleteSktm = () => {
-  const queryClient = useQueryClient()
-
-  return useMutation(deleteSktmFn, {
-    onSuccess: () => {
-      void queryClient.invalidateQueries('sktm')
-      toast({
-        variant: 'default',
-        duration: 1500,
-        title: 'Proses Berhasil',
-        description: 'Data Sktm Berhasil Dihapus'
-      })
-    }
-  })
-}
 export const useDeleteUnregister = () => {
   const queryClient = useQueryClient()
 
   return useMutation(deleteUnregisterFn, {
     onSuccess: () => {
-      void queryClient.invalidateQueries('sktm')
+      void queryClient.invalidateQueries('unregisters')
       toast({
         variant: 'default',
         duration: 1500,
         title: 'Proses Berhasil',
         description: 'Data Sktm Berhasil Dihapus'
-      })
-    }
-  })
-}
-export const useDeletePkr = () => {
-  const queryClient = useQueryClient()
-
-  return useMutation(deletePkrFn, {
-    onSuccess: () => {
-      void queryClient.invalidateQueries('pkr')
-      toast({
-        variant: 'default',
-        duration: 1500,
-        title: 'Proses Berhasil',
-        description: 'Data PKR Berhasil Dihapus'
       })
     }
   })
@@ -217,10 +208,10 @@ export const useGetIndigencyCertificateFn = ({
   idKelurahan,
   q,
   year,
-  status
+  statusDtks
 }: IndigencyCertificateQuery) => {
   return useQuery(
-    ['indigency-certificates', page, idKecamatan, idKelurahan, q, year, status],
+    ['indigency-certificates', page, idKecamatan, idKelurahan, q, year, statusDtks],
     async () =>
       await getIndigencyCertificateFn({
         page,
@@ -228,15 +219,34 @@ export const useGetIndigencyCertificateFn = ({
         idKelurahan,
         q,
         year,
-        status
+        statusDtks
       }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
 }
+export const useGetIndigencyCertificateByID = (id?: string) => {
+  return useQuery(['indigency-certificates', id], async () => await showDetailIndigencyCertificateFn(id as string), {
+    enabled: !!id
+  })
+}
+export const useDeleteSktm = () => {
+  const queryClient = useQueryClient()
 
+  return useMutation(deleteSktmFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('indigency-certificates')
+      toast({
+        variant: 'default',
+        duration: 1500,
+        title: 'Proses Berhasil',
+        description: 'Data Sktm Berhasil Dihapus'
+      })
+    }
+  })
+}
 // PBI //
 export const useGetPremiumAssistanceBenefitFn = ({
   page,
@@ -257,7 +267,7 @@ export const useGetPremiumAssistanceBenefitFn = ({
       }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
 }
@@ -280,12 +290,69 @@ export const useGetFamilyHopeFn = ({ page, type, idKecamatan, idKelurahan, q }: 
       }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
 }
 export const useGetFamilyHopeByID = (id?: string) => {
   return useQuery(['family-hopes', id], async () => await getFamilyHopeByIdFn(id as string), {
     enabled: !!id
+  })
+}
+// PBB //
+export const useGetTuitionAssistanceFn = ({
+  page,
+  q,
+  event,
+  idKecamatan,
+  idKelurahan,
+  year,
+  status
+}: TuitionAssistanceQuery) => {
+  return useQuery(
+    ['tuition-assistances', page, idKecamatan, idKelurahan, q, event, year, status],
+    async () =>
+      await getTuitionAssistanceFn({
+        page,
+        q,
+        event,
+        idKecamatan,
+        idKelurahan,
+        year,
+        status
+      }),
+    {
+      keepPreviousData: true,
+      staleTime: 10 * 60 * 1000
+    }
+  )
+}
+export const useGetTuitionAssistanceID = (id?: string) => {
+  return useQuery(['tuition-assistances', id], async () => await getTuitionAssistanceByIdFn(id as string), {
+    enabled: !!id
+  })
+}
+
+export const useCreateTuitionAssistance = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(storeTuitionAssistanceFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('tuition-assistances')
+      handleMessage({ title: 'Data BBP', variant: 'create' })
+    },
+    onError: (error: AxiosError) => handleOnError(error)
+  })
+}
+
+export const useCreateIndegencyCertificate = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(storeIndigencyCertificateFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('indigency-certificates')
+      handleMessage({ title: 'Data SKTM', variant: 'create' })
+    },
+    onError: (error: AxiosError) => handleOnError(error)
   })
 }

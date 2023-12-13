@@ -1,14 +1,15 @@
-/* eslint-disable multiline-ternary */
-import Container from '@/components/atoms/Container'
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
-import useTitle from '@/hooks/useTitle'
-import { useForm } from 'react-hook-form'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
+import { Action, ExportButton, Loading, Modal, Title, Pagination, Container } from '@/components'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import Pagination from './../../../components/atoms/Pagination'
-import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
+import * as React from 'react'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
+
 import {
   useDeleteServiceFund,
   useGetKecamatan,
@@ -17,12 +18,9 @@ import {
   useGetServiceFunds,
   useGetServiceTypes
 } from '@/store/server'
-import { Action, ExportButton, Loading, Modal, Title } from '@/components'
-import { useNavigate } from 'react-router-dom'
-import { useAlert } from '@/store/client'
-import { Input } from '@/components/ui/input'
-import * as React from 'react'
 import { exportServiceFundFn } from '@/api/dayasos.api'
+import { useAlert, useTitleHeader } from '@/store/client'
+import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 
 interface FormValues {
   q: string
@@ -32,7 +30,16 @@ interface FormValues {
 }
 
 const DataDjp = () => {
-  useTitle('Data Penerima / Dayasos / DJPM ')
+  useTitle('Data Penerima')
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/dayasos', label: 'Dayasos & PFM' },
+      { url: '/data-penerima/dayasos/djpm', label: 'DJPM' }
+    ])
+  }, [])
+
   const navigate = useNavigate()
   const { alert } = useAlert()
 
@@ -42,14 +49,7 @@ const DataDjp = () => {
 
   const createParams = useCreateParams()
   const { q, kecamatan, kelurahan, page, type } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'type'])
-  const forms = useForm<FormValues>({
-    defaultValues: {
-      q: '',
-      kelurahan: '',
-      kecamatan: '',
-      type: ''
-    }
-  })
+  const forms = useForm<FormValues>({ defaultValues: { q: '', kelurahan: '', kecamatan: '', type: '' } })
 
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
@@ -68,21 +68,19 @@ const DataDjp = () => {
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
     name: q,
-    type
+    assistance: type
   })
 
   useDisableBodyScroll(isFetching)
 
   const handleReset = () => {
-    navigate('/data-penerima/dayasos/data-djp')
+    navigate('/data-penerima/dayasos/djpm')
     forms.reset()
   }
 
   const onSubmit = async (values: FormValues) => {
-    // Dapatkan nilai-nilai yang diisi dari form
     const { q, kecamatan, kelurahan, type } = values
 
-    // Pastikan setiap parameter terisi sebelum pengiriman permintaan data
     if (q || kecamatan || kelurahan || type) {
       createParams({ key: 'q', value: q })
       createParams({ key: 'kecamatan', value: kecamatan })
@@ -110,19 +108,47 @@ const DataDjp = () => {
 
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    await exportServiceFundFn('data-djpm', 'csv')
+    const response = await exportServiceFundFn('csv',
+    {
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    name: q,
+    assistance: type
+  }
+    )
+    if (response.success) {
+    void alert({
+      title: 'Berhasil Export',
+      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+      submitText: 'Oke',
+      variant: 'success'
+    })
     setIsLoadingExport(false)
+  }
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    await exportServiceFundFn('data-djpm', 'xlsx')
+    const response = await exportServiceFundFn('xlsx',
+    {
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    name: q,
+    assistance: type
+  }
+    )
+    if (response.success) {
+    void alert({
+      title: 'Berhasil Export',
+      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+      submitText: 'Oke',
+      variant: 'success'
+    })
     setIsLoadingExport(false)
   }
-
-  if (isLoading && isLoadingServiceFund) {
-    return <Loading />
   }
+
+  if (isLoading && isLoadingServiceFund) return <Loading />
 
   return (
     <Container>
@@ -148,22 +174,20 @@ const DataDjp = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kecamatan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKecamatan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Kecamatan" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {listKecamatan?.map((item, index) => (
+                        <SelectItem key={index} value={item.id}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />
@@ -194,33 +218,39 @@ const DataDjp = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <Select
-                      disabled={areaLevel3 === '' && kecamatan === ''}
-                      onValueChange={field.onChange}
-                      value={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kelurahan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKelurahan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                  <Select
+                    disabled={areaLevel3 === '' && kecamatan === ''}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Kelurahan" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {listKelurahan?.map((item, index) => (
+                        <SelectItem key={index} value={item.id}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />
           </section>
 
           <section className="flex items-center justify-between">
-            <div>
+            <div className="flex items-center gap-3">
+              <Button
+                type="button"
+                className="gap-2 border-none rounded-lg"
+                onClick={() => navigate('/data-penerima/dayasos/djpm/create')}
+              >
+                <HiPlus className="text-lg" />
+                <span>Tambah Data</span>
+              </Button>
               {serviceFunds?.data?.length !== 0 && (
                 <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
               )}
@@ -279,7 +309,7 @@ const DataDjp = () => {
                     <Action
                       onDetail={() => showDetail(item.id)}
                       onDelete={() => handleDelete(item.id)}
-                      onEdit={() => navigate(`/layanan/dayasos/Djp/${item.id}`)}
+                      onEdit={() => navigate(`/data-penerima/dayasos/djpm/create/${item.id}`)}
                     />
                   </TableCell>
                 </TableRow>
@@ -296,10 +326,9 @@ const DataDjp = () => {
       </section>
       {(serviceFunds?.meta?.total as number) > 30 ? (
         <Pagination
-          className="pt-5 flex justify-end"
           currentPage={page !== '' ? parseInt(page) : 1}
           totalCount={serviceFunds?.meta.total as number}
-          pageSize={10}
+          pageSize={30}
           onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
         />
       ) : null}

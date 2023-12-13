@@ -1,47 +1,50 @@
+import { Button } from '@/components/ui/button'
 import Container from '@/components/atoms/Container'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
-import useTitle from '@/hooks/useTitle'
-import { useForm } from 'react-hook-form'
-import { Button } from '@/components/ui/button'
-import { HiMagnifyingGlass } from 'react-icons/hi2'
+import { Action, ExportButton, Loading, Modal, Search, Pagination } from '@/components'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+
 import * as React from 'react'
-import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
+
 import {
   useDeleteOrganizationGrantAssistance,
   useGetOrganizationGrantAssistance,
   useGetOrganizationGrantAssistanceById
 } from '@/store/server/useDayasos'
-import { Action, ExportButton, Loading, Modal, Search, Pagination } from '@/components'
-import { useAlert } from '@/store/client'
+import { useAlert, useTitleHeader } from '@/store/client'
 import { exportOrganizationGrantAssistance } from '@/api/dayasos.api'
+import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
+
+interface FormValues {
+  q: string
+  budgetYear: string
+}
 
 const DataHibah = () => {
-  useTitle('Data Penerima / Dayasos / Bansos Hibah Organisasi/Lembaga (BHO) ')
   const { alert } = useAlert()
+  const navigate = useNavigate()
+
+  useTitle('Data Penerima')
+  const setBreadcrumb = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumb([
+      { label: 'Dayasos & PFM', url: '/data-penerima/dayasos' },
+      { label: 'BHO', url: '/data-penerima/dayasos/bho' }
+    ])
+  }, [])
+
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
+
   const createParams = useCreateParams()
   const { q, budgetYear, page } = useGetParams(['q', 'budgetYear', 'page'])
+  const forms = useForm<FormValues>({ defaultValues: { q: '', budgetYear: '' } })
 
-  interface FormValues {
-    q: string
-    budgetYear: string
-  }
-
-  const [isLoadingPage, setIsLoadingPage] = React.useState(false)
-  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
-  const showDetail = (id: string) => {
-    setSelectedId(id)
-    setIsShow(true)
-  }
-  const forms = useForm<FormValues>({
-    defaultValues: {
-      q: '',
-      budgetYear: ''
-      // batch: ''
-    }
-  })
   const { data: organizationGrantAssistance, isLoading: isLoadingOrganization } =
     useGetOrganizationGrantAssistanceById(selectedId)
 
@@ -60,20 +63,14 @@ const DataHibah = () => {
 
   const onSubmit = async (values: FormValues) => {
     if (values.q !== '') {
-      createParams({
-        key: 'q',
-        value: values.q !== '' ? values.q : ''
-      })
-      createParams({ key: 'page', value: '' }) // Set page to empty string when searching
+      createParams({ key: 'q', value: values.q !== '' ? values.q : '' })
+      createParams({ key: 'page', value: '' })
     } else {
-      createParams({ key: 'q', value: '' }) // Set q to empty string if the search query is empty
+      createParams({ key: 'q', value: '' })
     }
 
     if (values.budgetYear !== '') {
-      createParams({
-        key: 'budgetYear',
-        value: values.budgetYear !== '' ? values.budgetYear : ''
-      })
+      createParams({ key: 'budgetYear', value: values.budgetYear !== '' ? values.budgetYear : '' })
     } else {
       createParams({ key: 'budgetYear', value: '' }) // Set budgetYear to empty string if it's empty
     }
@@ -81,9 +78,10 @@ const DataHibah = () => {
     await refetch()
   }
   const { mutateAsync: deleteOrganizationGrantAssistance } = useDeleteOrganizationGrantAssistance()
+
   const handleDelete = (id: string) => {
     void alert({
-      title: 'Hapus Data DJPM',
+      title: 'Hapus Data HIBAH',
       description: 'Apakah kamu yakin ingin menghapus data ini?',
       variant: 'danger',
       submitText: 'Delete'
@@ -91,29 +89,49 @@ const DataHibah = () => {
       await deleteOrganizationGrantAssistance(id)
     })
   }
-  React.useEffect(() => {
-    if (isFetching) {
-      setIsLoadingPage(true)
-    } else {
-      setIsLoadingPage(false)
-    }
-  }, [isLoadingPage, isFetching])
 
-  if (isLoading && isLoadingOrganization) {
-    return <Loading />
+  const showDetail = (id: string) => {
+    setSelectedId(id)
+    setIsShow(true)
   }
 
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    await exportOrganizationGrantAssistance('data-hibah', 'csv')
+    const response = await exportOrganizationGrantAssistance('csv',
+    {
+    name: q,
+    budgetYear
+  })
+   if (response.success) {
+    void alert({
+      title: 'Berhasil Export',
+      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+      submitText: 'Oke',
+      variant: 'success'
+    })
     setIsLoadingExport(false)
+  }
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    await exportOrganizationGrantAssistance('data-hibah', 'xlsx')
+    const response = await exportOrganizationGrantAssistance('xlsx',
+    {
+    name: q,
+    budgetYear
+  })
+   if (response.success) {
+    void alert({
+      title: 'Berhasil Export',
+      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+      submitText: 'Oke',
+      variant: 'success'
+    })
     setIsLoadingExport(false)
   }
+  }
+
+  if (isLoading && isLoadingOrganization) return <Loading />
 
   return (
     <Container>
@@ -128,7 +146,11 @@ const DataHibah = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Search {...field} placeholder="Masukkan Nama Lembaga/ NIK Ketua" />
+                    <Search
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder="Masukkan Nama Lembaga/ NIK Ketua"
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -139,14 +161,22 @@ const DataHibah = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Search {...field} placeholder="Masukkan Tahun" />
+                    <Search value={field.value} onChange={field.onChange} placeholder="Masukkan Tahun" />
                   </FormControl>
                 </FormItem>
               )}
             />
           </div>
           <section className="flex items-center justify-between">
-            <div>
+            <div className="flex items-center gap-3">
+              <Button
+                type="button"
+                className="gap-2 border-none rounded-lg"
+                onClick={() => navigate('/data-penerima/dayasos/bho/create')}
+              >
+                <HiPlus className="text-lg" />
+                <span>Tambah Data</span>
+              </Button>
               {organizationGrantAssistances?.data?.length !== 0 ? (
                 <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
               ) : null}
@@ -179,20 +209,24 @@ const DataHibah = () => {
             {organizationGrantAssistances?.data?.length !== 0 ? (
               organizationGrantAssistances?.data.map((item, index) => (
                 <TableRow key={item.id}>
-                  <TableCell className="text-center bg-[#F9FAFC]">
+                  <TableCell className="bg-[#F9FAFC]" position="center">
                     {(organizationGrantAssistances.meta.currentPage - 1) * organizationGrantAssistances.meta.perPage +
                       index +
                       1}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.chairmanName}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.chairmanIdentityNumber}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.address.fullAddress}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.contactNumber}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.aprrovedAmount}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.budgetYear}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.name ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.chairmanName ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.chairmanIdentityNumber ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.address.fullAddress ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.contactNumber ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.aprrovedAmount ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.budgetYear ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Action onDelete={() => handleDelete(item.id)} onDetail={() => showDetail(item.id)} />
+                    <Action
+                      onDelete={() => handleDelete(item.id)}
+                      onDetail={() => showDetail(item.id)}
+                      onEdit={() => navigate(`/data-penerima/dayasos/bho/create/${item.id}`)}
+                    />
                   </TableCell>
                 </TableRow>
               ))
@@ -208,7 +242,6 @@ const DataHibah = () => {
       </section>
       {(organizationGrantAssistances?.meta?.total as number) > 30 ? (
         <Pagination
-          className="px-5 py-5 flex justify-end"
           currentPage={page !== '' ? parseInt(page) : 1}
           totalCount={organizationGrantAssistances?.meta.total as number}
           pageSize={30}
@@ -217,8 +250,8 @@ const DataHibah = () => {
       ) : null}
       <Modal isShow={isShow} className="md:max-w-4xl">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
-          <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data HIBAH</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data HIBAH</p>
         </Modal.Header>
         {isLoadingOrganization && <Loading />}
         <div className="grid grid-cols-3 gap-y-5">

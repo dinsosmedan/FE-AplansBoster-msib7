@@ -19,12 +19,23 @@ import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { formatDateToString, formatStringToDate } from '@/lib/formatDate'
+import { formatDateToString, formatStringToDate } from '@/lib/services/formatDate'
+import { HiMagnifyingGlass } from 'react-icons/hi2'
+import { useTitleHeader } from '@/store/client'
 
 const Pkr = () => {
-  useTitle('Penanganan Kelompok Rentan (PKR)')
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
+  useTitle(`${id ? ' Ubah' : 'Tambah'} Data`)
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/linjamsos', label: 'Linjamsos' },
+      { url: '/data-penerima/dayasos/pkr', label: 'PKR' }
+    ])
+  }, [])
+
   const [NIK, setNIK] = React.useState('')
 
   const { mutate: createVulnerableGroupHandling, isLoading: isLoadingCreate } = useCreateVulnerableGroupHandling()
@@ -44,7 +55,7 @@ const Pkr = () => {
 
   const onSuccess = () => {
     forms.reset()
-    navigate('/data-penerima/linjamsos/data-pkr')
+    navigate('/data-penerima/linjamsos/pkr')
   }
 
   const onSubmit = async (values: vulnerableGroupHandlingFields) => {
@@ -104,9 +115,10 @@ const Pkr = () => {
                     </FormControl>
                   </FormItem>
                 </div>
-                <div className="w-1/12 flex items-end justify-end">
-                  <Button className="w-full" type="button" onClick={async () => await refetch()} loading={isLoading}>
-                    Cari
+                <div className="w-fit flex items-end justify-end" onClick={async () => await refetch()}>
+                  <Button className="w-full gap-2" loading={isLoading} type="button">
+                    <HiMagnifyingGlass className="text-lg" />
+                    <span>Cari</span>
                   </Button>
                 </div>
               </div>
@@ -172,7 +184,7 @@ const Pkr = () => {
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">No Rekening</FormLabel>
                       <FormControl>
-                        <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan No Rekening" />
+                        <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan No Rekening" />
                       </FormControl>
                     </FormItem>
                   )}
@@ -202,7 +214,12 @@ const Pkr = () => {
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">Jumlah Dibantu</FormLabel>
                       <FormControl>
-                        <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Jumlah Dibantu" />
+                        <Input
+                          {...field}
+                          value={field.value ?? ''}
+                          type="number"
+                          placeholder="Masukkan Jumlah Dibantu"
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -216,7 +233,7 @@ const Pkr = () => {
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">Tahun</FormLabel>
                       <FormControl>
-                        <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun" />
+                        <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Tahun" />
                       </FormControl>
                     </FormItem>
                   )}
@@ -224,11 +241,11 @@ const Pkr = () => {
               </div>
             </div>
             <div className="flex justify-end gap-4">
-              <Button variant="cancel" type="button" onClick={() => forms.reset()}>
+              <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
                 Cancel
               </Button>
-              <Button type="submit" loading={isLoadingCreate || isLoadingUpdate}>
-                {id ? 'Update' : 'Submit'}
+              <Button className="font-bold" type="submit" loading={isLoadingCreate || isLoadingUpdate}>
+                {id ? 'Ubah Data' : 'Submit'}
               </Button>
             </div>
           </form>

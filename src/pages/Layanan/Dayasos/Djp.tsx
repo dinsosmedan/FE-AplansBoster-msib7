@@ -1,12 +1,14 @@
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import useTitle from '@/hooks/useTitle'
-import { djpmValidation, type djpmFields } from '@/lib/validations/dayasos.validation'
 import { Container, Loading } from '@/components'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
 import * as React from 'react'
+import { useForm } from 'react-hook-form'
+import { HiMagnifyingGlass } from 'react-icons/hi2'
+import { useNavigate, useParams } from 'react-router-dom'
+
 import {
   useCreateServiceFund,
   useGetBeneficaryByNIK,
@@ -14,15 +16,24 @@ import {
   useGetServiceTypes,
   useUpdateServiceFund
 } from '@/store/server'
+import { useTitleHeader } from '@/store/client'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useNavigate, useParams } from 'react-router-dom'
-import { useToastNik } from '@/hooks'
-import { HiMagnifyingGlass } from 'react-icons/hi2'
+import { useNotFound, useToastNik, useTitle } from '@/hooks'
+import { djpmValidation, type djpmFields } from '@/lib/validations/dayasos.validation'
 
 const Djpm = () => {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
-  useTitle(`Dana Jasa Pelayanan Masyarakat${id ? ' [UBAH DATA]' : ''}`)
+
+  useTitle(`${id ? ' Ubah' : 'Tambah'} Data`)
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/dayasos', label: 'Dayasos & PFM' },
+      { url: '/data-penerima/dayasos/djpm', label: 'DJPM' }
+    ])
+  }, [])
 
   const [NIK, setNIK] = React.useState('')
 
@@ -43,22 +54,18 @@ const Djpm = () => {
     }
   })
 
-  const { data: beneficiary, refetch, isLoading, isError } = useGetBeneficaryByNIK(NIK, false)
-  const { data: serviceFund, isSuccess, isLoading: isLoadingServiceFund } = useGetServiceFund(id)
-  const { data: serviceTypes } = useGetServiceTypes()
-
   const { mutate: createServiceFund, isLoading: isLoadingCreate } = useCreateServiceFund()
+  const { data: beneficiary, refetch, isLoading, isError } = useGetBeneficaryByNIK(NIK, false)
   const { mutateAsync: updateServiceFund, isLoading: isLoadingUpdate } = useUpdateServiceFund()
+  const { data: serviceTypes } = useGetServiceTypes()
+  const {
+    data: serviceFund,
+    isSuccess,
+    isLoading: isLoadingServiceFund,
+    isError: isErrorServiceFund
+  } = useGetServiceFund(id)
 
-  const onSuccess = () => {
-    forms.reset()
-    navigate('/data-penerima/dayasos/data-djp')
-  }
-
-  const onSubmit = async (values: djpmFields) => {
-    if (!id) return createServiceFund(values, { onSuccess })
-    await updateServiceFund({ id, fields: values }, { onSuccess })
-  }
+  useNotFound(isErrorServiceFund)
 
   useToastNik({
     successCondition: !isLoading && beneficiary != null,
@@ -83,9 +90,17 @@ const Djpm = () => {
     }
   }, [isSuccess, serviceFund])
 
-  if (isLoadingServiceFund) {
-    return <Loading />
+  const onSuccess = () => {
+    forms.reset()
+    navigate('/data-penerima/dayasos/djpm')
   }
+
+  const onSubmit = async (values: djpmFields) => {
+    if (!id) return createServiceFund(values, { onSuccess })
+    await updateServiceFund({ id, fields: values }, { onSuccess })
+  }
+
+  if (isLoadingServiceFund) return <Loading />
 
   return (
     <Container className="py-10 px-[47px]">
@@ -224,7 +239,7 @@ const Djpm = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Tahun anggaran</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Anggaran" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Tahun Anggaran" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -291,7 +306,7 @@ const Djpm = () => {
             </div>
 
             <div className="flex justify-end gap-4 mt-8">
-              <Button variant="cancel" className="font-bold" onClick={() => forms.reset()}>
+              <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
                 Cancel
               </Button>
               <Button className="font-bold" type="submit" loading={isLoadingCreate || isLoadingUpdate}>

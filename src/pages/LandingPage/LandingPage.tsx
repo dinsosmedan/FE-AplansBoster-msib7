@@ -1,13 +1,13 @@
 import { ImageCover } from '@/assets'
 import { Button } from '@/components/ui/button'
-import { useTitle } from '@/hooks'
 import { HiAcademicCap, HiArrowRightCircle, HiDocumentText, HiGift } from 'react-icons/hi2'
 import { CardLandingPage } from '@/components'
 import { useNavigate } from 'react-router-dom'
+import { useTitle } from '@/hooks'
 
 export default function LandingPage() {
-  useTitle('Aplans Boster')
   const navigate = useNavigate()
+  useTitle('')
 
   return (
     <>
@@ -18,12 +18,11 @@ export default function LandingPage() {
         <div className="flex-1 flex justify-center items-center">
           <div className="max-w-[450px]">
             <div className="flex flex-col items-start text-white">
-              <h1 className="font-volkhov max-w-[300px] font-bold text-[64px]">
-                Pelayanan <span className="text-[#FFB60A]">Online</span> with us.
+              <h1 className="font-volkhov max-w-[500px] font-bold text-[64px]">
+                Pelayanan Online <br /><span className="text-[#FFB60A]">Aplans Boster</span>
               </h1>
               <p className="text-lg mt-8 mb-16 leading-relaxed">
-                A Team of experienced tourism professionals will provide you with the best advice and tips for your
-                desire place.
+                Selamat datang di di Aplikasi Pelayanan Sosial Berbasis Online Terintegrasi. <br /> Dinas Sosial Kota Medan
               </p>
               <Button
                 variant="ghost"
@@ -37,7 +36,8 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-      <section className="py-[70px] px-14 bg-[#F9F9F9]">
+      <section className="py-[70px] px-14 bg-[#F9F9F9] relative overflow-hidden">
+        <div className="w-96 h-96 opacity-20 bg-rose-600 rounded-full absolute top-[calc(-192px+38px)] right-[calc(-192px+103px)] blur-3xl" />
         <div className="flex flex-col gap-6 w-fit mx-auto">
           <h2 className="text-5xl font-bold font-volkhov text-center">
             Layanan Pengajuan <span className="text-[#FFB60A]">Online</span>
@@ -51,7 +51,7 @@ export default function LandingPage() {
             title="DTKS (Data Terpadu Kesejahteraan Sosial)"
             desc="Layanan Pengajuan DTKS (Data Terpadu Kesejahteraan Sosial)"
             btnText="Pendaftaran Pengajuan"
-            href="/"
+            href="/user/dtks"
             icon={HiGift}
           />
           <CardLandingPage
@@ -59,14 +59,14 @@ export default function LandingPage() {
             title="Bantuan Biaya Pendidikan"
             desc="Layanan Pengajuan Bantuan Biaya Pendidikan"
             btnText="Pendaftaran Pengajuan"
-            href="/"
+            href="/user/bbp"
             icon={HiAcademicCap}
           />
           <CardLandingPage
             title="SKTM (Surat Keterangan Tidak Mampu)"
             desc="Layanan Pengajuan SKTM (Surat Keterangan Tidak Mampu)"
             btnText="Pendaftaran Pengajuan"
-            href="/"
+            href="/user/sktm"
             icon={HiDocumentText}
           />
         </div>

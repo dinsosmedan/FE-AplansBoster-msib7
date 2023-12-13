@@ -9,11 +9,18 @@ import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Pagination from './../../../components/atoms/Pagination'
 import { useNavigate } from 'react-router-dom'
-import { useDeletePkr, useGetDetailVulnerableGroupHandling, useGetKecamatan, useGetKelurahan, useVulnerableGroupHandlings } from '@/store/server'
+import {
+  useDeletePkr,
+  useGetDetailVulnerableGroupHandling,
+  useGetKecamatan,
+  useGetKelurahan,
+  useVulnerableGroupHandlings
+} from '@/store/server'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { Action, ExportButton, Loading, Modal } from '@/components'
-import { useAlert } from '@/store/client'
+import { useAlert, useTitleHeader } from '@/store/client'
 import React from 'react'
+import { exportVulnerableGroupHandlingFn } from '@/api/linjamsos.api'
 interface FormValues {
   q: string
   kelurahan: string
@@ -21,9 +28,19 @@ interface FormValues {
   year: string
 }
 const DataPkr = () => {
-  useTitle('Data Penerima / Linjamsos / Penanganan Kelompok Rentan (PKR) ')
+  useTitle('Data Penerima')
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima/linjamsos', label: 'Linjamsos' },
+      { url: '/data-penerima/linjamsos/pkr', label: 'PKR' }
+    ])
+  }, [])
+
   const navigate = useNavigate()
   const createParams = useCreateParams()
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
   const { q, kecamatan, kelurahan, page, year } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'year'])
@@ -39,7 +56,7 @@ const DataPkr = () => {
 
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
-  const { data: listKelurahan } = useGetKelurahan(areaLevel3)
+  const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
   const { data: vulnerable, isLoading: isLoadingVulnerable } = useGetDetailVulnerableGroupHandling(selectedId)
 
   const {
@@ -88,8 +105,47 @@ const DataPkr = () => {
     await refetch()
   }
   const handleReset = () => {
-    navigate('/data-penerima/linjamsos/data-pkr')
+    navigate('/data-penerima/linjamsos/pkr')
     forms.reset()
+  }
+  const exportAsCsv = async () => {
+    setIsLoadingExport(true)
+    const response = await exportVulnerableGroupHandlingFn('csv',
+    {
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    year,
+    q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
+  }
+
+  const exportAsXlsx = async () => {
+    setIsLoadingExport(true)
+    const response = await exportVulnerableGroupHandlingFn('xlsx',
+    {
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    year,
+    q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
   }
   if (isLoading && isLoadingVulnerable) {
     return <Loading />
@@ -98,6 +154,7 @@ const DataPkr = () => {
   return (
     <div>
       <Container>
+        {(isFetching || isLoadingExport) && <Loading />}
         <h1 className="font-bold text-[32px] ">Penanganan Kelompok Rentan (PKR)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -147,7 +204,11 @@ const DataPkr = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value} disabled={areaLevel3 === '' && kecamatan === ''}>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        disabled={areaLevel3 === '' && kecamatan === ''}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Kelurahan" />
@@ -179,7 +240,9 @@ const DataPkr = () => {
             </div>
             <div className="mb-6 flex justify-between">
               <div className="w-[20%]">
-                <ExportButton onExportFirst={() => { }} onExportSecond={() => { }} />
+              {vulnerables?.data?.length !== 0 ? (
+                  <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+                ) : null}
               </div>
               <div className="flex gap-3">
                 <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
@@ -196,7 +259,7 @@ const DataPkr = () => {
         </Form>
         <section className="border rounded-xl mt-5 overflow-hidden">
           <Table>
-            <TableHeader className="bg-zinc-300">
+            <TableHeader className="bg-white">
               <TableRow>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">No. </TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Pemohon</TableHead>
@@ -232,14 +295,12 @@ const DataPkr = () => {
                     <TableCell className="text-center bg-[#F9FAFC]">
                       {item.beneficiary?.address.areaLevel4?.name ?? '-'}
                     </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">
-                      {item.budgetYear ?? '-'}
-                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.budgetYear ?? '-'}</TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       <Action
                         onDelete={async () => await handleDelete(item.id)}
                         onDetail={() => showDetail(item.id)}
-                        onEdit={() => navigate(`/layanan/linjamsos/Pkr/${item.id}`)}
+                        onEdit={() => navigate(`/data-penerima/linjamsos/pkr/${item.id}`)}
                       />
                     </TableCell>
                   </TableRow>
@@ -254,9 +315,8 @@ const DataPkr = () => {
             </TableBody>
           </Table>
         </section>
-        {(vulnerables?.meta?.total as number) > 10 ? (
+        {(vulnerables?.meta?.total as number) > 30 ? (
           <Pagination
-            className="px-5 py-5 flex justify-end"
             currentPage={page !== '' ? parseInt(page) : 1}
             totalCount={vulnerables?.meta.total as number}
             pageSize={30}
@@ -265,8 +325,8 @@ const DataPkr = () => {
         ) : null}
         <Modal isShow={isShow} className="md:max-w-4xl">
           <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-            <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
-            <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
+            <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data PKR</h3>
+            <p className="text-sm text-[#A1A1A1]">View Data Detail Data PKR</p>
           </Modal.Header>
           {isLoadingVulnerable && <Loading />}
           <div className="grid grid-cols-3 gap-y-5">
@@ -300,7 +360,9 @@ const DataPkr = () => {
             </div>
             <div>
               <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
-              <p className="text-base capitalize">{vulnerable?.beneficiary.birthPlace ?? '-'} / {vulnerable?.beneficiary.birthDate ?? '-'}</p>
+              <p className="text-base capitalize">
+                {vulnerable?.beneficiary.birthPlace ?? '-'} / {vulnerable?.beneficiary.birthDate ?? '-'}
+              </p>
             </div>
             <div>
               <p className="text-sm font-bold">Status DTKS</p>

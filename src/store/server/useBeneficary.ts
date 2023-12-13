@@ -5,16 +5,34 @@ import {
   showBeneficaryByNIKFn,
   showIdentityCheckFn,
   showDTKS,
-  showBeneficaryByIdFn
+  showBeneficaryByIdFn,
+  storeDataMaster
 } from '@/api/beneficary.api'
+import { handleMessage } from '@/lib/services/handleMessage'
 import { type DtksParams } from '@/lib/types/beneficary.type'
-import { useQuery } from 'react-query'
+import { handleOnError } from '@/lib/utils'
+import { type AxiosError } from 'axios'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 
 export const useGetBeneficaryByNIK = (nik: string, enabled: boolean) => {
   return useQuery(['beneficary', nik], async () => await showBeneficaryByNIKFn(nik), {
     enabled
   })
 }
+
+export const useMutationGetBeneficaryByNIK = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(showBeneficaryByNIKFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('beneficary')
+    },
+    onError: (error: AxiosError) => {
+      console.log(error)
+    }
+  })
+}
+
 export const useGetBeneficaryById = (id?: string) => {
   return useQuery(['beneficary', id], async () => await showBeneficaryByIdFn(id as string))
 }
@@ -32,7 +50,7 @@ export const useGetBeneficiary = ({ page, q, idKecamatan, idKelurahan, isDtks }:
       }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
 }
@@ -55,7 +73,19 @@ export const useGetDTKS = ({ kecamatan, kelurahan, nama, nik, kk, bpnt, blt, pbi
     async () => await showDTKS({ kecamatan, kelurahan, nama, nik, kk, bpnt, blt, pbi, pkh, page }),
     {
       keepPreviousData: true,
-      staleTime: 5000
+      staleTime: 10 * 60 * 1000
     }
   )
+}
+
+export const useCreateBeneficary = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(storeDataMaster, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('veterans')
+      handleMessage({ title: 'Data Master', variant: 'create' })
+    },
+    onError: (error: AxiosError) => handleOnError(error)
+  })
 }

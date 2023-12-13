@@ -9,7 +9,14 @@ import * as React from 'react'
 import { HiOutlinePencilAlt, HiUserAdd, HiTrash } from 'react-icons/hi'
 import useTitle from '@/hooks/useTitle'
 import { Container, Loading, Pagination, Search } from '@/components'
-import { useCreateUser, useDeleteUser, useGetRole, useGetUser, useGetUserById, useUpdateUser } from '@/store/server/useUserManagement'
+import {
+  useCreateUser,
+  useDeleteUser,
+  useGetRole,
+  useGetUser,
+  useGetUserById,
+  useUpdateUser
+} from '@/store/server/useUserManagement'
 import { userValidation, type userFields } from '@/lib/validations/user.validation'
 // import { toast } from '@/components/ui/use-toast'
 import { useAlert } from '@/store/client'
@@ -27,9 +34,9 @@ const ManajemenUser = () => {
   const { data: users, isLoading } = useGetUser()
 
   const forms = useForm<userFields>({
-     mode: 'onTouched',
-     resolver: yupResolver(userValidation),
-     defaultValues: {
+    mode: 'onTouched',
+    resolver: yupResolver(userValidation),
+    defaultValues: {
       employeeIdentityNumber: '',
       email: '',
       name: '',
@@ -37,8 +44,8 @@ const ManajemenUser = () => {
       password: '',
       role: '',
       isActive: ''
-     }
-    })
+    }
+  })
   const [isShow, setIsShow] = React.useState(false)
   const { mutate: Register, isLoading: isLoadingCreate } = useCreateUser()
 
@@ -184,8 +191,12 @@ const ManajemenUser = () => {
 
       <Modal isShow={isShow} className="max-h-[calc(100vh-200px)] overflow-y-auto">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">{userId ? 'Perbaharui' : 'Tambah'} Pengguna</h3>
-          <p className="text-sm text-[#A1A1A1]">{userId ? 'Perbaharui data pengguna.' : 'Masukkan data pengguna baru.'}</p>
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">
+            {userId ? 'Perbaharui' : 'Tambah'} Pengguna
+          </h3>
+          <p className="text-sm text-[#A1A1A1]">
+            {userId ? 'Perbaharui data pengguna.' : 'Masukkan data pengguna baru.'}
+          </p>
         </Modal.Header>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-3">
@@ -197,11 +208,7 @@ const ManajemenUser = () => {
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">NIP</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        placeholder="Masukkan NIP"
-                      />
+                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan NIP" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -213,11 +220,7 @@ const ManajemenUser = () => {
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        placeholder="Masukkan Email"
-                      />
+                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan Email" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -229,11 +232,7 @@ const ManajemenUser = () => {
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        placeholder="Masukkan Nama"
-                      />
+                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan Nama" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -245,33 +244,25 @@ const ManajemenUser = () => {
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">No. HP</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value}
-                        placeholder="Masukkan No. HP"
-                      />
+                      <Input {...field} value={field.value} placeholder="Masukkan No. HP" />
                     </FormControl>
                   </FormItem>
                 )}
               />
-              {!userId
-              ? <FormField
-                name="password"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        placeholder="Masukkan Password (default)"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              /> : null
-              }
+              {!userId ? (
+                <FormField
+                  name="password"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="font-semibold dark:text-white">Password</FormLabel>
+                      <FormControl>
+                        <Input {...field} value={field.value ?? ''} placeholder="Masukkan Password (default)" />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              ) : null}
               <FormField
                 name="role"
                 control={forms.control}
