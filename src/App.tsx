@@ -84,6 +84,8 @@ import useScrollToTop from './hooks/useScrolltoTop'
 import ChangePassword from './pages/LandingPage/Profile/ChangePassword'
 import ChangeProfile from './pages/LandingPage/Profile/ChangeProfile'
 import ProfileLayout from './components/layouts/landingPage/ProfileLayout'
+import SuccessfulRegister from './components/layouts/landingPage/SuccessfulRegister'
+import VerifiedAccount from './components/layouts/landingPage/VerifiedAccount'
 
 export default function App() {
   const { alertOptions, handleClose, handleSubmit } = useAlert()
@@ -205,6 +207,8 @@ export default function App() {
             <Route element={<UserProtectedAuth />}>
               <Route element={<AuthUserLayout />}>
                 <Route path="login" element={<LoginUser />} />
+                <Route path="successful" element={<SuccessfulRegister />} />
+              <Route path="success" element={<VerifiedAccount />} />
                 <Route path="register" element={<RegisterUser />} />
                 <Route path="forgot-password" element={<ForgotPasswordUser />} />
                 <Route path="reset-password" element={<UpdatePasswordUser />} />
