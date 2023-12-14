@@ -1,4 +1,4 @@
-import { formatRibuan } from "@/hooks"
+import { formatRibuan } from '@/hooks'
 
 const BasicCard = ({ props }: any) => {
   const [judul, angka, satuan] = props

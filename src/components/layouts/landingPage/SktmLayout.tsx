@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { HiAcademicCap, HiArrowDownTray, HiBuildingLibrary } from 'react-icons/hi2'
 import { Button } from '@/components/ui/button'
-import CardLandingPage from './../organisms/landingPage/CardLandingPage'
+import CardLandingPage from '../../organisms/landingPage/CardLandingPage'
 
 export default function UserSktm() {
   return (

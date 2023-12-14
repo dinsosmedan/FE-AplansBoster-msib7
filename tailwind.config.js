@@ -35,7 +35,7 @@ module.exports = {
         font: '#0C1421'
       },
       transitionDuration: {
-        700: '700ms' 
+        700: '700ms'
       }
     }
   },

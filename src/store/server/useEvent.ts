@@ -11,7 +11,7 @@ import { handleOnError } from '@/lib/utils'
 import { type AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
-export const useGetEvent = (status: string, year: string, page: string) => {
+export const useGetEvent = (status?: string, year?: string, page?: string) => {
   return useQuery(['events', status, year, page], async () => await getEventFn(status, year, page))
 }
 

@@ -6,7 +6,7 @@ import { HiMagnifyingGlass, HiNewspaper } from 'react-icons/hi2'
 import * as React from 'react'
 import { useDeleteEvent, useGetEvent, useGetEventType } from '@/store/server'
 import { formatToView } from '@/lib/services/formatDate'
-import { useAlert } from '@/store/client'
+import { useAlert, useAuth } from '@/store/client'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -21,6 +21,7 @@ interface FormValues {
 
 const Event = () => {
   useTitle('Event')
+  const user = useAuth((state) => state.user)
 
   const { alert } = useAlert()
   const [isShow, setIsShow] = React.useState(false)
@@ -33,6 +34,10 @@ const Event = () => {
   const { data: eventType } = useGetEventType()
   const { data: events, isFetching, refetch } = useGetEvent(status, year, page)
   const { mutateAsync: deleteEvent } = useDeleteEvent()
+
+  if (!user?.role.name.includes('admin')) {
+    return <div>You are not have permission to access this menu</div>
+  }
 
   const forms = useForm<FormValues>()
 

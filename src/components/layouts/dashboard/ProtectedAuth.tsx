@@ -1,4 +1,5 @@
-import { useToken } from '@/store/client'
+// import { useToken } from '@/store/client'
+import { useAuth } from '@/store/client'
 import * as React from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
@@ -8,11 +9,13 @@ interface ProtectedAuthProps {
 
 export default function ProtectedAuth({ children }: ProtectedAuthProps) {
   const location = useLocation()
-  const token = useToken((state) => state.token)
+  // const token = useToken((state) => state.token)
+  const auth = useAuth((state) => ({
+    token: state.token,
+    user: state.user
+  }))
 
-  // ini komentar
-
-  if (token !== '') {
+  if (auth?.token && auth.user?.role !== null) {
     return <Navigate to="/dashboard" replace state={{ from: location }} />
   }
 

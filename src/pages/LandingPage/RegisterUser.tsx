@@ -44,7 +44,7 @@ export default function RegisterUser() {
   return (
     <FormAuthContainer title="Buat Akun Baru">
       <Form {...forms}>
-        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-[30px] mt-[42px]">
+        <div className="flex flex-col gap-[30px] mt-[42px]">
           <FormField
             name="name"
             control={forms.control}
@@ -187,13 +187,13 @@ export default function RegisterUser() {
               </FormItem>
             )}
           />
-          <Button className="rounded-lg w-full py-6 text-lg" type="submit" loading={isLoading}>
+          <Button className="rounded-lg w-full py-6 text-lg" loading={isLoading} onClick={forms.handleSubmit(onSubmit)}>
             Buat Akun
           </Button>
           <Link to="/user/login" className="text-primary">
             <p className="text-center">Sudah Mempunyai Akun?</p>
           </Link>
-        </form>
+        </div>
       </Form>
       <Modal isShow={isShow}>
         <Modal.Header setIsShow={setIsShow}>

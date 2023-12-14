@@ -1,5 +1,5 @@
 import api from './axiosInstance'
-import { type ITuitionAssistanceEvents } from '@/lib/types/service.type'
+import { type ITuitionAssistanceEvent, type ITuitionAssistanceEvents } from '@/lib/types/service.type'
 
 export interface getTuitionAssistanceParams {
   eventId: string
@@ -20,8 +20,12 @@ export const getTuitionAssistanceByEventId = async ({
   return response.data
 }
 
-
 export const getIndigencyCertificateFn = async (status: any, search: any): Promise<any> => {
   const response = await api.get(`/service/indigency-certificate?application_status=${status}&q=${search}`)
+  return response.data?.data
+}
+
+export const showTuitionAssistanceEventFn = async (id: string): Promise<ITuitionAssistanceEvent> => {
+  const response = await api.get(`/service/tuition-assistance-application/${id}`)
   return response.data?.data
 }

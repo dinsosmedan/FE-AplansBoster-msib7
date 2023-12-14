@@ -5,7 +5,6 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { formatRibuan } from '@/hooks'
 
-
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels)
 // Chart.register(ChartDataLabels);
 
@@ -74,8 +73,7 @@ const LongCard = ({ props, children }: any) => {
 }
 
 const Chart = ({ data, label: labels, backgroundColor, isPercent }: any) => {
-
-  const total = data.reduce((acc: any, current: any) => acc + current, 0);
+  const total = data.reduce((acc: any, current: any) => acc + current, 0)
 
   const datalabel = {
     labels,
@@ -98,7 +96,11 @@ const Chart = ({ data, label: labels, backgroundColor, isPercent }: any) => {
             plugins: {
               tooltip: { callbacks: { label: (item) => `${item.label} : ${item.formattedValue.replace(',', '.')} ` } },
               legend: { position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle' } },
-              datalabels: { display: true, color: 'white', formatter: (item) => ` ${isPercent ? Math.round(item / total * 100) + ' %' : item}` }
+              datalabels: {
+                display: true,
+                color: 'white',
+                formatter: (item) => ` ${isPercent ? Math.round((item / total) * 100) + ' %' : item}`
+              }
             }
           }}
           data={datalabel}
@@ -113,8 +115,6 @@ const Tabel = ({ data }: any) => {
 
   return (
     <>
-
-
       <Table>
         <TableHeader className="bg-primary">
           <TableRow>

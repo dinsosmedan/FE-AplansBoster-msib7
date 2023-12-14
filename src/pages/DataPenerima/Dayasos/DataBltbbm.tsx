@@ -69,35 +69,33 @@ const DataBltbbm = () => {
 
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    const response = await exportFuelCashAssistanceFn('csv',
-    {
-    q
-  })
-  if (response.success) {
-    void alert({
-      title: 'Berhasil Export',
-      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
-      submitText: 'Oke',
-      variant: 'success'
+    const response = await exportFuelCashAssistanceFn('csv', {
+      q
     })
-    setIsLoadingExport(false)
-  }
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+      setIsLoadingExport(false)
+    }
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    const response = await exportFuelCashAssistanceFn('xlsx',
-    {
-    q
-  })
-  if (response.success) {
-    void alert({
-      title: 'Berhasil Export',
-      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
-      submitText: 'Oke',
-      variant: 'success'
+    const response = await exportFuelCashAssistanceFn('xlsx', {
+      q
     })
-  }
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
     setIsLoadingExport(false)
   }
 
