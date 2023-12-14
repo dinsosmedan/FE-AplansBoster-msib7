@@ -60,6 +60,8 @@ import ChangePassword from './LandingPage/Profile/ChangePassword'
 import ChangeProfile from './LandingPage/Profile/ChangeProfile'
 import ResetPassword from './ResetPassword'
 import ManajemenAdmin from './ManajemenAdmin'
+import SuccessfulRegister from './../components/layouts/landingPage/SuccessfulRegister'
+import VerifiedAccount from './../components/layouts/landingPage/VerifiedAccount'
 
 export {
   Home,
@@ -123,5 +125,7 @@ export {
   ChangePassword,
   ChangeProfile,
   ResetPassword,
-  ManajemenAdmin
+  ManajemenAdmin,
+  SuccessfulRegister,
+  VerifiedAccount
 }
