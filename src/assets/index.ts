@@ -19,5 +19,6 @@ import CekBansosIlustration from './icons/cek-bansos.svg'
 import Substract from './images/Subtract.svg'
 import NotFoundIllustration from './images/not-found.svg'
 import NotFoundNumber from './images/not-found-number.svg'
+import BgProfile from './images/bg-profile.svg'
 
-export { Logo, BgLogin, LogoMini, BgDukcapil, BgBansos, BgDataRehabsos, BgDataDayasos, BgDataLinjmasos, BgLayananRehabsos, BgLayananDayasos, BgLayananLinjmasos, ImageCover, BgCard, DinsosLogo, MedanBerkahLogo, NotFoundBansos, Swafoto, CekBansosIlustration, Substract, NotFoundIllustration, NotFoundNumber }
+export { Logo, BgLogin, LogoMini, BgDukcapil, BgBansos, BgDataRehabsos, BgDataDayasos, BgDataLinjmasos, BgLayananRehabsos, BgLayananDayasos, BgLayananLinjmasos, ImageCover, BgCard, DinsosLogo, MedanBerkahLogo, NotFoundBansos, Swafoto, CekBansosIlustration, Substract, NotFoundIllustration, NotFoundNumber, BgProfile }

@@ -3,55 +3,48 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-import { HiOutlinePencilAlt, HiUserAdd } from 'react-icons/hi'
+import { HiBadgeCheck, HiOutlinePencilAlt, HiUserAdd, HiX } from 'react-icons/hi'
 import { useForm } from 'react-hook-form'
 import * as React from 'react'
 
 import { Container, Modal, MultiSelect, Search } from '@/components'
 import useTitle from '@/hooks/useTitle'
-
-interface FormValues {
-  role: string
-  permission: string[]
-}
-
-const PERMISSION = [
-  {
-    value: 'dashboard',
-    label: 'Dashboard'
-  },
-  {
-    value: 'layanan',
-    label: 'Layanan'
-  },
-  {
-    value: 'profiling-masyarakat',
-    label: 'Profiling Masyarakat'
-  },
-  {
-    value: 'data-dtks',
-    label: 'Data DTKS'
-  },
-  {
-    value: 'data-pengajuan',
-    label: 'Data Pengajuan'
-  }
-]
+import { useCreateRolePermission, useGetPermission, useGetRole } from '@/store/server/useUserManagement'
+import { useNavigate } from 'react-router-dom'
+import { type rolePermissionFields } from '@/lib/validations/rolepermission.validation'
 
 const ManajemenRole = () => {
   useTitle('Manajemen Role ')
+  const navigate = useNavigate()
 
   const [isShow, setIsShow] = React.useState(false)
-  const formsCreate = useForm<FormValues>({
+  const { mutate: RolePermission, isLoading: isLoadingCreate } = useCreateRolePermission()
+  const { data: role } = useGetRole()
+  const { data: permission } = useGetPermission()
+  const PERMISSION =
+    permission?.data?.map((item: any) => ({
+      value: item.id,
+      label: item.name
+    })) || []
+  console.log(role)
+  const formsCreate = useForm<rolePermissionFields>({
     mode: 'onTouched',
     defaultValues: {
-      role: 'Admin',
-      permission: []
+      name: 'Admin',
+      permissions: []
     }
   })
-
-  const onSubmit = async (values: any) => {
-    console.log(values)
+  const onSubmit = async (values: rolePermissionFields) => {
+    const validPermissions: string[] = values.permissions.filter((p: any): p is string => p !== undefined)
+    const newData = {
+      ...values,
+      permissions: validPermissions
+    }
+    RolePermission(newData, { onSuccess })
+  }
+  const onSuccess = () => {
+    setIsShow(false)
+    navigate('/manajemen-role')
   }
 
   return (
@@ -67,26 +60,45 @@ const ManajemenRole = () => {
         <TableHeader className="bg-primary">
           <TableRow>
             <TableHead className="text-center text-white">Role</TableHead>
-            <TableHead className="text-center text-white">Akses Menu</TableHead>
+            {PERMISSION.map((permissionItem: any) => (
+              <TableHead className="text-center text-white" key={permissionItem.value}>
+                {permissionItem.label}
+              </TableHead>
+            ))}
             <TableHead className="text-center text-white">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell className="text-center">Oza Puki</TableCell>
-            <TableCell className="text-center">
-              Dashboard, layanan, Data Penerima, Profiling Masyarakat, Data DTKS, Data Pengajuan
-            </TableCell>
-            <TableCell className="flex justify-center items-center">
-              <Button
-                size="icon"
-                variant="base"
-                className="bg-[#959595] text-white hover:bg-[#828282] hover:text-white"
-              >
-                <HiOutlinePencilAlt className="text-lg" />
-              </Button>
-            </TableCell>
-          </TableRow>
+          {role?.data.map((item: any) => (
+            <TableRow key={item.id}>
+              <TableCell className="text-center">{item.name}</TableCell>
+              {PERMISSION.map((permissionItem: any) => {
+                const rolePermission = item.permissions.find((p: any) => p.id === permissionItem.value)
+                const isPermitted = rolePermission?.isPermitted ?? false
+
+                return (
+                  <TableCell className="center" position="center" key={permissionItem.value}>
+                    {isPermitted ? (
+                      <div className="flex justify-center items-center w-full mx-auto">
+                        <HiBadgeCheck className="text-center text-2xl text-green-500" />
+                      </div>
+                    ) : (
+                      <HiX className="text-center text-2xl text-red-500" />
+                    )}
+                  </TableCell>
+                )
+              })}
+              <TableCell className="flex justify-center items-center">
+                <Button
+                  size="icon"
+                  variant="base"
+                  className="bg-[#959595] text-white hover:bg-[#828282] hover:text-white"
+                >
+                  <HiOutlinePencilAlt className="text-lg" />
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
       <Modal isShow={isShow}>
@@ -97,7 +109,7 @@ const ManajemenRole = () => {
         <Form {...formsCreate}>
           <form onSubmit={formsCreate.handleSubmit(onSubmit)} className="mt-2 flex-1 gap-3 flex flex-col">
             <FormField
-              name="role"
+              name="name"
               control={formsCreate.control}
               render={({ field }) => (
                 <FormItem className="flex-1">
@@ -110,13 +122,13 @@ const ManajemenRole = () => {
             />
             <FormField
               control={formsCreate.control}
-              name="permission"
+              name="permissions"
               render={({ field }) => (
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">Permission</FormLabel>
                   <MultiSelect
                     onChange={field.onChange}
-                    selected={field.value}
+                    selected={(field.value ?? []).filter((v): v is string => v !== undefined)}
                     options={PERMISSION}
                     placeholder="Pilih Akses"
                     className="flex-1"
@@ -126,14 +138,20 @@ const ManajemenRole = () => {
                 </FormItem>
               )}
             />
+            <Modal.Footer>
+              <Button
+                variant="outline"
+                className="rounded-lg text-primary border-primary"
+                onClick={() => setIsShow(false)}
+              >
+                Cancel
+              </Button>
+              <Button className="rounded-lg" type="submit" loading={isLoadingCreate}>
+                Tambah Data
+              </Button>
+            </Modal.Footer>
           </form>
         </Form>
-        <Modal.Footer>
-          <Button variant="outline" className="rounded-lg text-primary border-primary" onClick={() => setIsShow(false)}>
-            Cancel
-          </Button>
-          <Button className="rounded-lg">Tambah Data</Button>
-        </Modal.Footer>
       </Modal>
     </Container>
   )

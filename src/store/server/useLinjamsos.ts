@@ -253,17 +253,17 @@ export const useGetPremiumAssistanceBenefitFn = ({
   idKecamatan,
   idKelurahan,
   q,
-  type
+  budget
 }: PremiumAssistanceBenefitQuery) => {
   return useQuery(
-    ['premium-assistances', page, idKecamatan, idKelurahan, q, type],
+    ['premium-assistances', page, idKecamatan, idKelurahan, q, budget],
     async () =>
       await getPremiumAssistanceBenefitFn({
         page,
         idKecamatan,
         idKelurahan,
         q,
-        type
+        budget
       }),
     {
       keepPreviousData: true,
@@ -277,16 +277,16 @@ export const useGetPremiumAssistanceBenefitByID = (id?: string) => {
   })
 }
 // PKH //
-export const useGetFamilyHopeFn = ({ page, type, idKecamatan, idKelurahan, q }: FamilyHopeQuery) => {
+export const useGetFamilyHopeFn = ({ page, member, idKecamatan, idKelurahan, q }: FamilyHopeQuery) => {
   return useQuery(
-    ['family-hopes', page, idKecamatan, idKelurahan, q, type],
+    ['family-hopes', page, idKecamatan, idKelurahan, q, member],
     async () =>
       await getFamilyHopeFn({
         page,
         idKecamatan,
         idKelurahan,
         q,
-        type
+        member
       }),
     {
       keepPreviousData: true,
