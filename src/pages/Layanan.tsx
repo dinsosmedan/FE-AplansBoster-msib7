@@ -11,7 +11,7 @@ export default function DataPenerima() {
         <CardSub
           title={'Surat Keterangan Tidak Mampu'}
           subTitle={'Indigency Certificate'}
-          href={'/layanan/layanan-sktm'}
+          href={'/layanan/layanan-sktm?tab=pending'}
         />
         <CardSub
           title={'Data Terpadu Kesejahteraan Sosial'}

@@ -1,8 +1,23 @@
 
 ###
+POST https://api.aplansboster.dinas.social/api/v1/auth/login
+Accept: application/json
+
+{
+    "identifier":"raihanoza18@gmail.com",
+    "password": "dev12321"
+}
+
+###
 GET https://api.aplansboster.dinas.social/api/v1/dashboard/dtks/count/administrative-area?limit=5&sort=DESC
 ###
 GET https://api.aplansboster.dinas.social/api/v1/indigency-certificate
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5hcGxhbnNib3N0ZXIuZGluYXMuc29jaWFsL2FwaS92MS9hdXRoL2xvZ2luIiwiaWF0IjoxNzAyNDM3NjI4LCJleHAiOjE3MDI0NDEyMjgsIm5iZiI6MTcwMjQzNzYyOCwianRpIjoiM0dzSDVYQlhVUVBzWFppZiIsInN1YiI6IjlhZDQzOTQwLTQyYjUtNDBjMS05NmVmLWRmYzI3ZjdjODc2OSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.pnfyldnbkdnDcx6MG7DCN00bRwvlMyli-rpmGJVQDEo
+###
+GET https://api.aplansboster.dinas.social/api/v1/service/indigency-certificate?application_status=pending&q=NURUL
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5hcGxhbnNib3N0ZXIuZGluYXMuc29jaWFsL2FwaS92MS9hdXRoL2xvZ2luIiwiaWF0IjoxNzAyNTI4NjgwLCJleHAiOjE3MDI1MzIyODAsIm5iZiI6MTcwMjUyODY4MCwianRpIjoiQ0thbmJTNkdIeGFRWFBoRiIsInN1YiI6IjlhZDYyNDhkLWFjNWItNDc2Yi04NGUxLTc2Y2YzZjc5MDM4NiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.Rnagm3RKLhsSoL6us4i7e1FSQcLXGFviDGUlGIbSqM8
 
 
 ###
