@@ -15,7 +15,7 @@ export const getTuitionAssistanceByEventId = async ({
   page
 }: getTuitionAssistanceParams): Promise<ITuitionAssistanceEvents> => {
   const response = await api.get(
-    `service/tuition-assistance-application/event/${eventId}?q=${search}&application_status=${applicationStatus}&page=${page}`
+    `service/tuition-assistance-application/event/${eventId}?application_status=${applicationStatus}&q=${search}&page=${page}`
   )
   return response.data
 }

@@ -1,4 +1,11 @@
-import { deleteEventFn, getEventFn, getEventTypeFn, showEventFn, storeEventFn } from '@/api/event.api'
+import {
+  deleteEventFn,
+  getEventFn,
+  getEventTuitionAssistanceFn,
+  getEventTypeFn,
+  showEventFn,
+  storeEventFn
+} from '@/api/event.api'
 import { handleMessage } from '@/lib/services/handleMessage'
 import { handleOnError } from '@/lib/utils'
 import { type AxiosError } from 'axios'
@@ -40,4 +47,8 @@ export const useGetEventById = (id: string) => {
   return useQuery(['event', id], async () => await showEventFn(id), {
     enabled: !!id
   })
+}
+
+export const useGetEventTuitionAssistance = (year: string, status: string) => {
+  return useQuery(['eventTuitionAssistance', year, status], async () => await getEventTuitionAssistanceFn(year, status))
 }

@@ -1,59 +1,59 @@
-import { Action, Container, Loading, Modal, Pagination, Search, Status } from '@/components'
+import { Action, Container, Loading, Pagination, Search, Status } from '@/components'
 import { Button } from '@/components/ui/button'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
+// import { Input } from '@/components/ui/input'
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { useAlert } from '@/store/client'
-import React from 'react'
+// import { useAlert } from '@/store/client'
 import { useForm } from 'react-hook-form'
-import { HiOutlineExclamationCircle, HiOutlineEye } from 'react-icons/hi2'
+// import { HiOutlineExclamationCircle, HiOutlineEye } from 'react-icons/hi2'
 import FilterLayanan from './../../components/atoms/FilterLayanan'
 import { useCreateParams, useGetParams, useTitle } from '@/hooks'
 import { useGetTuitionAssistanceByEventId } from '@/store/server/useService'
 import { useParams } from 'react-router-dom'
 import { useGetEventById } from '@/store/server'
+import * as React from 'react'
 
 interface FormValues {
-  nik: string
+  search: string
 }
 
 export default function LayananBbp() {
   useTitle('Bantuan Biaya Pendidikan (BBP)')
   const { id } = useParams<{ id: string }>()
 
-  const { alert } = useAlert()
-  const [isShow, setIsShow] = React.useState(false)
+  // const { alert } = useAlert()
+  const [, setIsShow] = React.useState(false)
 
   const createParams = useCreateParams()
   const { search, page, applicationStatus } = useGetParams(['search', 'page', 'applicationStatus'])
 
   const { data: event } = useGetEventById(id as string)
-  const { data, isLoading } = useGetTuitionAssistanceByEventId({
+  const { data, refetch, isFetching } = useGetTuitionAssistanceByEventId({
     eventId: id as string,
-    applicationStatus,
+    applicationStatus: applicationStatus || 'processed',
     search,
     page: parseInt(page) || 1
   })
 
-  const forms = useForm<FormValues>({
-    mode: 'onTouched'
-  })
+  const forms = useForm<FormValues>()
 
   const onSubmit = async (values: FormValues) => {
-    console.log(values)
+    createParams({ key: 'search', value: values.search })
+    await refetch()
   }
 
-  if (isLoading) return <Loading />
+  // if (isLoading) return <Loading />
 
   return (
     <Container>
+      {isFetching && <Loading />}
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="flex flex-row justify-between gap-3 py-6 items-center">
             <div className="w-6/12">
               <FormField
-                name="nik"
+                name="search"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
@@ -65,19 +65,19 @@ export default function LayananBbp() {
               />
             </div>
             <div className="flex items-end justify-end m">
-              <Button className="bg-primary w-[143px] h-[56px] rounded-xl mr-4">
+              <Button className="bg-primary w-[143px] h-[56px] rounded-xl mr-4" type="button">
                 <p className="text-white text-base font-bold">Kirim Notifikasi</p>
               </Button>
               <div className="bg-primary px-5 py-4 rounded-xl">
                 <p className="text-white text-base font-bold">
-                  Total Kuota : {event?.filledQuota}/{event?.quota}
+                  Total Kuota : {event?.filledQuota}/{event?.quota ?? event?.filledQuota}
                 </p>
               </div>
             </div>
           </div>
         </form>
       </Form>
-      <FilterLayanan />
+      <FilterLayanan action={async () => await refetch()} />
       <section className="border rounded-xl mt-5 overflow-hidden">
         <Table>
           <TableHeader className="bg-[#FFFFFF]">
@@ -102,8 +102,8 @@ export default function LayananBbp() {
                   <TableCell className="bg-[#F9FAFC]" position="center">
                     {(data.meta.currentPage - 1) * data.meta.perPage + index + 1}
                   </TableCell>
-                  <TableCell className="bg-[#F9FAFC]">{item.beneficiary.identityNumber}</TableCell>
-                  <TableCell className="bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.beneficiary.identityNumber ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.beneficiary.name ?? '-'}</TableCell>
                   <TableCell className="bg-[#F9FAFC]">
                     {item.dtksStatus ? (
                       <Status label={item.dtksStatus} isWarning="prelist" isDanger="non-dtks" isSuccess="dtks" />
@@ -111,11 +111,17 @@ export default function LayananBbp() {
                       '-'
                     )}
                   </TableCell>
-                  <TableCell className="bg-[#F9FAFC]">{item.beneficiary.gender}</TableCell>
-                  <TableCell className="bg-[#F9FAFC] capitalize">{item.beneficiary.address.areaLevel3?.name}</TableCell>
-                  <TableCell className="bg-[#F9FAFC] capitalize">{item.beneficiary.address.areaLevel4?.name}</TableCell>
-                  <TableCell className="bg-[#F9FAFC] capitalize">{item.beneficiary.address.fullAddress}</TableCell>
-                  <TableCell className="bg-[#F9FAFC] capitalize">{item.phoneNumber}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.beneficiary.gender ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC] capitalize">
+                    {item.beneficiary.address.areaLevel3?.name ?? '-'}
+                  </TableCell>
+                  <TableCell className="bg-[#F9FAFC] capitalize">
+                    {item.beneficiary.address.areaLevel4?.name ?? '-'}
+                  </TableCell>
+                  <TableCell className="bg-[#F9FAFC] capitalize">
+                    {item.beneficiary.address.fullAddress ?? '-'}
+                  </TableCell>
+                  <TableCell className="bg-[#F9FAFC] capitalize">{item.phoneNumber ?? '-'}</TableCell>
                   <TableCell className="bg-[#F9FAFC] capitalize">-</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action

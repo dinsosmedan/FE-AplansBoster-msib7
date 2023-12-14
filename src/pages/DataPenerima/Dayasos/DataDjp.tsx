@@ -49,6 +49,7 @@ const DataDjp = () => {
 
   const createParams = useCreateParams()
   const { q, kecamatan, kelurahan, page, type } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'type'])
+  const { token } = useGetParams(['token'])
   const forms = useForm<FormValues>({ defaultValues: { q: '', kelurahan: '', kecamatan: '', type: '' } })
 
   const areaLevel3 = forms.watch('kecamatan')

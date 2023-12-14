@@ -26,9 +26,9 @@ export default function RegisterUser() {
   const onSubmit = async (data: RegisterUserFields) => {
     console.log(data)
 
-    // register(data, {
-    //   onSuccess: () => forms.reset()
-    // })
+    register(data, {
+      onSuccess: () => forms.reset()
+    })
   }
 
   return (

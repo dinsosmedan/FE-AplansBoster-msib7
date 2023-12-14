@@ -11,7 +11,12 @@ const apiPublic = axios.create({
 apiPublic.defaults.headers.post['Content-Type'] = 'application/json'
 
 export const getEventFn = async (): Promise<IEvents> => {
-  const response = await apiPublic.get('/event/tuition-assistance')
+  const response = await apiPublic.get('/event')
+  return response.data
+}
+
+export const getEventTuitionAssistanceFn = async (year: string, status: string): Promise<IEvents> => {
+  const response = await apiPublic.get(`/event/tuition-assistance?year=${year}&status=${status}`)
   return response.data
 }
 

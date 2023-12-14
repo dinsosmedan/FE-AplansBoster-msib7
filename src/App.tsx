@@ -165,12 +165,10 @@ export default function App() {
                 <Route path="bbp">
                   <Route index element={<DataBbp />} />
                   <Route path="create" element={<Bbp />} />
-                  <Route path="create/:id" element={<Bbp />} />
                 </Route>
                 <Route path="sktm">
                   <Route index element={<DataSktm />} />
                   <Route path="create" element={<Sktm />} />
-                  <Route path="create/:id" element={<Sktm />} />
                 </Route>
                 <Route path="pbi" element={<DataPbi />} />
                 <Route path="pkh" element={<DataPkh />} />
