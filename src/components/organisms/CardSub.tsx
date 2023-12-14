@@ -4,9 +4,9 @@ import { cn } from '@/lib/utils'
 import { Link } from 'react-router-dom'
 
 interface CardSubProps {
-    title: string
-    subTitle: string
-    href: string
+  title: string
+  subTitle: string
+  href: string
 }
 
 export default function Card({ title, subTitle, href }: CardSubProps) {

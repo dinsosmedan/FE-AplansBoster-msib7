@@ -69,8 +69,6 @@ export default function DataMaster() {
   const onSubmitSearch = async (values: FormValuesSearch) => {
     Object.keys(values).forEach((key) => {
       if (values[key as keyof FormValuesSearch] !== '' && values[key as keyof FormValuesSearch] !== undefined) {
-        console.log('key', key)
-
         createParams({ key, value: values[key as keyof FormValuesSearch] })
       } else {
         searchParams.delete(key)

@@ -268,3 +268,12 @@ export const exportTuitionAssistanceFn = async (
 export const storeIndigencyCertificateFn = async (fields: indigencyCertificateFields) => {
   await api.post('/service/indigency-certificate', fields)
 }
+
+interface updateTuitionsAssistanceParams {
+  id: string
+  fields: tuitionAssistanceFields
+}
+
+export const updateTuitionsAssistanceFn = async ({ id, fields }: updateTuitionsAssistanceParams) => {
+  await api.put(`/service/tuition-assistance-application/${id}`, fields)
+}

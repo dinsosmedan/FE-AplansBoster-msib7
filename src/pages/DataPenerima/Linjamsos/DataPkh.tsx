@@ -92,12 +92,11 @@ const DataPkh = () => {
   }
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    const response = await exportFamilyHopeFn('csv',
-    {
-    idKecamatan: kecamatan,
-    idKelurahan: kelurahan,
-    member: type,
-    q
+    const response = await exportFamilyHopeFn('csv', {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+      member: type,
+      q
     })
     if (response.success) {
       void alert({
@@ -112,12 +111,11 @@ const DataPkh = () => {
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    const response = await exportFamilyHopeFn('xlsx',
-    {
-    idKecamatan: kecamatan,
-    idKelurahan: kelurahan,
-    member: type,
-    q
+    const response = await exportFamilyHopeFn('xlsx', {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+      member: type,
+      q
     })
     if (response.success) {
       void alert({
@@ -226,11 +224,11 @@ const DataPkh = () => {
           </div>
 
           <section className="flex items-center justify-between">
-          <div className="w-[20%]">
+            <div className="w-[20%]">
               {familys?.data?.length !== 0 ? (
-                  <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
-                ) : null}
-              </div>
+                <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+              ) : null}
+            </div>
             <div className="flex gap-3">
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
                 <HiArrowPath className="text-lg" />

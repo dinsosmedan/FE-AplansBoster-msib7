@@ -100,8 +100,7 @@ const DataPbi = () => {
   }
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    const response = await exportPremiumAssistanceBenefitFn('csv',
-    {
+    const response = await exportPremiumAssistanceBenefitFn('csv', {
       idKecamatan: kecamatan,
       idKelurahan: kelurahan,
       budget: type,
@@ -120,8 +119,7 @@ const DataPbi = () => {
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    const response = await exportPremiumAssistanceBenefitFn('xlsx',
-    {
+    const response = await exportPremiumAssistanceBenefitFn('xlsx', {
       idKecamatan: kecamatan,
       idKelurahan: kelurahan,
       budget: type,
@@ -231,9 +229,9 @@ const DataPbi = () => {
           </div>
           <section className="flex items-center justify-between">
             <div>
-            {premiums?.data?.length !== 0 ? (
-                  <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
-                ) : null}
+              {premiums?.data?.length !== 0 ? (
+                <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+              ) : null}
             </div>
             <div className="flex gap-3">
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>

@@ -10,9 +10,9 @@ import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from '@
 import DropZone, { type FileWithPreview } from '../../../components/atoms/DropZone'
 
 interface FormValues {
-    nik: string
-    prodi: string
-    identityCard: FileWithPreview[]
+  nik: string
+  prodi: string
+  identityCard: FileWithPreview[]
 }
 
 export default function SktmReligious() {

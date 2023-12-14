@@ -110,12 +110,11 @@ const DataPkr = () => {
   }
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    const response = await exportVulnerableGroupHandlingFn('csv',
-    {
-    idKecamatan: kecamatan,
-    idKelurahan: kelurahan,
-    year,
-    q
+    const response = await exportVulnerableGroupHandlingFn('csv', {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+      year,
+      q
     })
     if (response.success) {
       void alert({
@@ -130,12 +129,11 @@ const DataPkr = () => {
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    const response = await exportVulnerableGroupHandlingFn('xlsx',
-    {
-    idKecamatan: kecamatan,
-    idKelurahan: kelurahan,
-    year,
-    q
+    const response = await exportVulnerableGroupHandlingFn('xlsx', {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+      year,
+      q
     })
     if (response.success) {
       void alert({
@@ -240,7 +238,7 @@ const DataPkr = () => {
             </div>
             <div className="mb-6 flex justify-between">
               <div className="w-[20%]">
-              {vulnerables?.data?.length !== 0 ? (
+                {vulnerables?.data?.length !== 0 ? (
                   <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
                 ) : null}
               </div>

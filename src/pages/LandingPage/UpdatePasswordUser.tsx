@@ -24,16 +24,19 @@ export default function UpdatePasswordUser() {
   const { token } = useGetParams(['token'])
   const onSubmit = async (values: ResetPasswordUserFields) => {
     const { password } = values
-    ResetPassword({ password, token }, {
-      onSuccess: () => {
-        void alert({
-          title: 'Berhasil Reset Password',
-          description: 'Yay! Reset Password Berhasil, Silakan Login kembali!',
-          submitText: 'Oke',
-          variant: 'success'
-        })
+    ResetPassword(
+      { password, token },
+      {
+        onSuccess: () => {
+          void alert({
+            title: 'Berhasil Reset Password',
+            description: 'Yay! Reset Password Berhasil, Silakan Login kembali!',
+            submitText: 'Oke',
+            variant: 'success'
+          })
+        }
       }
-    })
+    )
   }
 
   return (
@@ -78,7 +81,9 @@ export default function UpdatePasswordUser() {
               </FormItem>
             )}
           />
-          <Button className="rounded-lg py-6" loading={isLoading}>Ganti Password</Button>
+          <Button className="rounded-lg py-6" loading={isLoading}>
+            Ganti Password
+          </Button>
         </form>
       </Form>
     </FormAuthContainer>

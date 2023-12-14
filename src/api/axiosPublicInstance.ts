@@ -1,6 +1,7 @@
 import axios from 'axios'
-import { useUserPublicToken } from '@/store/client'
+// import { useUserPublicToken } from '@/store/client'
 import ENV from '@/lib/environment'
+import { useAuth } from '@/store/client'
 
 const axiosPublic = axios.create({
   baseURL: ENV.apiUrl,
@@ -13,10 +14,11 @@ axiosPublic.defaults.headers.post['Content-Type'] = 'application/json'
 
 axiosPublic.interceptors.request.use(
   (config) => {
-    const token = useUserPublicToken.getState().token
+    // const token = useUserPublicToken.getState().token
+    const auth = useAuth.getState()
 
-    if (token !== '') {
-      config.headers.Authorization = `Bearer ${token}`
+    if (auth?.token && auth.user?.role === null) {
+      config.headers.Authorization = `Bearer ${auth.token}`
     }
     return config
   },
@@ -27,7 +29,8 @@ axiosPublic.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response.status === 401) {
-      useUserPublicToken.getState().removeToken()
+      // useUserPublicToken.getState().removeToken()
+      useAuth.getState().removeToken()
       window.location.href = '/user/login'
     }
     return await Promise.reject(error)

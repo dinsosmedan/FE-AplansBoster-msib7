@@ -97,7 +97,7 @@ export default function UserSktm() {
               <img src={BgEmpty} alt="" />
               <p className="text-[32px] font-semibold">Tidak Ada Proses Pengajuan</p>
               <p className="text-[#8B8B8B] text-xl">Mohon Maaf, Anda Belum Melakukan Pengajuan</p>
-              <Link to={'/'} >
+              <Link to={'/'}>
                 <Button className="py-8 px-7">
                   <p className="text-2xl text-white font-semibold">AJUKAN BANSOS</p>
                 </Button>
