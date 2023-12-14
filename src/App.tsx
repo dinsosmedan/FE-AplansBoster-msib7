@@ -84,6 +84,8 @@ import useScrollToTop from './hooks/useScrolltoTop'
 import ChangePassword from './pages/LandingPage/Profile/ChangePassword'
 import ChangeProfile from './pages/LandingPage/Profile/ChangeProfile'
 import ProfileLayout from './components/layouts/landingPage/ProfileLayout'
+import SuccessfulRegister from './components/layouts/landingPage/SuccessfulRegister'
+import VerifiedAccount from './components/layouts/landingPage/VerifiedAccount'
 
 export default function App() {
   const { alertOptions, handleClose, handleSubmit } = useAlert()
@@ -215,6 +217,8 @@ export default function App() {
             </Route>
             <Route path="sktm">
               <Route index element={<UserSktm />} />
+              <Route path="successful" element={<SuccessfulRegister />} />
+              <Route path="verified" element={<VerifiedAccount />} />
               <Route path="register" element={<SktmRegister />} />
               <Route path="unregister" element={<SktmUnregister />} />
               <Route path="register-religious" element={<SktmReligious />} />
