@@ -209,6 +209,8 @@ export default function App() {
             <Route element={<UserProtectedAuth />}>
               <Route element={<AuthUserLayout />}>
                 <Route path="login" element={<LoginUser />} />
+                <Route path="successful" element={<SuccessfulRegister />} />
+              <Route path="success" element={<VerifiedAccount />} />
                 <Route path="register" element={<RegisterUser />} />
                 <Route path="forgot-password" element={<ForgotPasswordUser />} />
                 <Route path="reset-password" element={<UpdatePasswordUser />} />
@@ -217,8 +219,6 @@ export default function App() {
             </Route>
             <Route path="sktm">
               <Route index element={<UserSktm />} />
-              <Route path="successful" element={<SuccessfulRegister />} />
-              <Route path="verified" element={<VerifiedAccount />} />
               <Route path="register" element={<SktmRegister />} />
               <Route path="unregister" element={<SktmUnregister />} />
               <Route path="register-religious" element={<SktmReligious />} />

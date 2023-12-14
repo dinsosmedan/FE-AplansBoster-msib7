@@ -12,9 +12,12 @@ import { Link } from 'react-router-dom'
 import * as React from 'react'
 import { Swafoto } from '@/assets'
 import { useRegisterPublic } from '@/store/server'
+import { useAlert } from '@/store/client'
 
 export default function RegisterUser() {
   useTitle('Buat Akun Baru')
+  const { alert } = useAlert()
+
   const [isShow, setIsShow] = React.useState(false)
   const { mutate: register, isLoading } = useRegisterPublic()
 
@@ -25,7 +28,14 @@ export default function RegisterUser() {
 
   const onSubmit = async (data: RegisterUserFields) => {
     register(data, {
-      onSuccess: () => forms.reset()
+      onSuccess: () => {
+        void alert({
+          title: 'Akun Berhasil Dibuat',
+          description: 'Cek Email secara berkala untuk verifikasi akun anda!',
+          submitText: 'Oke',
+          variant: 'success'
+        })
+      }
     })
   }
 
