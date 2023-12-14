@@ -69,7 +69,7 @@ const DataDjp = () => {
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
     name: q,
-    type
+    assistance: type
   })
 
   useDisableBodyScroll(isFetching)
@@ -109,14 +109,44 @@ const DataDjp = () => {
 
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    await exportServiceFundFn('data-djpm', 'csv')
+    const response = await exportServiceFundFn('csv',
+    {
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    name: q,
+    assistance: type
+  }
+    )
+    if (response.success) {
+    void alert({
+      title: 'Berhasil Export',
+      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+      submitText: 'Oke',
+      variant: 'success'
+    })
     setIsLoadingExport(false)
+  }
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    await exportServiceFundFn('data-djpm', 'xlsx')
+    const response = await exportServiceFundFn('xlsx',
+    {
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    name: q,
+    assistance: type
+  }
+    )
+    if (response.success) {
+    void alert({
+      title: 'Berhasil Export',
+      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+      submitText: 'Oke',
+      variant: 'success'
+    })
     setIsLoadingExport(false)
+  }
   }
 
   if (isLoading && isLoadingServiceFund) return <Loading />

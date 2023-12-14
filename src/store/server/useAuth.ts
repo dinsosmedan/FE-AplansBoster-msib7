@@ -1,4 +1,4 @@
-import { getMeFn, getMePublicFn, loginFn, loginUserFn, logoutFn, registerUserFn } from '@/api/auth.api'
+import { getMeFn, getMePublicFn, loginFn, loginUserFn, logoutFn, logoutUserFn, registerUserFn } from '@/api/auth.api'
 import { type AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
@@ -31,7 +31,7 @@ export const useLogout = () => {
         title: 'Berhasil keluar dengan sukses',
         description: 'Anda telah berhasil keluar.'
       })
-      navigate('/login')
+      navigate('/')
     }
   })
 }
@@ -81,13 +81,13 @@ export const useLogoutPublic = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
-  return useMutation(logoutFn, {
+  return useMutation(logoutUserFn, {
     onSuccess: async () => {
       await queryClient.invalidateQueries('user-public')
       useUserPublicToken.getState().removeToken()
       useUserPublicToken.getState().storeUser({} as IUser['data'])
       toast({
-        title: 'Berhasil keluar dengan sukses',
+        title: 'Berhasil keluar',
         description: 'Anda telah berhasil keluar.'
       })
       navigate('/')

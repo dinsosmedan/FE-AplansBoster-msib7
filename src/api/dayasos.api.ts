@@ -39,7 +39,7 @@ export interface WorshipPlaceQuery {
   page?: number
   idKecamatan?: string
   idKelurahan?: string
-  type?: string
+  place?: string
   q?: string
 }
 export interface ServiceFundQuery {
@@ -47,7 +47,7 @@ export interface ServiceFundQuery {
   idKecamatan?: string
   idKelurahan?: string
   name?: string
-  type: string
+  assistance: string
 }
 
 export interface OrganizationGrantAssistanceQuery {
@@ -86,10 +86,10 @@ export const getWorshipPlacesFn = async ({
   idKecamatan,
   idKelurahan,
   q,
-  type
+  place
 }: WorshipPlaceQuery): Promise<IWorshipPlace> => {
   const response = await api.get(
-    `/worship-place?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&type=${type}`
+    `/worship-place?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&type=${place}`
   )
   return response.data
 }
@@ -108,10 +108,10 @@ export const getServiceFundsFn = async ({
   idKecamatan,
   idKelurahan,
   name,
-  type
+  assistance
 }: ServiceFundQuery): Promise<IServiceFunds> => {
   const response = await api.get(
-    `/service-fund?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${name}&type=${type}`
+    `/service-fund?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${name}&type=${assistance}`
   )
   return response.data
 }
@@ -357,75 +357,68 @@ export const getDetailBusinessGroupFn = async (id: string): Promise<IBusinessGro
   return response.data?.data
 }
 
-const convertBase64ToFile = (data: any, fileName: string, type: 'xlsx' | 'csv') => {
-  const url = window.URL.createObjectURL(new Blob([data]))
-  const link = document.createElement('a')
-  link.href = url
-  link.setAttribute('download', `${fileName}.${type}`)
-  document.body.appendChild(link)
-  link.click()
+export const exportFuelCashAssistanceFn = async (type: 'xlsx' | 'csv', { q }: FuelCashQuery) => {
+  const response = await api.get(`/fuel-cash-assistance/export/${type}?q=${q}`)
+  return response.data
 }
 
-export const exportFuelCashAssistanceFn = async (fileName: string, type: 'xlsx' | 'csv') => {
-  const response = await api.get(`/fuel-cash-assistance/export/${type}`, {
-    responseType: 'blob'
-  })
-
-  convertBase64ToFile(response.data, fileName, type)
+export const exportNonCashFoodAssistanceFn = async (
+  type: 'xlsx' | 'csv',
+  { q }: NonCashFoodAssistanceBeneficiaryQuery
+) => {
+  const response = await api.get(`/non-cash-food-assistance/export/${type}?q=${q}`)
+  return response.data
 }
 
-export const exportNonCashFoodAssistanceFn = async (fileName: string, type: 'xlsx' | 'csv') => {
-  const response = await api.get(`/non-cash-food-assistance/export/${type}`, {
-    responseType: 'blob'
-  })
-
-  convertBase64ToFile(response.data, fileName, type)
+export const exportServiceFundFn = async (
+  type: 'xlsx' | 'csv',
+  { idKecamatan, idKelurahan, name, assistance }: ServiceFundQuery
+) => {
+  const response = await api.get(
+    `/service-fund/export/${type}?area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${name}&type=${assistance}`
+  )
+  return response.data
 }
 
-export const exportServiceFundFn = async (fileName: string, type: 'xlsx' | 'csv') => {
-  const response = await api.get(`/service-fund/export/${type}`, {
-    responseType: 'blob'
-  })
-
-  convertBase64ToFile(response.data, fileName, type)
+export const exportOrganizationGrantAssistance = async (
+  type: 'xlsx' | 'csv',
+  { name, budgetYear }: OrganizationGrantAssistanceQuery
+) => {
+  const response = await api.get(`/organization-grant-assistance/export/${type}?q=${name}&budget_year=${budgetYear}`)
+  return response.data
 }
 
-export const exportOrganizationGrantAssistance = async (fileName: string, type: 'xlsx' | 'csv') => {
-  const response = await api.get(`/organization-grant-assistance/export/${type}`, {
-    responseType: 'blob'
-  })
-
-  convertBase64ToFile(response.data, fileName, type)
+export const exportJointBussinessFn = async (
+  type: 'xlsx' | 'csv',
+  { q, idKecamatan, idKelurahan, year }: BusinessGroupQuery
+) => {
+  const response = await api.get(
+    `/joint-business-group/export/${type}?q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&budget_year=${year}`
+  )
+  return response.data
 }
 
-export const exportJointBussinessFn = async (fileName: string, type: 'xlsx' | 'csv') => {
-  const response = await api.get(`/joint-business-group/export/${type}`, {
-    responseType: 'blob'
-  })
-
-  convertBase64ToFile(response.data, fileName, type)
+export const exportCommunityGroupFn = async (
+  type: 'xlsx' | 'csv',
+  { q, idKecamatan, idKelurahan, communityActivityCode, status, applicationYear }: CommunityGroupQuery
+) => {
+  const response = await api.get(
+    `/community-group/export/${type}?q=${q}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&application_year=${applicationYear}&status=${status}&community_activity_code=${communityActivityCode}`
+  )
+  return response.data
 }
 
-export const exportCommunityGroupFn = async (fileName: string, type: 'xlsx' | 'csv') => {
-  const response = await api.get(`/community-group/export/${type}`, {
-    responseType: 'blob'
-  })
-
-  convertBase64ToFile(response.data, fileName, type)
+export const exportWorshipPlaceFn = async (
+  type: 'xlsx' | 'csv',
+  { idKecamatan, idKelurahan, q, place }: WorshipPlaceQuery
+) => {
+  const response = await api.get(
+    `/worship-place/export/${type}?area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&type=${place}`
+  )
+  return response.data
 }
 
-export const exportWorshipPlaceFn = async (fileName: string, type: 'xlsx' | 'csv') => {
-  const response = await api.get(`/worship-place/export/${type}`, {
-    responseType: 'blob'
-  })
-
-  convertBase64ToFile(response.data, fileName, type)
-}
-
-export const exportVeteranFn = async (fileName: string, type: 'xlsx' | 'csv') => {
-  const response = await api.get(`/veteran/export/${type}`, {
-    responseType: 'blob'
-  })
-
-  convertBase64ToFile(response.data, fileName, type)
+export const exportVeteranFn = async (type: 'xlsx' | 'csv', { q }: VeteranQuery) => {
+  const response = await api.get(`/veteran/export/${type}?q=${q}`)
+  return response.data
 }

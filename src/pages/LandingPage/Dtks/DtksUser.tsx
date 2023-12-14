@@ -2,6 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { HiAcademicCap, HiArrowDownTray, HiGift } from 'react-icons/hi2'
 import CardLandingPage from '../../../components/organisms/landingPage/CardLandingPage'
 import { Button } from '@/components/ui/button'
+import { Link } from 'react-router-dom'
 
 export default function DtksUser() {
   return (
@@ -212,9 +213,11 @@ export default function DtksUser() {
                 </Button>
               </div>
             </div>
-            <Button className="w-full py-8">
-              <p className="text-xl">Daftar Sekarang</p>
-            </Button>
+            <Link to={'/user/dtks/register-dtks'}>
+              <Button className="w-full py-8">
+                <p className="text-xl">Daftar Sekarang</p>
+              </Button>
+            </Link>
           </section>
         </TabsContent>
         <TabsContent value="request" className="flex flex-row gap-10">

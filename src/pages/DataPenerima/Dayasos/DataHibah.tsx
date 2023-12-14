@@ -97,14 +97,38 @@ const DataHibah = () => {
 
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    await exportOrganizationGrantAssistance('bho', 'csv')
+    const response = await exportOrganizationGrantAssistance('csv',
+    {
+    name: q,
+    budgetYear
+  })
+   if (response.success) {
+    void alert({
+      title: 'Berhasil Export',
+      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+      submitText: 'Oke',
+      variant: 'success'
+    })
     setIsLoadingExport(false)
+  }
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    await exportOrganizationGrantAssistance('bho', 'xlsx')
+    const response = await exportOrganizationGrantAssistance('xlsx',
+    {
+    name: q,
+    budgetYear
+  })
+   if (response.success) {
+    void alert({
+      title: 'Berhasil Export',
+      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+      submitText: 'Oke',
+      variant: 'success'
+    })
     setIsLoadingExport(false)
+  }
   }
 
   if (isLoading && isLoadingOrganization) return <Loading />

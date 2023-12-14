@@ -35,7 +35,9 @@ import {
   CekBansosUser,
   DataPkh,
   DataPenerima,
-  NotFound
+  NotFound,
+  ResetPassword,
+  ManajemenAdmin
 } from './pages'
 
 import {
@@ -77,9 +79,15 @@ import LayananSktm from './pages/Layanan/LayananSktm'
 import LayananDtks from './pages/Layanan/LayananDtks'
 import DtksUser from './pages/LandingPage/Dtks/DtksUser'
 import DtksRegister from './pages/LandingPage/Dtks/DtksRegister'
+import SubmissionHistory from './pages/LandingPage/SubmissionHistory'
+import useScrollToTop from './hooks/useScrolltoTop'
+import ChangePassword from './pages/LandingPage/Profile/ChangePassword'
+import ChangeProfile from './pages/LandingPage/Profile/ChangeProfile'
+import ProfileLayout from './components/layouts/landingPage/ProfileLayout'
 
 export default function App() {
   const { alertOptions, handleClose, handleSubmit } = useAlert()
+  useScrollToTop()
   return (
     <>
       <Alert
@@ -181,12 +189,14 @@ export default function App() {
             <Route path="/cek-data-dukcapil" element={<CekDataDukcapil />} />
             <Route path="/manajemen-role" element={<ManajemenRole />} />
             <Route path="/manajemen-user" element={<ManajemenUser />} />
+            <Route path="/manajemen-admin" element={<ManajemenAdmin />} />
           </Route>
         </Route>
 
         <Route element={<ProtectedAuth />}>
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Route>
 
         <Route element={<UserLayout />}>
@@ -197,6 +207,7 @@ export default function App() {
                 <Route path="login" element={<LoginUser />} />
                 <Route path="register" element={<RegisterUser />} />
                 <Route path="forgot-password" element={<ForgotPasswordUser />} />
+                <Route path="reset-password" element={<UpdatePasswordUser />} />
                 <Route path="reset-password" element={<UpdatePasswordUser />} />
               </Route>
             </Route>
@@ -215,7 +226,13 @@ export default function App() {
               <Route index element={<DtksUser />} />
               <Route path="register-dtks" element={<DtksRegister />} />
             </Route>
+            <Route path="submission-history" element={<SubmissionHistory />} />
             <Route path="cek-bansos" element={<CekBansosUser />} />
+            <Route path="submission-history" element={<SubmissionHistory />} />
+            <Route path="profile" element={<ProfileLayout />}>
+              <Route index element={<ChangeProfile />} />
+              <Route path="change-password" element={<ChangePassword />} />
+            </Route>
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />
