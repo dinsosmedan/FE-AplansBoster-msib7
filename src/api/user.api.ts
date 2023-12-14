@@ -61,3 +61,29 @@ export const deleteRolePermissionFn = async (id: string): Promise<any> => {
   const response = await api.delete(`/user-access/role/${id}`)
   return response.data
 }
+
+// User
+
+export const getUsersFn = async (): Promise<any> => {
+  const response = await api.get('/management/user')
+  return response.data
+}
+
+export const deleteUserFn = async (id: string): Promise<any> => {
+  const response = await api.delete(`/management/user/${id}`)
+  return response.data
+}
+
+interface UpdateUserParams {
+  id: string
+  fields: userFields
+}
+
+export const updateUserFn = async ({ id, fields }: UpdateUserParams) => {
+  await api.put(`/management/user/${id}`, fields)
+}
+
+export const getUserDetailFn = async (id: string) => {
+  const response = await api.get(`/management/user/${id}`)
+  return response.data?.data
+}
