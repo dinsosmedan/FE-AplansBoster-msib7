@@ -36,11 +36,14 @@ export const resetPasswordValidation = Yup.object({
   password: Yup.string()
     .required('Password harus diisi')
     .min(8, 'Password harus lebih dari 8 karakter')
-    .matches(/[a-z]/g, 'Password harus mengandung huruf kecil')
-    .matches(/[A-Z]/g, 'Password harus mengandung huruf besar')
+    .matches(/[0-9]/g, 'Password harus mengandung angka')
+    .matches(/^\S*$/g, 'Password tidak boleh mengandung spasi'),
+  ConfPassword: Yup.string()
+    .required('Password harus diisi')
+    .min(8, 'Password harus lebih dari 8 karakter')
+    .oneOf([Yup.ref('password'), ''], 'Password tidak cocok')
     .matches(/[0-9]/g, 'Password harus mengandung angka')
     .matches(/^\S*$/g, 'Password tidak boleh mengandung spasi')
-    .matches(/[^a-zA-Z0-9]/g, 'Passwords harus mengandung karakter spesial')
 })
 
 export type ResetPasswordUserFields = Yup.InferType<typeof resetPasswordValidation>

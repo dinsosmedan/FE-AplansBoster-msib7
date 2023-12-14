@@ -2,18 +2,50 @@ import { FormAuthContainer } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { toast } from '@/components/ui/use-toast'
 import { useTitle } from '@/hooks'
-import { type ForgotPasswordUserFields } from '@/lib/validations/landingPage/auth.validation'
+import { type IErrorResponse } from '@/lib/types/user.type'
+import { type ForgetPasswordInput, forgetPasswordValidation } from '@/lib/validations/auth.validation'
+import { useAlert } from '@/store/client'
+import { useForgetPasswordUser } from '@/store/server'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { type AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 
 export default function ForgotPasswordUser() {
   useTitle('Lupa Password')
-  const forms = useForm<ForgotPasswordUserFields>({
-    mode: 'onTouched'
-  })
+  const { alert } = useAlert()
+  const { mutate: Forgot, isLoading } = useForgetPasswordUser()
 
-  const onSubmit = async (values: ForgotPasswordUserFields) => {
-    console.log(values)
+  const forms = useForm<ForgetPasswordInput>({
+    mode: 'onTouched',
+    resolver: yupResolver(forgetPasswordValidation),
+    defaultValues: {
+      email: ''
+    }
+  })
+  const onSubmit = async (values: ForgetPasswordInput) => {
+    Forgot(values, {
+      onError: (error: AxiosError) => {
+        const errorResponse = error.response?.data as IErrorResponse
+
+        if (errorResponse !== undefined) {
+          toast({
+            variant: 'destructive',
+            title: errorResponse.message,
+            description: 'There was a problem with your request.'
+          })
+        }
+      },
+      onSuccess: () => {
+        void alert({
+          title: 'Cek Email Berhasil',
+          description: 'Yay!  Kami baru saja mengirimkan tautan verifikasi ke email Anda. Silakan periksa kotak masuk atau folder spam Anda untuk melanjutkan proses pemulihan kata sandi.',
+          submitText: 'Oke',
+          variant: 'success'
+        })
+      }
+    })
   }
 
   return (
@@ -43,8 +75,7 @@ export default function ForgotPasswordUser() {
               </FormItem>
             )}
           />
-
-          <Button className="rounded-lg py-6">Kirim</Button>
+          <Button className="rounded-lg py-6" loading={isLoading}>Kirim</Button>
         </form>
       </Form>
     </FormAuthContainer>

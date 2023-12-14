@@ -158,7 +158,7 @@ export const useUpdateUser = () => {
 
   return useMutation(updateUserFn, {
     onSuccess: () => {
-      void queryClient.invalidateQueries('management-admin')
+      void queryClient.invalidateQueries('management-user')
       toast({
         title: 'Proses Berhasil.',
         description: 'Data Admin Berhasil Diubah.'
@@ -178,7 +178,7 @@ export const useUpdateUser = () => {
 }
 
 export const useGetUserById = (id?: string) => {
-  return useQuery(['admin-management', id], async () => await getUserDetailFn(id as string), {
+  return useQuery(['user-management', id], async () => await getUserDetailFn(id as string), {
     enabled: !!id
   })
 }

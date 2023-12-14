@@ -58,6 +58,8 @@ import DtksRegister from './LandingPage/Dtks/DtksRegister'
 import SubmissionHistory from './LandingPage/SubmissionHistory'
 import ChangePassword from './LandingPage/Profile/ChangePassword'
 import ChangeProfile from './LandingPage/Profile/ChangeProfile'
+import ResetPassword from './ResetPassword'
+import ManajemenAdmin from './ManajemenAdmin'
 
 export {
   Home,
@@ -119,5 +121,7 @@ export {
   DtksRegister,
   SubmissionHistory,
   ChangePassword,
-  ChangeProfile
+  ChangeProfile,
+  ResetPassword,
+  ManajemenAdmin
 }

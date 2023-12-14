@@ -18,7 +18,9 @@ import {
   HiMegaphone,
   HiOutlineMegaphone,
   HiArchiveBox,
-  HiOutlineArchiveBox
+  HiOutlineArchiveBox,
+  HiUsers,
+  HiOutlineUsers
 } from 'react-icons/hi2'
 
 export const MAIN_MENU = [
@@ -84,6 +86,12 @@ export const MENU_MANAJEMEN = [
     title: 'Manajemen User',
     activeIcon: HiUserGroup,
     inactiveIcon: HiOutlineUserGroup
+  },
+  {
+    link: '/manajemen-admin',
+    title: 'Manajemen Admin',
+    activeIcon: HiUsers,
+    inactiveIcon: HiOutlineUsers
   }
 ]
 

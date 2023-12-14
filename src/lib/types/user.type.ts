@@ -27,3 +27,7 @@ export interface IErrorResponse {
   message: string
   errors: Record<string, string[]>
 }
+export interface IResetPassword {
+  password: string
+  token: string
+}

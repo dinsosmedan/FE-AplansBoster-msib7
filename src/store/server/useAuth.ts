@@ -1,4 +1,16 @@
-import { getMeFn, getMePublicFn, loginFn, loginUserFn, logoutFn, logoutUserFn, registerUserFn } from '@/api/auth.api'
+import {
+  forgetPasswordFn,
+  forgetPasswordUserFn,
+  getMeFn,
+  getMePublicFn,
+  loginFn,
+  loginUserFn,
+  logoutFn,
+  logoutUserFn,
+  registerUserFn,
+  resetPasswordFn,
+  resetPasswordUserFn
+} from '@/api/auth.api'
 import { type AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
@@ -18,6 +30,43 @@ export const useLogin = () => {
     onError: (error: AxiosError) => {
       if (error.response?.status === 401) {
         // window.alert('Email or password is incorrect')
+      }
+    }
+  })
+}
+export const useForgetPassword = () => {
+  return useMutation(forgetPasswordFn, {
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message,
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
+    }
+  })
+}
+export const useResetPassword = () => {
+  const navigate = useNavigate()
+  return useMutation(resetPasswordFn, {
+    onSuccess: async () => {
+      toast({
+        title: 'Reset Password Berhasil',
+        description: 'Berhasil ganti password, Silahkan login ulang kembali.'
+      })
+      navigate('/login')
+    },
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message,
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
       }
     }
   })
@@ -109,6 +158,43 @@ export const useRegisterPublic = () => {
     onError: (error: AxiosError) => {
       const errorResponse = error.response?.data as IErrorResponse
 
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message,
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
+    }
+  })
+}
+export const useForgetPasswordUser = () => {
+  return useMutation(forgetPasswordUserFn, {
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message,
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
+    }
+  })
+}
+export const useResetPasswordUser = () => {
+  const navigate = useNavigate()
+  return useMutation(resetPasswordUserFn, {
+    onSuccess: async () => {
+      toast({
+        title: 'Reset Password Berhasil',
+        description: 'Berhasil ganti password, Silahkan login ulang kembali.'
+      })
+      navigate('/user/login')
+    },
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
       if (errorResponse !== undefined) {
         toast({
           variant: 'destructive',
