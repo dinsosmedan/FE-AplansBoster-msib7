@@ -35,6 +35,10 @@ export const forgetPasswordFn = async (fields: ForgetPasswordInput) => {
   const response = await apiPublic.post('/auth/forget', fields)
   return response.data
 }
+export const resetPasswordFn = async (fields: IResetPassword) => {
+  const response = await axiosPublic.post('/auth/reset', fields)
+  return response.data
+}
 // LANDING PAGE
 export const loginUserFn = async (fields: LoginUserFields): Promise<IAuthResponse> => {
   const response = await apiPublic.post('/public/auth/login', fields)

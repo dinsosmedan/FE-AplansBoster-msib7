@@ -2,22 +2,41 @@ import { Logo } from '@/assets'
 import { Password } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { useGetParams } from '@/hooks'
 import useTitle from '@/hooks/useTitle'
+import { type ResetPasswordUserFields, resetPasswordValidation } from '@/lib/validations/landingPage/auth.validation'
+import { useAlert } from '@/store/client'
+import { useResetPassword } from '@/store/server'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 
 export default function ResetPassword() {
   useTitle('Lupa Password')
 
-  interface FormValues {
-    email: string
-  }
-
-  const forms = useForm<FormValues>({
-    mode: 'onTouched'
+  const { alert } = useAlert()
+  const forms = useForm<ResetPasswordUserFields>({
+    mode: 'onTouched',
+    resolver: yupResolver(resetPasswordValidation),
+    defaultValues: {
+      password: '',
+      ConfPassword: ''
+    }
   })
+  const { mutate: ResetPassword, isLoading } = useResetPassword()
 
-  const onSubmit = async (values: FormValues) => {
-    console.log(values)
+  const { token } = useGetParams(['token'])
+  const onSubmit = async (values: ResetPasswordUserFields) => {
+    const { password } = values
+    ResetPassword({ password, token }, {
+      onSuccess: () => {
+        void alert({
+          title: 'Berhasil Reset Password',
+          description: 'Yay! Reset Password Berhasil, Silakan Login kembali!',
+          submitText: 'Oke',
+          variant: 'success'
+        })
+      }
+    })
   }
 
   return (
@@ -50,7 +69,7 @@ export default function ResetPassword() {
                 )}
               />
               <FormField
-                name="password"
+                name="ConfPassword"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem className="">
@@ -67,7 +86,7 @@ export default function ResetPassword() {
                   </FormItem>
                 )}
               />
-              <Button className="py-6 text-[17px] font-normal">Konfirmasi</Button>
+              <Button className="py-6 text-[17px] font-normal" loading={isLoading}>Konfirmasi</Button>
             </form>
           </Form>
         </div>
