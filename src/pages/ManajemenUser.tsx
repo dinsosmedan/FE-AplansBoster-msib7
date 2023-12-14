@@ -1,111 +1,34 @@
+import { Container, Modal, Pagination, Password, Search } from '@/components'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { HiOutlinePencilAlt, HiUserAdd } from 'react-icons/hi'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { useForm } from 'react-hook-form'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import Modal from '@/components/organisms/Modal'
 import * as React from 'react'
-import { HiOutlinePencilAlt, HiUserAdd, HiTrash } from 'react-icons/hi'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Input } from '@/components/ui/input'
+import { useForm } from 'react-hook-form'
 import useTitle from '@/hooks/useTitle'
-import { Container, Loading, Pagination, Search } from '@/components'
-import {
-  useCreateUser,
-  useDeleteUser,
-  useGetRole,
-  useGetUser,
-  useGetUserById,
-  useUpdateUser
-} from '@/store/server/useUserManagement'
-import { userValidation, type userFields } from '@/lib/validations/user.validation'
-// import { toast } from '@/components/ui/use-toast'
-import { useAlert } from '@/store/client'
-import { useNavigate } from 'react-router-dom'
-import { yupResolver } from '@hookform/resolvers/yup'
-
-const ManajemenUser = () => {
-  useTitle('Manajemen User ')
-  const navigate = useNavigate()
-  // const { id } = useParams<{ id: string }>()
-
-  const { alert } = useAlert()
-
-  const { data: role } = useGetRole()
-  const { data: users, isLoading } = useGetUser()
-
-  const forms = useForm<userFields>({
-    mode: 'onTouched',
-    resolver: yupResolver(userValidation),
-    defaultValues: {
-      employeeIdentityNumber: '',
-      email: '',
-      name: '',
-      phoneNumber: '',
-      password: '',
-      role: '',
-      isActive: ''
-    }
-  })
-  const [isShow, setIsShow] = React.useState(false)
-  const { mutate: Register, isLoading: isLoadingCreate } = useCreateUser()
-
+import { HiDocumentArrowUp } from 'react-icons/hi2'
+import DropZone, { type FileWithPreview } from '@/components/atoms/DropZone'
+import { Label } from '@/components/ui/label';
+interface FormValues {
+  nik: string
+  prodi: string
+  identityCard: FileWithPreview[]
+}
+export default function ManajemenUser() {
+  useTitle('Manajemen Pengguna ')
   const [currentPage, setCurrentPage] = React.useState(1)
-  const { mutateAsync: deleteUser, isLoading: isLoadingDelete } = useDeleteUser()
-
-  const [userId, setUserId] = React.useState('')
-  const { data: user, isSuccess, isLoading: isLoadingUser } = useGetUserById(userId)
-  const { mutate: updateUser, isLoading: isLoadingUpdate } = useUpdateUser()
-
-  React.useEffect(() => {
-    if (isSuccess && user) {
-      forms.reset({
-        employeeIdentityNumber: user?.employeeIdentityNumber,
-        email: user?.email,
-        name: user?.name,
-        phoneNumber: user?.phoneNumber,
-        password: '',
-        role: user?.role.id,
-        isActive: user?.isActive
-      })
-    }
-  }, [isSuccess, user])
-
-  const handleUpdateUser = (id: string) => {
-    setUserId(id)
-    setIsShow(true)
-  }
-
-  const handleDeleteUser = (id: string) => {
-    void alert({
-      title: 'Hapus User',
-      description: 'Apakah kamu yakin ingin menghapus data ini?',
-      variant: 'danger',
-      submitText: 'Delete'
-    }).then(async () => {
-      await deleteUser(id)
-    })
-  }
-  const onSubmit = async (values: userFields) => {
-    const newData = {
-      ...values,
-      isActive: values.isActive ? '1' : '0'
-    }
-    if (!userId) {
-      return Register(newData, { onSuccess })
-    }
-    updateUser({ id: userId, fields: newData }, { onSuccess })
-  }
-  const onSuccess = () => {
-    forms.reset()
-    setIsShow(false)
-    navigate('/manajemen-user')
-  }
-
-  if (isLoading && isLoadingDelete && isLoadingUser) {
-    return <Loading />
+  const [isShow, setIsShow] = React.useState(false)
+  const [isShowEdit, setIsShowEdit] = React.useState(false)
+  const forms = useForm<FormValues>({
+    mode: 'onTouched'
+  })
+  const onSubmit = async (values: FormValues) => {
+    console.log(values)
   }
   return (
-    <Container className="relative pt-[34px] pb-[22px] px-7">
+    <Container>
       <div className="flex items-center mb-[18px]">
         <Search placeholder="Search" className="w-[398px] py-[23px]" />
         <Button className="w-fit py-6 px-4 ml-auto bg-primary" onClick={() => setIsShow(true)}>
@@ -117,70 +40,34 @@ const ManajemenUser = () => {
       <Table>
         <TableHeader className="bg-primary">
           <TableRow>
-            <TableHead className="text-white">NIP</TableHead>
-            <TableHead className="text-white">NIK</TableHead>
-            <TableHead className="text-white">Nama</TableHead>
-            <TableHead className="text-white">Email</TableHead>
-            <TableHead className="text-white">No. HP</TableHead>
-            <TableHead className="text-white">Role</TableHead>
-            <TableHead className="text-white">Status</TableHead>
-            <TableHead className="text-white">Action</TableHead>
+            <TableHead className="text-center text-white">NIK</TableHead>
+            <TableHead className="text-center text-white">Nama</TableHead>
+            <TableHead className="text-center text-white">Email</TableHead>
+            <TableHead className="text-center text-white">No. HP</TableHead>
+            <TableHead className="text-center text-white">Status</TableHead>
+            <TableHead className="text-center text-white">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users?.data?.length !== 0 ? (
-            users?.data.map((item: any) => (
-              <TableRow key={item.id}>
-                <TableCell className="font-semibold">{item.employeeIdentityNumber || '-'}</TableCell>
-                <TableCell className="font-semibold">{item.identityNumber || '-'}</TableCell>
-                <TableCell className="font-semibold">{item.name}</TableCell>
-                <TableCell className="text-center">{item.email || '-'}</TableCell>
-                <TableCell className="text-center">{item.phoneNumber || '-'}</TableCell>
-                <TableCell className="text-center">{item.role?.name || 'Guest'}</TableCell>
-                <TableCell>
-                  <div
-                    className={`${
-                      item.isActive ? '[#E9FFEF]' : '[#FFD6E1]'
-                    } rounded-full flex items-center w-fit gap-2 py-1 px-2 mx-auto`}
-                  >
-                    <div className={`w-2 h-2 rounded-full bg-${item.isActive ? '[#409261]' : 'red-500'}`} />
-                    <p className={`text-${item.isActive ? '[#409261]' : 'red-500'} text-xs`}>
-                      {item.isActive ? 'Active' : 'Inactive'}
-                    </p>
-                  </div>
-                </TableCell>
-                <TableCell className="flex items-center justify-center">
-                  <Button
-                    size="icon"
-                    variant="base"
-                    className="bg-[#959595] text-white hover:bg-[#828282] hover:text-white"
-                    onClick={() => {
-                      handleUpdateUser(item.id)
-                    }}
-                  >
-                    <HiOutlinePencilAlt className="text-lg" />
-                  </Button>
-                  <Button
-                    size="icon"
-                    variant="base"
-                    className="bg-red-500 text-white hover:bg-red-300 hover:text-white ms-2"
-                    onClick={() => handleDeleteUser(item.id)}
-                  >
-                    <HiTrash className="text-lg" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={9} className="text-center">
-                Tidak ada data
-              </TableCell>
-            </TableRow>
-          )}
+          <TableRow>
+            <TableCell className="text-left">aaaaaa</TableCell>
+            <TableCell className="text-left">aaaaaa</TableCell>
+            <TableCell className="text-left">aaaaaa</TableCell>
+            <TableCell className="text-left">aaaaaa</TableCell>
+            <TableCell className="text-left">Active</TableCell>
+            <TableCell className="flex justify-center items-center">
+              <Button
+                size="icon"
+                variant="base"
+                className="bg-[#959595] text-white hover:bg-[#828282] hover:text-white"
+                onClick={() => setIsShowEdit(true)}
+              >
+                <HiOutlinePencilAlt className="text-lg" />
+              </Button>
+            </TableCell>
+          </TableRow>
         </TableBody>
       </Table>
-
       <Pagination
         className="px-5 py-5 flex justify-end"
         currentPage={currentPage}
@@ -188,98 +75,109 @@ const ManajemenUser = () => {
         pageSize={10}
         onPageChange={(page) => setCurrentPage(page)}
       />
-
       <Modal isShow={isShow} className="max-h-[calc(100vh-200px)] overflow-y-auto">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">
-            {userId ? 'Perbaharui' : 'Tambah'} Pengguna
-          </h3>
-          <p className="text-sm text-[#A1A1A1]">
-            {userId ? 'Perbaharui data pengguna.' : 'Masukkan data pengguna baru.'}
-          </p>
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Tambah User</h3>
+          <p className="text-sm text-[#A1A1A1]">Perbaharui Data Pengguna</p>
         </Modal.Header>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-3">
             <div className="grid grid-cols-2 gap-3">
               <FormField
-                name="employeeIdentityNumber"
+                name="nik"
                 control={forms.control}
                 render={({ field }) => (
-                  <FormItem className="flex-1">
+                  <FormItem>
                     <FormLabel className="font-semibold dark:text-white">NIP</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan NIP" />
+                      <Input {...field} type="text" placeholder="Masukkan NIP " />
                     </FormControl>
                   </FormItem>
                 )}
               />
               <FormField
-                name="email"
+                name="nik"
                 control={forms.control}
                 render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Email </FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan Email" />
+                      <Input {...field} type="text" placeholder="Masukkan Email " />
                     </FormControl>
                   </FormItem>
                 )}
               />
               <FormField
-                name="name"
+                name="nik"
                 control={forms.control}
                 render={({ field }) => (
-                  <FormItem className="flex-1">
+                  <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan Nama" />
+                      <Input {...field} type="text" placeholder="Masukkan Nama " />
                     </FormControl>
                   </FormItem>
                 )}
               />
               <FormField
-                name="phoneNumber"
+                name="nik"
                 control={forms.control}
                 render={({ field }) => (
-                  <FormItem className="flex-1">
+                  <FormItem>
                     <FormLabel className="font-semibold dark:text-white">No. HP</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value} placeholder="Masukkan No. HP" />
+                      <Input {...field} type="text" placeholder="Masukkan No. HP " />
                     </FormControl>
                   </FormItem>
                 )}
               />
-              {!userId ? (
-                <FormField
-                  name="password"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">Password</FormLabel>
-                      <FormControl>
-                        <Input {...field} value={field.value ?? ''} placeholder="Masukkan Password (default)" />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              ) : null}
               <FormField
-                name="role"
+                name="nik"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Username</FormLabel>
+                    <FormControl>
+                      <Input {...field} type="text" placeholder="Masukkan Username " />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="password"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="">
+                    <FormLabel className="font-semibold dark:text-white">Password</FormLabel>
+                    <FormControl>
+                      <Password
+                        {...field}
+                        value={field.value ?? ''}
+                        placeholder="Masukkan Password Anda"
+                        className=""
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="nik"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Role</FormLabel>
                     <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Role" />
-                        </SelectTrigger>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Pilih Role" />
+                          </SelectTrigger>
+                        </FormControl>
                         <SelectContent>
-                          {role?.data.map((item: any, index: any) => (
-                            <SelectItem key={index} value={item.id}>
-                              {item.name}
-                            </SelectItem>
-                          ))}
+                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
+                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
+                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -287,21 +185,22 @@ const ManajemenUser = () => {
                 )}
               />
               <FormField
-                name="isActive"
+                name="nik"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Status</FormLabel>
                     <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Status" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="true">Aktif</SelectItem>
-                          <SelectItem value="false">Tidak Aktif</SelectItem>
+                          <SelectItem value="m@example.com">Krisna Asu</SelectItem>
+                          <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
+                          <SelectItem value="m@support.com">The Little Krishna</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -317,8 +216,182 @@ const ManajemenUser = () => {
               >
                 Cancel
               </Button>
-              <Button className="rounded-lg" type="submit" loading={isLoadingCreate || isLoadingUpdate}>
-                {userId ? 'Ubah' : 'Tambah'}
+              <Button className="rounded-lg" type="submit">
+                Simpan
+              </Button>
+            </Modal.Footer>
+          </form>
+        </Form>
+      </Modal>
+      {/* <Modal isShow={isShowEdit} className="max-h-[calc(200vh-200px)] overflow-y-auto"> */}
+      <Modal isShow={isShowEdit} className="">
+        <Modal.Header setIsShow={setIsShowEdit} className="gap-1 flex flex-col">
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Tambah User</h3>
+          <p className="text-sm text-[#A1A1A1]">Perbaharui Data Pengguna</p>
+        </Modal.Header>
+        <Form {...forms}>
+          <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-3">
+            <div className="overflow-y-auto h-[400px] ">
+              <div className="flex items-center justify-center">
+                <img
+                  className="w-[122px] h-[122px] rounded-full object-cover mb-10"
+                  src={'https://ui-avatars.com/api/?name=krisna'}
+                  alt=""
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3 pb-4 pr-5">
+                <FormField
+                  name="nik"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="text" placeholder="Masukkan NIK " />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="nik"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold dark:text-white">Nama </FormLabel>
+                      <FormControl>
+                        <Input {...field} type="text" placeholder="Masukkan Nama " />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="nik"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="text" placeholder="Masukkan Nama " />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="nik"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold dark:text-white">No. HP</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="text" placeholder="Masukkan No. HP " />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="password"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="">
+                      <FormLabel className="font-semibold dark:text-white">Password</FormLabel>
+                      <FormControl>
+                        <Password
+                          {...field}
+                          value={field.value ?? ''}
+                          placeholder="Masukkan Password Anda"
+                          className=""
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="nik"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold dark:text-white">Role</FormLabel>
+                      <FormControl>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Pilih Role" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="m@example.com">Krisna Asu</SelectItem>
+                            <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
+                            <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="grid grid-cols-1 pr-4 pt-4 gap-4">
+                <FormField
+                  name="identityCard"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem className="">
+                      <FormLabel className="flex items-center justify-between">
+                        <p className="font-semibold dark:text-white">Foto KTP</p>
+                      </FormLabel>
+                      <FormControl className="w-[522px]">
+                        <DropZone
+                          setValue={field.onChange}
+                          fileValue={field.value as unknown as FileWithPreview[]}
+                          accept={{
+                            'image/jpeg': ['.jpg', '.jpeg'],
+                            'image/png': ['.png'],
+                            'application/pdf': ['.pdf']
+                          }}
+                          maxFiles={1}
+                          id="fotoKtp"
+                          Icon={HiDocumentArrowUp}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="nik"
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold dark:text-white">Status</FormLabel>
+                      <FormControl>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Pilih Status" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="m@example.com">Krisna Asu</SelectItem>
+                            <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
+                            <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+            <Modal.Footer>
+              <Button
+                variant="outline"
+                className="rounded-lg text-primary border-primary"
+                onClick={() => setIsShowEdit(false)}
+              >
+                Cancel
+              </Button>
+              <Button className="rounded-lg" type="submit">
+                Simpan
               </Button>
             </Modal.Footer>
           </form>
@@ -327,5 +400,3 @@ const ManajemenUser = () => {
     </Container>
   )
 }
-
-export default ManajemenUser
