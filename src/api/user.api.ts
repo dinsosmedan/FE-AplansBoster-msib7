@@ -52,3 +52,8 @@ export const getPermissionFn = async (): Promise<any> => {
 export const storeRolePermissionFn = async (fields: rolePermissionFields) => {
   await api.post('/user-access/role', fields)
 }
+
+export const deleteRolePermissionFn = async (id: string): Promise<any> => {
+  const response = await api.delete(`/user-access/role/${id}`)
+  return response.data
+}

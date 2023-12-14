@@ -10,10 +10,11 @@ import { useForm } from 'react-hook-form'
 import useTitle from '@/hooks/useTitle'
 import { HiDocumentArrowUp } from 'react-icons/hi2'
 import DropZone, { type FileWithPreview } from '@/components/atoms/DropZone'
-import { Label } from '@/components/ui/label';
+// import { Label } from '@/components/ui/label';
 interface FormValues {
   nik: string
   prodi: string
+  password: string
   identityCard: FileWithPreview[]
 }
 export default function ManajemenUser() {
@@ -64,6 +65,14 @@ export default function ManajemenUser() {
               >
                 <HiOutlinePencilAlt className="text-lg" />
               </Button>
+              {/* <Button
+                size="icon"
+                variant="base"
+                className="bg-red-500 text-white hover:bg-red-300 hover:text-white ms-2"
+                onClick={() => handleDeleteUser(item.id)}
+              >
+                <HiTrash className="text-lg" />
+              </Button> */}
             </TableCell>
           </TableRow>
         </TableBody>
