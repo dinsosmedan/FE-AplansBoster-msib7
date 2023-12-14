@@ -8,7 +8,7 @@ import { HiDocumentArrowUp, HiMagnifyingGlass, HiPaperAirplane } from 'react-ico
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from '@/components/ui/select'
 import DropZone, { type FileWithPreview } from '../../../components/atoms/DropZone'
-import DatePicker from './../../../components/atoms/DatePicker';
+import DatePicker from './../../../components/atoms/DatePicker'
 
 interface FormValues {
   nik: string

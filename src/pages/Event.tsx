@@ -1,12 +1,23 @@
 import { Action, Container, CreateEvent, Loading, Pagination, Status } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { useCreateParams, useGetParams, useTitle } from '@/hooks'
-import { HiNewspaper } from 'react-icons/hi2'
+import { useCreateParams, useDeleteParams, useGetParams, useTitle } from '@/hooks'
+import { HiMagnifyingGlass, HiNewspaper } from 'react-icons/hi2'
 import * as React from 'react'
-import { useDeleteEvent, useGetEvent } from '@/store/server'
+import { useDeleteEvent, useGetEvent, useGetEventType } from '@/store/server'
 import { formatToView } from '@/lib/services/formatDate'
 import { useAlert } from '@/store/client'
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
+import { useForm } from 'react-hook-form'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Input } from '@/components/ui/input'
+import { STATUS_EVENT } from '@/lib/data'
+
+interface FormValues {
+  type: string
+  status: string
+  year: string
+}
 
 const Event = () => {
   useTitle('Event')
@@ -15,11 +26,15 @@ const Event = () => {
   const [isShow, setIsShow] = React.useState(false)
   const [eventId, setEventId] = React.useState('')
 
+  const deleteParams = useDeleteParams()
   const createParams = useCreateParams()
-  const { page } = useGetParams(['page'])
+  const { page, status, year } = useGetParams(['page', 'status', 'year'])
 
-  const { data: events, isLoading, isFetching } = useGetEvent()
+  const { data: eventType } = useGetEventType()
+  const { data: events, isFetching, refetch } = useGetEvent(status, year, page)
   const { mutateAsync: deleteEvent } = useDeleteEvent()
+
+  const forms = useForm<FormValues>()
 
   const handleDelete = (id: string) => {
     void alert({
@@ -37,7 +52,17 @@ const Event = () => {
     setIsShow(true)
   }
 
-  if (isLoading) return <Loading />
+  const onSubmit = async (values: FormValues) => {
+    Object.keys(values).forEach((key) => {
+      if (values[key as keyof FormValues] !== '' && values[key as keyof FormValues] !== undefined) {
+        createParams({ key, value: values[key as keyof FormValues] })
+      } else {
+        deleteParams(key)
+      }
+    })
+    deleteParams('page')
+    await refetch()
+  }
 
   return (
     <Container>
@@ -48,6 +73,71 @@ const Event = () => {
           <p className="text-sm ml-3">Tambah Event</p>
         </Button>
       </div>
+
+      <Form {...forms}>
+        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex items-center justify-between gap-8 mb-5">
+          <FormField
+            control={forms.control}
+            name="type"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih Jenis Event" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {eventType?.map((type) => (
+                      <SelectItem key={type.id} value={type.id}>
+                        {type.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={forms.control}
+            name="status"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih Status" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {STATUS_EVENT.map((status, index) => (
+                      <SelectItem key={index} value={status.value}>
+                        {status.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={forms.control}
+            name="year"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormControl>
+                  <Input {...field} value={field.value ?? ''} type="number" placeholder="Cari berdasarkan tahun" />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <Button className="gap-2 border-none rounded-lg" type="submit">
+            <HiMagnifyingGlass className="text-lg" />
+            <span>Cari Data</span>
+          </Button>
+        </form>
+      </Form>
+
       <Table>
         <TableHeader className="bg-primary">
           <TableRow>

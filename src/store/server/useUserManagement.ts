@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { deleteUsersFn, getPermissionFn, getRoleFn, getUserDetailFn, getUsersFn, storeRolePermissionFn, storeUserFn, updateUserFn } from '@/api/user.api'
+import { deleteRolePermissionFn, deleteUsersFn, getPermissionFn, getRoleFn, getUserDetailFn, getUsersFn, storeRolePermissionFn, storeUserFn, updateUserFn } from '@/api/user.api'
 import { toast, useToast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
 import { type AxiosError } from 'axios'
@@ -113,6 +113,22 @@ export const useCreateRolePermission = () => {
           description: 'Terjadi masalah dengan permintaan Anda.'
         })
       }
+    }
+  })
+}
+
+export const useDeleteRolePermission = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(deleteRolePermissionFn, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries('role-permission')
+      toast({
+        variant: 'default',
+        duration: 1500,
+        title: 'Proses Berhasil',
+        description: 'Role Permission Berhasil Dihapus'
+      })
     }
   })
 }

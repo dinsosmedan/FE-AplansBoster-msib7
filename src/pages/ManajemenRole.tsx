@@ -3,30 +3,38 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-import { HiBadgeCheck, HiOutlinePencilAlt, HiUserAdd, HiX } from 'react-icons/hi'
+import { HiBadgeCheck, HiTrash, HiUserAdd, HiX } from 'react-icons/hi'
 import { useForm } from 'react-hook-form'
 import * as React from 'react'
 
-import { Container, Modal, MultiSelect, Search } from '@/components'
+import { Container, Loading, Modal, MultiSelect, Search } from '@/components'
 import useTitle from '@/hooks/useTitle'
-import { useCreateRolePermission, useGetPermission, useGetRole } from '@/store/server/useUserManagement'
+import {
+  useCreateRolePermission,
+  useDeleteRolePermission,
+  useGetPermission,
+  useGetRole
+} from '@/store/server/useUserManagement'
 import { useNavigate } from 'react-router-dom'
 import { type rolePermissionFields } from '@/lib/validations/rolepermission.validation'
+import { useAlert } from '@/store/client'
 
 const ManajemenRole = () => {
   useTitle('Manajemen Role ')
   const navigate = useNavigate()
+  const { alert } = useAlert()
 
   const [isShow, setIsShow] = React.useState(false)
   const { mutate: RolePermission, isLoading: isLoadingCreate } = useCreateRolePermission()
   const { data: role } = useGetRole()
   const { data: permission } = useGetPermission()
+  const { mutateAsync: deleteRolePermission, isLoading: isLoadingDelete } = useDeleteRolePermission()
   const PERMISSION =
     permission?.data?.map((item: any) => ({
       value: item.id,
       label: item.name
     })) || []
-  console.log(role)
+
   const formsCreate = useForm<rolePermissionFields>({
     mode: 'onTouched',
     defaultValues: {
@@ -34,6 +42,18 @@ const ManajemenRole = () => {
       permissions: []
     }
   })
+
+  const handleDeleteRolePermission = (id: string) => {
+    void alert({
+      title: 'Hapus User',
+      description: 'Apakah kamu yakin ingin menghapus data ini?',
+      variant: 'danger',
+      submitText: 'Delete'
+    }).then(async () => {
+      await deleteRolePermission(id)
+    })
+  }
+
   const onSubmit = async (values: rolePermissionFields) => {
     const validPermissions: string[] = values.permissions.filter((p: any): p is string => p !== undefined)
     const newData = {
@@ -42,9 +62,14 @@ const ManajemenRole = () => {
     }
     RolePermission(newData, { onSuccess })
   }
+
   const onSuccess = () => {
     setIsShow(false)
     navigate('/manajemen-role')
+  }
+
+  if (isLoadingDelete) {
+    return <Loading />
   }
 
   return (
@@ -92,9 +117,10 @@ const ManajemenRole = () => {
                 <Button
                   size="icon"
                   variant="base"
-                  className="bg-[#959595] text-white hover:bg-[#828282] hover:text-white"
+                  className="bg-red-500 text-white hover:bg-red-300 hover:text-white ms-2"
+                  onClick={() => handleDeleteRolePermission(item.id)}
                 >
-                  <HiOutlinePencilAlt className="text-lg" />
+                  <HiTrash className="text-lg" />
                 </Button>
               </TableCell>
             </TableRow>

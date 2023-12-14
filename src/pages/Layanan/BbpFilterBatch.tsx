@@ -11,6 +11,7 @@ import { useForm } from 'react-hook-form'
 import { HiMagnifyingGlass, HiOutlineExclamationCircle } from 'react-icons/hi2'
 import { useNavigate } from 'react-router-dom'
 import * as React from 'react'
+import { STATUS_EVENT } from '@/lib/data'
 
 interface FormValues {
   year: string
@@ -66,10 +67,11 @@ export default function BbpFilterBatch() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="inactive">Inactive</SelectItem>
-                        <SelectItem value="in-progress">In Progress</SelectItem>
-                        <SelectItem value="completed">Completed</SelectItem>
-                        <SelectItem value="upcoming">Upcoming</SelectItem>
+                        {STATUS_EVENT.map((status, index) => (
+                          <SelectItem key={index} value={status.value}>
+                            {status.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </FormItem>

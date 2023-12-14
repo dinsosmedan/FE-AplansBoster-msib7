@@ -1,18 +1,39 @@
 import { FormAuthContainer, Password } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { useTitle } from '@/hooks'
-import { type ResetPasswordUserFields } from '@/lib/validations/landingPage/auth.validation'
+import { useGetParams, useTitle } from '@/hooks'
+import { resetPasswordValidation, type ResetPasswordUserFields } from '@/lib/validations/landingPage/auth.validation'
+import { useAlert } from '@/store/client'
+import { useResetPasswordUser } from '@/store/server'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 
 export default function UpdatePasswordUser() {
   useTitle('Reset Password')
+  const { alert } = useAlert()
   const forms = useForm<ResetPasswordUserFields>({
-    mode: 'onTouched'
+    mode: 'onTouched',
+    resolver: yupResolver(resetPasswordValidation),
+    defaultValues: {
+      password: '',
+      ConfPassword: ''
+    }
   })
+  const { mutate: ResetPassword, isLoading } = useResetPasswordUser()
 
+  const { token } = useGetParams(['token'])
   const onSubmit = async (values: ResetPasswordUserFields) => {
-    console.log(values)
+    const { password } = values
+    ResetPassword({ password, token }, {
+      onSuccess: () => {
+        void alert({
+          title: 'Berhasil Reset Password',
+          description: 'Yay! Reset Password Berhasil, Silakan Login kembali!',
+          submitText: 'Oke',
+          variant: 'success'
+        })
+      }
+    })
   }
 
   return (
@@ -39,8 +60,25 @@ export default function UpdatePasswordUser() {
               </FormItem>
             )}
           />
-
-          <Button className="rounded-lg py-6">Ganti Password</Button>
+          <FormField
+            name="ConfPassword"
+            control={forms.control}
+            render={({ field }) => (
+              <FormItem className="">
+                <FormLabel className="font-semibold dark:text-white">Konfirmasi Password</FormLabel>
+                <FormControl className="w-[522px]">
+                  <Password
+                    {...field}
+                    value={field.value ?? ''}
+                    placeholder="Konfirmasi Password Baru Anda"
+                    className="py-6 rounded-lg"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button className="rounded-lg py-6" loading={isLoading}>Ganti Password</Button>
         </form>
       </Form>
     </FormAuthContainer>

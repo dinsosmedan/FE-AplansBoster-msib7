@@ -184,3 +184,10 @@ export const CATEGORY_APPLICATION = [
   { value: 'dtks-courts' },
   { value: 'non-dtks-courts' }
 ]
+
+export const STATUS_EVENT = [
+  { value: 'inactive', label: 'Inactive' },
+  { value: 'in-progress', label: 'In Progress' },
+  { value: 'completed', label: 'Completed' },
+  { value: 'upcoming', label: 'Upcoming' }
+]
