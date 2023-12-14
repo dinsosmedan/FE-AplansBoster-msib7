@@ -1,10 +1,14 @@
 import ENV from '@/lib/environment'
-import { type IUser, type IAuthResponse } from '@/lib/types/user.type'
-import { type LoginInput } from '@/lib/validations/auth.validation'
+import { type IUser, type IAuthResponse, type IResetPassword } from '@/lib/types/user.type'
+import { type ForgetPasswordInput, type LoginInput } from '@/lib/validations/auth.validation'
 import axios from 'axios'
 import api from './axiosInstance'
 import axiosPublic from './axiosPublicInstance'
-import { type LoginUserFields, type RegisterUserFields } from '@/lib/validations/landingPage/auth.validation'
+import {
+  type ForgotPasswordUserFields,
+  type LoginUserFields,
+  type RegisterUserFields
+} from '@/lib/validations/landingPage/auth.validation'
 
 const apiPublic = axios.create({
   baseURL: ENV.apiUrl,
@@ -27,7 +31,10 @@ export const getMeFn = async (): Promise<IUser> => {
   const response = await api.get('/auth/me')
   return response.data
 }
-
+export const forgetPasswordFn = async (fields: ForgetPasswordInput) => {
+  const response = await apiPublic.post('/auth/forget', fields)
+  return response.data
+}
 // LANDING PAGE
 export const loginUserFn = async (fields: LoginUserFields): Promise<IAuthResponse> => {
   const response = await apiPublic.post('/public/auth/login', fields)
@@ -58,4 +65,13 @@ export const registerUserFn = async (fields: RegisterUserFields) => {
       'Content-Type': 'multipart/form-data'
     }
   })
+}
+
+export const forgetPasswordUserFn = async (fields: ForgotPasswordUserFields) => {
+  const response = await axiosPublic.post('/public/auth/forget', fields)
+  return response.data
+}
+export const resetPasswordUserFn = async (fields: IResetPassword) => {
+  const response = await axiosPublic.post('/public/auth/reset', fields)
+  return response.data
 }

@@ -2,24 +2,53 @@ import { Logo } from '@/assets'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { toast } from '@/components/ui/use-toast'
 import useTitle from '@/hooks/useTitle'
+import { type IErrorResponse } from '@/lib/types/user.type'
+import { type ForgetPasswordInput, forgetPasswordValidation } from '@/lib/validations/auth.validation'
+import { useAlert } from '@/store/client'
+import { useForgetPassword } from '@/store/server'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { type AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 import { BsChevronLeft } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 
 export default function ForgotPassword() {
+  const { alert } = useAlert()
   useTitle('Lupa Password')
+  const { mutate: Forgot, isLoading } = useForgetPassword()
 
-  interface FormValues {
-    email: string
-  }
-
-  const forms = useForm<FormValues>({
-    mode: 'onTouched'
+  const forms = useForm<ForgetPasswordInput>({
+    mode: 'onTouched',
+    resolver: yupResolver(forgetPasswordValidation),
+    defaultValues: {
+      email: ''
+    }
   })
 
-  const onSubmit = async (values: FormValues) => {
-    console.log(values)
+  const onSubmit = async (values: ForgetPasswordInput) => {
+    Forgot(values, {
+      onError: (error: AxiosError) => {
+        const errorResponse = error.response?.data as IErrorResponse
+
+        if (errorResponse !== undefined) {
+          toast({
+            variant: 'destructive',
+            title: errorResponse.message,
+            description: 'There was a problem with your request.'
+          })
+        }
+      },
+      onSuccess: () => {
+        void alert({
+          title: 'Cek Email Berhasil',
+          description: 'Yay!  Kami baru saja mengirimkan tautan verifikasi ke email Anda. Silakan periksa kotak masuk atau folder spam Anda untuk melanjutkan proses pemulihan kata sandi.',
+          submitText: 'Oke',
+          variant: 'success'
+        })
+      }
+    })
   }
 
   const Navigate = useNavigate()
@@ -56,7 +85,7 @@ export default function ForgotPassword() {
                   </FormItem>
                 )}
               />
-              <Button className="py-6 text-[17px] font-normal">Kirim</Button>
+              <Button className="py-6 text-[17px] font-normal" loading={isLoading}>Kirim</Button>
             </form>
           </Form>
         </div>

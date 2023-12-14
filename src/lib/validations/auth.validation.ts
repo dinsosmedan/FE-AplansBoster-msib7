@@ -6,3 +6,9 @@ export const loginValidation = Yup.object({
 })
 
 export type LoginInput = Yup.InferType<typeof loginValidation>
+
+export const forgetPasswordValidation = Yup.object({
+  email: Yup.string().required('Email harus diisi')
+})
+
+export type ForgetPasswordInput = Yup.InferType<typeof forgetPasswordValidation>
