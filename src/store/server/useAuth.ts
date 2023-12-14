@@ -8,6 +8,7 @@ import {
   logoutFn,
   logoutUserFn,
   registerUserFn,
+  resetPasswordFn,
   resetPasswordUserFn
 } from '@/api/auth.api'
 import { type AxiosError } from 'axios'
@@ -48,7 +49,28 @@ export const useForgetPassword = () => {
     }
   })
 }
-
+export const useResetPassword = () => {
+  const navigate = useNavigate()
+  return useMutation(resetPasswordFn, {
+    onSuccess: async () => {
+      toast({
+        title: 'Reset Password Berhasil',
+        description: 'Berhasil ganti password, Silahkan login ulang kembali.'
+      })
+      navigate('/login')
+    },
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message,
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
+    }
+  })
+}
 export const useLogout = () => {
   const navigate = useNavigate()
   return useMutation(logoutFn, {
