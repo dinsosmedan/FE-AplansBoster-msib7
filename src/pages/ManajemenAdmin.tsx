@@ -10,12 +10,12 @@ import { HiOutlinePencilAlt, HiUserAdd, HiTrash } from 'react-icons/hi'
 import useTitle from '@/hooks/useTitle'
 import { Container, Loading, Pagination, Search } from '@/components'
 import {
-  useCreateUser,
-  useDeleteUser,
+  useCreateAdmin,
+  useDeleteAdmin,
   useGetRole,
-  useGetUser,
-  useGetUserById,
-  useUpdateUser
+  useGetAdmin,
+  useGetAdminById,
+  useUpdateAdmin
 } from '@/store/server/useUserManagement'
 import { userValidation, type userFields } from '@/lib/validations/user.validation'
 // import { toast } from '@/components/ui/use-toast'
@@ -31,7 +31,7 @@ const ManajemenAdmin = () => {
   const { alert } = useAlert()
 
   const { data: role } = useGetRole()
-  const { data: users, isLoading } = useGetUser()
+  const { data: users, isLoading } = useGetAdmin()
 
   const forms = useForm<userFields>({
     mode: 'onTouched',
@@ -47,14 +47,14 @@ const ManajemenAdmin = () => {
     }
   })
   const [isShow, setIsShow] = React.useState(false)
-  const { mutate: Register, isLoading: isLoadingCreate } = useCreateUser()
+  const { mutate: Register, isLoading: isLoadingCreate } = useCreateAdmin()
 
   const [currentPage, setCurrentPage] = React.useState(1)
-  const { mutateAsync: deleteUser, isLoading: isLoadingDelete } = useDeleteUser()
+  const { mutateAsync: deleteUser, isLoading: isLoadingDelete } = useDeleteAdmin()
 
   const [userId, setUserId] = React.useState('')
-  const { data: user, isSuccess, isLoading: isLoadingUser } = useGetUserById(userId)
-  const { mutate: updateUser, isLoading: isLoadingUpdate } = useUpdateUser()
+  const { data: user, isSuccess, isLoading: isLoadingUser } = useGetAdminById(userId)
+  const { mutate: updateUser, isLoading: isLoadingUpdate } = useUpdateAdmin()
 
   React.useEffect(() => {
     if (isSuccess && user) {

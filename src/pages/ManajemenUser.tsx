@@ -1,37 +1,28 @@
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import Modal from '@/components/organisms/Modal'
 import * as React from 'react'
-import { HiOutlinePencilAlt, HiUserAdd, HiTrash } from 'react-icons/hi'
+import { HiOutlinePencilAlt, HiTrash } from 'react-icons/hi'
 import useTitle from '@/hooks/useTitle'
 import { Container, Loading, Pagination, Search } from '@/components'
 import {
-  useCreateUser,
   useDeleteUser,
-  useGetRole,
-  useGetUser,
-  useGetUserById,
-  useUpdateUser
+  useGetUsers,
+  useGetUserById
+  // useUpdateUser
 } from '@/store/server/useUserManagement'
 import { userValidation, type userFields } from '@/lib/validations/user.validation'
-// import { toast } from '@/components/ui/use-toast'
 import { useAlert } from '@/store/client'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 const ManajemenUser = () => {
   useTitle('Manajemen User ')
-  const navigate = useNavigate()
-  // const { id } = useParams<{ id: string }>()
+  // const navigate = useNavigate()
 
   const { alert } = useAlert()
 
-  const { data: role } = useGetRole()
-  const { data: users, isLoading } = useGetUser()
+  const { data: users, isLoading } = useGetUsers()
 
   const forms = useForm<userFields>({
     mode: 'onTouched',
@@ -46,15 +37,12 @@ const ManajemenUser = () => {
       isActive: ''
     }
   })
-  const [isShow, setIsShow] = React.useState(false)
-  const { mutate: Register, isLoading: isLoadingCreate } = useCreateUser()
-
   const [currentPage, setCurrentPage] = React.useState(1)
   const { mutateAsync: deleteUser, isLoading: isLoadingDelete } = useDeleteUser()
 
   const [userId, setUserId] = React.useState('')
   const { data: user, isSuccess, isLoading: isLoadingUser } = useGetUserById(userId)
-  const { mutate: updateUser } = useUpdateUser()
+  // const { mutate: updateUser } = useUpdateUser()
 
   React.useEffect(() => {
     if (isSuccess && user) {
@@ -72,7 +60,7 @@ const ManajemenUser = () => {
 
   const handleUpdateUser = (id: string) => {
     setUserId(id)
-    setIsShow(true)
+    // setIsShow(true)
   }
 
   const handleDeleteUser = (id: string) => {
@@ -86,33 +74,6 @@ const ManajemenUser = () => {
     })
   }
 
-  const onSubmit = async (values: userFields) => {
-    try {
-      setUserId(userId)
-      console.log(userId)
-      const newData = {
-        ...values,
-        isActive: values.isActive ? '1' : '0'
-      }
-
-      if (userId) {
-        updateUser({ id: userId, fields: newData }, { onSuccess })
-        console.log('User registered successfully')
-      } else {
-        Register(newData, { onSuccess })
-        console.log('User updated successfully')
-      }
-    } catch (error) {
-      console.error('Error in onSubmit:', error)
-    }
-  }
-
-  const onSuccess = () => {
-    forms.reset()
-    setIsShow(false)
-    navigate('/manajemen-user')
-  }
-
   if (isLoading && isLoadingDelete && isLoadingUser) {
     return <Loading />
   }
@@ -120,10 +81,6 @@ const ManajemenUser = () => {
     <Container className="relative pt-[34px] pb-[22px] px-7">
       <div className="flex items-center mb-[18px]">
         <Search placeholder="Search" className="w-[398px] py-[23px]" />
-        <Button className="w-fit py-6 px-4 ml-auto bg-primary" onClick={() => setIsShow(true)}>
-          <HiUserAdd className="w-6 h-6 text-white" />
-          <p className="text-white font-semibold text-sm pl-2 w-max">Tambah User</p>
-        </Button>
       </div>
 
       <Table>
@@ -200,142 +157,6 @@ const ManajemenUser = () => {
         pageSize={10}
         onPageChange={(page) => setCurrentPage(page)}
       />
-
-      <Modal isShow={isShow} className="max-h-[calc(100vh-200px)] overflow-y-auto">
-        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">
-            {userId ? 'Perbaharui' : 'Tambah'} Pengguna
-          </h3>
-          <p className="text-sm text-[#A1A1A1]">
-            {userId ? 'Perbaharui data pengguna.' : 'Masukkan data pengguna baru.'}
-          </p>
-        </Modal.Header>
-        <Form {...forms}>
-          <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-3">
-            <div className="grid grid-cols-2 gap-3">
-              <FormField
-                name="employeeIdentityNumber"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">NIP</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan NIP" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="email"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan Email" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="name"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan Nama" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="phoneNumber"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">No. HP</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value} placeholder="Masukkan No. HP" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              {!userId ? (
-                <FormField
-                  name="password"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">Password</FormLabel>
-                      <FormControl>
-                        <Input {...field} value={field.value ?? ''} placeholder="Masukkan Password (default)" />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              ) : null}
-              <FormField
-                name="role"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Role</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Role" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {role?.data.map((item: any, index: any) => (
-                            <SelectItem key={index} value={item.id}>
-                              {item.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <FormField
-              name="isActive"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Status</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Status" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="true">Aktif</SelectItem>
-                        <SelectItem value="false">Tidak Aktif</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <Modal.Footer>
-              <Button
-                variant="outline"
-                className="rounded-lg text-primary border-primary"
-                onClick={() => setIsShow(false)}
-              >
-                Cancel
-              </Button>
-              <Button className="rounded-lg" type="submit" loading={isLoadingCreate}>
-                Submit
-              </Button>
-            </Modal.Footer>
-          </form>
-        </Form>
-      </Modal>
     </Container>
   )
 }
