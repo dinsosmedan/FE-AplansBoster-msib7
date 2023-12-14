@@ -1,46 +1,53 @@
 import { cn } from '@/lib/utils'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function FilterLayanan() {
-  const [isActive, setIsActive] = React.useState('Data Pengajuan')
+  const [isActive, setIsActive] = React.useState('pending')
+
+
   return (
     <div className="flex justify-between py-[40px] px-10">
-      <p
-        onClick={() => setIsActive('Data Pengajuan')}
+      <Link
+        to={'/layanan/layanan-sktm?tab=pending'}
+        onClick={() => setIsActive('pending')}
         className={cn(
-          isActive === 'Data Pengajuan' ? 'text-primary border-b-2 pb-2  border-primary' : 'text-primary/70',
+          isActive === 'pending' ? 'text-primary border-b-2 pb-2  border-primary' : 'text-primary/70',
           'text-2xl font-bold cursor-pointer px-2'
         )}
       >
         Data Pengajuan
-      </p>
-      <p
-        onClick={() => setIsActive('Data Direvisi/Diproses')}
+      </Link>
+      <Link
+        to={'/layanan/layanan-sktm?tab=processed'}
+        onClick={() => setIsActive('processed')}
         className={cn(
-          isActive === 'Data Direvisi/Diproses' ? 'text-primary border-b-2 pb-2 border-primary' : 'text-primary/70',
+          isActive === 'processed' ? 'text-primary border-b-2 pb-2 border-primary' : 'text-primary/70',
           'text-2xl font-bold cursor-pointer px-2'
         )}
       >
         Data Direvisi/Diproses
-      </p>
-      <p
-        onClick={() => setIsActive('Data Diterima')}
+      </Link>
+      <Link
+        to={'/layanan/layanan-sktm?tab=approved'}
+        onClick={() => setIsActive('approved')}
         className={cn(
-          isActive === 'Data Diterima' ? 'text-primary border-b-2 pb-2  border-primary' : 'text-primary/70',
+          isActive === 'approved' ? 'text-primary border-b-2 pb-2  border-primary' : 'text-primary/70',
           'text-2xl font-bold cursor-pointer px-2'
         )}
       >
         Data Diterima
-      </p>
-      <p
-        onClick={() => setIsActive('Data Ditolak')}
+      </Link>
+      <Link
+        to={'/layanan/layanan-sktm?tab=rejected'}
+        onClick={() => setIsActive('rejected')}
         className={cn(
-          isActive === 'Data Ditolak' ? 'text-primary border-b-2 pb-2  border-primary' : 'text-primary/70',
+          isActive === 'rejected' ? 'text-primary border-b-2 pb-2  border-primary' : 'text-primary/70',
           'text-2xl font-bold cursor-pointer px-2'
         )}
       >
         Data Ditolak
-      </p>
+      </Link>
     </div>
   )
 }
