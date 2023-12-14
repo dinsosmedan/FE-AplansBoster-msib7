@@ -153,7 +153,7 @@ export const useRegisterPublic = () => {
         title: 'Akun berhasil didaftarkan',
         description: 'Anda telah berhasil melakukan pendaftaran.'
       })
-      navigate('/')
+      navigate('/user/successful')
     },
     onError: (error: AxiosError) => {
       const errorResponse = error.response?.data as IErrorResponse
