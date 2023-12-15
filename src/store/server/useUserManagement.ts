@@ -14,17 +14,6 @@ import {
   updateAdminFn,
   updateUserFn
 } from '@/api/user.api'
-import {
-  deleteRolePermissionFn,
-  deleteUsersFn,
-  getPermissionFn,
-  getRoleFn,
-  getUserDetailFn,
-  getUsersFn,
-  storeRolePermissionFn,
-  storeUserFn,
-  updateUserFn
-} from '@/api/user.api'
 import { toast, useToast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
 import { type AxiosError } from 'axios'
