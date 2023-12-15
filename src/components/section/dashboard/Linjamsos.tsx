@@ -1,7 +1,8 @@
+import BasicCard from '@/components/ui/dashboard/BasicCard'
 import LongCard from '@/components/ui/dashboard/LongCard'
 import TitleSign from '@/components/ui/dashboard/TitleSign'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useVulnerableGroup } from '@/store/server'
+import { useCountBbp, useCountIndigencyCertificate, useCountTuitionAssistance, useVulnerableGroup } from '@/store/server'
 
 const SectionLinjamsos = () => {
   return (
@@ -9,8 +10,8 @@ const SectionLinjamsos = () => {
       <div className=" my-12 ">
         <TitleSign text={' Linjamsos '} />
 
-        {/* <CardData />
-        <div className="grid grid-cols-3 gap-5 mt-5">
+        <CardData />
+        {/* <div className="grid grid-cols-3 gap-5 mt-5">
           <LongCard props={['Data DTKS', 'Persentasi Data DTKS']}>
             <LongCard.Chart
               data={[12, 19]}
@@ -41,26 +42,52 @@ const SectionLinjamsos = () => {
   )
 }
 const ChartSktm = () => {
+  const { data, isLoading } = useCountIndigencyCertificate()
+
+  const label = data ? data.map((val: any) => val.budgetYear.toString()) : []
+  const value = data ? data.map((val: any) => val.count.toString()) : []
+
   return (
     <LongCard props={['SKTM', 'Persentasi Data SKTM Berdasarkan DTKS']}>
-      <LongCard.Chart
-        data={[30, 15]}
-        isPercent={true}
-        label={['DTKS', 'Non DTKS']}
-        backgroundColor={['#F94144', '#F3722C']}
-      />
+      {
+        isLoading ? <Skeleton className="w-[300px] h-[300px] rounded-full" /> : (
+          <LongCard.Chart
+            // data={[30, 15]}
+            data={value}
+            isPercent={true}
+            // label={['DTKS', 'Non DTKS']}
+            label={label}
+            backgroundColor={['#F94144', '#F3722C']}
+          />
+        )
+      }
     </LongCard>
   )
 }
 const ChartBbp = () => {
+  const { data, isLoading } = useCountTuitionAssistance()
+
+  // if (isLoading) {
+  //   return <Skeleton className="w-[300px] h-[300px] rounded-full" />
+  // }
+  // console.log(data)
+  const label = data ? data.map((val: any) => val.budgetYear.toString()) : []
+  const value = data ? data.map((val: any) => val.count.toString()) : []
+
   return (
     <LongCard props={['Bantuan Biaya Pendidikan', 'Persentasi Data Biaya Pendidikan']}>
-      <LongCard.Chart
-        data={[20, 5, 13]}
-        isPercent={true}
-        label={['Diterima', 'Diterima', 'Prelist']}
-        backgroundColor={['#F94144', '#F3722C', '#F9C74F']}
-      />
+      {
+        isLoading ? <Skeleton className="w-[300px] h-[300px] rounded-full" /> : (
+          <LongCard.Chart
+            // data={[20, 5, 13]}
+            data={value}
+            isPercent={true}
+            // label={['Diterima', 'Diterima', 'Prelist']}
+            label={label}
+            backgroundColor={['#F94144', '#F3722C', '#F9C74F']}
+          />
+        )
+      }
     </LongCard>
   )
 }
@@ -91,25 +118,37 @@ const ChartPenanganan = () => {
     </>
   )
 }
-// const CardData = () => {
-//   return (
-//     <>
-//       <div className="grid grid-cols-3 gap-5 mt-5">
-//         <BasicCard props={['Bantuan Biaya Pendidikan', '705.262', 'Data']} />
-//         <BasicCard props={['Total Penangan Kelompok Rentan', '705.262', 'Data']} />
-//         <BasicCard props={['Total SKTM', '705.262', 'Data']} />
-//       </div>
-//       <div className="grid grid-cols-2 gap-5 mt-5">
-//         <BasicCard props={['Bantuan PBI', '705.262', 'Data']} />
-//         <BasicCard props={['Total PKH', '705.262', 'Data']} />
-//       </div>
-//       <div className="grid grid-cols-3 gap-5 mt-5">
-//         <BasicCard props={['Total Data DTKS', '705.262', 'Data']} />
-//         <BasicCard props={['Jumlah data Non DTKS', '705.262', 'Data']} />
-//         <BasicCard props={['Jumlah Keluarga Penerima', '705.262', 'Data']} />
-//       </div>
-//     </>
-//   )
-// }
+const CardData = () => {
+  const { data, isLoading } = useCountBbp()
+
+  // console.log(data)
+
+  return (
+    <>
+      {
+        isLoading ? (
+          <>
+            <Skeleton className="w-12 h-12 rounded-[14px]" />
+            <div className="flex flex-col gap-3">
+              <Skeleton className="w-[120px] h-3 rounded-[14px]" />
+              <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+              <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+            </div>
+          </>
+        ) : <>
+          <div className="grid grid-cols-3 gap-5 mt-5">
+            <BasicCard props={['Bantuan Biaya Pendidikan', data.premiumAssistanceBeneficiary, 'Data']} />
+            <BasicCard props={['Total Penangan Kelompok Rentan', data.vulnerableGroupHandling, 'Data']} />
+            <BasicCard props={['Total SKTM', data.indigencyCertificate, 'Data']} />
+          </div>
+          <div className="grid grid-cols-2 gap-5 mt-5">
+            <BasicCard props={['Bantuan PBI', data.tuitionAssistance, 'Data']} />
+            <BasicCard props={['Total PKH', data.familyHopePrograms, 'Data']} />
+          </div>
+        </>
+      }
+    </>
+  )
+}
 
 export default SectionLinjamsos

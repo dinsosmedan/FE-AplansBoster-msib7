@@ -25,6 +25,8 @@ import {
   getTuitionAssistanceByIdFn,
   storeTuitionAssistanceFn,
   storeIndigencyCertificateFn,
+  getCountIndigencyCertificateFn,
+  getCountTuitionAssistanceFn,
   updateTuitionsAssistanceFn
 } from '@/api/linjamsos.api'
 import { toast } from '@/components/ui/use-toast'
@@ -358,6 +360,12 @@ export const useCreateIndegencyCertificate = () => {
   })
 }
 
+export const useCountIndigencyCertificate = () => {
+  return useQuery(['count-indigency-fn'], async () => await getCountIndigencyCertificateFn(), { enabled: true })
+}
+export const useCountTuitionAssistance = () => {
+  return useQuery(['tuition-assistance-fn'], async () => await getCountTuitionAssistanceFn(), { enabled: true })
+}
 export const useUpdateTuitionAssistance = () => {
   const queryClient = useQueryClient()
 

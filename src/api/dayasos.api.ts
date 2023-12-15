@@ -328,6 +328,11 @@ export const getVulnerableGroupFn = async () => {
   const response = await api.get('/dashboard/linjamsos/chart/vulnerable-group-handling')
   return response.data?.data
 }
+export const getCountBbpFn = async () => {
+  const response = await api.get('/dashboard/linjamsos/count')
+  return response.data?.data
+}
+
 
 interface UpdateVeteranParams {
   id: string

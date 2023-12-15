@@ -88,6 +88,10 @@ import ChangeProfile from './pages/LandingPage/Profile/ChangeProfile'
 import ProfileLayout from './components/layouts/landingPage/ProfileLayout'
 import SuccessfulRegister from './components/layouts/landingPage/SuccessfulRegister'
 import VerifiedAccount from './components/layouts/landingPage/VerifiedAccount'
+import DtksSchool from './pages/LandingPage/Sktm/DtksSchool'
+import NonDtksSchool from './pages/LandingPage/Sktm/NonDtksSchool'
+import DtksCourts from './pages/LandingPage/Sktm/DtksCourts'
+import NonDtksCourts from './pages/LandingPage/Sktm/NonDtksCourts'
 
 export default function App() {
   useScrollToTop()
@@ -224,10 +228,14 @@ export default function App() {
 
               <Route path="sktm">
                 <Route index element={<UserSktm />} />
-                <Route path="register" element={<SktmRegister />} />
-                <Route path="unregister" element={<SktmUnregister />} />
-                <Route path="register-religious" element={<SktmReligious />} />
-                <Route path="unregister-religious" element={<SktmUnregisterReligious />} />
+                <Route path="dtks-school" element={<DtksSchool />} />
+                <Route path="dtks-school/form" element={<SktmRegister />} />
+                <Route path="non-dtks-school" element={<NonDtksSchool />} />
+                <Route path="non-dtks-school/form" element={<SktmUnregister />} />
+                <Route path="dtks-courts" element={<DtksCourts />} />
+                <Route path="dtks-courts/form" element={<SktmReligious />} />
+                <Route path="non-dtks-courts" element={<NonDtksCourts />} />
+                <Route path="non-dtks-courts/form" element={<SktmUnregisterReligious />} />
               </Route>
 
               <Route path="bbp">
