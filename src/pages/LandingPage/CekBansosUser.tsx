@@ -67,7 +67,7 @@ export default function CekBansosUser() {
           onSubmit={handleSubmit}
         >
           <input
-            type="text"
+            type="number"
             value={NIK}
             onChange={(e) => setNIK(e.target.value)}
             placeholder="Masukkan NIK Anda"

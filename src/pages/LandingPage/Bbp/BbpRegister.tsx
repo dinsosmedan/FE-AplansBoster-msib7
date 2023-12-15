@@ -44,11 +44,11 @@ export default function BbpRegister() {
   if (isLoading) return <Loading />
 
   return (
-    <ContainerUser title={`Form Pengajuan Bantuan Biaya Pendidikan ${details}`}>
-      <p className="text-[30px] font-semibold mt-11">Informasi Pribadi</p>
+    <ContainerUser title={'Form Pengajuan Bantuan Biaya Pendidikan Gelombang I 2023 '}>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6 pt-16">
-          <div className="grid grid-cols-3 gap-5">
+          <p className="text-[20px] font-semibold mt-5">Informasi Pribadi</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             <div className="flex">
               <div className="w-full">
                 <FormField
@@ -95,7 +95,7 @@ export default function BbpRegister() {
               )}
             />
           </div>
-          <div className="grid grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             <FormField
               name="datepicker"
               control={forms.control}
@@ -143,7 +143,7 @@ export default function BbpRegister() {
               )}
             />
           </div>
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <FormField
               name="nik"
               control={forms.control}
@@ -191,7 +191,7 @@ export default function BbpRegister() {
               )}
             />
           </div>
-          <div className="grid grid-cols-1 pb-10">
+          <div className="grid grid-cols-1 gap-5">
             <FormField
               name="nik"
               control={forms.control}
@@ -205,8 +205,8 @@ export default function BbpRegister() {
               )}
             />
           </div>
-          <p className="font-semibold text-[30px]">Akademis</p>
-          <div className="grid grid-cols-2 gap-5">
+          <p className="font-semibold text-[20px] mt-5">Akademis</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <FormField
               name="nik"
               control={forms.control}
@@ -254,7 +254,7 @@ export default function BbpRegister() {
               )}
             />
           </div>
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <FormField
               name="nik"
               control={forms.control}
@@ -303,8 +303,8 @@ export default function BbpRegister() {
               )}
             />
           </div>
-          <p className="font-semibold text-[30px]">Rekening</p>
-          <div className="grid grid-cols-2 gap-5">
+          <p className="font-semibold text-[20px] mt-5">Rekening</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <FormField
               name="nik"
               control={forms.control}
@@ -353,16 +353,16 @@ export default function BbpRegister() {
               </FormItem>
             )}
           />
-          <p className="text-[18px] text-primary font-medium">
+          <p className="text-[12px] text-primary font-medium">
             *Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB
           </p>
-          <div className="grid grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2  gap-12 mt-5">
             <FormField
               name="identityCard"
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Scan Surat Permohonan</FormLabel>
+                  <FormLabel className="text-md">Scan Surat Permohonan</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -383,7 +383,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Pass Foto</FormLabel>
+                  <FormLabel className="text-md">Pass Foto</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -404,7 +404,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Scan Kartu Keluarga</FormLabel>
+                  <FormLabel className="text-md">Scan Kartu Keluarga</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -425,7 +425,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">KTP</FormLabel>
+                  <FormLabel className="text-md">KTP</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -446,7 +446,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">KTM</FormLabel>
+                  <FormLabel className="text-md">KTM</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -467,7 +467,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Surat Aktif Kuliah</FormLabel>
+                  <FormLabel className="text-md">Surat Aktif Kuliah</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -488,7 +488,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Scan Printout DTKS/PRELIST</FormLabel>
+                  <FormLabel className="text-md">Scan Printout DTKS/PRELIST</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -509,7 +509,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Surat Pernyataan Tidak Mendapatkan Mahasiswa</FormLabel>
+                  <FormLabel className="text-md">Surat Pernyataan Tidak Mendapatkan Mahasiswa</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -530,7 +530,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Surat Pernyataan Bukan ASN</FormLabel>
+                  <FormLabel className="text-md">Surat Pernyataan Bukan ASN</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -551,7 +551,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Transkrip Nilai (Legalisir)</FormLabel>
+                  <FormLabel className="text-md">Transkrip Nilai (Legalisir)</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -572,7 +572,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Scan Buku Tabungan</FormLabel>
+                  <FormLabel className="text-md">Scan Buku Tabungan</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -593,7 +593,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Bukti Pembayaran UKT Terakhir</FormLabel>
+                  <FormLabel className="text-md">Bukti Pembayaran UKT Terakhir</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -612,10 +612,10 @@ export default function BbpRegister() {
           </div>
           <div className="flex justify-end gap-7 items-center pt-10">
             <Button variant="outline" className="border-primary text-primary w-[165px] h-[60px]">
-              <p className="text-xl font-semibold">Kembali</p>
+              <p className="text-lg font-semibold">Kembali</p>
             </Button>
             <Button className="w-[275px] h-[60px]">
-              <p className="text-xl font-semibold">Kirim Pengajuan</p>
+              <p className="text-lg font-semibold">Kirim Pengajuan</p>
               <HiPaperAirplane className="w-6 h-6 ml-2" />
             </Button>
           </div>
