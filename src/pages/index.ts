@@ -62,6 +62,10 @@ import ResetPassword from './ResetPassword'
 import ManajemenAdmin from './ManajemenAdmin'
 import SuccessfulRegister from './../components/layouts/landingPage/SuccessfulRegister'
 import VerifiedAccount from './../components/layouts/landingPage/VerifiedAccount'
+import DtksSchool from './LandingPage/Sktm/DtksSchool'
+import NonDtksSchool from './LandingPage/Sktm/NonDtksSchool'
+import DtksCourts from './LandingPage/Sktm/DtksCourts'
+import NonDtksCourts from './LandingPage/Sktm/NonDtksCourts'
 
 export {
   Home,
@@ -127,5 +131,9 @@ export {
   ResetPassword,
   ManajemenAdmin,
   SuccessfulRegister,
-  VerifiedAccount
+  VerifiedAccount,
+  DtksSchool,
+  NonDtksSchool,
+  DtksCourts,
+  NonDtksCourts
 }
