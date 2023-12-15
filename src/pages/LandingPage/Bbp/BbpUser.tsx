@@ -54,7 +54,7 @@ export default function BbpUser() {
                 className={cn('w-[400px]', (item.id === id || !id) && 'border-2 border-primary bg-[#F9F4F5] SH')}
                 title={item.batch}
                 desc={item.eventDescription}
-                btnText={'Pendaftaran Pengajuan'}
+                btnText="Pendaftaran Pengajuan"
                 icon={HiAcademicCap}
                 href={`/user/bbp/${item.id}`}
               />
@@ -111,7 +111,7 @@ export default function BbpUser() {
                 </div>
               </section>
             </div>
-            <Link to={'/user/bbp/register-bbp'}>
+            <Link to={`/user/bbp/form/${id ?? data?.[0].id}`}>
               <Button className="w-full py-8">
                 <p className="text-xl">Daftar Sekarang</p>
               </Button>
@@ -123,7 +123,7 @@ export default function BbpUser() {
             <div className="py-14 px-7">
               <HiAcademicCap className="w-[70px] h-[70px] text-primary" />
               <p className="text-xl  font-semibold py-[26px]">Bantuan Biaya Pendidikan Gelombang I 2023 </p>
-              <Button className="disabled:bg-black w-full h-[60px]  " disabled>
+              <Button className="disabled:bg-black w-full h-[60px]" disabled>
                 <p className="text-xl text-white">Diproses</p>
               </Button>
             </div>

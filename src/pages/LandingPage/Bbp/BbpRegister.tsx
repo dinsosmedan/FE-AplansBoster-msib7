@@ -9,6 +9,10 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from '@/components/ui/select'
 import DropZone, { type FileWithPreview } from '../../../components/atoms/DropZone'
 import DatePicker from './../../../components/atoms/DatePicker'
+import { useGetPublicEventTuition } from '@/store/server'
+import { Loading } from '@/components'
+import * as React from 'react'
+import { useParams } from 'react-router-dom'
 
 interface FormValues {
   nik: string
@@ -17,15 +21,30 @@ interface FormValues {
 }
 
 export default function BbpRegister() {
+  const { id } = useParams<{ id: string }>()
+  const { data, isLoading, isSuccess } = useGetPublicEventTuition()
+  const [details, setDetails] = React.useState('')
+
+  React.useEffect(() => {
+    if (id) {
+      setDetails(data?.find((item) => item.id === id)?.batch as string)
+    } else {
+      setDetails(data?.[0]?.batch as string)
+    }
+  }, [isSuccess, id])
+
   const forms = useForm<FormValues>({
     mode: 'onTouched'
   })
+
   const onSubmit = async (values: FormValues) => {
     console.log(values)
   }
 
+  if (isLoading) return <Loading />
+
   return (
-    <ContainerUser title={'Form Pengajuan Bantuan Biaya Pendidikan Gelombang I 2023 '}>
+    <ContainerUser title={`Form Pengajuan Bantuan Biaya Pendidikan ${details}`}>
       <p className="text-[30px] font-semibold mt-11">Informasi Pribadi</p>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6 pt-16">
@@ -78,7 +97,7 @@ export default function BbpRegister() {
           </div>
           <div className="grid grid-cols-3 gap-5">
             <FormField
-              name="datpicker"
+              name="datepicker"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
