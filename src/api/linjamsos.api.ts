@@ -269,6 +269,14 @@ export const storeIndigencyCertificateFn = async (fields: indigencyCertificateFi
   await api.post('/service/indigency-certificate', fields)
 }
 
+export const getCountIndigencyCertificateFn = async () => {
+  const response = await api.get('/dashboard/linjamsos/chart/indigency-certificates')
+  return response.data?.data
+}
+export const getCountTuitionAssistanceFn = async () => {
+  const response = await api.get('/dashboard/linjamsos/chart/tuition-assistance')
+  return response.data?.data
+}
 interface updateTuitionsAssistanceParams {
   id: string
   fields: tuitionAssistanceFields

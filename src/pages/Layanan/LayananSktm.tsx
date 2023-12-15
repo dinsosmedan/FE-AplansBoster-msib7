@@ -12,6 +12,12 @@ import FilterLayanan from './../../components/atoms/FilterLayanan'
 import { useGetIndigencyCertificate } from '@/store/server/useService'
 import useGetParams from '@/hooks/useGetParams'
 
+const dataLayanan = [
+  { 'text': 'Data Pengajuan', 'tab': 'pending' },
+  { 'text': 'Data Direvisi/Diproses', 'tab': 'processed' },
+  { 'text': 'Data Diterima', 'tab': 'approved' },
+  { 'text': 'Data Ditolak', 'tab': 'rejected' }
+]
 export default function LayananSktm() {
   interface FormValues {
     nik: string
@@ -86,7 +92,7 @@ export default function LayananSktm() {
           </div>
         </form>
       </Form>
-      <FilterLayanan />
+      <FilterLayanan jenis={'layanan-sktm'} data={dataLayanan} />
       <section className="border rounded-xl mt-5 overflow-hidden">
         <Table>
           <TableHeader className="bg-[#FFFFFF]">
