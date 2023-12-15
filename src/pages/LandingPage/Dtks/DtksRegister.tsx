@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { HiDocumentArrowUp, HiMagnifyingGlass, HiPaperAirplane } from 'react-icons/hi2'
+import { HiDocumentArrowUp, HiPaperAirplane } from 'react-icons/hi2'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from '@/components/ui/select'
 import DropZone, { type FileWithPreview } from '../../../components/atoms/DropZone'
@@ -14,6 +14,7 @@ interface FormValues {
   nik: string
   prodi: string
   identityCard: FileWithPreview[]
+  date: Date
 }
 
 export default function DtksRegister() {
@@ -79,12 +80,12 @@ export default function DtksRegister() {
               )}
             />
             <FormField
-              name="datpicker"
+              name="date"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tanggal Lahir</FormLabel>
-                  <DatePicker selected={field.value as Date} onChange={field.onChange} placeholder="dd/mm/yyy" />
+                  <DatePicker selected={field.value} onChange={field.onChange} placeholder="dd/mm/yyy" />
                   <FormMessage />
                 </FormItem>
               )}
@@ -538,12 +539,12 @@ export default function DtksRegister() {
               )}
             />
             <FormField
-              name="datpicker"
+              name="date"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tanggal Lahir</FormLabel>
-                  <DatePicker selected={field.value as Date} onChange={field.onChange} placeholder="dd/mm/yyy" />
+                  <DatePicker selected={field.value} onChange={field.onChange} placeholder="dd/mm/yyy" />
                   <FormMessage />
                 </FormItem>
               )}

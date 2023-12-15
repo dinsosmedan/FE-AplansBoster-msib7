@@ -268,3 +268,20 @@ export const exportTuitionAssistanceFn = async (
 export const storeIndigencyCertificateFn = async (fields: indigencyCertificateFields) => {
   await api.post('/service/indigency-certificate', fields)
 }
+
+export const getCountIndigencyCertificateFn = async () => {
+  const response = await api.get('/dashboard/linjamsos/chart/indigency-certificates')
+  return response.data?.data
+}
+export const getCountTuitionAssistanceFn = async () => {
+  const response = await api.get('/dashboard/linjamsos/chart/tuition-assistance')
+  return response.data?.data
+}
+interface updateTuitionsAssistanceParams {
+  id: string
+  fields: tuitionAssistanceFields
+}
+
+export const updateTuitionsAssistanceFn = async ({ id, fields }: updateTuitionsAssistanceParams) => {
+  await api.put(`/service/tuition-assistance-application/${id}`, fields)
+}

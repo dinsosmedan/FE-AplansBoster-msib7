@@ -19,10 +19,12 @@ export default function LandingPage() {
           <div className="max-w-[450px]">
             <div className="flex flex-col items-start text-white">
               <h1 className="font-volkhov max-w-[500px] font-bold text-[64px]">
-                Pelayanan Online <br /><span className="text-[#FFB60A]">Aplans Boster</span>
+                Pelayanan Online <br />
+                <span className="text-[#FFB60A]">Aplans Boster</span>
               </h1>
               <p className="text-lg mt-8 mb-16 leading-relaxed">
-                Selamat datang di di Aplikasi Pelayanan Sosial Berbasis Online Terintegrasi. <br /> Dinas Sosial Kota Medan
+                Selamat datang di di Aplikasi Pelayanan Sosial Berbasis Online Terintegrasi. <br /> Dinas Sosial Kota
+                Medan
               </p>
               <Button
                 variant="ghost"

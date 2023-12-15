@@ -108,44 +108,40 @@ const DataDjp = () => {
 
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    const response = await exportServiceFundFn('csv',
-    {
-    idKecamatan: kecamatan,
-    idKelurahan: kelurahan,
-    name: q,
-    assistance: type
-  }
-    )
-    if (response.success) {
-    void alert({
-      title: 'Berhasil Export',
-      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
-      submitText: 'Oke',
-      variant: 'success'
+    const response = await exportServiceFundFn('csv', {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+      name: q,
+      assistance: type
     })
-    setIsLoadingExport(false)
-  }
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+      setIsLoadingExport(false)
+    }
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    const response = await exportServiceFundFn('xlsx',
-    {
-    idKecamatan: kecamatan,
-    idKelurahan: kelurahan,
-    name: q,
-    assistance: type
-  }
-    )
-    if (response.success) {
-    void alert({
-      title: 'Berhasil Export',
-      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
-      submitText: 'Oke',
-      variant: 'success'
+    const response = await exportServiceFundFn('xlsx', {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+      name: q,
+      assistance: type
     })
-    setIsLoadingExport(false)
-  }
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+      setIsLoadingExport(false)
+    }
   }
 
   if (isLoading && isLoadingServiceFund) return <Loading />

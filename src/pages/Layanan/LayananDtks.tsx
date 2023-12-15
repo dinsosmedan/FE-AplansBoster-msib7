@@ -8,12 +8,22 @@ import { useAlert } from '@/store/client'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { HiOutlineExclamationCircle, HiOutlineEye } from 'react-icons/hi2'
-import { Link } from 'react-router-dom'
 import FilterLayanan from './../../components/atoms/FilterLayanan'
 
+const dataLayanan = [
+  { 'text': 'Data Pengajuan', 'tab': 'pending' },
+  { 'text': 'Data Diterima', 'tab': 'approved' },
+]
 export default function LayananDtks() {
   interface FormValues {
     nik: string
+    jadwalAwal: string
+    tahunNotifikasi: string
+    tahunAnggaran: string
+    jumlahPeserta: string
+    batch: string
+    jadwalAkhir: string
+    jenisEvent: string
   }
   const { alert } = useAlert()
   const showAlert = () => {
@@ -28,7 +38,7 @@ export default function LayananDtks() {
   }
   const [isShow, setIsShow] = React.useState(false)
   const [currentPage, setCurrentPage] = React.useState(1)
-  const [isActive, setIsActive] = React.useState('Data Pengajuan')
+  // const [isActive, setIsActive] = React.useState('Data Pengajuan')
   const forms = useForm<FormValues>({
     mode: 'onTouched'
   })
@@ -55,7 +65,8 @@ export default function LayananDtks() {
           </div>
         </form>
       </Form>
-      <FilterLayanan />
+      <FilterLayanan jenis={'layanan-dtks'} data={dataLayanan} />
+
       <section className="border rounded-xl mt-5 overflow-hidden">
         <Table>
           <TableHeader className="bg-[#FFFFFF]">
@@ -177,7 +188,7 @@ export default function LayananDtks() {
                     </FormItem>
                   )}
                 />
-                <FormField
+                {/* <FormField
                   name="batch"
                   control={forms.control}
                   render={({ field }) => (
@@ -188,7 +199,7 @@ export default function LayananDtks() {
                       </FormControl>
                     </FormItem>
                   )}
-                />
+                /> */}
                 <FormField
                   name="jadwalAkhir"
                   control={forms.control}

@@ -1,7 +1,7 @@
 import { Logo } from '@/assets'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { useAlert, useUserPublicToken } from '@/store/client'
+import { useAlert, useAuth } from '@/store/client'
 import { useLogoutPublic } from '@/store/server'
 import { DropdownMenu, DropdownMenuItem } from '@radix-ui/react-dropdown-menu'
 import {
@@ -15,8 +15,12 @@ import { Link, useNavigate } from 'react-router-dom'
 
 export default function HeaderUser() {
   const { alert } = useAlert()
-  const token = useUserPublicToken((state) => state.token)
-  const user = useUserPublicToken((state) => state.user)
+  // const token = useUserPublicToken((state) => state.token)
+  // const user = useUserPublicToken((state) => state.user)
+  const auth = useAuth((state) => ({
+    token: state.token,
+    user: state.user
+  }))
 
   const { mutate: logout } = useLogoutPublic()
 
@@ -42,7 +46,7 @@ export default function HeaderUser() {
             <Link to="/" className="hover:text-primary">
               Beranda
             </Link>
-            {token && (
+            {auth.token && (
               <Link to="/user/submission-history" className="hover:text-primary">
                 Riwayat Pengajuan
               </Link>
@@ -50,7 +54,7 @@ export default function HeaderUser() {
             <Link to="/user/cek-bansos" className="hover:text-primary">
               Cek Bansos
             </Link>
-            {token && (
+            {auth.token && (
               <section className="flex items-center gap-3">
                 <DropdownMenu>
                   <DropdownMenuTrigger>
@@ -58,7 +62,7 @@ export default function HeaderUser() {
                       <img
                         alt="profile"
                         className="w-10 h-10 rounded-full object-cover bg-[#ECF0F4]"
-                        src={`https://ui-avatars.com/api/?name=${user?.name}`}
+                        src={`https://ui-avatars.com/api/?name=${auth.user?.name}`}
                       />
                       <div className="absolute -bottom-1 -right-1 border-white border bg-[#ECF0F4] rounded-full w-5 h-5 flex">
                         <HiChevronDown className="m-auto text-sm" />
@@ -103,7 +107,7 @@ export default function HeaderUser() {
               </section>
             )}
           </div>
-          {!token && (
+          {!auth.token && (
             <>
               <div className="h-10 w-1 rounded-full bg-[#F5F5F5]" />
               <div className="flex items-center gap-8">

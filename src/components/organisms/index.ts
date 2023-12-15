@@ -13,6 +13,8 @@ import FormAuthContainer from './landingPage/FormAuthContainer'
 import NoData from './landingPage/NoData'
 import CreateDataMaster from './dataMaster/CreateDataMaster'
 import CreateEvent from './event/CreateEvent'
+import ModalEditDataBBP from './service/bbp/ModalEditData'
+import ModalEditPengajuanBBP from './service/bbp/ModalEditPengajuan'
 
 export {
   Header,
@@ -29,5 +31,7 @@ export {
   FormAuthContainer,
   NoData,
   CreateDataMaster,
-  CreateEvent
+  CreateEvent,
+  ModalEditDataBBP,
+  ModalEditPengajuanBBP
 }

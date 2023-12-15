@@ -363,10 +363,7 @@ const DataBbp = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">{item.application.phoneNumber ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.budgetYear ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Action
-                      onDetail={() => showDetail(item.id)}
-                      onEdit={() => navigate(`/data-penerima/linjamsos/bbp/create/${item.id}`)}
-                    />
+                    <Action onDetail={() => showDetail(item.id)} />
                   </TableCell>
                 </TableRow>
               ))

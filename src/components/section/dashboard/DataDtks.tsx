@@ -8,7 +8,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 
-
 const SectionDataDtks = () => {
   return (
     <>
@@ -49,49 +48,47 @@ const TabelDtks = () => {
   return (
     <>
       <LongCard props={['Prevalensi DTKS Perkecamatan', 'Prevalensi DTKS Perkecamatan']}>
-        {
-          isLoading ? (
-            <div className="py-8">
-              <div className="flex flex-col gap-3">
-                <Skeleton className="w-[300px] h-[60px]" />
-                <Skeleton className="w-[300px] h-[60px]" />
-                <Skeleton className="w-[300px] h-[60px]" />
-                <Skeleton className="w-[300px] h-[60px]" />
-              </div>
+        {isLoading ? (
+          <div className="py-8">
+            <div className="flex flex-col gap-3">
+              <Skeleton className="w-[300px] h-[60px]" />
+              <Skeleton className="w-[300px] h-[60px]" />
+              <Skeleton className="w-[300px] h-[60px]" />
+              <Skeleton className="w-[300px] h-[60px]" />
             </div>
-          ) :
-            (<div className=" w-[340px] my-5">
-              <div className="my-2">
-                <Form {...forms}>
-                  <form className="flex flex-col">
-                    <FormField
-                      name="filter"
-                      control={forms.control}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="font-semibold dark:text-white">Cari Berdasarkan</FormLabel>
-                          <Select defaultValue="Menurun" onValueChange={onChange} value={field.value}>
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Menurun" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="Menurun">Menurun</SelectItem>
-                              <SelectItem value="Menaik">Menaik</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </form>
-                </Form>
-              </div>
-              <LongCard.Tabel data={data} />
-            </div>)
-        }
-
+          </div>
+        ) : (
+          <div className=" w-[340px] my-5">
+            <div className="my-2">
+              <Form {...forms}>
+                <form className="flex flex-col">
+                  <FormField
+                    name="filter"
+                    control={forms.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="font-semibold dark:text-white">Cari Berdasarkan</FormLabel>
+                        <Select defaultValue="Menurun" onValueChange={onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Menurun" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="Menurun">Menurun</SelectItem>
+                            <SelectItem value="Menaik">Menaik</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </form>
+              </Form>
+            </div>
+            <LongCard.Tabel data={data} />
+          </div>
+        )}
       </LongCard>
     </>
   )
@@ -108,22 +105,19 @@ const ChartJenisKelamin = () => {
   return (
     <>
       <LongCard props={['Jenis Kelamin', 'Persentasi Data DTKS Berdasarkan Jenis Kelamin']}>
-        {
-          isLoading ? (
-            <div className="py-8 ">
-              <Skeleton className="w-[300px] h-[300px] rounded-full" />
-            </div>
-          ) : (
-            <LongCard.Chart
-              data={Object.values(data)}
-              isPercent={true}
-              label={['Perempuan', 'Laki-laki']}
-              backgroundColor={['#F94144', '#F3722C']}
-            />
-          )
-        }
+        {isLoading ? (
+          <div className="py-8 ">
+            <Skeleton className="w-[300px] h-[300px] rounded-full" />
+          </div>
+        ) : (
+          <LongCard.Chart
+            data={Object.values(data)}
+            isPercent={true}
+            label={['Perempuan', 'Laki-laki']}
+            backgroundColor={['#F94144', '#F3722C']}
+          />
+        )}
       </LongCard>
-
     </>
   )
 }

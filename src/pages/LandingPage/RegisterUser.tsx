@@ -12,9 +12,12 @@ import { Link } from 'react-router-dom'
 import * as React from 'react'
 import { Swafoto } from '@/assets'
 import { useRegisterPublic } from '@/store/server'
+import { useAlert } from '@/store/client'
 
 export default function RegisterUser() {
   useTitle('Buat Akun Baru')
+  const { alert } = useAlert()
+
   const [isShow, setIsShow] = React.useState(false)
   const { mutate: register, isLoading } = useRegisterPublic()
 
@@ -24,15 +27,24 @@ export default function RegisterUser() {
   })
 
   const onSubmit = async (data: RegisterUserFields) => {
+    console.log(data)
+
     register(data, {
-      onSuccess: () => forms.reset()
+      onSuccess: () => {
+        void alert({
+          title: 'Akun Berhasil Dibuat',
+          description: 'Cek Email secara berkala untuk verifikasi akun anda!',
+          submitText: 'Oke',
+          variant: 'success'
+        })
+      }
     })
   }
 
   return (
     <FormAuthContainer title="Buat Akun Baru">
       <Form {...forms}>
-        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-[30px] mt-[42px]">
+        <div className="flex flex-col gap-[30px] mt-[42px]">
           <FormField
             name="name"
             control={forms.control}
@@ -109,28 +121,6 @@ export default function RegisterUser() {
               </FormItem>
             )}
           />
-
-          <FormField
-            name="identityCard"
-            control={forms.control}
-            render={({ field }) => (
-              <FormItem className="">
-                <FormLabel>Foto KTP</FormLabel>
-                <FormControl className="w-[522px]">
-                  <DropZone
-                    setValue={field.onChange}
-                    fileValue={field.value as unknown as FileWithPreview[]}
-                    helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
-                    accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
-                    maxFiles={1}
-                    id="identityCard"
-                    Icon={HiDocumentArrowUp}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             name="selfie"
             control={forms.control}
@@ -158,6 +148,28 @@ export default function RegisterUser() {
             )}
           />
           <FormField
+            name="identityCard"
+            control={forms.control}
+            render={({ field }) => (
+              <FormItem className="">
+                <FormLabel>Foto KTP</FormLabel>
+                <FormControl className="w-[522px]">
+                  <DropZone
+                    setValue={field.onChange}
+                    fileValue={field.value as unknown as FileWithPreview[]}
+                    helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                    accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
+                    maxFiles={1}
+                    id="identityCard"
+                    Icon={HiDocumentArrowUp}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
             name="password"
             control={forms.control}
             render={({ field }) => (
@@ -175,13 +187,13 @@ export default function RegisterUser() {
               </FormItem>
             )}
           />
-          <Button className="rounded-lg w-full py-6 text-lg" type="submit" loading={isLoading}>
+          <Button className="rounded-lg w-full py-6 text-lg" loading={isLoading} onClick={forms.handleSubmit(onSubmit)}>
             Buat Akun
           </Button>
           <Link to="/user/login" className="text-primary">
             <p className="text-center">Sudah Mempunyai Akun?</p>
           </Link>
-        </form>
+        </div>
       </Form>
       <Modal isShow={isShow}>
         <Modal.Header setIsShow={setIsShow}>

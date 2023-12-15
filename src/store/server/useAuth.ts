@@ -14,17 +14,19 @@ import {
 import { type AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
-import { useToken, useUserInfo, useUserPublicToken } from '../client'
+import { useAuth } from '../client'
 import { toast } from '@/components/ui/use-toast'
-import { type IUser, type IErrorResponse } from '@/lib/types/user.type'
+import { type IErrorResponse } from '@/lib/types/user.type'
 
 export const useLogin = () => {
   const navigate = useNavigate()
-  const storeToken = useToken((state) => state.storeToken)
+  // const storeToken = useToken((state) => state.storeToken)
 
   return useMutation(loginFn, {
     onSuccess: (data) => {
-      storeToken(data.data.accessToken)
+      // storeToken(data.data.accessToken)
+      useAuth.getState().storeToken(data.data.accessToken)
+      useAuth.getState().storeUser(data.data.user)
       navigate('/dashboard')
     },
     onError: (error: AxiosError) => {
@@ -75,7 +77,8 @@ export const useLogout = () => {
   const navigate = useNavigate()
   return useMutation(logoutFn, {
     onSuccess: () => {
-      useToken.getState().removeToken()
+      // useToken.getState().removeToken()
+      useAuth.getState().removeToken()
       toast({
         title: 'Berhasil keluar dengan sukses',
         description: 'Anda telah berhasil keluar.'
@@ -88,7 +91,8 @@ export const useLogout = () => {
 export const useGetMe = () => {
   return useQuery('user', async () => await getMeFn(), {
     onSuccess: (data) => {
-      useUserInfo.getState().storeUserInfo(data)
+      // useUserInfo.getState().storeUserInfo(data)
+      useAuth.getState().storeUser(data.data)
     }
   })
 }
@@ -104,8 +108,10 @@ export const useLoginPublic = () => {
   return useMutation(loginUserFn, {
     onSuccess: async (data) => {
       await queryClient.invalidateQueries('user-public')
-      useUserPublicToken.getState().storeToken(data.data.accessToken)
-      useUserPublicToken.getState().storeUser(data.data.user)
+      useAuth.getState().storeToken(data.data.accessToken)
+      useAuth.getState().storeUser(data.data.user)
+      // useUserPublicToken.getState().storeToken(data.data.accessToken)
+      // useUserPublicToken.getState().storeUser(data.data.user)
       toast({
         title: 'Akun berhasil masuk',
         description: 'Akun Anda telah berhasil masuk.'
@@ -133,8 +139,9 @@ export const useLogoutPublic = () => {
   return useMutation(logoutUserFn, {
     onSuccess: async () => {
       await queryClient.invalidateQueries('user-public')
-      useUserPublicToken.getState().removeToken()
-      useUserPublicToken.getState().storeUser({} as IUser['data'])
+      // useUserPublicToken.getState().removeToken()
+      // useUserPublicToken.getState().storeUser({} as IUser['data'])
+      useAuth.getState().removeToken()
       toast({
         title: 'Berhasil keluar',
         description: 'Anda telah berhasil keluar.'
@@ -153,7 +160,7 @@ export const useRegisterPublic = () => {
         title: 'Akun berhasil didaftarkan',
         description: 'Anda telah berhasil melakukan pendaftaran.'
       })
-      navigate('/')
+      navigate('/user/successful')
     },
     onError: (error: AxiosError) => {
       const errorResponse = error.response?.data as IErrorResponse

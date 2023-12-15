@@ -22,7 +22,7 @@ const Modal = ({ isShow, children, className }: ModalProps) => {
     >
       <article
         className={cn(
-          'w-full overflow-hidden rounded-lg p-8 bg-white shadow-xl transition-all duration-300 md:max-w-xl flex flex-col gap-6',
+          'w-full overflow-hidden rounded-lg px-8 pb-8 bg-white shadow-xl transition-all duration-300 md:max-w-xl flex flex-col gap-6',
           isShow ? 'opacity-100 scale-100' : 'opacity-0 scale-95',
           className
         )}
@@ -45,7 +45,7 @@ const Header = ({ children, setIsShow, className }: ModalHeaderProps) => {
   }
 
   return (
-    <div className="flex items-start justify-between">
+    <div className="flex items-start justify-between pt-8 pb-4 sticky top-0 bg-white border-b border-zinc-200 z-10">
       <div className={className}>{children}</div>
       <Button variant="outline" size="icon" onClick={handleClose}>
         <HiXMark className="text-lg text-font" />
@@ -56,10 +56,11 @@ const Header = ({ children, setIsShow, className }: ModalHeaderProps) => {
 
 interface ModalFooterProps {
   children: React.ReactNode
+  className?: string
 }
 
-const Footer = ({ children }: ModalFooterProps) => {
-  return <div className="flex gap-3 justify-end">{children}</div>
+const Footer = ({ children, className }: ModalFooterProps) => {
+  return <div className={cn('flex gap-3 justify-end', className)}>{children}</div>
 }
 
 Modal.Header = Header

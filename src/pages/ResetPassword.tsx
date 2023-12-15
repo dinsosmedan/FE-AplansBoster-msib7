@@ -27,16 +27,19 @@ export default function ResetPassword() {
   const { token } = useGetParams(['token'])
   const onSubmit = async (values: ResetPasswordUserFields) => {
     const { password } = values
-    ResetPassword({ password, token }, {
-      onSuccess: () => {
-        void alert({
-          title: 'Berhasil Reset Password',
-          description: 'Yay! Reset Password Berhasil, Silakan Login kembali!',
-          submitText: 'Oke',
-          variant: 'success'
-        })
+    ResetPassword(
+      { password, token },
+      {
+        onSuccess: () => {
+          void alert({
+            title: 'Berhasil Reset Password',
+            description: 'Yay! Reset Password Berhasil, Silakan Login kembali!',
+            submitText: 'Oke',
+            variant: 'success'
+          })
+        }
       }
-    })
+    )
   }
 
   return (
@@ -86,7 +89,9 @@ export default function ResetPassword() {
                   </FormItem>
                 )}
               />
-              <Button className="py-6 text-[17px] font-normal" loading={isLoading}>Konfirmasi</Button>
+              <Button className="py-6 text-[17px] font-normal" loading={isLoading}>
+                Konfirmasi
+              </Button>
             </form>
           </Form>
         </div>

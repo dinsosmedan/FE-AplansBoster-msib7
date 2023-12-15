@@ -20,5 +20,8 @@ import Substract from './images/Subtract.svg'
 import NotFoundIllustration from './images/not-found.svg'
 import NotFoundNumber from './images/not-found-number.svg'
 import BgProfile from './images/bg-profile.svg'
+import BgEmpty from './images/bg-empty.svg'
+import Bgsuccessful from './images/bg-successful.svg'
+import BgVerified from './images/bg-verified.svg'
 
-export { Logo, BgLogin, LogoMini, BgDukcapil, BgBansos, BgDataRehabsos, BgDataDayasos, BgDataLinjmasos, BgLayananRehabsos, BgLayananDayasos, BgLayananLinjmasos, ImageCover, BgCard, DinsosLogo, MedanBerkahLogo, NotFoundBansos, Swafoto, CekBansosIlustration, Substract, NotFoundIllustration, NotFoundNumber, BgProfile }
+export { Logo, BgLogin, LogoMini, BgDukcapil, BgBansos, BgDataRehabsos, BgDataDayasos, BgDataLinjmasos, BgLayananRehabsos, BgLayananDayasos, BgLayananLinjmasos, ImageCover, BgCard, DinsosLogo, MedanBerkahLogo, NotFoundBansos, Swafoto, CekBansosIlustration, Substract, NotFoundIllustration, NotFoundNumber, BgProfile, BgEmpty, Bgsuccessful, BgVerified }

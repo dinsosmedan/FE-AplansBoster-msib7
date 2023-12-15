@@ -1,4 +1,3 @@
-/* eslint-disable multiline-ternary */
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { Check, X, ChevronsUpDown } from 'lucide-react'

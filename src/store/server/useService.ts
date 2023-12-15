@@ -1,4 +1,9 @@
-import { getIndigencyCertificateFn, getTuitionAssistanceByEventId, type getTuitionAssistanceParams } from '@/api/service.api'
+import {
+  getIndigencyCertificateFn,
+  getTuitionAssistanceByEventId,
+  showTuitionAssistanceEventFn,
+  type getTuitionAssistanceParams
+} from '@/api/service.api'
 import { useQuery } from 'react-query'
 
 export const useGetTuitionAssistanceByEventId = ({
@@ -16,7 +21,11 @@ export const useGetTuitionAssistanceByEventId = ({
   )
 }
 
-
 export const useGetIndigencyCertificate = (status: any, search: any) => {
-  return useQuery(['indigency-centificate-2'], async () => await getIndigencyCertificateFn(status, search), { enabled: true })
+  return useQuery(['indigency-centificate-2'], async () => await getIndigencyCertificateFn(status, search), {
+    enabled: true
+  })
+}
+export const useGetTuitionAssistanceEventById = (id: string) => {
+  return useQuery(['tuition-assistance', id], async () => await showTuitionAssistanceEventFn(id), { enabled: !!id })
 }

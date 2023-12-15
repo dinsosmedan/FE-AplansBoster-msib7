@@ -47,7 +47,9 @@ import {
   ProtectedRoute,
   UserLayout,
   AuthUserLayout,
-  UserProtectedAuth
+  UserProtectedAuth,
+  ProtectedFromDashboard,
+  ProtectedFromUser
 } from './components'
 
 import LayananLinjamsos from './pages/Layanan/LayananLinjamsos'
@@ -84,10 +86,17 @@ import useScrollToTop from './hooks/useScrolltoTop'
 import ChangePassword from './pages/LandingPage/Profile/ChangePassword'
 import ChangeProfile from './pages/LandingPage/Profile/ChangeProfile'
 import ProfileLayout from './components/layouts/landingPage/ProfileLayout'
+import SuccessfulRegister from './components/layouts/landingPage/SuccessfulRegister'
+import VerifiedAccount from './components/layouts/landingPage/VerifiedAccount'
+import DtksSchool from './pages/LandingPage/Sktm/DtksSchool'
+import NonDtksSchool from './pages/LandingPage/Sktm/NonDtksSchool'
+import DtksCourts from './pages/LandingPage/Sktm/DtksCourts'
+import NonDtksCourts from './pages/LandingPage/Sktm/NonDtksCourts'
 
 export default function App() {
-  const { alertOptions, handleClose, handleSubmit } = useAlert()
   useScrollToTop()
+  const { alertOptions, handleClose, handleSubmit } = useAlert()
+
   return (
     <>
       <Alert
@@ -98,100 +107,100 @@ export default function App() {
       />
       <Toaster />
       <Routes>
-        <Route element={<ProtectedRoute />}>
-          <Route element={<DashboardLayout />}>
-            <Route path="/dashboard" element={<Home />} />
+        <Route element={<ProtectedFromUser />}>
+          <Route element={<ProtectedRoute />}>
+            <Route element={<DashboardLayout />}>
+              <Route path="/dashboard" element={<Home />} />
 
-            <Route path="/layanan">
-              <Route index element={<Layanan />} />
-              <Route path="bbp">
-                <Route index element={<BbpFilterBatch />} />
-                <Route path=":id" element={<LayananBbp />} />
-              </Route>
-              <Route path="linjamsos" element={<LayananLinjamsos />} />
-              <Route path="dayasos" element={<LayananDayasos />} />
-              <Route path="layanan-sktm" element={<LayananSktm />} />
-              <Route path="layanan-dtks" element={<LayananDtks />} />
-            </Route>
-
-            <Route path="/data-master">
-              <Route index element={<DataMaster />} />
-              <Route path="info-data-master/:id" element={<InfoDataMaster />} />
-            </Route>
-
-            <Route path="/data-penerima">
-              <Route index element={<DataPenerima />} />
-
-              <Route path="dayasos">
-                <Route index element={<DataPenerimaDayasos />} />
-                <Route path="djpm">
-                  <Route index element={<DataDjp />} />
-                  <Route path="create" element={<Djp />} />
-                  <Route path="create/:id" element={<Djp />} />
-                </Route>
-                <Route path="pokmas">
-                  <Route index element={<DataPokmas />} />
-                  <Route path="create" element={<Pokmas />} />
-                  <Route path="create/:id" element={<Pokmas />} />
-                </Route>
-                <Route path="kube">
-                  <Route index element={<DataKube />} />
-                  <Route path="create" element={<Kube />} />
-                  <Route path="create/:id" element={<Kube />} />
-                </Route>
-                <Route path="rumah-ibadah">
-                  <Route index element={<DataRumahIbadah />} />
-                  <Route path="create" element={<Ri />} />
-                  <Route path="create/:id" element={<Ri />} />
-                </Route>
-                <Route path="veteran">
-                  <Route index element={<DataVeteran />} />
-                  <Route path="create" element={<Veteran />} />
-                  <Route path="create/:id" element={<Veteran />} />
-                </Route>
-                <Route path="bho">
-                  <Route index element={<DataHibah />} />
-                  <Route path="create" element={<Hibah />} />
-                  <Route path="create/:id" element={<Hibah />} />
-                </Route>
-                <Route path="bltbbm" element={<DataBltbbm />} />
-                <Route path="bpnt" element={<DataBpnt />} />
-              </Route>
-
-              <Route path="linjamsos">
-                <Route index element={<DataPenerimaLinjamsos />} />
-                <Route path="pkr">
-                  <Route index element={<DataPkr />} />
-                  <Route path="create" element={<Pkr />} />
-                  <Route path="create/:id" element={<Pkr />} />
-                </Route>
-                <Route path="unregister">
-                  <Route index element={<DataUnregister />} />
-                  <Route path="create" element={<Unregister />} />
-                  <Route path="create/:id" element={<Unregister />} />
-                </Route>
+              <Route path="/layanan">
+                <Route index element={<Layanan />} />
                 <Route path="bbp">
-                  <Route index element={<DataBbp />} />
-                  <Route path="create" element={<Bbp />} />
-                  <Route path="create/:id" element={<Bbp />} />
+                  <Route index element={<BbpFilterBatch />} />
+                  <Route path=":id" element={<LayananBbp />} />
                 </Route>
-                <Route path="sktm">
-                  <Route index element={<DataSktm />} />
-                  <Route path="create" element={<Sktm />} />
-                  <Route path="create/:id" element={<Sktm />} />
-                </Route>
-                <Route path="pbi" element={<DataPbi />} />
-                <Route path="pkh" element={<DataPkh />} />
+                <Route path="linjamsos" element={<LayananLinjamsos />} />
+                <Route path="dayasos" element={<LayananDayasos />} />
+                <Route path="layanan-sktm" element={<LayananSktm />} />
+                <Route path="layanan-dtks" element={<LayananDtks />} />
               </Route>
-            </Route>
 
-            <Route path="/event" element={<Event />} />
-            <Route path="/data-dtks" element={<DataDtks />} />
-            <Route path="/cek-riwayat-bansos" element={<CekRiwayatBansos />} />
-            <Route path="/cek-data-dukcapil" element={<CekDataDukcapil />} />
-            <Route path="/manajemen-role" element={<ManajemenRole />} />
-            <Route path="/manajemen-user" element={<ManajemenUser />} />
-            <Route path="/manajemen-admin" element={<ManajemenAdmin />} />
+              <Route path="/data-master">
+                <Route index element={<DataMaster />} />
+                <Route path="info-data-master/:id" element={<InfoDataMaster />} />
+              </Route>
+
+              <Route path="/data-penerima">
+                <Route index element={<DataPenerima />} />
+
+                <Route path="dayasos">
+                  <Route index element={<DataPenerimaDayasos />} />
+                  <Route path="djpm">
+                    <Route index element={<DataDjp />} />
+                    <Route path="create" element={<Djp />} />
+                    <Route path="create/:id" element={<Djp />} />
+                  </Route>
+                  <Route path="pokmas">
+                    <Route index element={<DataPokmas />} />
+                    <Route path="create" element={<Pokmas />} />
+                    <Route path="create/:id" element={<Pokmas />} />
+                  </Route>
+                  <Route path="kube">
+                    <Route index element={<DataKube />} />
+                    <Route path="create" element={<Kube />} />
+                    <Route path="create/:id" element={<Kube />} />
+                  </Route>
+                  <Route path="rumah-ibadah">
+                    <Route index element={<DataRumahIbadah />} />
+                    <Route path="create" element={<Ri />} />
+                    <Route path="create/:id" element={<Ri />} />
+                  </Route>
+                  <Route path="veteran">
+                    <Route index element={<DataVeteran />} />
+                    <Route path="create" element={<Veteran />} />
+                    <Route path="create/:id" element={<Veteran />} />
+                  </Route>
+                  <Route path="bho">
+                    <Route index element={<DataHibah />} />
+                    <Route path="create" element={<Hibah />} />
+                    <Route path="create/:id" element={<Hibah />} />
+                  </Route>
+                  <Route path="bltbbm" element={<DataBltbbm />} />
+                  <Route path="bpnt" element={<DataBpnt />} />
+                </Route>
+
+                <Route path="linjamsos">
+                  <Route index element={<DataPenerimaLinjamsos />} />
+                  <Route path="pkr">
+                    <Route index element={<DataPkr />} />
+                    <Route path="create" element={<Pkr />} />
+                    <Route path="create/:id" element={<Pkr />} />
+                  </Route>
+                  <Route path="unregister">
+                    <Route index element={<DataUnregister />} />
+                    <Route path="create" element={<Unregister />} />
+                    <Route path="create/:id" element={<Unregister />} />
+                  </Route>
+                  <Route path="bbp">
+                    <Route index element={<DataBbp />} />
+                    <Route path="create" element={<Bbp />} />
+                  </Route>
+                  <Route path="sktm">
+                    <Route index element={<DataSktm />} />
+                    <Route path="create" element={<Sktm />} />
+                  </Route>
+                  <Route path="pbi" element={<DataPbi />} />
+                  <Route path="pkh" element={<DataPkh />} />
+                </Route>
+              </Route>
+
+              <Route path="/event" element={<Event />} />
+              <Route path="/data-dtks" element={<DataDtks />} />
+              <Route path="/cek-riwayat-bansos" element={<CekRiwayatBansos />} />
+              <Route path="/cek-data-dukcapil" element={<CekDataDukcapil />} />
+              <Route path="/manajemen-role" element={<ManajemenRole />} />
+              <Route path="/manajemen-user" element={<ManajemenUser />} />
+              <Route path="/manajemen-admin" element={<ManajemenAdmin />} />
+            </Route>
           </Route>
         </Route>
 
@@ -201,39 +210,52 @@ export default function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
         </Route>
 
-        <Route element={<UserLayout />}>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/user">
-            <Route element={<UserProtectedAuth />}>
-              <Route element={<AuthUserLayout />}>
-                <Route path="login" element={<LoginUser />} />
-                <Route path="register" element={<RegisterUser />} />
-                <Route path="forgot-password" element={<ForgotPasswordUser />} />
-                <Route path="reset-password" element={<UpdatePasswordUser />} />
-                <Route path="reset-password" element={<UpdatePasswordUser />} />
+        <Route element={<ProtectedFromDashboard />}>
+          <Route element={<UserLayout />}>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/user">
+              <Route element={<UserProtectedAuth />}>
+                <Route element={<AuthUserLayout />}>
+                  <Route path="login" element={<LoginUser />} />
+                  <Route path="successful" element={<SuccessfulRegister />} />
+                  <Route path="success" element={<VerifiedAccount />} />
+                  <Route path="register" element={<RegisterUser />} />
+                  <Route path="forgot-password" element={<ForgotPasswordUser />} />
+                  <Route path="reset-password" element={<UpdatePasswordUser />} />
+                  <Route path="reset-password" element={<UpdatePasswordUser />} />
+                </Route>
               </Route>
-            </Route>
-            <Route path="sktm">
-              <Route index element={<UserSktm />} />
-              <Route path="register" element={<SktmRegister />} />
-              <Route path="unregister" element={<SktmUnregister />} />
-              <Route path="register-religious" element={<SktmReligious />} />
-              <Route path="unregister-religious" element={<SktmUnregisterReligious />} />
-            </Route>
-            <Route path="bbp">
-              <Route index element={<BbpUser />} />
-              <Route path="register-bbp" element={<BbpRegister />} />
-            </Route>
-            <Route path="dtks">
-              <Route index element={<DtksUser />} />
-              <Route path="register-dtks" element={<DtksRegister />} />
-            </Route>
-            <Route path="submission-history" element={<SubmissionHistory />} />
-            <Route path="cek-bansos" element={<CekBansosUser />} />
-            <Route path="submission-history" element={<SubmissionHistory />} />
-            <Route path="profile" element={<ProfileLayout />}>
-              <Route index element={<ChangeProfile />} />
-              <Route path="change-password" element={<ChangePassword />} />
+
+              <Route path="sktm">
+                <Route index element={<UserSktm />} />
+                <Route path="dtks-school" element={<DtksSchool />} />
+                <Route path="dtks-school/form" element={<SktmRegister />} />
+                <Route path="non-dtks-school" element={<NonDtksSchool />} />
+                <Route path="non-dtks-school/form" element={<SktmUnregister />} />
+                <Route path="dtks-courts" element={<DtksCourts />} />
+                <Route path="dtks-courts/form" element={<SktmReligious />} />
+                <Route path="non-dtks-courts" element={<NonDtksCourts />} />
+                <Route path="non-dtks-courts/form" element={<SktmUnregisterReligious />} />
+              </Route>
+
+              <Route path="bbp">
+                <Route index element={<BbpUser />} />
+                <Route path="register-bbp" element={<BbpRegister />} />
+              </Route>
+
+              <Route path="dtks">
+                <Route index element={<DtksUser />} />
+                <Route path="register-dtks" element={<DtksRegister />} />
+              </Route>
+
+              <Route path="submission-history" element={<SubmissionHistory />} />
+              <Route path="cek-bansos" element={<CekBansosUser />} />
+              <Route path="submission-history" element={<SubmissionHistory />} />
+
+              <Route path="profile" element={<ProfileLayout />}>
+                <Route index element={<ChangeProfile />} />
+                <Route path="change-password" element={<ChangePassword />} />
+              </Route>
             </Route>
           </Route>
         </Route>

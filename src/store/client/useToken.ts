@@ -10,7 +10,6 @@ export const useToken = create<TokenStore>((set) => ({
   token: JSON.parse(localStorage.getItem('access-token') ?? '""'),
   storeToken: (token) => {
     localStorage.setItem('access-token', JSON.stringify(token))
-
     set({ token })
   },
   removeToken: () => {

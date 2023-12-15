@@ -24,7 +24,10 @@ import {
   type TuitionAssistanceQuery,
   getTuitionAssistanceByIdFn,
   storeTuitionAssistanceFn,
-  storeIndigencyCertificateFn
+  storeIndigencyCertificateFn,
+  getCountIndigencyCertificateFn,
+  getCountTuitionAssistanceFn,
+  updateTuitionsAssistanceFn
 } from '@/api/linjamsos.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -352,6 +355,24 @@ export const useCreateIndegencyCertificate = () => {
     onSuccess: () => {
       void queryClient.invalidateQueries('indigency-certificates')
       handleMessage({ title: 'Data SKTM', variant: 'create' })
+    },
+    onError: (error: AxiosError) => handleOnError(error)
+  })
+}
+
+export const useCountIndigencyCertificate = () => {
+  return useQuery(['count-indigency-fn'], async () => await getCountIndigencyCertificateFn(), { enabled: true })
+}
+export const useCountTuitionAssistance = () => {
+  return useQuery(['tuition-assistance-fn'], async () => await getCountTuitionAssistanceFn(), { enabled: true })
+}
+export const useUpdateTuitionAssistance = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(updateTuitionsAssistanceFn, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries('tuition-assistances')
+      handleMessage({ title: 'Data BBP', variant: 'update' })
     },
     onError: (error: AxiosError) => handleOnError(error)
   })
