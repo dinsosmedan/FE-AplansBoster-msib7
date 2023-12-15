@@ -24,7 +24,9 @@ import {
   type TuitionAssistanceQuery,
   getTuitionAssistanceByIdFn,
   storeTuitionAssistanceFn,
-  storeIndigencyCertificateFn
+  storeIndigencyCertificateFn,
+  getCountIndigencyCertificateFn,
+  getCountTuitionAssistanceFn
 } from '@/api/linjamsos.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -355,4 +357,11 @@ export const useCreateIndegencyCertificate = () => {
     },
     onError: (error: AxiosError) => handleOnError(error)
   })
+}
+
+export const useCountIndigencyCertificate = () => {
+  return useQuery(['count-indigency-fn'], async () => await getCountIndigencyCertificateFn(), { enabled: true })
+}
+export const useCountTuitionAssistance = () => {
+  return useQuery(['tuition-assistance-fn'], async () => await getCountTuitionAssistanceFn(), { enabled: true })
 }

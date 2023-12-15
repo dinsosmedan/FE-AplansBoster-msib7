@@ -5,7 +5,7 @@ Accept: application/json
 
 {
     "identifier":"raihanoza18@gmail.com",
-    "password": "dev12321"
+    "password": "mantap_Kali234"
 }
 
 ###
@@ -14,6 +14,14 @@ GET https://api.aplansboster.dinas.social/api/v1/dashboard/dtks/count/administra
 GET https://api.aplansboster.dinas.social/api/v1/indigency-certificate
 Accept: application/json
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5hcGxhbnNib3N0ZXIuZGluYXMuc29jaWFsL2FwaS92MS9hdXRoL2xvZ2luIiwiaWF0IjoxNzAyNDM3NjI4LCJleHAiOjE3MDI0NDEyMjgsIm5iZiI6MTcwMjQzNzYyOCwianRpIjoiM0dzSDVYQlhVUVBzWFppZiIsInN1YiI6IjlhZDQzOTQwLTQyYjUtNDBjMS05NmVmLWRmYzI3ZjdjODc2OSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.pnfyldnbkdnDcx6MG7DCN00bRwvlMyli-rpmGJVQDEo
+
+###
+GET https://api.aplansboster.dinas.social/api/v1/service/dtks-application?status=1&assistance=PBI
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5hcGxhbnNib3N0ZXIuZGluYXMuc29jaWFsL2FwaS92MS9hdXRoL2xvZ2luIiwiaWF0IjoxNzAyNTcxODA2LCJleHAiOjE3MDI1NzU0MDYsIm5iZiI6MTcwMjU3MTgwNiwianRpIjoiZ1FnMndGNVVhMFZQaFFCZCIsInN1YiI6IjlhZDg1MDUzLWUwN2EtNDA1MC1hYjNiLTBmYTJjZDNkY2E4ZCIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.E_9C2prkIhFJs-8DwIpLm_wBKA2iNg0nP3-RRJSSgM4
+
+
+
 ###
 GET https://api.aplansboster.dinas.social/api/v1/service/indigency-certificate?application_status=pending&q=NURUL
 Accept: application/json
