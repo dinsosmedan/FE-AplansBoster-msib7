@@ -2,10 +2,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { HiAcademicCap, HiArrowDownTray, HiBuildingLibrary } from 'react-icons/hi2'
 import CardLandingPage from '../../../components/organisms/landingPage/CardLandingPage'
 import { Button } from '@/components/ui/button'
-import { BgEmpty } from '@/assets'
 import { Link } from 'react-router-dom'
 
-export default function UserSktm() {
+export default function DtksSchool() {
   return (
     <section className="bg-[#F9F9F9] px-10 py-[38px]">
       <Tabs defaultValue="open">
@@ -29,7 +28,7 @@ export default function UserSktm() {
         <TabsContent value="open" className="mt-11 flex flex-row justify-between bg-[#F9F9F9] gap-10">
           <div className="flex flex-col gap-8">
             <CardLandingPage
-              className="w-[400px]"
+              className="w-[400px] border-2 border-primary bg-[#F9F4F5] "
               title={'SKTM Untuk Sekolah/Universitas (Terdaftar DTKS)'}
               desc={'Layanan Pengajuan SKTM (Surat Keterangan Tidak Mampu)'}
               btnText={'Pendaftaran Pengajuan'}
@@ -37,7 +36,7 @@ export default function UserSktm() {
               href={'/user/sktm/dtks-school'}
             />
             <CardLandingPage
-              className="w-[400px]"
+              className="w-[400px] "
               title={'SKTM Untuk Sekolah / Universitas (Tidak Terdaftar DTKS)'}
               desc={'Layanan Pengajuan SKTM (Surat Keterangan Tidak Mampu)'}
               btnText={'Pendaftaran Pengajuan'}
@@ -45,7 +44,7 @@ export default function UserSktm() {
               href={'/user/sktm/non-dtks-school'}
             />
             <CardLandingPage
-              className="w-[400px]"
+              className="w-[400px] "
               title={'SKTM Untuk Pelayanan ke Pengadilan Agama/LBH (Terdaftar DTKS)'}
               desc={'Layanan Pengajuan SKTM (Surat Keterangan Tidak Mampu)'}
               btnText={'Pendaftaran Pengajuan'}
@@ -53,7 +52,7 @@ export default function UserSktm() {
               href={'/user/sktm/dtks-courts'}
             />
             <CardLandingPage
-              className="w-[400px]"
+              className="w-[400px] "
               title={'  SKTM Untuk Pelayanan ke Pengadilan Agama / LBH (TidakTerdaftarDTKS)'}
               desc={'Layanan Pengajuan SKTM (Surat Keterangan Tidak Mampu)'}
               btnText={'Pendaftaran Pengajuan'}
@@ -86,25 +85,15 @@ export default function UserSktm() {
                 </Button>
               </div>
             </div>
-            <Button className="w-full py-8">
-              <p className="text-xl">Daftar Sekarang</p>
-            </Button>
+            <Link to={'/user/sktm/dtks-school/form'}>
+              <Button className="w-full py-8">
+                <p className="text-xl">Daftar Sekarang</p>
+              </Button>
+            </Link>
           </section>
         </TabsContent>
         <TabsContent value="request" className="flex flex-row gap-10 ">
-          <div className="w-[1356px] h-[540px] bg-white">
-            <div className="py- flex flex-col items-center justify-center gap-8">
-              <img src={BgEmpty} alt="" />
-              <p className="text-[32px] font-semibold">Tidak Ada Proses Pengajuan</p>
-              <p className="text-[#8B8B8B] text-xl">Mohon Maaf, Anda Belum Melakukan Pengajuan</p>
-              <Link to={'/'}>
-                <Button className="py-8 px-7">
-                  <p className="text-2xl text-white font-semibold">AJUKAN BANSOS</p>
-                </Button>
-              </Link>
-            </div>
-          </div>
-          {/* <div className="w-[40%] h-[349] bg-white rounded-lg bg-[url('@/assets/images/line-curve.svg')] bg-no-repeat">
+          <div className="w- h-[349] bg-white rounded-lg bg-[url('@/assets/images/line-curve.svg')] bg-no-repeat  border-2 border-primary ">
             <div className="py-14 px-7">
               <HiAcademicCap className="w-[70px] h-[70px] text-primary" />
               <p className="text-xl font-semibold py-[26px]">SKTM Untuk Sekolah Universitas (Terdaftar DTKS)</p>
@@ -142,7 +131,7 @@ export default function UserSktm() {
                 <p className="text-base text-[##858585] text-center max-w">Pengajuan Diterima / Ditolak</p>
               </div>
             </div>
-          </div> */}
+          </div>
         </TabsContent>
       </Tabs>
     </section>

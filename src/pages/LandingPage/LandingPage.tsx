@@ -38,25 +38,25 @@ export default function LandingPage() {
       </section>
       <section className="py-[70px] px-14 bg-[#F9F9F9] relative overflow-hidden">
         <div className="w-96 h-96 opacity-20 bg-rose-600 rounded-full absolute top-[calc(-192px+38px)] right-[calc(-192px+103px)] blur-3xl" />
-          <div className="text-center mb-11 mt-0">
-            <Button
-                variant="ghost"
-                className="bg-white rounded-lg  py-6 px-10 text-primary border-2 border-primary  lg:hidden"
-                onClick={() => navigate('/user/cek-bansos')}
-              >
-                <span className="font-medium mr-1">Cek Bansos Sekarang</span>
-                <HiArrowRightCircle className="text-xl" />
-            </Button>
-          </div>
-          <div className="flex flex-col gap-6 lg:w-fit mx-auto">
-            <h2 className="lg:text-5xl md:text-4xl text-[24px] font-bold font-volkhov text-center">
-              Layanan / Pengajuan <span className="text-[#FFB60A]">Online</span>
-            </h2>
-            <p className="lg:text-lg md:text-md text-[12px] text-[#666666] text-center lg:w-[644px] leading-relaxed">
-              Pengajuan Bantuan Secara Online Menjadi Mudah dan bisa dilakukan dimana saja
-            </p>
-          </div>
-          <div className="mt-16 grid grid-cols-1 lg:grid-cols-3 gap-[92px]">
+        <div className="text-center mb-11 mt-0">
+          <Button
+            variant="ghost"
+            className="bg-white rounded-lg  py-6 px-10 text-primary border-2 border-primary  lg:hidden"
+            onClick={() => navigate('/user/cek-bansos')}
+          >
+            <span className="font-medium mr-1">Cek Bansos Sekarang</span>
+            <HiArrowRightCircle className="text-xl" />
+          </Button>
+        </div>
+        <div className="flex flex-col gap-6 lg:w-fit mx-auto">
+          <h2 className="lg:text-5xl md:text-4xl text-[24px] font-bold font-volkhov text-center">
+            Layanan / Pengajuan <span className="text-[#FFB60A]">Online</span>
+          </h2>
+          <p className="lg:text-lg md:text-md text-[12px] text-[#666666] text-center lg:w-[644px] leading-relaxed">
+            Pengajuan Bantuan Secara Online Menjadi Mudah dan bisa dilakukan dimana saja
+          </p>
+        </div>
+        <div className="mt-16 grid grid-cols-1 lg:grid-cols-3 gap-[92px]">
           <CardLandingPage
             title="DTKS (Data Terpadu Kesejahteraan Sosial)"
             desc="Layanan Pengajuan DTKS (Data Terpadu Kesejahteraan Sosial)"

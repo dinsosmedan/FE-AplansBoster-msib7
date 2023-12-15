@@ -53,7 +53,8 @@ import {
   getBusinessGroupAssistanceFn,
   getCountDataDayasosFn,
   getDataWorshipPlaceFn,
-  getVulnerableGroupFn
+  getVulnerableGroupFn,
+  getCountBbpFn
 } from '@/api/dayasos.api'
 import { toast, useToast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -180,6 +181,10 @@ export const useDataWorshipPlace = () => {
 }
 export const useVulnerableGroup = () => {
   return useQuery(['vulnerable-group-fn'], async () => await getVulnerableGroupFn(), { enabled: true })
+}
+
+export const useCountBbp = () => {
+  return useQuery(['count-bbp-fn'], async () => await getCountBbpFn(), { enabled: true })
 }
 
 /* DJPM */

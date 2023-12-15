@@ -41,11 +41,6 @@ import UpdatePasswordUser from './LandingPage/UpdatePasswordUser'
 import CekBansosUser from './LandingPage/CekBansosUser'
 import DataPkh from './DataPenerima/Linjamsos/DataPkh'
 import Unregister from './Layanan/Linjamsos/Unregister'
-import UserSktm from './LandingPage/Sktm/SktmUser'
-import SktmUnregister from './LandingPage/Sktm/SktmUnregister'
-import SktmRegister from './LandingPage/Sktm/SktmRegister'
-import SktmReligious from './LandingPage/Sktm/SktmRegisterReligious'
-import SktmUnregisterReligious from './LandingPage/Sktm/SktmUnregisterReligious'
 import BbpUser from './LandingPage/Bbp/BbpUser'
 import BbpRegister from './LandingPage/Bbp/BbpRegister'
 import BbpFilterBatch from './Layanan/BbpFilterBatch'
@@ -62,6 +57,10 @@ import ResetPassword from './ResetPassword'
 import ManajemenAdmin from './ManajemenAdmin'
 import SuccessfulRegister from './../components/layouts/landingPage/SuccessfulRegister'
 import VerifiedAccount from './../components/layouts/landingPage/VerifiedAccount'
+import DtksSchool from './LandingPage/Sktm/DtksSchool'
+import NonDtksSchool from './LandingPage/Sktm/NonDtksSchool'
+import DtksCourts from './LandingPage/Sktm/DtksCourts'
+import NonDtksCourts from './LandingPage/Sktm/NonDtksCourts'
 
 export {
   Home,
@@ -127,5 +126,9 @@ export {
   ResetPassword,
   ManajemenAdmin,
   SuccessfulRegister,
-  VerifiedAccount
+  VerifiedAccount,
+  DtksSchool,
+  NonDtksSchool,
+  DtksCourts,
+  NonDtksCourts
 }

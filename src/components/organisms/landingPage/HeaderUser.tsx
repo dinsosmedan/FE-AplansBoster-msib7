@@ -71,9 +71,9 @@ export default function HeaderUser() {
     <header className="h-20 fixed inset-x-0 top-0 bg-white flex items-center px-14 z-50 font-poppins">
       <div className="flex items-center justify-between flex-1">
         <nav className="flex items-center gap-8 font-semibold">
-        <Link to="/">
-          <img src={Logo} alt="logo" className="w-[297px]" />
-        </Link>
+          <Link to="/">
+            <img src={Logo} alt="logo" className="w-[297px]" />
+          </Link>
           <div className="flex items-center gap-8">
             <Link to="/" className="hover:text-primary">
               Beranda
@@ -99,47 +99,47 @@ export default function HeaderUser() {
                       <div className="absolute -bottom-1 -right-1 border-white border bg-[#ECF0F4] rounded-full w-5 h-5 flex">
                         <HiChevronDown className="m-auto text-sm" />
                       </div>
-                      </div>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="min-w-[300px] rounded-xl px-5 py-6 mt-8 mr-24">
-                      <DropdownMenuItem>
-                        <DropdownMenuLabel
-                          className="flex items-center justify-between outline-none border-none ring-0 hover:bg-zinc-100 rounded-lg cursor-pointer"
-                          onClick={() => navigate('/user/profile')}
-                        >
-                          <div className="flex items-center gap-[22px]">
-                            <div className="flex w-11 h-11 rounded-full bg-[#FCE9EE]">
-                              <HiCog6Tooth className="m-auto text-primary text-3xl" />
-                            </div>
-                            <p className="font-poppins font-medium text-[#494949]">Pengaturan</p>
-                          </div>
-                          <HiChevronRight className="text-2xl text-[#484848]" />
-                        </DropdownMenuLabel>
-                      </DropdownMenuItem>
-                      <div className="w-full h-[1px] my-[14px] bg-[#E0E0E0]" />
-                      <DropdownMenuItem>
-                        <DropdownMenuLabel
-                          className="flex items-center gap-[22px] outline-none border-none ring-0 hover:bg-zinc-100 rounded-lg cursor-pointer"
-                          onClick={handleLogout}
-                        >
-                          <div className="flex w-11 h-11 rounded-full bg-[#FCE9EE]">
-                            <HiOutlineArrowRightOnRectangle className="m-auto text-primary text-2xl" />
-                          </div>
-                          <p className="font-poppins font-medium text-[#494949]">Keluar</p>
-                        </DropdownMenuLabel>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                  <Button variant="base" size="icon" className="rounded-full">
-                    <div className="relative">
-                      <HiOutlineBell className="text-primary text-2xl" />
-                      <div className="bg-[#FF0000] w-2 h-2 rounded-full absolute top-0 right-1" />
                     </div>
-                  </Button>
-                </section>
-              )}
-            </div>
-             {/* {!token && (
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="min-w-[300px] rounded-xl px-5 py-6 mt-8 mr-24">
+                    <DropdownMenuItem>
+                      <DropdownMenuLabel
+                        className="flex items-center justify-between outline-none border-none ring-0 hover:bg-zinc-100 rounded-lg cursor-pointer"
+                        onClick={() => navigate('/user/profile')}
+                      >
+                        <div className="flex items-center gap-[22px]">
+                          <div className="flex w-11 h-11 rounded-full bg-[#FCE9EE]">
+                            <HiCog6Tooth className="m-auto text-primary text-3xl" />
+                          </div>
+                          <p className="font-poppins font-medium text-[#494949]">Pengaturan</p>
+                        </div>
+                        <HiChevronRight className="text-2xl text-[#484848]" />
+                      </DropdownMenuLabel>
+                    </DropdownMenuItem>
+                    <div className="w-full h-[1px] my-[14px] bg-[#E0E0E0]" />
+                    <DropdownMenuItem>
+                      <DropdownMenuLabel
+                        className="flex items-center gap-[22px] outline-none border-none ring-0 hover:bg-zinc-100 rounded-lg cursor-pointer"
+                        onClick={handleLogout}
+                      >
+                        <div className="flex w-11 h-11 rounded-full bg-[#FCE9EE]">
+                          <HiOutlineArrowRightOnRectangle className="m-auto text-primary text-2xl" />
+                        </div>
+                        <p className="font-poppins font-medium text-[#494949]">Keluar</p>
+                      </DropdownMenuLabel>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <Button variant="base" size="icon" className="rounded-full">
+                  <div className="relative">
+                    <HiOutlineBell className="text-primary text-2xl" />
+                    <div className="bg-[#FF0000] w-2 h-2 rounded-full absolute top-0 right-1" />
+                  </div>
+                </Button>
+              </section>
+            )}
+          </div>
+          {/* {!token && (
                <>
                  <div className="h-10 w-1 rounded-full bg-[#F5F5F5]" />
                  <div className="flex items-center gap-8">
@@ -173,7 +173,7 @@ export default function HeaderUser() {
                 Cek Bansos
               </Link>
           </li> */}
-        {/* </ul> */}
+          {/* </ul> */}
         </nav>
       </div>
     </header>
