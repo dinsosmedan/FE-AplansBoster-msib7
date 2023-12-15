@@ -1,7 +1,7 @@
 import { Logo } from '@/assets'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { useAlert, useUserPublicToken } from '@/store/client'
+import { useAlert, useAuth } from '@/store/client'
 import { useLogoutPublic } from '@/store/server'
 import { DropdownMenu, DropdownMenuItem } from '@radix-ui/react-dropdown-menu'
 import {
@@ -15,8 +15,12 @@ import { Link, useNavigate } from 'react-router-dom'
 
 export default function HeaderUser() {
   const { alert } = useAlert()
-  const token = useUserPublicToken((state) => state.token)
-  const user = useUserPublicToken((state) => state.user)
+  // const token = useUserPublicToken((state) => state.token)
+  // const user = useUserPublicToken((state) => state.user)
+  const auth = useAuth((state) => ({
+    token: state.token,
+    user: state.user
+  }))
 
   const { mutate: logout } = useLogoutPublic()
 
@@ -32,38 +36,69 @@ export default function HeaderUser() {
   const navigate = useNavigate()
 
   return (
-    <header className="font-poppins">
-      <div className='h-20 fixed inset-x-0 top-0 bg-white flex items-center md:px-14 px-5 z-50 '>
-        <div className="flex items-center justify-between flex-1">
-          <Link to="/">
-            <img src={Logo} alt="logo" className="lg:w-[297px] w-[200px]" />
-          </Link>
-          <nav className="flex items-center gap-8 font-semibold">
-            <div className="flex items-center gap-8  gap-3 hidden lg:block">
-              <Link to="/" className="hover:text-primary pe-5">
-                Beranda
+    // <header className="font-poppins">
+    // <div className='h-20 fixed inset-x-0 top-0 bg-white flex items-center md:px-14 px-5 z-50 '>
+    //   <div className="flex items-center justify-between flex-1">
+    //     <Link to="/">
+    //       <img src={Logo} alt="logo" className="lg:w-[297px] w-[200px]" />
+    //     </Link>
+    //     <nav className="flex items-center gap-8 font-semibold">
+    //       <div className="flex items-center gap-8  gap-3 hidden lg:block">
+    //         <Link to="/" className="hover:text-primary pe-5">
+    //           Beranda
+    //         </Link>
+    //         {token && (
+    //           <Link to="/user/submission-history" className="hover:text-primary pe-5">
+    //             Riwayat Pengajuan
+    //           </Link>
+    //         )}
+    //         <Link to="/user/cek-bansos" className="hover:text-primary">
+    //           Cek Bansos
+    //         </Link>
+    //         {token && (
+    //           <section className="flex items-center">
+    //             <DropdownMenu>
+    //               <DropdownMenuTrigger>
+    //                 <div className="relative rounded-full cursor-pointer">
+    //                   <img
+    //                     alt="profile"
+    //                     className="w-10 h-10 rounded-full object-cover bg-[#ECF0F4]"
+    //                     src={`https://ui-avatars.com/api/?name=${user?.name}`}
+    //                   />
+    //                   <div className="absolute -bottom-1 -right-1 border-white border bg-[#ECF0F4] rounded-full w-5 h-5 flex">
+    //                     <HiChevronDown className="m-auto text-sm" />
+    //                   </div>
+    <header className="h-20 fixed inset-x-0 top-0 bg-white flex items-center px-14 z-50 font-poppins">
+      <div className="flex items-center justify-between flex-1">
+        <nav className="flex items-center gap-8 font-semibold">
+        <Link to="/">
+          <img src={Logo} alt="logo" className="w-[297px]" />
+        </Link>
+          <div className="flex items-center gap-8">
+            <Link to="/" className="hover:text-primary">
+              Beranda
+            </Link>
+            {auth.token && (
+              <Link to="/user/submission-history" className="hover:text-primary">
+                Riwayat Pengajuan
               </Link>
-              {token && (
-                <Link to="/user/submission-history" className="hover:text-primary pe-5">
-                  Riwayat Pengajuan
-                </Link>
-              )}
-              <Link to="/user/cek-bansos" className="hover:text-primary">
-                Cek Bansos
-              </Link>
-              {token && (
-                <section className="flex items-center">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <div className="relative rounded-full cursor-pointer">
-                        <img
-                          alt="profile"
-                          className="w-10 h-10 rounded-full object-cover bg-[#ECF0F4]"
-                          src={`https://ui-avatars.com/api/?name=${user?.name}`}
-                        />
-                        <div className="absolute -bottom-1 -right-1 border-white border bg-[#ECF0F4] rounded-full w-5 h-5 flex">
-                          <HiChevronDown className="m-auto text-sm" />
-                        </div>
+            )}
+            <Link to="/user/cek-bansos" className="hover:text-primary">
+              Cek Bansos
+            </Link>
+            {auth.token && (
+              <section className="flex items-center gap-3">
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <div className="relative rounded-full cursor-pointer">
+                      <img
+                        alt="profile"
+                        className="w-10 h-10 rounded-full object-cover bg-[#ECF0F4]"
+                        src={`https://ui-avatars.com/api/?name=${auth.user?.name}`}
+                      />
+                      <div className="absolute -bottom-1 -right-1 border-white border bg-[#ECF0F4] rounded-full w-5 h-5 flex">
+                        <HiChevronDown className="m-auto text-sm" />
+                      </div>
                       </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="min-w-[300px] rounded-xl px-5 py-6 mt-8 mr-24">
@@ -104,42 +139,42 @@ export default function HeaderUser() {
                 </section>
               )}
             </div>
-            {!token && (
-              <>
-                <div className="h-10 w-1 rounded-full bg-[#F5F5F5]" />
-                <div className="flex items-center gap-8">
-                  <Link to="/user/login" className="hover:text-primary hidden lg:block">
-                    Masuk
-                  </Link>
-                  <Link to="/user/register">
-                    <Button className="rounded-lg">Daftar</Button>
-                  </Link>
-                </div>
-              </>
-            )}
-          </nav>
-        </div>
-      </div>
-      <div className="h-10 pb-10 pt-5 fixed inset-x-0 top-20 bg-white flex items-center justify-center  z-50 block lg:hidden">
-        <ul className="flex">
-          <li className="mr-1">
-              <Link to="/" className="hover:text-primary pe-5">
-                Beranda
-              </Link>
-          </li>
-          <li className="mr-1">
-            {token && (
-                <Link to="/user/submission-history" className="hover:text-primary pe-5">
-                  Riwayat Pengajuan
+             {/* {!token && (
+               <>
+                 <div className="h-10 w-1 rounded-full bg-[#F5F5F5]" />
+                 <div className="flex items-center gap-8">
+                   <Link to="/user/login" className="hover:text-primary hidden lg:block">
+                     Masuk
+                   </Link>
+                   <Link to="/user/register">
+                     <Button className="rounded-lg">Daftar</Button>
+                   </Link>
+                 </div>
+               </>
+             )} */}
+          {/* </div> */}
+          {/* {!auth.token && (
+            <>
+              <div className="h-10 w-1 rounded-full bg-[#F5F5F5]" />
+              <div className="flex items-center gap-8">
+                <Link to="/user/login" className="hover:text-primary">
+                  Masuk
                 </Link>
-              )}
-          </li>
-          <li className="mr-1">
+                <Link to="/user/register">
+                  <Button className="rounded-lg">Daftar</Button>
+                </Link>
+              </div>
+            </>
+              )
+              } */}
+          {/* </li> */}
+          {/* <li className="mr-1">
             <Link to="/user/cek-bansos" className="hover:text-primary">
                 Cek Bansos
               </Link>
-          </li>
-        </ul>
+          </li> */}
+        {/* </ul> */}
+        </nav>
       </div>
     </header>
   )

@@ -1,11 +1,18 @@
-import { deleteEventFn, getEventFn, getEventTypeFn, showEventFn, storeEventFn } from '@/api/event.api'
+import {
+  deleteEventFn,
+  getEventFn,
+  getEventTuitionAssistanceFn,
+  getEventTypeFn,
+  showEventFn,
+  storeEventFn
+} from '@/api/event.api'
 import { handleMessage } from '@/lib/services/handleMessage'
 import { handleOnError } from '@/lib/utils'
 import { type AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
-export const useGetEvent = () => {
-  return useQuery('events', getEventFn)
+export const useGetEvent = (status?: string, year?: string, page?: string) => {
+  return useQuery(['events', status, year, page], async () => await getEventFn(status, year, page))
 }
 
 export const useGetEventType = () => {
@@ -40,4 +47,8 @@ export const useGetEventById = (id: string) => {
   return useQuery(['event', id], async () => await showEventFn(id), {
     enabled: !!id
   })
+}
+
+export const useGetEventTuitionAssistance = (year: string, status: string) => {
+  return useQuery(['eventTuitionAssistance', year, status], async () => await getEventTuitionAssistanceFn(year, status))
 }

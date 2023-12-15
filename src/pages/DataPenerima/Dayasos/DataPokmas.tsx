@@ -134,48 +134,44 @@ const DataPokmas = () => {
 
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    const response = await exportCommunityGroupFn('csv',
-    {
-    idKecamatan: kecamatan,
-    idKelurahan: kelurahan,
-    q,
-    communityActivityCode,
-    status,
-    applicationYear
-  }
-  )
-    if (response.success) {
-    void alert({
-      title: 'Berhasil Export',
-      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
-      submitText: 'Oke',
-      variant: 'success'
+    const response = await exportCommunityGroupFn('csv', {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+      q,
+      communityActivityCode,
+      status,
+      applicationYear
     })
-    setIsLoadingExport(false)
-  }
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+      setIsLoadingExport(false)
+    }
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    const response = await exportCommunityGroupFn('xlsx',
-    {
-    idKecamatan: kecamatan,
-    idKelurahan: kelurahan,
-    q,
-    communityActivityCode,
-    status,
-    applicationYear
-  }
-  )
-    if (response.success) {
-    void alert({
-      title: 'Berhasil Export',
-      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
-      submitText: 'Oke',
-      variant: 'success'
+    const response = await exportCommunityGroupFn('xlsx', {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+      q,
+      communityActivityCode,
+      status,
+      applicationYear
     })
-    setIsLoadingExport(false)
-  }
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+      setIsLoadingExport(false)
+    }
   }
 
   if (isLoading) return <Loading />

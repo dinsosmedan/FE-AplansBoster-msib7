@@ -18,7 +18,8 @@ import {
   useGetEvent,
   useGetStudyPrograms,
   useGetTuitionAssistanceID,
-  useGetUniversities
+  useGetUniversities,
+  useUpdateTuitionAssistance
 } from '@/store/server'
 import { useNotFound, useToastNik } from '@/hooks'
 import { Loading } from '@/components'
@@ -45,12 +46,16 @@ const Bbp = () => {
   })
 
   const university = forms.watch('universityId')
+  const studyProgram = forms.watch('studyProgramId')
+  const bank = forms.watch('bank')
+
   const { data: beneficiary, refetch, isLoading, isError } = useGetBeneficaryByNIK(NIK, false)
   const { data: events } = useGetEvent()
   const { data: universities } = useGetUniversities()
   const { data: studyPrograms } = useGetStudyPrograms(university)
   const { data: bankLists } = useGetBank()
 
+  const { mutate: updateTuitionAssistance, isLoading: isLoadingUpdate } = useUpdateTuitionAssistance()
   const { mutate: createTuitionAssistance, isLoading: isLoadingCreate } = useCreateTuitionAssistance()
   const {
     data: tuitionAssistance,
@@ -67,6 +72,18 @@ const Bbp = () => {
     notFoundCondition: isError,
     notRegisteredCondition: forms.getValues('beneficiary') === '' && NIK !== '' && forms.formState.isSubmitted
   })
+
+  React.useEffect(() => {
+    if (bank) {
+      forms.setValue('bankAccountName', bankLists?.find((item) => item.id === bank)?.name as string)
+    }
+    if (studyProgram) {
+      forms.setValue('studyProgramName', studyPrograms?.find((item) => item.id === studyProgram)?.name as string)
+    }
+    if (university) {
+      forms.setValue('universityName', universities?.find((item) => item.id === university)?.name as string)
+    }
+  }, [bank, studyProgram, university])
 
   React.useEffect(() => {
     if (isSuccessGet) {
@@ -97,6 +114,7 @@ const Bbp = () => {
 
   const onSubmit = async (values: tuitionAssistanceFields) => {
     if (!id) return createTuitionAssistance(values, { onSuccess })
+    updateTuitionAssistance({ id, fields: values }, { onSuccess })
   }
 
   if (isLoadingGet) return <Loading />
@@ -193,11 +211,7 @@ const Bbp = () => {
                       </FormControl>
                       <SelectContent>
                         {universities?.map((university) => (
-                          <SelectItem
-                            key={university.id}
-                            value={university.id}
-                            onClick={() => forms.setValue('universityName', university.name)}
-                          >
+                          <SelectItem key={university.id} value={university.id}>
                             {university.name}
                           </SelectItem>
                         ))}
@@ -226,11 +240,7 @@ const Bbp = () => {
                       </FormControl>
                       <SelectContent>
                         {studyPrograms?.map((studyProgram) => (
-                          <SelectItem
-                            key={studyProgram.id}
-                            value={studyProgram.id}
-                            onClick={() => forms.setValue('studyProgramName', studyProgram.name)}
-                          >
+                          <SelectItem key={studyProgram.id} value={studyProgram.id}>
                             {studyProgram.name}
                           </SelectItem>
                         ))}
@@ -331,11 +341,7 @@ const Bbp = () => {
                       </FormControl>
                       <SelectContent>
                         {bankLists?.map((bank) => (
-                          <SelectItem
-                            key={bank.id}
-                            value={bank.id}
-                            onClick={() => forms.setValue('bankAccountName', bank.name)}
-                          >
+                          <SelectItem key={bank.id} value={bank.id}>
                             {bank.name}
                           </SelectItem>
                         ))}
@@ -364,7 +370,7 @@ const Bbp = () => {
             <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
               Cancel
             </Button>
-            <Button className="font-bold" type="submit" loading={isLoadingCreate}>
+            <Button className="font-bold" type="submit" loading={isLoadingCreate || isLoadingUpdate}>
               {id ? 'Ubah Data' : 'Submit'}
             </Button>
           </div>

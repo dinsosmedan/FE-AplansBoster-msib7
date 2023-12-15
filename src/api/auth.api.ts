@@ -61,8 +61,13 @@ export const registerUserFn = async (fields: RegisterUserFields) => {
   formData.append('identityNumber', fields.identityNumber)
   formData.append('phoneNumber', fields.phoneNumber)
   formData.append('password', fields.password)
-  formData.append('photoIdentityCard', fields.identityCard[0] as File)
-  formData.append('selfieIdentityCard', fields.selfie[0] as File)
+  if (Array.isArray(fields.identityCard) && fields.identityCard.length > 0) {
+    formData.append('identityCard', fields.identityCard[0] as File)
+  }
+
+  if (Array.isArray(fields.selfie) && fields.selfie.length > 0) {
+    formData.append('selfie', fields.selfie[0] as File)
+  }
 
   await apiPublic.post('/public/auth/register', formData, {
     headers: {

@@ -15,7 +15,6 @@ export const options = {
   }
 }
 
-
 const BigCard = ({ data }: any) => {
   const total = data.map((val: any) => val.count).reduce((acc: any, current: any) => acc + current, 0)
 

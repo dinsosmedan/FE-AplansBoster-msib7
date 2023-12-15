@@ -110,12 +110,11 @@ const DataUnregister = () => {
   }
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    const response = await exportUnregisterFn('csv',
-    {
-    month,
-    letterNumber,
-    year,
-    q
+    const response = await exportUnregisterFn('csv', {
+      month,
+      letterNumber,
+      year,
+      q
     })
     if (response.success) {
       void alert({
@@ -130,12 +129,11 @@ const DataUnregister = () => {
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    const response = await exportUnregisterFn('xlsx',
-    {
-    month,
-    letterNumber,
-    year,
-    q
+    const response = await exportUnregisterFn('xlsx', {
+      month,
+      letterNumber,
+      year,
+      q
     })
     if (response.success) {
       void alert({
@@ -205,8 +203,8 @@ const DataUnregister = () => {
               />
             </div>
             <div className="flex justify-between">
-            <div className="w-[20%]">
-              {unregisters?.data?.length !== 0 ? (
+              <div className="w-[20%]">
+                {unregisters?.data?.length !== 0 ? (
                   <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
                 ) : null}
               </div>

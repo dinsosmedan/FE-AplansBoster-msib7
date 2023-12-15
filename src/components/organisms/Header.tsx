@@ -1,4 +1,3 @@
-/* eslint-disable multiline-ternary */
 import { HiBell } from 'react-icons/hi2'
 import { Button } from '../ui/button'
 import {
@@ -32,6 +31,8 @@ export default function Header() {
       variant: 'danger'
     }).then(() => logout())
   }
+
+  console.log(user)
 
   return (
     <header className="h-24 flex items-center px-8 z-[20] sticky top-0 bg-white border-b border-[#E9E9E9] text-font">

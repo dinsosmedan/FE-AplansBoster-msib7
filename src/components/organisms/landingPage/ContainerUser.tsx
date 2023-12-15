@@ -1,6 +1,6 @@
 interface ContainerUserProps {
-    title: string
-    children?: React.ReactNode
+  title: string
+  children?: React.ReactNode
 }
 
 export default function ContainerUser({ title, children }: ContainerUserProps) {

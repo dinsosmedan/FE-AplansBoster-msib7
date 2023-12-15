@@ -3,10 +3,15 @@ import BigCard from '@/components/ui/dashboard/BigCard'
 import LongCard from '@/components/ui/dashboard/LongCard'
 import TitleSign from '@/components/ui/dashboard/TitleSign'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useBusinessGroupAssistance, useCommunityGroupAssistance, useCountDataDayasos, useCountServiceFund, useDataWorshipPlace } from '@/store/server'
+import {
+  useBusinessGroupAssistance,
+  useCommunityGroupAssistance,
+  useCountDataDayasos,
+  useCountServiceFund,
+  useDataWorshipPlace
+} from '@/store/server'
 
 const SectionDayasos = () => {
-
   return (
     <>
       <div className=" my-12 ">
@@ -35,33 +40,31 @@ const CardData = () => {
 
   return (
     <>
-      {
-        isLoading ? (
-          <>
-            <Skeleton className="w-12 h-12 rounded-[14px]" />
-            <div className="flex flex-col gap-3">
-              <Skeleton className="w-[120px] h-3 rounded-[14px]" />
-              <Skeleton className="w-[80px] h-3 rounded-[14px]" />
-              <Skeleton className="w-[80px] h-3 rounded-[14px]" />
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="grid grid-cols-4 gap-5 mt-5">
-              <BasicCard props={['Total Jumlah Data Veteran', data.veteran, 'Jiwa']} />
-              <BasicCard props={['Total DJPM Terdaftar', data.serviceFund, 'Data']} />
-              <BasicCard props={['Total Rumah Ibadah ', data.worshipPlace, 'Data']} />
-              <BasicCard props={['Total BHO Yang Terdaftar', data.organizationGrantAssistance, 'Organisasi/Lembaga']} />
-            </div>
-            <div className="grid grid-cols-4 gap-5 mt-5">
-              <BasicCard props={['Total KUBE Terdaftar', data.jointBusinessGroupAssistance, 'Data']} />
-              <BasicCard props={['Total POKMAS Terdaftar', data.communityGroupAssistance, 'Data']} />
-              <BasicCard props={['Total BLTBBM ', data.fuelCashAssistance, 'Data']} />
-              <BasicCard props={['Total BPNT', data.nonCashFoodAssistance, 'Organisasi/Lembaga']} />
-            </div>
-          </>
-        )
-      }
+      {isLoading ? (
+        <>
+          <Skeleton className="w-12 h-12 rounded-[14px]" />
+          <div className="flex flex-col gap-3">
+            <Skeleton className="w-[120px] h-3 rounded-[14px]" />
+            <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+            <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="grid grid-cols-4 gap-5 mt-5">
+            <BasicCard props={['Total Jumlah Data Veteran', data.veteran, 'Jiwa']} />
+            <BasicCard props={['Total DJPM Terdaftar', data.serviceFund, 'Data']} />
+            <BasicCard props={['Total Rumah Ibadah ', data.worshipPlace, 'Data']} />
+            <BasicCard props={['Total BHO Yang Terdaftar', data.organizationGrantAssistance, 'Organisasi/Lembaga']} />
+          </div>
+          <div className="grid grid-cols-4 gap-5 mt-5">
+            <BasicCard props={['Total KUBE Terdaftar', data.jointBusinessGroupAssistance, 'Data']} />
+            <BasicCard props={['Total POKMAS Terdaftar', data.communityGroupAssistance, 'Data']} />
+            <BasicCard props={['Total BLTBBM ', data.fuelCashAssistance, 'Data']} />
+            <BasicCard props={['Total BPNT', data.nonCashFoodAssistance, 'Organisasi/Lembaga']} />
+          </div>
+        </>
+      )}
     </>
   )
 }
@@ -73,15 +76,7 @@ const CardDjpm = () => {
 
   const values = data ? Object.values(data) : []
 
-  return (
-    <>
-      {
-        isLoading ? <Skeleton className="w-full h-[300px]" /> :
-          <BigCard data={values}></BigCard>
-      }
-    </>
-
-  )
+  return <>{isLoading ? <Skeleton className="w-full h-[300px]" /> : <BigCard data={values}></BigCard>}</>
 }
 const ChartPokmas = () => {
   const { data: CommunityGroup, isLoading } = useCommunityGroupAssistance()
@@ -97,18 +92,18 @@ const ChartPokmas = () => {
   return (
     <>
       <LongCard props={title}>
-        {isLoading ?
-          <Skeleton className="w-[300px] h-[300px] rounded-full" /> :
+        {isLoading ? (
+          <Skeleton className="w-[300px] h-[300px] rounded-full" />
+        ) : (
           <LongCard.Chart
             // data={[20, 10, 12, 13, 21]}
             data={data}
             label={label}
             backgroundColor={color}
           />
-        }
+        )}
       </LongCard>
     </>
-
   )
 }
 const ChartKube = () => {
@@ -124,17 +119,18 @@ const ChartKube = () => {
   return (
     <>
       <LongCard props={title}>
-        {isLoading ? <Skeleton className="w-[300px] h-[300px] rounded-full" /> :
+        {isLoading ? (
+          <Skeleton className="w-[300px] h-[300px] rounded-full" />
+        ) : (
           <LongCard.Chart
             // data={[20, 10, 12, 13, 21]}
             data={data}
             label={label}
             backgroundColor={color}
           />
-        }
+        )}
       </LongCard>
     </>
-
   )
 }
 const ChartRi = () => {
@@ -152,18 +148,18 @@ const ChartRi = () => {
   return (
     <>
       <LongCard props={['Rumah Ibadah', 'Persentasi Rumah Ibadah']}>
-        {
-          isLoading ? <Skeleton className="w-[300px] h-[300px] rounded-full" /> :
-            <LongCard.Chart
-              data={[20, 5, 13, 13, 22, 15, 12]}
-              label={['Mesjid', 'Gereja', 'Kuil Hindu', 'Gereja Khatolik', 'Kuil Budha', 'Musholla', 'Kuil Budha']}
-              isPercent={true}
-              backgroundColor={['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E', '#2D9CDB', '#DD2153']}
-            />
-        }
+        {isLoading ? (
+          <Skeleton className="w-[300px] h-[300px] rounded-full" />
+        ) : (
+          <LongCard.Chart
+            data={[20, 5, 13, 13, 22, 15, 12]}
+            label={['Mesjid', 'Gereja', 'Kuil Hindu', 'Gereja Khatolik', 'Kuil Budha', 'Musholla', 'Kuil Budha']}
+            isPercent={true}
+            backgroundColor={['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E', '#2D9CDB', '#DD2153']}
+          />
+        )}
       </LongCard>
     </>
-
   )
 }
 

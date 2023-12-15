@@ -97,38 +97,36 @@ const DataHibah = () => {
 
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    const response = await exportOrganizationGrantAssistance('csv',
-    {
-    name: q,
-    budgetYear
-  })
-   if (response.success) {
-    void alert({
-      title: 'Berhasil Export',
-      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
-      submitText: 'Oke',
-      variant: 'success'
+    const response = await exportOrganizationGrantAssistance('csv', {
+      name: q,
+      budgetYear
     })
-    setIsLoadingExport(false)
-  }
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+      setIsLoadingExport(false)
+    }
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    const response = await exportOrganizationGrantAssistance('xlsx',
-    {
-    name: q,
-    budgetYear
-  })
-   if (response.success) {
-    void alert({
-      title: 'Berhasil Export',
-      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
-      submitText: 'Oke',
-      variant: 'success'
+    const response = await exportOrganizationGrantAssistance('xlsx', {
+      name: q,
+      budgetYear
     })
-    setIsLoadingExport(false)
-  }
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+      setIsLoadingExport(false)
+    }
   }
 
   if (isLoading && isLoadingOrganization) return <Loading />
