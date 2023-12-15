@@ -31,7 +31,7 @@ const ManajemenAdmin = () => {
   const { alert } = useAlert()
 
   const { data: role } = useGetRole()
-  const { data: users, isLoading } = useGetAdmin()
+  const { data: admins, isLoading } = useGetAdmin()
 
   const forms = useForm<userFields>({
     mode: 'onTouched',
@@ -98,14 +98,14 @@ const ManajemenAdmin = () => {
   const onSuccess = () => {
     forms.reset()
     setIsShow(false)
-    navigate('/manajemen-user')
+    navigate('/manajemen-admin')
   }
 
-  if (isLoading && isLoadingDelete && isLoadingUser) {
+  if (isLoading || isLoadingDelete || isLoadingUser) {
     return <Loading />
   }
   return (
-    <Container className="relative pt-[34px] pb-[22px] px-7">
+    <Container>
       <div className="flex items-center mb-[18px]">
         <Search placeholder="Search" className="w-[398px] py-[23px]" />
         <Button className="w-fit py-6 px-4 ml-auto bg-primary" onClick={() => setIsShow(true)}>
@@ -118,7 +118,6 @@ const ManajemenAdmin = () => {
         <TableHeader className="bg-primary">
           <TableRow>
             <TableHead className="text-white">NIP</TableHead>
-            <TableHead className="text-white">NIK</TableHead>
             <TableHead className="text-white">Nama</TableHead>
             <TableHead className="text-white">Email</TableHead>
             <TableHead className="text-white">No. HP</TableHead>
@@ -128,11 +127,10 @@ const ManajemenAdmin = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users?.data?.length !== 0 ? (
-            users?.data.map((item: any) => (
+          {admins?.data?.length !== 0 ? (
+            admins?.data.map((item: any) => (
               <TableRow key={item.id}>
                 <TableCell className="font-semibold">{item.employeeIdentityNumber || '-'}</TableCell>
-                <TableCell className="font-semibold">{item.identityNumber || '-'}</TableCell>
                 <TableCell className="font-semibold">{item.name}</TableCell>
                 <TableCell className="text-center">{item.email || '-'}</TableCell>
                 <TableCell className="text-center">{item.phoneNumber || '-'}</TableCell>

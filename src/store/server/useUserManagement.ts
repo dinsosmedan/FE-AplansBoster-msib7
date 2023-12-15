@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import {
   deleteAdminFn,
+  deleteRolePermissionFn,
   deleteUserFn,
   getAdminDetailFn,
   getAdminFn,
@@ -28,7 +29,7 @@ export const useCreateAdmin = () => {
   const { toast } = useToast()
   return useMutation(storeAdminFn, {
     onSuccess: () => {
-      void queryClient.invalidateQueries('Admin')
+      void queryClient.invalidateQueries('admin-management')
       toast({
         title: 'Berhasil',
         description: 'Data Admin berhasil ditambahkan'
@@ -52,7 +53,7 @@ export const useDeleteAdmin = () => {
 
   return useMutation(deleteAdminFn, {
     onSuccess: async () => {
-      await queryClient.invalidateQueries('management-admin')
+      await queryClient.invalidateQueries('admin-management')
       toast({
         variant: 'default',
         duration: 1500,
@@ -69,7 +70,7 @@ export const useUpdateAdmin = () => {
 
   return useMutation(updateAdminFn, {
     onSuccess: () => {
-      void queryClient.invalidateQueries('management-admin')
+      void queryClient.invalidateQueries('admin-management')
       toast({
         title: 'Proses Berhasil.',
         description: 'Data Admin Berhasil Diubah.'
@@ -95,7 +96,7 @@ export const useGetAdminById = (id?: string) => {
 }
 
 export const useGetRole = () => {
-  return useQuery('role', async () => await getRoleFn(), {
+  return useQuery('user-access', async () => await getRoleFn(), {
     enabled: true
   })
 }
@@ -111,7 +112,7 @@ export const useCreateRolePermission = () => {
   const { toast } = useToast()
   return useMutation(storeRolePermissionFn, {
     onSuccess: () => {
-      void queryClient.invalidateQueries('role-permission')
+      void queryClient.invalidateQueries('user-access')
       toast({
         title: 'Berhasil',
         description: 'Data Role Permission berhasil ditambahkan'
@@ -130,6 +131,22 @@ export const useCreateRolePermission = () => {
   })
 }
 
+export const useDeleteRolePermission = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(deleteRolePermissionFn, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries('user-access')
+      toast({
+        variant: 'default',
+        duration: 1500,
+        title: 'Proses Berhasil',
+        description: 'Role Permission Berhasil Dihapus'
+      })
+    }
+  })
+}
+
 export const useGetUsers = () => {
   return useQuery('user-management', async () => await getUsersFn(), {
     enabled: true
@@ -141,7 +158,7 @@ export const useDeleteUser = () => {
 
   return useMutation(deleteUserFn, {
     onSuccess: async () => {
-      await queryClient.invalidateQueries('management-user')
+      await queryClient.invalidateQueries('user-management')
       toast({
         variant: 'default',
         duration: 1500,
@@ -158,7 +175,7 @@ export const useUpdateUser = () => {
 
   return useMutation(updateUserFn, {
     onSuccess: () => {
-      void queryClient.invalidateQueries('management-user')
+      void queryClient.invalidateQueries('user-management')
       toast({
         title: 'Proses Berhasil.',
         description: 'Data Admin Berhasil Diubah.'
