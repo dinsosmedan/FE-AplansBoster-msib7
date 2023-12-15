@@ -18,6 +18,7 @@ interface FormValues {
   nik: string
   prodi: string
   identityCard: FileWithPreview[]
+  datePicker: Date
 }
 
 export default function BbpRegister() {
@@ -97,12 +98,12 @@ export default function BbpRegister() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             <FormField
-              name="datepicker"
+              name="datePicker"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Jadwal Pelaksaaan</FormLabel>
-                  <DatePicker selected={field.value as Date} onChange={field.onChange} placeholder="dd/mm/yyy" />
+                  <DatePicker selected={field.value} onChange={field.onChange} placeholder="dd/mm/yyy" />
                   <FormMessage />
                 </FormItem>
               )}
