@@ -68,36 +68,34 @@ const DataBpnt = () => {
 
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    const response = await exportNonCashFoodAssistanceFn('csv',
-    {
-    q
-  })
-    if (response.success) {
-    void alert({
-      title: 'Berhasil Export',
-      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
-      submitText: 'Oke',
-      variant: 'success'
+    const response = await exportNonCashFoodAssistanceFn('csv', {
+      q
     })
-    setIsLoadingExport(false)
-  }
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+      setIsLoadingExport(false)
+    }
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    const response = await exportNonCashFoodAssistanceFn('xlsx',
-    {
-    q
-  })
-    if (response.success) {
-    void alert({
-      title: 'Berhasil Export',
-      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
-      submitText: 'Oke',
-      variant: 'success'
+    const response = await exportNonCashFoodAssistanceFn('xlsx', {
+      q
     })
-    setIsLoadingExport(false)
-  }
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+      setIsLoadingExport(false)
+    }
   }
 
   if (isLoading && isLoadingNonCash) return <Loading />

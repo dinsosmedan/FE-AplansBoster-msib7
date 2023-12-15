@@ -277,3 +277,11 @@ export const getCountTuitionAssistanceFn = async () => {
   const response = await api.get('/dashboard/linjamsos/chart/tuition-assistance')
   return response.data?.data
 }
+interface updateTuitionsAssistanceParams {
+  id: string
+  fields: tuitionAssistanceFields
+}
+
+export const updateTuitionsAssistanceFn = async ({ id, fields }: updateTuitionsAssistanceParams) => {
+  await api.put(`/service/tuition-assistance-application/${id}`, fields)
+}

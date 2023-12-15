@@ -79,7 +79,7 @@ export default function CekBansosUser() {
         </form>
       </section>
       <div className="px-14 pb-9 flex flex-col gap-5 mt-[72px] min-h-[calc(100vh-340px)]">
-        {!isSuccessBeneficary && !isSuccessAssistance && (
+        {!isSuccessBeneficary && !isSuccessAssistance && !isErrorAssistance && !isErrorBeneficary && (
           <NoData
             image={CekBansosIlustration}
             title="Cek BANSOS Anda"

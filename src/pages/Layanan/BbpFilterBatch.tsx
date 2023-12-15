@@ -2,52 +2,100 @@ import { Container, Loading, Status } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { useTitle } from '@/hooks'
+import { useCreateParams, useDeleteParams, useGetParams, useTitle } from '@/hooks'
 import { formatToView } from '@/lib/services/formatDate'
-import { useGetEvent } from '@/store/server'
+import { useGetEventTuitionAssistance } from '@/store/server'
 import { useForm } from 'react-hook-form'
-import { HiOutlineExclamationCircle } from 'react-icons/hi2'
+import { HiMagnifyingGlass, HiOutlineExclamationCircle } from 'react-icons/hi2'
 import { useNavigate } from 'react-router-dom'
+import * as React from 'react'
+import { STATUS_EVENT } from '@/lib/data'
 
 interface FormValues {
-  nik: string
+  year: string
+  status: string
 }
 
 export default function BbpFilterBatch() {
   useTitle('Bantuan Biaya Pendidikan (BBP)')
   const navigate = useNavigate()
-  const { data: events, isLoading } = useGetEvent()
-  const forms = useForm<FormValues>({
-    mode: 'onTouched'
-  })
+
+  const createParams = useCreateParams()
+  const deleteParams = useDeleteParams()
+  const { year, status } = useGetParams(['year', 'status'])
+  const forms = useForm<FormValues>()
+
+  React.useEffect(() => {
+    if (year) forms.setValue('year', year)
+    if (status) forms.setValue('status', status)
+  }, [year, status])
+
+  const { data: events, isLoading, refetch, isFetching } = useGetEventTuitionAssistance(year, status)
 
   const onSubmit = async (values: FormValues) => {
-    console.log(values)
+    Object.keys(values).forEach((key) => {
+      if (values[key as keyof FormValues] !== '' && values[key as keyof FormValues] !== undefined) {
+        createParams({ key, value: values[key as keyof FormValues] })
+      } else {
+        deleteParams(key)
+      }
+    })
+    deleteParams('page')
+    await refetch()
   }
 
   if (isLoading) return <Loading />
 
   return (
     <Container>
+      {isFetching && <Loading />}
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="flex flex-row justify-between gap-3 py-6">
             <div className="w-11/12">
               <FormField
-                name="nik"
+                name="status"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Status" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {STATUS_EVENT.map((status, index) => (
+                          <SelectItem key={index} value={status.value}>
+                            {status.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="w-11/12">
+              <FormField
+                name="year"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan NIK Masyarakat" />
+                      <Input {...field} type="number" placeholder="Cari berdasarkan Tahun" />
                     </FormControl>
                   </FormItem>
                 )}
               />
             </div>
-            <div className="w-1/12 flex items-end justify-end">
-              <Button className="w-full">Cari</Button>
+            <div className="flex items-end justify-end">
+              <Button className="gap-2 border-none rounded-lg" type="submit">
+                <HiMagnifyingGlass className="text-lg" />
+                <span className="w-max">Cari Data</span>
+              </Button>
             </div>
           </div>
         </form>
@@ -69,7 +117,7 @@ export default function BbpFilterBatch() {
             {events?.data?.length !== 0 ? (
               events?.data.map((event, index) => (
                 <TableRow key={event.id}>
-                  <TableCell className="bg-[#F9FAFC]">
+                  <TableCell className="bg-[#F9FAFC]" position="center">
                     {(events.meta.currentPage - 1) * events.meta.perPage + index + 1}
                   </TableCell>
                   <TableCell className="bg-[#F9FAFC]">{event.batch}</TableCell>

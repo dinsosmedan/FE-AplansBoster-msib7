@@ -30,7 +30,6 @@ export default function LayananSktm() {
     jenisEvent: string
   }
 
-
   const { alert } = useAlert()
   const showAlert = () => {
     void alert({
@@ -68,8 +67,6 @@ export default function LayananSktm() {
   if (isLoading) {
     return <Loading />
   }
-
-
 
   const onSubmit = async (values: FormValues) => {
     setsearch(values.nik)
@@ -111,39 +108,45 @@ export default function LayananSktm() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {
-              indigencyCertificate.map((valsktm: any, i: any) => {
-                const val = valsktm.peopleConcerned
-                const status = valsktm.applicationStatus
-                const color = status == 'pending' ? 'text-[#FFB60A] ' : status == 'approved' ? 'text-green-500	' : status == 'rejected' ? 'text-rose-500	' : status == 'processed' ? 'text-cyan-500	' : ''
-                return (
-                  <TableRow key={i} >
-                    <TableCell className="text-left bg-[#F9FAFC]">{val.name}</TableCell>
-                    <TableCell className="text-left bg-[#F9FAFC]">{val.identityNumber}</TableCell>
-                    <TableCell className="text-left bg-[#F9FAFC]">{val.address.areaLevel3.name}</TableCell>
-                    <TableCell className="text-left bg-[#F9FAFC]">{val.address.areaLevel4.name}</TableCell>
-                    {/* <TableCell className="text-center bg-[#F9FAFC]">
+            {indigencyCertificate.map((valsktm: any, i: any) => {
+              const val = valsktm.peopleConcerned
+              const status = valsktm.applicationStatus
+              const color =
+                status == 'pending'
+                  ? 'text-[#FFB60A] '
+                  : status == 'approved'
+                  ? 'text-green-500	'
+                  : status == 'rejected'
+                  ? 'text-rose-500	'
+                  : status == 'processed'
+                  ? 'text-cyan-500	'
+                  : ''
+              return (
+                <TableRow key={i}>
+                  <TableCell className="text-left bg-[#F9FAFC]">{val.name}</TableCell>
+                  <TableCell className="text-left bg-[#F9FAFC]">{val.identityNumber}</TableCell>
+                  <TableCell className="text-left bg-[#F9FAFC]">{val.address.areaLevel3.name}</TableCell>
+                  <TableCell className="text-left bg-[#F9FAFC]">{val.address.areaLevel4.name}</TableCell>
+                  {/* <TableCell className="text-center bg-[#F9FAFC]">
                       <div className="bg-[#E9FFEF] rounded-full flex items-center w-fit gap-2 py-1 px-2 mx-auto">
                         <div className="w-2 h-2 rounded-full bg-[#409261]" />
                         <p className="text-[#409261] text-xs">{val.identityNumber}</p>
                       </div>
                     </TableCell> */}
-                    <TableCell className="text-left bg-[#F9FAFC]">{valsktm.dtksStatus}</TableCell>
-                    <TableCell className={`text-left bg-[#F9FAFC] ${color}`}>{status}</TableCell>
-                    <TableCell
-                      className="flex items-center justify-center text-left bg-[#F9FAFC] "
-                      onClick={() => setIsShow(true)}
-                    >
-                      <Button className="py-6">
-                        <p className="text-base font-bold pr-3">Action</p>
-                        <HiOutlineExclamationCircle className="h-6 w-6" />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                )
-              })
-            }
-
+                  <TableCell className="text-left bg-[#F9FAFC]">{valsktm.dtksStatus}</TableCell>
+                  <TableCell className={`text-left bg-[#F9FAFC] ${color}`}>{status}</TableCell>
+                  <TableCell
+                    className="flex items-center justify-center text-left bg-[#F9FAFC] "
+                    onClick={() => setIsShow(true)}
+                  >
+                    <Button className="py-6">
+                      <p className="text-base font-bold pr-3">Action</p>
+                      <HiOutlineExclamationCircle className="h-6 w-6" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              )
+            })}
           </TableBody>
         </Table>
         <Modal isShow={isShow} className="md:max-w-3xl max-h-[calc(100vh-50px)] overflow-y-auto">
@@ -351,7 +354,6 @@ export default function LayananSktm() {
     </Container>
   )
 }
-
 
 // const response = [
 //   {

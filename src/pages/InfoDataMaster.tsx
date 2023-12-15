@@ -5,42 +5,42 @@ import { useParams } from 'react-router-dom'
 const InfoDataMaster = () => {
   const { id } = useParams<{ id: string }>()
   const { data: beneficiary, isLoading } = useGetBeneficaryById(id)
-if (isLoading) {
-  return <Loading />
-}
+  if (isLoading) {
+    return <Loading />
+  }
 
-const TableDataMaster = () => {
-  return (
-    <>
-      <Table className="my-10">
-        <TableHeader className="bg-primary">
-          <TableRow className="text-center">
-            <TableHead className="text-white">NIK</TableHead>
-            <TableHead className="text-white">Nama</TableHead>
-            <TableHead className="text-white">Status</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody className="bg-white">
-        {beneficiary?.familyMembers?.length !== 0 ? (
-              beneficiary?.familyMembers.map((item, index) => (
-            <TableRow key={index} className="text-center">
-            <TableCell className="">{item.identityNumber}</TableCell>
-            <TableCell className="">{item.name}</TableCell>
-            <TableCell className="">{item.isDtks ? 'DTKS' : 'Non DTKS'}</TableCell>
-          </TableRow>
-          ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={9} className="text-center">
-                Tidak ada data
-              </TableCell>
+  const TableDataMaster = () => {
+    return (
+      <>
+        <Table className="my-10">
+          <TableHeader className="bg-primary">
+            <TableRow className="text-center">
+              <TableHead className="text-white">NIK</TableHead>
+              <TableHead className="text-white">Nama</TableHead>
+              <TableHead className="text-white">Status</TableHead>
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </>
-  )
-}
+          </TableHeader>
+          <TableBody className="bg-white">
+            {beneficiary?.familyMembers?.length !== 0 ? (
+              beneficiary?.familyMembers.map((item, index) => (
+                <TableRow key={index} className="text-center">
+                  <TableCell className="">{item.identityNumber}</TableCell>
+                  <TableCell className="">{item.name}</TableCell>
+                  <TableCell className="">{item.isDtks ? 'DTKS' : 'Non DTKS'}</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center">
+                  Tidak ada data
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </>
+    )
+  }
 
   return (
     <>
@@ -111,7 +111,9 @@ const TableDataMaster = () => {
         </div>
         <div className="flex flex-col">
           <p className="font-bold">Tempat,Tanggal Lahir</p>
-          <p>{beneficiary?.birthPlace ?? '-'},{beneficiary?.birthDate ?? '-'}</p>
+          <p>
+            {beneficiary?.birthPlace ?? '-'},{beneficiary?.birthDate ?? '-'}
+          </p>
         </div>
         <div className="flex flex-col">
           <p className="font-bold">Status Kawin</p>

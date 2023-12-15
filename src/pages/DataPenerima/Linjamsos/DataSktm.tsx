@@ -343,11 +343,7 @@ const DataSktm = () => {
                     {item.applicant?.address.areaLevel4?.name ?? '-'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Action
-                      onDelete={async () => await handleDelete(item.id)}
-                      onDetail={() => showDetail(item.id)}
-                      onEdit={() => navigate(`/data-penerima/djpm/create/${item.id}`)}
-                    />
+                    <Action onDelete={async () => await handleDelete(item.id)} onDetail={() => showDetail(item.id)} />
                   </TableCell>
                 </TableRow>
               ))

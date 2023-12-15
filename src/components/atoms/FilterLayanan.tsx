@@ -1,10 +1,24 @@
+import { useCreateParams, useGetParams } from '@/hooks'
+import { type ITuitionAssistanceEvents } from '@/lib/types/service.type'
 import { cn } from '@/lib/utils'
 import React from 'react'
+import { type QueryObserverResult } from 'react-query'
 import { Link } from 'react-router-dom'
 
-export default function FilterLayanan({ data, jenis }: any) {
+interface FilterLayananProps {
+  action: () => Promise<QueryObserverResult<ITuitionAssistanceEvents, unknown>>
+}
+
+export default function FilterLayanan({ data, jenis, action }: any) {
   const [isActive, setIsActive] = React.useState('pending')
 
+  const createParams = useCreateParams()
+  const { applicationStatus } = useGetParams(['applicationStatus'])
+
+  const handleActive = async (value: string) => {
+    createParams({ key: 'applicationStatus', value })
+    await action()
+  }
 
   // console.log(data, jenis);
 
@@ -38,27 +52,25 @@ export default function FilterLayanan({ data, jenis }: any) {
         to={'/layanan/layanan-sktm?tab=processed'}
         onClick={() => setIsActive('processed')}
         className={cn(
-          isActive === 'processed' ? 'text-primary border-b-2 pb-2 border-primary' : 'text-primary/70',
+          applicationStatus === 'pending' ? 'text-primary border-b-2 pb-2 border-primary' : 'text-primary/70',
           'text-2xl font-bold cursor-pointer px-2'
         )}
       >
         Data Direvisi/Diproses
-      </Link>
-      <Link
-        to={'/layanan/layanan-sktm?tab=approved'}
-        onClick={() => setIsActive('approved')}
+      </p>
+      <p
+        onClick={async () => await handleActive('approved')}
         className={cn(
-          isActive === 'approved' ? 'text-primary border-b-2 pb-2  border-primary' : 'text-primary/70',
+          applicationStatus === 'approved' ? 'text-primary border-b-2 pb-2  border-primary' : 'text-primary/70',
           'text-2xl font-bold cursor-pointer px-2'
         )}
       >
         Data Diterima
-      </Link>
-      <Link
-        to={'/layanan/layanan-sktm?tab=rejected'}
-        onClick={() => setIsActive('rejected')}
+      </p>
+      <p
+        onClick={async () => await handleActive('rejected')}
         className={cn(
-          isActive === 'rejected' ? 'text-primary border-b-2 pb-2  border-primary' : 'text-primary/70',
+          applicationStatus === 'rejected' ? 'text-primary border-b-2 pb-2  border-primary' : 'text-primary/70',
           'text-2xl font-bold cursor-pointer px-2'
         )}
       >

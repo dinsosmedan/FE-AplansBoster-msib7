@@ -123,42 +123,40 @@ const DataKube = () => {
 
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    const response = await exportJointBussinessFn('csv',
-    {
-    idKecamatan: kecamatan,
-    idKelurahan: kelurahan,
-    q,
-    year
-  })
-    if (response.success) {
-    void alert({
-      title: 'Berhasil Export',
-      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
-      submitText: 'Oke',
-      variant: 'success'
+    const response = await exportJointBussinessFn('csv', {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+      q,
+      year
     })
-    setIsLoadingExport(false)
-  }
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+      setIsLoadingExport(false)
+    }
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    const response = await exportJointBussinessFn('xlsx',
-    {
-    idKecamatan: kecamatan,
-    idKelurahan: kelurahan,
-    q,
-    year
-  })
-    if (response.success) {
-    void alert({
-      title: 'Berhasil Export',
-      description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
-      submitText: 'Oke',
-      variant: 'success'
+    const response = await exportJointBussinessFn('xlsx', {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+      q,
+      year
     })
-    setIsLoadingExport(false)
-  }
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+      setIsLoadingExport(false)
+    }
   }
 
   if (isLoading && isLoadingBusinessGroup) return <Loading />

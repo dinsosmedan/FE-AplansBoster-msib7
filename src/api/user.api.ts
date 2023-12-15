@@ -36,12 +36,12 @@ export const getUserDetailFn = async (id: string) => {
 }
 
 export const storeUserFn = async (fields: userFields) => {
-    await api.post('/management/admin', fields)
+  await api.post('/management/admin', fields)
 }
 
 export const getRoleFn = async (): Promise<any> => {
-    const response = await api.get('/user-access/role')
-    return response.data
+  const response = await api.get('/user-access/role')
+  return response.data
 }
 
 export const getPermissionFn = async (): Promise<any> => {

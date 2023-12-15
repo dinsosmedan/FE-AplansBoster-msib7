@@ -43,7 +43,8 @@ export default function ForgotPassword() {
       onSuccess: () => {
         void alert({
           title: 'Cek Email Berhasil',
-          description: 'Yay!  Kami baru saja mengirimkan tautan verifikasi ke email Anda. Silakan periksa kotak masuk atau folder spam Anda untuk melanjutkan proses pemulihan kata sandi.',
+          description:
+            'Yay!  Kami baru saja mengirimkan tautan verifikasi ke email Anda. Silakan periksa kotak masuk atau folder spam Anda untuk melanjutkan proses pemulihan kata sandi.',
           submitText: 'Oke',
           variant: 'success'
         })
@@ -85,7 +86,9 @@ export default function ForgotPassword() {
                   </FormItem>
                 )}
               />
-              <Button className="py-6 text-[17px] font-normal" loading={isLoading}>Kirim</Button>
+              <Button className="py-6 text-[17px] font-normal" loading={isLoading}>
+                Kirim
+              </Button>
             </form>
           </Form>
         </div>

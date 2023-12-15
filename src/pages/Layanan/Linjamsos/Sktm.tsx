@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import useTitle from '@/hooks/useTitle'
 import { Container } from '@/components'
 import { HiMagnifyingGlass } from 'react-icons/hi2'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useTitleHeader } from '@/store/client'
 import * as React from 'react'
 import { useCreateIndegencyCertificate, useMutationGetBeneficaryByNIK } from '@/store/server'
@@ -17,8 +17,7 @@ import { CATEGORY_APPLICATION, STATUS_DTKS } from '@/lib/data'
 
 const Pkr = () => {
   const navigate = useNavigate()
-  const { id } = useParams<{ id: string }>()
-  useTitle(`${id ? ' Ubah' : 'Tambah'} Data`)
+  useTitle('Tambah Data')
   const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
 
   React.useEffect(() => {
@@ -33,6 +32,8 @@ const Pkr = () => {
     resolver: yupResolver(indigencyCertificateValidation)
   })
 
+  const [beneficaryApplicant, setBeneficaryApplicant] = React.useState('')
+  const [beneficaryPeopleConcerned, setBeneficaryPeopleConcerned] = React.useState('')
   const { mutate: searchNik, isLoading, isError, isSuccess } = useMutationGetBeneficaryByNIK()
   const { mutate: createIndegencyCertificate, isLoading: isLoadingCreate } = useCreateIndegencyCertificate()
 
@@ -50,8 +51,9 @@ const Pkr = () => {
         onError: () => {
           forms.setError('applicant', { type: 'manual', message: 'NIK tidak terdaftar' })
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
           forms.clearErrors('applicant')
+          setBeneficaryApplicant(data.id)
         }
       })
     }
@@ -64,8 +66,9 @@ const Pkr = () => {
         onError: () => {
           forms.setError('peopleConcerned', { type: 'manual', message: 'NIK tidak terdaftar' })
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
           forms.clearErrors('peopleConcerned')
+          setBeneficaryPeopleConcerned(data.id)
         }
       })
     }
@@ -77,7 +80,13 @@ const Pkr = () => {
   }
 
   const onSubmit = async (values: indigencyCertificateFields) => {
-    if (!id) return createIndegencyCertificate(values, { onSuccess })
+    const newData = {
+      ...values,
+      applicant: beneficaryApplicant,
+      peopleConcerned: beneficaryPeopleConcerned
+    }
+
+    createIndegencyCertificate(newData, { onSuccess })
   }
 
   return (
@@ -156,8 +165,8 @@ const Pkr = () => {
                       </FormControl>
                       <SelectContent>
                         {STATUS_DTKS.map((status, index) => (
-                          <SelectItem key={index} value={status} className="capitalize">
-                            {status}
+                          <SelectItem key={index} value={status.value} className="capitalize">
+                            {status.label}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -215,7 +224,7 @@ const Pkr = () => {
                 Cancel
               </Button>
               <Button className="font-bold" type="submit" loading={isLoadingCreate}>
-                {id ? 'Ubah Data' : 'Submit'}
+                Submit
               </Button>
             </div>
           </form>

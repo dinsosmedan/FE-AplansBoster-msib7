@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useToken } from '@/store/client'
+import { useAuth } from '@/store/client'
 import ENV from '@/lib/environment'
 
 const api = axios.create({
@@ -13,10 +13,11 @@ api.defaults.headers.post['Content-Type'] = 'application/json'
 
 api.interceptors.request.use(
   (config) => {
-    const token = useToken.getState().token
+    // const token = useToken.getState().token
+    const auth = useAuth.getState()
 
-    if (token !== '') {
-      config.headers.Authorization = `Bearer ${token}`
+    if (auth?.token && auth.user?.role !== null) {
+      config.headers.Authorization = `Bearer ${auth.token}`
     }
     return config
   },
@@ -27,7 +28,8 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response.status === 401) {
-      useToken.getState().removeToken()
+      // useToken.getState().removeToken()
+      useAuth.getState().removeToken()
       window.location.href = '/login'
     }
     return await Promise.reject(error)
