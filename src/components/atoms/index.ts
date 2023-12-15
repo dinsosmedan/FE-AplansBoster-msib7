@@ -11,6 +11,7 @@ import ExportButton from './ExportButton'
 import FilterLayanan from './FilterLayanan'
 import TextEditor from './TextEditor'
 import Status from './Status'
+import Markdown from './Markdown'
 
 export {
   Loading,
@@ -25,5 +26,6 @@ export {
   ExportButton,
   FilterLayanan,
   TextEditor,
-  Status
+  Status,
+  Markdown
 }

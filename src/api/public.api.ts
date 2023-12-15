@@ -1,6 +1,6 @@
 import ENV from '@/lib/environment'
 import { type IUniversity } from '@/lib/types/linjamsos.type'
-import { type IBank, type IAssistanceCheck } from '@/lib/types/public.type'
+import { type IBank, type IAssistanceCheck, type IPublicEventTuition } from '@/lib/types/public.type'
 import axios from 'axios'
 
 const apiPublic = axios.create({
@@ -27,5 +27,10 @@ export const getStudyProgramsFn = async (universityId: string): Promise<IUnivers
 
 export const getBankListFn = async (): Promise<IBank[]> => {
   const response = await apiPublic.get('/bank')
+  return response.data?.data
+}
+
+export const getPublicEventTuitionFn = async (): Promise<IPublicEventTuition[]> => {
+  const response = await apiPublic.get('/public/event/tuition-assistance')
   return response.data?.data
 }

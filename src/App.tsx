@@ -228,6 +228,10 @@ export default function App() {
 
               <Route path="sktm">
                 <Route index element={<UserSktm />} />
+                <Route path="register" element={<SktmRegister />} />
+                <Route path="unregister" element={<SktmUnregister />} />
+                <Route path="register-religious" element={<SktmReligious />} />
+                <Route path="unregister-religious" element={<SktmUnregisterReligious />} />
                 <Route path="dtks-school" element={<DtksSchool />} />
                 <Route path="dtks-school/form" element={<SktmRegister />} />
                 <Route path="non-dtks-school" element={<NonDtksSchool />} />
@@ -240,7 +244,8 @@ export default function App() {
 
               <Route path="bbp">
                 <Route index element={<BbpUser />} />
-                <Route path="register-bbp" element={<BbpRegister />} />
+                <Route path=":id" element={<BbpUser />} />
+                <Route path="form/:id" element={<BbpRegister />} />
               </Route>
 
               <Route path="dtks">

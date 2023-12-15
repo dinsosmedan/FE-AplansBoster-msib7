@@ -191,18 +191,18 @@ export interface IStudyProgram {
   name: string
 }
 export interface IDocument {
-  applicationLetter: string
-  photo: string
-  familyCard: string
-  identityCard: string
-  studentCard: string
-  activeStudentCertificate: string
-  noScholarshipStatement: string
-  noGovernmentEmployeeStatement: string
-  biodata: string
-  dtksPrintout: string
-  passBook: string
-  tuitionReceipt: string
+  applicationLetter: string | null
+  photo: string | null
+  familyCard: string | null
+  identityCard: string | null
+  studentCard: string | null
+  activeStudentCertificate: string | null
+  noScholarshipStatement: string | null
+  noGovernmentEmployeeStatement: string | null
+  biodata: string | null
+  dtksPrintout: string | null
+  passBook: string | null
+  tuitionReceipt: string | null
   createdAt: string
   updatedAt: string
 }
