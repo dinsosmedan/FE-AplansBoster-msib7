@@ -9,20 +9,40 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from '@/components/ui/select'
 import DropZone, { type FileWithPreview } from '../../../components/atoms/DropZone'
 import DatePicker from './../../../components/atoms/DatePicker'
+import { useGetPublicEventTuition } from '@/store/server'
+import { Loading } from '@/components'
+import * as React from 'react'
+import { useParams } from 'react-router-dom'
 
 interface FormValues {
   nik: string
   prodi: string
   identityCard: FileWithPreview[]
+  datePicker: Date
 }
 
 export default function BbpRegister() {
+  const { id } = useParams<{ id: string }>()
+  const { data, isLoading, isSuccess } = useGetPublicEventTuition()
+  const [details, setDetails] = React.useState('')
+
+  React.useEffect(() => {
+    if (id) {
+      setDetails(data?.find((item) => item.id === id)?.batch as string)
+    } else {
+      setDetails(data?.[0]?.batch as string)
+    }
+  }, [isSuccess, id])
+
   const forms = useForm<FormValues>({
     mode: 'onTouched'
   })
+
   const onSubmit = async (values: FormValues) => {
     console.log(values)
   }
+
+  if (isLoading) return <Loading />
 
   return (
     <ContainerUser title={'Form Pengajuan Bantuan Biaya Pendidikan Gelombang I 2023 '}>
@@ -78,12 +98,12 @@ export default function BbpRegister() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             <FormField
-              name="datpicker"
+              name="datePicker"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Jadwal Pelaksaaan</FormLabel>
-                  <DatePicker selected={field.value as Date} onChange={field.onChange} placeholder="dd/mm/yyy" />
+                  <DatePicker selected={field.value} onChange={field.onChange} placeholder="dd/mm/yyy" />
                   <FormMessage />
                 </FormItem>
               )}

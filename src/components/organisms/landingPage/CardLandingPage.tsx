@@ -40,7 +40,12 @@ export default function CardLandingPage({
     >
       {Icon && <Icon className="text-[68px] text-primary" />}
       <h3 className="font-semibold text-xl">{title}</h3>
-      {desc && <p className="font-medium  text-[#666666]">{desc}</p>}
+      {desc && (
+        <article
+          dangerouslySetInnerHTML={{ __html: desc }}
+          className="font-medium text-[#666666] prose max-w-none truncate-2 text-base"
+        />
+      )}
       <Button className="gap-3 text-white py-7">
         <span className="text-[17px]">{btnText}</span>
         {isHadButtonIcon && <HiArrowRightCircle className="text-[28px]" />}

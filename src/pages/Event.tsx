@@ -35,7 +35,9 @@ const Event = () => {
   const { data: events, isFetching, refetch } = useGetEvent(status, year, page)
   const { mutateAsync: deleteEvent } = useDeleteEvent()
 
-  if (!user?.role.name.includes('admin')) {
+  if (
+    !user?.role.permissions.find((permission) => permission.slugName === 'pengajuan-dtks' && !permission.isPermitted)
+  ) {
     return <div>You are not have permission to access this menu</div>
   }
 

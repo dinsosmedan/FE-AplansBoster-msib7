@@ -2,9 +2,13 @@ import {
   getIndigencyCertificateFn,
   getTuitionAssistanceByEventId,
   showTuitionAssistanceEventFn,
-  type getTuitionAssistanceParams
+  type getTuitionAssistanceParams,
+  updateTuitionAssistanceEventFn
 } from '@/api/service.api'
-import { useQuery } from 'react-query'
+import { handleMessage } from '@/lib/services/handleMessage'
+import { handleOnError } from '@/lib/utils'
+import { type AxiosError } from 'axios'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 
 export const useGetTuitionAssistanceByEventId = ({
   eventId,
@@ -28,4 +32,18 @@ export const useGetIndigencyCertificate = (status: any, search: any) => {
 }
 export const useGetTuitionAssistanceEventById = (id: string) => {
   return useQuery(['tuition-assistance', id], async () => await showTuitionAssistanceEventFn(id), { enabled: !!id })
+}
+
+export const useUpateTuitionAssistanceEvent = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(updateTuitionAssistanceEventFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('tuition-assistance')
+      handleMessage({ title: 'Data BBP', variant: 'update' })
+    },
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    }
+  })
 }

@@ -61,6 +61,11 @@ import DtksSchool from './LandingPage/Sktm/DtksSchool'
 import NonDtksSchool from './LandingPage/Sktm/NonDtksSchool'
 import DtksCourts from './LandingPage/Sktm/DtksCourts'
 import NonDtksCourts from './LandingPage/Sktm/NonDtksCourts'
+import UserSktm from './LandingPage/Sktm/SktmUser'
+import SktmUnregister from './LandingPage/Sktm/SktmUnregister'
+import SktmRegister from './LandingPage/Sktm/SktmRegister'
+import SktmReligious from './LandingPage/Sktm/SktmUnregisterReligious'
+import SktmUnregisterReligious from './LandingPage/Sktm/SktmRegisterReligious'
 
 export {
   Home,

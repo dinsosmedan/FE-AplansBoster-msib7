@@ -51,6 +51,7 @@
     "zustand": "^4.4.6"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
     "@types/faker": "5.5.9",
     "@types/node": "^20.9.0",
     "@types/react": "^18.2.15",

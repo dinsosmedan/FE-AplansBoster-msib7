@@ -1,4 +1,10 @@
-import { getBankListFn, getStudyProgramsFn, getUniversitiesFn, showAssistanceCheckFn } from '@/api/public.api'
+import {
+  getBankListFn,
+  getPublicEventTuitionFn,
+  getStudyProgramsFn,
+  getUniversitiesFn,
+  showAssistanceCheckFn
+} from '@/api/public.api'
 import { useQuery } from 'react-query'
 
 export const useGetAssistanceCheck = (nik: string, enabled: boolean) => {
@@ -19,4 +25,8 @@ export const useGetStudyPrograms = (universityId: string) => {
 
 export const useGetBank = () => {
   return useQuery('banks', async () => await getBankListFn())
+}
+
+export const useGetPublicEventTuition = () => {
+  return useQuery('public-event-tuition', async () => await getPublicEventTuitionFn())
 }
