@@ -1,0 +1,5 @@
+Edit Data: {{base_url}}/service/tuition-assistance-application/9acadeb4-0cbf-482e-803f-317a9f0490be [Update Tuition Assistance Application]
+GET DATA EDIT PENGAJUAN: {{base_url}}/service/tuition-assistance-application/event/:eventId [Show Tuition Assistance Application]
+EDIT DATA PENGAJUAN: {{base_url}}/service/tuition-assistance-application/:id/status [Update Application Status]
+GET BBP LANDING PAGE: {{base_url}}/public/event/tuition-assistance [Get Event]
+CREATE: /PUBLIC/TUITION-ASSISTANCE

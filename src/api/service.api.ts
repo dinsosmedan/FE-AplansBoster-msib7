@@ -1,3 +1,4 @@
+import { type updateTuitionAssistanceFields } from '@/lib/validations/linjamsos.validation'
 import api from './axiosInstance'
 import { type ITuitionAssistanceEvent, type ITuitionAssistanceEvents } from '@/lib/types/service.type'
 
@@ -28,4 +29,13 @@ export const getIndigencyCertificateFn = async (status: any, search: any): Promi
 export const showTuitionAssistanceEventFn = async (id: string): Promise<ITuitionAssistanceEvent> => {
   const response = await api.get(`/service/tuition-assistance-application/${id}`)
   return response.data?.data
+}
+
+interface updateTuitionAssistanceEventParams {
+  id: string
+  fields: updateTuitionAssistanceFields
+}
+
+export const updateTuitionAssistanceEventFn = async ({ id, fields }: updateTuitionAssistanceEventParams) => {
+  await api.put(`/service/tuition-assistance-application/${id}`, fields)
 }

@@ -28,3 +28,16 @@ export interface IBank {
   createdAt: string
   updatedAt: string
 }
+
+export interface IPublicEventTuition {
+  id: string
+  eventDescription: string
+  startDate: string
+  endDate: string
+  isActive: boolean
+  status: string
+  batch: string
+  quota: number
+  filledQuota: number
+  requiredDocuments: null | string
+}

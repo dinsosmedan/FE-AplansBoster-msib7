@@ -9,7 +9,7 @@ export default function UserLayout({ children }: UserLayoutProps) {
   return (
     <>
       <HeaderUser />
-      <main className="mt-20 font-poppins">{children ?? <Outlet />}</main>
+      <main className="mt-20 font-poppins min-h-[calc(100vh-80px)]">{children ?? <Outlet />}</main>
       <FooterUser />
     </>
   )
