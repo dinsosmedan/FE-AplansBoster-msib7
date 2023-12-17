@@ -3,7 +3,7 @@ import { Link, Outlet } from 'react-router-dom'
 
 export default function ProfileLayout() {
   return (
-    <div className="min-h-[1350px] lg:min-h-screen pb-20 mb-20 ">
+    <div className="min-h-[1300px] lg:min-h-[900px] pb-20 mb-20 ">
       <div className="bg-[url('@/assets/images/bg-profile.svg')] h-[275px] lg:relative">
         <div className="pt-[200px] rounded-lg z-10 lg:mx-10  lg:flex lg:flex-row lg:gap-10">
           <div className="md:py-[53px] py-10  h-[100%] bg-white lg:w-[486px] w-[90%] mx-auto flex flex-col items-center md:px-16 px-5 shadow-xl rounded-lg">
