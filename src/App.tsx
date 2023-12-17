@@ -37,16 +37,7 @@ import {
   DataPenerima,
   NotFound,
   ResetPassword,
-  ManajemenAdmin,
-  UserSktm,
-  SktmRegister,
-  SktmUnregister,
-  SktmReligious,
-  SktmUnregisterReligious,
-  DtksSchool,
-  NonDtksSchool,
-  DtksCourts,
-  NonDtksCourts
+  ManajemenAdmin
 } from './pages'
 
 import {
@@ -77,6 +68,11 @@ import { Toaster } from './components/ui/toaster'
 import DataBpnt from './pages/DataPenerima/Dayasos/DataBpnt'
 import DataPbi from './pages/DataPenerima/Linjamsos/DataPbi'
 import Unregister from './pages/Layanan/Linjamsos/Unregister'
+import UserSktm from './pages/LandingPage/Sktm/SktmUser'
+import SktmUnregister from './pages/LandingPage/Sktm/SktmUnregister'
+import SktmRegister from './pages/LandingPage/Sktm/SktmRegister'
+import SktmReligious from './pages/LandingPage/Sktm/SktmRegisterReligious'
+import SktmUnregisterReligious from './pages/LandingPage/Sktm/SktmUnregisterReligious'
 import BbpUser from './pages/LandingPage/Bbp/BbpUser'
 import BbpRegister from './pages/LandingPage/Bbp/BbpRegister'
 import BbpFilterBatch from './pages/Layanan/BbpFilterBatch'
@@ -92,6 +88,10 @@ import ChangeProfile from './pages/LandingPage/Profile/ChangeProfile'
 import ProfileLayout from './components/layouts/landingPage/ProfileLayout'
 import SuccessfulRegister from './components/layouts/landingPage/SuccessfulRegister'
 import VerifiedAccount from './components/layouts/landingPage/VerifiedAccount'
+import DtksSchool from './pages/LandingPage/Sktm/DtksSchool'
+import NonDtksSchool from './pages/LandingPage/Sktm/NonDtksSchool'
+import DtksCourts from './pages/LandingPage/Sktm/DtksCourts'
+import NonDtksCourts from './pages/LandingPage/Sktm/NonDtksCourts'
 
 export default function App() {
   useScrollToTop()
