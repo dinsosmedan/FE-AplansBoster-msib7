@@ -38,7 +38,7 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-      <section className="py-[70px] px-14 bg-[#F9F9F9] relative overflow-hidden">
+      <section className="py-[70px] md:px-14 px-5 bg-[#F9F9F9] relative overflow-hidden">
         <div className="w-96 h-96 opacity-20 bg-rose-600 rounded-full absolute top-[calc(-192px+38px)] right-[calc(-192px+103px)] blur-3xl" />
         <div className="text-center mb-11 mt-0">
           <Button
@@ -58,7 +58,7 @@ export default function LandingPage() {
             Pengajuan Bantuan Secara Online Menjadi Mudah dan bisa dilakukan dimana saja
           </p>
         </div>
-        <div className="mt-16 grid grid-cols-1 lg:grid-cols-3 gap-[92px]">
+        <div className="mt-16 grid grid-cols-1 lg:grid-cols-3 lg:gap-[92px] gap-[40px]">
           <CardLandingPage
             title="DTKS (Data Terpadu Kesejahteraan Sosial)"
             desc="Layanan Pengajuan DTKS (Data Terpadu Kesejahteraan Sosial)"
