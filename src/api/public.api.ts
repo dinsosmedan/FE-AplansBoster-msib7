@@ -34,3 +34,24 @@ export const getPublicEventTuitionFn = async (): Promise<IPublicEventTuition[]> 
   const response = await apiPublic.get('/public/event/tuition-assistance')
   return response.data?.data
 }
+export const registerUserFn = async (fields: RegisterUserFields) => {
+  const formData = new FormData()
+  formData.append('name', fields.name)
+  formData.append('email', fields.email)
+  formData.append('identityNumber', fields.identityNumber)
+  formData.append('phoneNumber', fields.phoneNumber)
+  formData.append('password', fields.password)
+  if (Array.isArray(fields.identityCard) && fields.identityCard.length > 0) {
+    formData.append('identityCard', fields.identityCard[0] as File)
+  }
+
+  if (Array.isArray(fields.selfie) && fields.selfie.length > 0) {
+    formData.append('selfie', fields.selfie[0] as File)
+  }
+
+  await apiPublic.post('/public/auth/register', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}

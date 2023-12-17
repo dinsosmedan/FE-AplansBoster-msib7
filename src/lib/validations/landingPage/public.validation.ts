@@ -41,3 +41,41 @@ export const publicEventTuition = yup.object({
 })
 
 export type publicEventTuitionFields = yup.InferType<typeof publicEventTuition>
+export const publicEventDTKS = yup.object({
+  identityNumber: yup.string().required('NIK harus diisi'),
+  name: yup.string().required('Nama harus diisi'),
+  birthPlace: yup.string().required('Tempat lahir harus diisi'),
+  birthDate: yup
+    .string()
+    .required('Tanggal lahir harus diisi')
+    .test('valid-date', 'Format tanggal salah', function (value) {
+      return !isNaN(Date.parse(value))
+    }),
+  motherName: yup.string().required('Nama ibu harus diisi'),
+  gender: yup.string().required('Jenis kelamin harus diisi'),
+  occupation: yup.string().required('Pekerjaan harus diisi'),
+  maritalStatus: yup.string().required('Status pernikahan harus diisi'),
+  areaLevel3: yup.string().required('Kecamatan harus diisi'),
+  areaLevel4: yup.string().required('Kelurahan harus diisi'),
+  address: yup.string().required('Alamat harus diisi'),
+  question1: yup.number().required('Pertanyaan 1 harus diisi'),
+  question2: yup.number().required('Pertanyaan 2 harus diisi'),
+  question3: yup.number().required('Pertanyaan 3 harus diisi'),
+  question4: yup.number().required('Pertanyaan 4 harus diisi'),
+  question5: yup.number().required('Pertanyaan 5 harus diisi'),
+  question6: yup.number().required('Pertanyaan 6 harus diisi'),
+  question7: yup.number().required('Pertanyaan 7 harus diisi'),
+  question8: yup.number().required('Pertanyaan 8 harus diisi'),
+  question9: yup.number().required('Pertanyaan 9 harus diisi'),
+  question10: yup.number().required('Pertanyaan 10 harus diisi'),
+  assistanceProgram: yup.string().required('Program bantuan harus diisi'),
+  disabilityStatus: yup.string().required('Status disabilitas harus diisi'),
+  pregnantDate: yup.string().required('Tanggal hamil harus diisi'),
+  familyRelationship: yup.string().required('Hubungan keluarga harus diisi'),
+  remoteIndigenousStatus: yup.string().required('Status suku harus diisi'),
+  tribeName: yup.string().required('Nama suku harus diisi'),
+  indentityPath: yup.mixed().required('KTP harus diupload'),
+  housePath: yup.mixed().required('Foto rumah harus diupload')
+})
+
+export type PublicDTKSFields = yup.InferType<typeof publicEventDTKS>
