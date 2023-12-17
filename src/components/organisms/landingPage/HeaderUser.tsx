@@ -114,7 +114,7 @@ export default function HeaderUser() {
               <>
                 <div className="h-10 w-1 rounded-full bg-[#F5F5F5]" />
                 <div className="flex items-center gap-8">
-                <Link to="/user/login" className="hover:text-primary hidden lg:block">
+                <Link to="/user/login" className="hover:text-primary hidden md:block">
                     Masuk
                   </Link>
                   <Link to="/user/register">

@@ -57,13 +57,13 @@ export default function CekBansosUser() {
       {(isFetchingBeneficary || isFetchingAssistance) && <Loading />}
       <section className="h-[250px] w-full bg-[url('@/assets/images/bg-cek-bansos.svg')] bg-cover relative">
         <div className="flex items-center justify-center h-full">
-          <h1 className="text-5xl font-bold text-white">
+          <h1 className="lg:text-5xl md:text-3xl text-3xl font-bold text-white">
             Cek Bantuan <span className="text-[#FFB60A]">Sosial</span>
           </h1>
         </div>
 
         <form
-          className="flex bg-white w-[40%] absolute left-1/2 -translate-x-1/2 -bottom-[28px] shadow-lg rounded-lg"
+          className="flex bg-white lg:w-[40%] md:w-[70%] w-[95%] absolute left-1/2 -translate-x-1/2 -bottom-[28px] shadow-lg rounded-lg"
           onSubmit={handleSubmit}
         >
           <input
@@ -78,7 +78,7 @@ export default function CekBansosUser() {
           </Button>
         </form>
       </section>
-      <div className="px-14 pb-9 flex flex-col gap-5 mt-[72px] min-h-[calc(100vh-340px)]">
+      <div className="md:px-14 px-5 pb-9 flex flex-col gap-5 mt-[72px] min-h-[calc(100vh-340px)]">
         {!isSuccessBeneficary && !isSuccessAssistance && !isErrorAssistance && !isErrorBeneficary && (
           <NoData
             image={CekBansosIlustration}
@@ -87,15 +87,15 @@ export default function CekBansosUser() {
           />
         )}
         {isSuccessBeneficary && (
-          <section className="bg-white px-9 py-8">
+          <section className="bg-white px-9 py-8 hidden lg:block">
             <Table containerClassName="max-w-none">
               <TableHeader>
                 <TableRow className="hover:bg-white border-none">
                   <TableHead className="text-black font-bold text-xl">NIK</TableHead>
                   <TableHead className="text-black font-bold text-xl">Nama</TableHead>
                   <TableHead className="text-black font-bold text-xl">Jenis Kelamin</TableHead>
-                  <TableHead className="text-black font-bold text-xl">Kelurahan</TableHead>
                   <TableHead className="text-black font-bold text-xl">Kecamatan</TableHead>
+                  <TableHead className="text-black font-bold text-xl">Kelurahan</TableHead>
                   <TableHead className="text-black font-bold text-xl">DTKS</TableHead>
                 </TableRow>
               </TableHeader>
@@ -112,8 +112,38 @@ export default function CekBansosUser() {
             </Table>
           </section>
         )}
+        {isSuccessBeneficary && (
+          <section className="bg-white px-9 py-8 lg:hidden">
+            <div className="flex flex-col gap-5 grid md:grid-cols-2 text-center">
+                <div>
+                  <p className="text-base font-bold">NIK</p>
+                  <p className="text-base ">{beneficary?.identityNumber}</p>
+                </div>
+                <div>
+                  <p className="text-base font-bold">Nama</p>
+                  <p className="text-base ">{beneficary?.name}</p>
+                </div>
+                <div>
+                  <p className="text-base font-bold">Jenis Kelamin</p>
+                  <p className="text-base ">{beneficary?.gender}</p>
+                </div>
+                <div>
+                  <p className="text-base font-bold">Kecamatan</p>
+                  <p className="text-base ">{beneficary?.address.areaLevel3?.name}</p>
+                </div>
+                <div>
+                  <p className="text-base font-bold">Kelurahan</p>
+                  <p className="text-base">{beneficary?.address.areaLevel4?.name}</p>
+                </div>
+                <div>
+                  <p className="text-base font-bold">DTKS</p>
+                  <p className="text-base">{beneficary?.isDtks ? 'IYA' : 'TIDAK'}</p>
+                </div>
+              </div>
+          </section>
+        )}
         {isSuccessAssistance && (
-          <section className="bg-white py-14 px-32">
+          <section className="bg-white py-14 lg:px-32 md:px-14 px-5">
             <Table containerClassName="max-w-none">
               <TableHeader>
                 <TableRow className="hover:bg-white">
