@@ -51,7 +51,7 @@ export default function UpdatePasswordUser() {
             render={({ field }) => (
               <FormItem className="">
                 <FormLabel className="font-semibold dark:text-white">Password Baru</FormLabel>
-                <FormControl className="w-[522px]">
+                <FormControl className="w-[100%]">
                   <Password
                     {...field}
                     value={field.value ?? ''}
@@ -69,12 +69,12 @@ export default function UpdatePasswordUser() {
             render={({ field }) => (
               <FormItem className="">
                 <FormLabel className="font-semibold dark:text-white">Konfirmasi Password</FormLabel>
-                <FormControl className="w-[522px]">
+                <FormControl className="w-[100%]">
                   <Password
                     {...field}
                     value={field.value ?? ''}
                     placeholder="Konfirmasi Password Baru Anda"
-                    className="py-6 rounded-lg"
+                    className="md:py-6 rounded-lg"
                   />
                 </FormControl>
                 <FormMessage />

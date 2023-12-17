@@ -63,7 +63,7 @@ export default function ForgotPasswordUser() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
-                <FormControl className="w-[522px]">
+                <FormControl className="w-[100%]">
                   <Input
                     {...field}
                     value={field.value ?? ''}
@@ -76,7 +76,7 @@ export default function ForgotPasswordUser() {
               </FormItem>
             )}
           />
-          <Button className="rounded-lg py-6" loading={isLoading}>
+          <Button className="rounded-lg md:py-6" loading={isLoading}>
             Kirim
           </Button>
         </form>
