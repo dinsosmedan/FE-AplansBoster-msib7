@@ -38,7 +38,7 @@ export default function LoginUser() {
             render={({ field }) => (
               <FormItem className="mt-[30px] mb-5">
                 <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
-                <FormControl className="w-[522px]">
+                <FormControl className="w-[100%]">
                   <Input
                     {...field}
                     value={field.value ?? ''}
@@ -57,7 +57,7 @@ export default function LoginUser() {
             render={({ field }) => (
               <FormItem className="">
                 <FormLabel className="font-semibold dark:text-white">Password</FormLabel>
-                <FormControl className="w-[522px]">
+                <FormControl className="w-[100%]">
                   <Password
                     {...field}
                     value={field.value ?? ''}
@@ -69,7 +69,7 @@ export default function LoginUser() {
               </FormItem>
             )}
           />
-          <Button className="rounded-lg w-full py-6 mb-6 mt-[30px] text-lg" type="submit" loading={isLoading}>
+          <Button className="rounded-lg w-full md:py-6 mb-6 mt-[30px] md:text-lg" type="submit" loading={isLoading}>
             Masuk
           </Button>
           <Link to="/user/forgot-password" className="text-primary">
@@ -79,7 +79,7 @@ export default function LoginUser() {
             <Button
               type="button"
               onClick={() => navigate('/user/register')}
-              className="bg-[#00923F] hover:bg-[#00923F]/80 rounded-lg w-full py-6 text-lg"
+              className="bg-[#00923F] hover:bg-[#00923F]/80 rounded-lg w-full md:py-6 md:text-lg"
             >
               Buat Akun
             </Button>
