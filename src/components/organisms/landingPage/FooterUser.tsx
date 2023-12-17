@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 export default function FooterUser() {
   return (
-    <footer className="bg-[#161C28] font-poppins lg:px-10">
+    <footer className="bg-[#161C28] font-poppins lg:px-10 mt-[-100px]">
       <section className="md:p-20 p-8 pt-20 md:pt-20">
         <div className="lg:flex justify-between">
           <div>
