@@ -74,7 +74,7 @@ export default function ChangeProfile() {
           </div>
           <div className="flex justify-end gap-5 items-center pt-20 px-7 items-center">
             <Button className="md:w-[200px] w-[100%] h-[50px]">
-              <p className="text-lg">Edit</p>
+              <p className="text-lg">Ubah</p>
               <HiPencil className="w-4 h-4 ml-3 mb-1" />
             </Button>
           </div>
