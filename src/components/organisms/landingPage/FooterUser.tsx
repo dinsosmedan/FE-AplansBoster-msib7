@@ -44,7 +44,6 @@ export default function FooterUser() {
                 </li>
               </ul>
             </div>
-            
           </div>
           <div className="flex flex-col text-white mt-10">
             <p className="font-semibold text-xl">Lokasi Kami</p>
