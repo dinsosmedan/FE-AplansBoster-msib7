@@ -17,7 +17,7 @@ export default function ChangeProfile() {
     console.log(values)
   }
   return (
-    <div className="bg-white lg:w-[90%] w-[90%] h-[100%]  md:p-10 py-10 shadow-xl rounded-lg mt-10 lg:mt-0 mx-auto">
+    <div className="bg-white lg:w-[90%] w-[90%] h-[100%]  md:p-10 py-10 shadow-sm rounded-lg mt-10 lg:mt-0 mx-auto">
       <p className="text-[30px] font-semibold ml-7">Profil</p>
       <p className="text-[14px] ml-7">Ubah profile akun Kamu disini</p>
       <Form {...forms}>
