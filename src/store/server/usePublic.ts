@@ -5,6 +5,7 @@ import {
   getTuitionApplicationPublicFn,
   getUniversitiesFn,
   showAssistanceCheckFn,
+  storeDTKSCourtPublicFn,
   storeDTKSSchoolFn,
   storePublicEventTuitionFn
 } from '@/api/public.api'
@@ -56,20 +57,20 @@ export const useGetTuitionApplicationPublic = () => {
   return useQuery('tuition-application-public', async () => await getTuitionApplicationPublicFn())
 }
 
+export const useCreateDTKSCourtPublic = () => {
+  const queryClient = useQueryClient()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  return useMutation(storeDTKSCourtPublicFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('public-event-tuition')
+      void queryClient.invalidateQueries('tuition-application-public')
+      handleMessage({ title: 'Pengajuan BBP', variant: 'create' })
+    },
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    }
+  })
+}
 
 export const useCreateDTKSSchool = () => {
   const queryClient = useQueryClient()
