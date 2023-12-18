@@ -41,16 +41,18 @@ export const publicEventTuition = yup.object({
 })
 
 export type publicEventTuitionFields = yup.InferType<typeof publicEventTuition>
+
 export const publicEventDTKS = yup.object({
   identityNumber: yup.string().required('NIK harus diisi'),
+  familyCardNumber: yup.string().required('NO.KK harus diisi'),
   name: yup.string().required('Nama harus diisi'),
   birthPlace: yup.string().required('Tempat lahir harus diisi'),
-  birthDate: yup
-    .string()
-    .required('Tanggal lahir harus diisi')
-    .test('valid-date', 'Format tanggal salah', function (value) {
-      return !isNaN(Date.parse(value))
-    }),
+  birthDate: yup.mixed().test('birthDate', 'Tanggal lahir harus diisi', function (value) {
+    return (
+      value instanceof Date || // Check if it's a Date object
+      (typeof value === 'string' && !isNaN(Date.parse(value))) // Check if it's a parseable string
+    )
+  }),
   motherName: yup.string().required('Nama ibu harus diisi'),
   gender: yup.string().required('Jenis kelamin harus diisi'),
   occupation: yup.string().required('Pekerjaan harus diisi'),
@@ -58,19 +60,24 @@ export const publicEventDTKS = yup.object({
   areaLevel3: yup.string().required('Kecamatan harus diisi'),
   areaLevel4: yup.string().required('Kelurahan harus diisi'),
   address: yup.string().required('Alamat harus diisi'),
-  question1: yup.number().required('Pertanyaan 1 harus diisi'),
-  question2: yup.number().required('Pertanyaan 2 harus diisi'),
-  question3: yup.number().required('Pertanyaan 3 harus diisi'),
-  question4: yup.number().required('Pertanyaan 4 harus diisi'),
-  question5: yup.number().required('Pertanyaan 5 harus diisi'),
-  question6: yup.number().required('Pertanyaan 6 harus diisi'),
-  question7: yup.number().required('Pertanyaan 7 harus diisi'),
-  question8: yup.number().required('Pertanyaan 8 harus diisi'),
-  question9: yup.number().required('Pertanyaan 9 harus diisi'),
-  question10: yup.number().required('Pertanyaan 10 harus diisi'),
+  question1: yup.string().required('Pertanyaan 1 harus diisi'),
+  question2: yup.string().required('Pertanyaan 2 harus diisi'),
+  question3: yup.string().required('Pertanyaan 3 harus diisi'),
+  question4: yup.string().required('Pertanyaan 4 harus diisi'),
+  question5: yup.string().required('Pertanyaan 5 harus diisi'),
+  question6: yup.string().required('Pertanyaan 6 harus diisi'),
+  question7: yup.string().required('Pertanyaan 7 harus diisi'),
+  question8: yup.string().required('Pertanyaan 8 harus diisi'),
+  question9: yup.string().required('Pertanyaan 9 harus diisi'),
+  question10: yup.string().required('Pertanyaan 10 harus diisi'),
   assistanceProgram: yup.string().required('Program bantuan harus diisi'),
   disabilityStatus: yup.string().required('Status disabilitas harus diisi'),
-  pregnantDate: yup.string().required('Tanggal hamil harus diisi'),
+  pregnantDate: yup.mixed().test('pregnantDate', 'Tanggal hamil harus diisi', function (value) {
+    return (
+      value instanceof Date || // Check if it's a Date object
+      (typeof value === 'string' && !isNaN(Date.parse(value))) // Check if it's a parseable string
+    )
+  }),
   familyRelationship: yup.string().required('Hubungan keluarga harus diisi'),
   remoteIndigenousStatus: yup.string().required('Status suku harus diisi'),
   tribeName: yup.string().required('Nama suku harus diisi'),

@@ -3,9 +3,14 @@ import {
   getPublicEventTuitionFn,
   getStudyProgramsFn,
   getUniversitiesFn,
-  showAssistanceCheckFn
+  showAssistanceCheckFn,
+  storePublicEventDtksFn
 } from '@/api/public.api'
-import { useQuery } from 'react-query'
+import { toast } from '@/components/ui/use-toast'
+import { type IErrorResponse } from '@/lib/types/user.type'
+import { type AxiosError } from 'axios'
+import { useMutation, useQuery } from 'react-query'
+import { useNavigate } from 'react-router-dom'
 
 export const useGetAssistanceCheck = (nik: string, enabled: boolean) => {
   return useQuery(['assistance-check', nik], async () => await showAssistanceCheckFn(nik), {
@@ -29,4 +34,28 @@ export const useGetBank = () => {
 
 export const useGetPublicEventTuition = () => {
   return useQuery('public-event-tuition', async () => await getPublicEventTuitionFn())
+}
+export const usePublicEventDTKS = () => {
+  const navigate = useNavigate()
+
+  return useMutation(storePublicEventDtksFn, {
+    onSuccess: async () => {
+      toast({
+        title: 'Pengajuan DTKS Berhasil didaftarkan',
+        description: 'Anda telah berhasil melakukan Pengajuan DTKS.'
+      })
+      navigate('/')
+    },
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message,
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
+    }
+  })
 }
