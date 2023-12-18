@@ -1,5 +1,6 @@
 import { type IAssistanceHistory } from './beneficary.type'
 import { type IAddress } from './dayasos.type'
+import { type IPath } from './service.type'
 
 export interface IAssistanceCheck {
   id: string
@@ -39,5 +40,11 @@ export interface IPublicEventTuition {
   batch: string
   quota: number
   filledQuota: number
-  requiredDocuments: null | string
+  requiredDocuments: {
+    biodata: IPath | null
+    nonGovernmentEmployeeLetter: IPath | null
+    scholarshipApplicationLetter: IPath | null
+    nonReceiptOfScholarshipLetter: IPath | null
+    scholarshipAnnouncementLetter: IPath | null
+  } | null
 }

@@ -27,6 +27,7 @@ const DataVeteran = () => {
 
   React.useEffect(() => {
     setBreadcrumbs([
+      { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/dayasos', label: 'Dayasos & PFM' },
       { url: '/data-penerima/dayasos/veteran', label: 'Veteran' }
     ])

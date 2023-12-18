@@ -1,4 +1,5 @@
 import { type IMeta } from './dayasos.type'
+import { type IPath } from './service.type'
 
 export interface IType {
   id: string
@@ -16,8 +17,15 @@ export interface IEvent {
   status: string
   batch: string
   quota: number
+  isActive: boolean
   filledQuota: number
-  requiredDocuments: null | string
+  requiredDocuments: {
+    biodata: IPath | null
+    nonGovernmentEmployeeLetter: IPath | null
+    scholarshipApplicationLetter: IPath | null
+    nonReceiptOfScholarshipLetter: IPath | null
+    scholarshipAnnouncementLetter: IPath | null
+  } | null
   createdAt: string
   updatedAt: string
 }

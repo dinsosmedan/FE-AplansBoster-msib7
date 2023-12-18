@@ -11,8 +11,8 @@ import { HiOutlineExclamationCircle, HiOutlineEye } from 'react-icons/hi2'
 import FilterLayanan from './../../components/atoms/FilterLayanan'
 
 const dataLayanan = [
-  { 'text': 'Data Pengajuan', 'tab': 'pending' },
-  { 'text': 'Data Diterima', 'tab': 'approved' },
+  { text: 'Data Pengajuan', tab: 'pending' },
+  { text: 'Data Diterima', tab: 'approved' }
 ]
 export default function LayananDtks() {
   interface FormValues {

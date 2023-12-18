@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useGetMe, useLogout } from '@/store/server'
 import { useAlert, useTitleHeader } from '@/store/client'
-import { Breadcrumbs } from '..'
+import { Breadcrumbs, Loading } from '..'
 import { Skeleton } from '../ui/skeleton'
 
 export default function Header() {
@@ -21,7 +21,7 @@ export default function Header() {
   }))
 
   const { data: user, isLoading } = useGetMe()
-  const { mutate: logout } = useLogout()
+  const { mutate: logout, isLoading: isLoadingLogout } = useLogout()
 
   const handleLogout = () => {
     void alert({
@@ -32,7 +32,9 @@ export default function Header() {
     }).then(() => logout())
   }
 
-  console.log(user)
+  if (isLoadingLogout) {
+    return <Loading />
+  }
 
   return (
     <header className="h-24 flex items-center px-8 z-[20] sticky top-0 bg-white border-b border-[#E9E9E9] text-font">

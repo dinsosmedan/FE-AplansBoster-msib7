@@ -26,7 +26,7 @@ export default function SktmRegister() {
   return (
     <ContainerUser title={'Form Pengajuan SKTM Untuk Sekolah/Universitas (Terdaftar DTKS)'}>
       <Form {...forms}>
-        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6 pt-16">
+        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6 pt-14">
           <div className="grid grid-cols-2 gap-5">
             <div className="flex">
               <div className="w-full">
@@ -108,6 +108,18 @@ export default function SktmRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel className="font-semibold dark:text-white">No. Hp</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="text" placeholder="Masukan No.Hp Anda" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="nik"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Pilih Jenjang Pendidikan</FormLabel>
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
@@ -126,30 +138,30 @@ export default function SktmRegister() {
                 </FormItem>
               )}
             />
-            <FormField
-              name="prodi"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Universitas/Sekolah Tujuan</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Jawaban" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                        <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                        <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
           </div>
+          <FormField
+            name="prodi"
+            control={forms.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-semibold dark:text-white">Universitas/Sekolah Tujuan</FormLabel>
+                <FormControl>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Universitas/Sekolah Tujuan" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="m@example.com">Krisna Asu</SelectItem>
+                      <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
+                      <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+              </FormItem>
+            )}
+          />
           <p className="text-[18px] text-primary">
             *Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB
           </p>

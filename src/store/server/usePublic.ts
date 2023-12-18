@@ -2,10 +2,15 @@ import {
   getBankListFn,
   getPublicEventTuitionFn,
   getStudyProgramsFn,
+  getTuitionApplicationPublicFn,
   getUniversitiesFn,
-  showAssistanceCheckFn
+  showAssistanceCheckFn,
+  storePublicEventTuitionFn
 } from '@/api/public.api'
-import { useQuery } from 'react-query'
+import { handleMessage } from '@/lib/services/handleMessage'
+import { handleOnError } from '@/lib/utils'
+import { type AxiosError } from 'axios'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 
 export const useGetAssistanceCheck = (nik: string, enabled: boolean) => {
   return useQuery(['assistance-check', nik], async () => await showAssistanceCheckFn(nik), {
@@ -29,4 +34,23 @@ export const useGetBank = () => {
 
 export const useGetPublicEventTuition = () => {
   return useQuery('public-event-tuition', async () => await getPublicEventTuitionFn())
+}
+
+export const useCreatePublicEventTuition = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(storePublicEventTuitionFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('public-event-tuition')
+      void queryClient.invalidateQueries('tuition-application-public')
+      handleMessage({ title: 'Pengajuan BBP', variant: 'create' })
+    },
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    }
+  })
+}
+
+export const useGetTuitionApplicationPublic = () => {
+  return useQuery('tuition-application-public', async () => await getTuitionApplicationPublicFn())
 }

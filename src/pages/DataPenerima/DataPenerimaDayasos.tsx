@@ -7,7 +7,10 @@ const DataPenerimaDayasos = () => {
   useTitle('Data Penerima')
   const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
   React.useEffect(() => {
-    setBreadcrumbs([{ url: '/data-penerima/dayasos', label: 'Dayasos & PFM' }])
+    setBreadcrumbs([
+      { url: '/data-penerima', label: 'Data Penerima' },
+      { url: '/data-penerima/dayasos', label: 'Dayasos & PFM' }
+    ])
   }, [])
 
   return (

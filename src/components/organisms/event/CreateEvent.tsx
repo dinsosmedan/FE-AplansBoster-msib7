@@ -14,8 +14,8 @@ import { HiDocumentArrowUp } from 'react-icons/hi2'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import { eventValidation, type eventFields } from '@/lib/validations/event.validation'
-import { useCreateEvent, useGetEventById, useGetEventType } from '@/store/server'
-import { formatDateToString } from '@/lib/services/formatDate'
+import { useCreateEvent, useGetEventById, useGetEventType, useUpdateEvent } from '@/store/server'
+import { formatDateToString, formatStringToDate } from '@/lib/services/formatDate'
 import { ImSpinner2 } from 'react-icons/im'
 
 interface CreateEventProps {
@@ -27,6 +27,7 @@ interface CreateEventProps {
 export default function CreateEvent({ isShow, setIsShow, eventId }: CreateEventProps) {
   const { data: eventTypes } = useGetEventType()
   const { mutate: createEvent, isLoading } = useCreateEvent()
+  const { mutate: updateEvent, isLoading: isLoadingUpdate } = useUpdateEvent()
   const { data: event, isSuccess, isLoading: isLoadingDetail } = useGetEventById(eventId as string)
 
   const forms = useForm<eventFields>({
@@ -35,16 +36,62 @@ export default function CreateEvent({ isShow, setIsShow, eventId }: CreateEventP
   })
 
   React.useEffect(() => {
-    if (eventId && isSuccess) {
+    if (!eventId) {
       forms.reset({
-        ...event,
-        startDate: new Date(),
-        endDate: new Date()
-        // startDate: formatStringToDate(event?.startDate),
-        // endDate: formatStringToDate(event?.endDate)
+        eventType: '',
+        startDate: '',
+        endDate: '',
+        quota: '' as unknown as number,
+        batch: '',
+        isActive: '' as unknown as boolean,
+        eventDescription: '',
+        scholarshipAnnouncementLetter: '',
+        biodata: '',
+        scholarshipApplicationLetter: '',
+        nonReceiptOfScholarshipLetter: '',
+        nonGovernmentEmployeeLetter: ''
       })
     }
+  }, [eventId])
+
+  React.useEffect(() => {
+    if (eventId && isSuccess) {
+      const { startDate, endDate, requiredDocuments } = event
+      forms.setValue('eventType', event.type.id)
+      forms.setValue('quota', event.quota)
+      forms.setValue('batch', event.batch)
+      forms.setValue('isActive', event.isActive)
+      forms.setValue('eventDescription', event.eventDescription)
+
+      if (requiredDocuments?.biodata?.originalName) {
+        forms.setValue('biodata', [requiredDocuments.biodata.originalName])
+      }
+
+      if (requiredDocuments?.scholarshipApplicationLetter?.originalName) {
+        forms.setValue('scholarshipApplicationLetter', [requiredDocuments.scholarshipApplicationLetter.originalName])
+      }
+
+      if (requiredDocuments?.nonReceiptOfScholarshipLetter?.originalName) {
+        forms.setValue('nonReceiptOfScholarshipLetter', [requiredDocuments.nonReceiptOfScholarshipLetter.originalName])
+      }
+
+      if (requiredDocuments?.nonGovernmentEmployeeLetter?.originalName) {
+        forms.setValue('nonGovernmentEmployeeLetter', [requiredDocuments.nonGovernmentEmployeeLetter.originalName])
+      }
+
+      if (requiredDocuments?.scholarshipAnnouncementLetter?.originalName) {
+        forms.setValue('scholarshipAnnouncementLetter', [requiredDocuments.scholarshipAnnouncementLetter.originalName])
+      }
+
+      if (startDate) forms.setValue('startDate', new Date(startDate))
+      if (endDate) forms.setValue('endDate', new Date(endDate))
+    }
   }, [eventId, isSuccess])
+
+  const onSuccess = () => {
+    forms.reset()
+    setIsShow(false)
+  }
 
   const onSubmit = async (values: eventFields) => {
     const newData: eventFields = {
@@ -53,12 +100,9 @@ export default function CreateEvent({ isShow, setIsShow, eventId }: CreateEventP
       endDate: formatDateToString(values.endDate as Date)
     }
 
-    createEvent(newData, {
-      onSuccess: () => {
-        forms.reset()
-        setIsShow(false)
-      }
-    })
+    console.log(newData)
+    if (!eventId) return createEvent(newData, { onSuccess })
+    updateEvent({ id: eventId, fields: newData }, { onSuccess })
   }
 
   return (
@@ -131,7 +175,7 @@ export default function CreateEvent({ isShow, setIsShow, eventId }: CreateEventP
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">Jumlah Peserta</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="0/100" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="0/100" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -144,7 +188,7 @@ export default function CreateEvent({ isShow, setIsShow, eventId }: CreateEventP
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">Masukkan Batch</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Masukkan Batch" />
+                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan Batch" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -302,8 +346,8 @@ export default function CreateEvent({ isShow, setIsShow, eventId }: CreateEventP
               >
                 Cancel
               </Button>
-              <Button className="rounded-lg" type="submit" loading={isLoading}>
-                Tambah Data
+              <Button className="rounded-lg" type="submit" loading={isLoading || isLoadingUpdate}>
+                {eventId ? 'Update' : 'Submit'}
               </Button>
             </Modal.Footer>
           </form>

@@ -23,6 +23,7 @@ const Unregister = () => {
 
   React.useEffect(() => {
     setBreadcrumbs([
+      { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/linjamsos', label: 'Linjamsos' },
       { url: '/data-penerima/linjamsos/unregister', label: 'Unregister' }
     ])

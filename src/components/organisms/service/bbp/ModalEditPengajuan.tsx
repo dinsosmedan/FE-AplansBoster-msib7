@@ -6,23 +6,41 @@ import { useForm } from 'react-hook-form'
 import { type updateTuitionAssistanceServiceFields } from '@/lib/validations/linjamsos.validation'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
+import { useGetTuitionAssistanceEventById, useUpdateApplicationStatus } from '@/store/server/useService'
+import { ImSpinner2 } from 'react-icons/im'
+import { Link } from 'react-router-dom'
 
 interface ModalEditPengajuanBBPProps {
   isShow: boolean
   setIsShow: (value: boolean) => void
+  tuitionAssistanceId?: string
 }
 
 interface FormValues extends updateTuitionAssistanceServiceFields {
-  grantAmount?: string
+  assistanceAmount?: number
+  budgetYear?: number
 }
 
-export default function ModalEditPengajuanBBP({ isShow, setIsShow }: ModalEditPengajuanBBPProps) {
+export default function ModalEditPengajuanBBP({ isShow, setIsShow, tuitionAssistanceId }: ModalEditPengajuanBBPProps) {
   const forms = useForm<FormValues>()
+  const status = forms.watch('applicationStatus')
 
-  const status = forms.watch('status')
+  const { data, isLoading } = useGetTuitionAssistanceEventById(tuitionAssistanceId as string)
+  const { mutate: update, isLoading: isLoadingUpdate } = useUpdateApplicationStatus()
 
   const onSubmit = async (values: FormValues) => {
     console.log(values)
+    const newData = {
+      id: tuitionAssistanceId as string,
+      fields: values
+    }
+
+    update(newData, {
+      onSuccess: () => {
+        setIsShow(false)
+        forms.reset()
+      }
+    })
   }
 
   return (
@@ -33,23 +51,35 @@ export default function ModalEditPengajuanBBP({ isShow, setIsShow }: ModalEditPe
       </Modal.Header>
       <section className="flex flex-col">
         <p className="w-full text-center py-4 bg-primary text-white font-bold">Berkas Mahasiswa</p>
-        <Berkas title="Surat Permohonan" />
-        <Berkas title="PAS FOTO" />
-        <Berkas title="KARTU KELUARGA" />
-        <Berkas title="KTP" />
-        <Berkas title="KTM" />
-        <Berkas title="SURAT AKTIF KULIAH" />
-        <Berkas title="SCAN PRINTOUT DTKS" />
-        <Berkas title="SURAT PERNYATAAN TIDAK MENDAPATKAN BEASISWA" />
-        <Berkas title="SURAT PERNYATAAN BUKAN ASN" />
-        <Berkas title="TRANSKRIP NILAI" />
-        <Berkas title="SCAN BUKU TABUNGAN" />
-        <Berkas title="BUKTI PEMBAYARAN UKT TERAKHIR" />
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <>
+            <Berkas title="Surat Permohonan" url={data?.documents.applicationLetter?.url as string} />
+            <Berkas title="PAS FOTO" url={data?.documents.photo?.url as string} />
+            <Berkas title="KARTU KELUARGA" url={data?.documents.familyCard?.url as string} />
+            <Berkas title="KTP" url={data?.documents.identityCard?.url as string} />
+            <Berkas title="KTM" url={data?.documents.studentCard?.url as string} />
+            <Berkas title="SURAT AKTIF KULIAH" url={data?.documents.activeStudentCertificate?.url as string} />
+            <Berkas title="SCAN PRINTOUT DTKS" url={data?.documents.dtksPrintout?.url as string} />
+            <Berkas
+              title="SURAT PERNYATAAN TIDAK MENDAPATKAN BEASISWA"
+              url={data?.documents.noScholarshipStatement?.url as string}
+            />
+            <Berkas
+              title="SURAT PERNYATAAN BUKAN ASN"
+              url={data?.documents.noGovernmentEmployeeStatement?.url as string}
+            />
+            <Berkas title="TRANSKRIP NILAI" url={data?.documents.gradeTranscript?.url as string} />
+            <Berkas title="SCAN BUKU TABUNGAN" url={data?.documents.passBook?.url as string} />
+            <Berkas title="BUKTI PEMBAYARAN UKT TERAKHIR" url={data?.documents.tuitionReceipt?.url as string} />
+          </>
+        )}
       </section>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-3">
           <FormField
-            name="status"
+            name="applicationStatus"
             control={forms.control}
             render={({ field }) => (
               <FormItem className="flex-1">
@@ -64,33 +94,49 @@ export default function ModalEditPengajuanBBP({ isShow, setIsShow }: ModalEditPe
                     <SelectItem value="approved">Approved</SelectItem>
                     <SelectItem value="revision">Revision</SelectItem>
                     <SelectItem value="rejected">Rejected</SelectItem>
+                    <SelectItem value="processed">Processed</SelectItem>
                   </SelectContent>
                 </Select>
               </FormItem>
             )}
           />
-          {status === 'approved' ? (
+          {status === 'approved' && (
+            <>
+              <FormField
+                name="assistanceAmount"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Jumlah bantuan</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan jumlah bantuan" type="number" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="budgetYear"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Tahun Anggaran</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan tahun anggaran" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </>
+          )}
+          {(status === 'revision' || status === 'rejected') && (
             <FormField
-              name="grantAmount"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel className="font-semibold dark:text-white">Jumlah bantuan</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          ) : (
-            <FormField
-              name="note"
+              name="message"
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">Keterangan</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value} placeholder="Masukkan Keterangan" />
+                    <Input {...field} value={field.value ?? ''} placeholder="Masukkan Keterangan" />
                   </FormControl>
                 </FormItem>
               )}
@@ -105,7 +151,7 @@ export default function ModalEditPengajuanBBP({ isShow, setIsShow }: ModalEditPe
             >
               Cancel
             </Button>
-            <Button className="rounded-lg" type="submit">
+            <Button className="rounded-lg" type="submit" loading={isLoadingUpdate}>
               <p className="text-white font-bold">Update</p>
             </Button>
           </Modal.Footer>
@@ -117,17 +163,27 @@ export default function ModalEditPengajuanBBP({ isShow, setIsShow }: ModalEditPe
 
 interface BerkasProps {
   title: string
-  action?: () => void
+  url: string
 }
 
-const Berkas = ({ title, action }: BerkasProps) => {
+const Berkas = ({ title, url }: BerkasProps) => {
   return (
     <div className="py-[18px] px-3 flex justify-between items-center border-b border-zinc-200">
       <p className="uppercase w-max">{title}</p>
-      <Button className="gap-2 rounded-lg ml-24 items-center" onClick={() => action && action()}>
-        <HiOutlineEye />
-        <p className="text-xs">View</p>
-      </Button>
+      <Link to={url} target="_blank">
+        <Button className="gap-2 rounded-lg ml-24 items-center">
+          <HiOutlineEye />
+          <p className="text-xs">View</p>
+        </Button>
+      </Link>
+    </div>
+  )
+}
+
+const Loading = () => {
+  return (
+    <div className="min-h-[500px] flex">
+      <ImSpinner2 className="animate-spin m-auto text-3xl text-primary" />
     </div>
   )
 }

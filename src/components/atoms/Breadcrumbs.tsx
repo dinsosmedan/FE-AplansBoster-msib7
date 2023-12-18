@@ -14,12 +14,9 @@ interface BreadcrumbsProps {
 export default function Breadcrumbs({ breadcrumbs }: BreadcrumbsProps) {
   return (
     <div className="flex items-center gap-1">
-      <Link to="/data-penerima" className="text-[13px] font-semibold text-font/40 hover:underline">
-        Data Penerima
-      </Link>
       {breadcrumbs?.slice(0, 2).map((breadcrumb, index) => (
         <React.Fragment key={index}>
-          <span className="text-font/40"> / </span>
+          {index !== 0 && <span className="text-font/40">/</span>}
           <Link
             key={breadcrumb.url}
             to={breadcrumb.url}

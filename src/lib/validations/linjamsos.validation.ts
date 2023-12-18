@@ -104,8 +104,8 @@ export const indigencyCertificateValidation = Yup.object({
 export type indigencyCertificateFields = Yup.InferType<typeof indigencyCertificateValidation>
 
 export const updateTuitionAssistanceServiceValidation = Yup.object({
-  status: Yup.string().required('Status wajib diisi'),
-  note: Yup.string()
+  applicationStatus: Yup.string().required('Status wajib diisi'),
+  message: Yup.string()
 })
 
 export type updateTuitionAssistanceServiceFields = Yup.InferType<typeof updateTuitionAssistanceServiceValidation>
