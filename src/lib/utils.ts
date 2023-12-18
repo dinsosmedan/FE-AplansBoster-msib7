@@ -35,3 +35,10 @@ export const handleOnError = (error: AxiosError, message?: string) => {
     })
   }
 }
+
+export const isFile = (file: File | string) => {
+  if (Array.isArray(file) && file.length > 0 && file[0] instanceof File) {
+    return true
+  }
+  return false
+}

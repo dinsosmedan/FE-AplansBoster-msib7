@@ -45,7 +45,7 @@ export const publicEventTuitionValidation = yup.object({
   noGovernmentEmployeeStatement: yup.mixed().required('Surat pernyataan tidak menjadi PNS harus diupload'),
   dtksPrintout: yup.mixed().required('Printout DTKS harus diupload'),
   passBook: yup.mixed().required('Buku tabungan harus diupload'),
-  // biodata: yup.mixed().required('Biodata harus diupload'),
+  biodata: yup.mixed().required('Biodata harus diupload'),
   gradeTranscript: yup.mixed().required('Transkrip nilai harus diupload')
 })
 

@@ -1,5 +1,5 @@
 import ENV from '@/lib/environment'
-import { type IUniversity } from '@/lib/types/linjamsos.type'
+import { type IApplication, type IUniversity } from '@/lib/types/linjamsos.type'
 import { type IBank, type IAssistanceCheck, type IPublicEventTuition } from '@/lib/types/public.type'
 import { type publicEventTuitionFields } from '@/lib/validations/landingPage/public.validation'
 import axios from 'axios'
@@ -98,12 +98,21 @@ export const storePublicEventTuitionFn = async (data: IStorePublicEventTuition) 
   if (Array.isArray(data.passBook) && data.passBook.length > 0) {
     formdata.append('passBook', data.passBook[0] as File)
   }
-  // if (Array.isArray(data.biodata) && data.biodata.length > 0) {
-  //   formdata.append('biodata', data.biodata[0] as File)
-  // }
   if (Array.isArray(data.gradeTranscript) && data.gradeTranscript.length > 0) {
     formdata.append('gradeTranscript', data.gradeTranscript[0] as File)
   }
+  if (Array.isArray(data.biodata) && data.biodata.length > 0) {
+    formdata.append('biodata', data.biodata[0] as File)
+  }
 
-  await axiosPublic.post('/public/application/tuition-assistance', data)
+  await axiosPublic.post('/public/application/tuition-assistance', formdata, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
+export const getTuitionApplicationPublicFn = async (): Promise<IApplication[]> => {
+  const response = await axiosPublic.get('/public/application/tuition-assistance')
+  return response.data?.data
 }

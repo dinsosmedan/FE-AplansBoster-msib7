@@ -96,7 +96,7 @@ export default function BbpRegister() {
     create(newData, {
       onSuccess: () => {
         forms.reset()
-        navigate('/')
+        navigate(`/user/bbp/${id}`)
       }
     })
   }
@@ -127,6 +127,7 @@ export default function BbpRegister() {
                           placeholder="Cari NIK"
                         />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -157,6 +158,7 @@ export default function BbpRegister() {
                       placeholder="Masukkan Nama Anda"
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -175,6 +177,7 @@ export default function BbpRegister() {
                       placeholder="Masukkan Tempat Lahir "
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -186,12 +189,14 @@ export default function BbpRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tanggal Lahir</FormLabel>
-                  <DatePicker
-                    selected={field.value as Date}
-                    onChange={field.onChange}
-                    placeholder="dd/mm/yyy"
-                    className="rounded-md"
-                  />
+                  <FormControl>
+                    <DatePicker
+                      selected={field.value as Date}
+                      onChange={field.onChange}
+                      placeholder="dd/mm/yyy"
+                      className="rounded-md"
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -213,6 +218,7 @@ export default function BbpRegister() {
                       <SelectItem value="PEREMPUAN">Perempuan</SelectItem>
                     </SelectContent>
                   </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -231,6 +237,7 @@ export default function BbpRegister() {
                       placeholder="Masukan Email"
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -251,6 +258,7 @@ export default function BbpRegister() {
                       placeholder="Masukan No.Hp"
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -260,22 +268,21 @@ export default function BbpRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="rounded-md">
-                          <SelectValue placeholder="Pilih Kecamatan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {kecamatanLists?.map((kecamatan) => (
-                          <SelectItem key={kecamatan.id} value={kecamatan.id}>
-                            {kecamatan.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="rounded-md">
+                        <SelectValue placeholder="Pilih Kecamatan" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {kecamatanLists?.map((kecamatan) => (
+                        <SelectItem key={kecamatan.id} value={kecamatan.id}>
+                          {kecamatan.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -299,6 +306,7 @@ export default function BbpRegister() {
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -313,6 +321,7 @@ export default function BbpRegister() {
                   <FormControl>
                     <Textarea {...field} value={field.value ?? ''} placeholder="Masukan Alamat Lengkap Anda" />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -339,6 +348,7 @@ export default function BbpRegister() {
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -348,22 +358,21 @@ export default function BbpRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Prodi</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={!university || !studyPrograms}>
-                      <FormControl>
-                        <SelectTrigger className="rounded-md">
-                          <SelectValue placeholder="Pilih Prodi" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {studyPrograms?.map((studyProgram) => (
-                          <SelectItem key={studyProgram.id} value={studyProgram.id}>
-                            {studyProgram.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                  <Select onValueChange={field.onChange} value={field.value} disabled={!university || !studyPrograms}>
+                    <FormControl>
+                      <SelectTrigger className="rounded-md">
+                        <SelectValue placeholder="Pilih Prodi" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {studyPrograms?.map((studyProgram) => (
+                        <SelectItem key={studyProgram.id} value={studyProgram.id}>
+                          {studyProgram.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -384,6 +393,7 @@ export default function BbpRegister() {
                       placeholder="Masukan IPK"
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -402,6 +412,7 @@ export default function BbpRegister() {
                       placeholder="Masukan Semester"
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -414,6 +425,7 @@ export default function BbpRegister() {
                   <FormControl>
                     <Input {...field} value={field.value} className="rounded-md" type="number" placeholder="Rp. " />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -440,6 +452,7 @@ export default function BbpRegister() {
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -458,6 +471,7 @@ export default function BbpRegister() {
                       placeholder="Masukan No Rekening"
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -476,7 +490,7 @@ export default function BbpRegister() {
                     <DropZone
                       setValue={field.onChange}
                       fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                      helperText="*Catatan: File yang diizinkan berupa pdf. Dengan maksimal 2MB"
                       accept={{ 'application/pdf': ['.pdf'] }}
                       maxFiles={1}
                       id="applicationLetter"
@@ -497,8 +511,8 @@ export default function BbpRegister() {
                     <DropZone
                       setValue={field.onChange}
                       fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
-                      accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'] }}
+                      helperText="*Catatan: File yang diizinkan berupa jpg. Dengan maksimal 2MB"
+                      accept={{ 'image/jpeg': ['.jpg', '.jpeg'] }}
                       maxFiles={1}
                       id="photo"
                       Icon={HiDocumentArrowUp}
@@ -518,7 +532,7 @@ export default function BbpRegister() {
                     <DropZone
                       setValue={field.onChange}
                       fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                      helperText="*Catatan: File yang diizinkan berupa pdf. Dengan maksimal 2MB"
                       accept={{ 'application/pdf': ['.pdf'] }}
                       maxFiles={1}
                       id="familyCard"
@@ -539,7 +553,7 @@ export default function BbpRegister() {
                     <DropZone
                       setValue={field.onChange}
                       fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                      helperText="*Catatan: File yang diizinkan berupa pdf. Dengan maksimal 2MB"
                       accept={{ 'application/pdf': ['.pdf'] }}
                       maxFiles={1}
                       id="identityCard"
@@ -560,7 +574,7 @@ export default function BbpRegister() {
                     <DropZone
                       setValue={field.onChange}
                       fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                      helperText="*Catatan: File yang diizinkan berupa pdf. Dengan maksimal 2MB"
                       accept={{ 'application/pdf': ['.pdf'] }}
                       maxFiles={1}
                       id="studentCard"
@@ -581,7 +595,7 @@ export default function BbpRegister() {
                     <DropZone
                       setValue={field.onChange}
                       fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                      helperText="*Catatan: File yang diizinkan berupa pdf. Dengan maksimal 2MB"
                       accept={{ 'application/pdf': ['.pdf'] }}
                       maxFiles={1}
                       id="activeStudentCertificate"
@@ -602,7 +616,7 @@ export default function BbpRegister() {
                     <DropZone
                       setValue={field.onChange}
                       fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                      helperText="*Catatan: File yang diizinkan berupa pdf. Dengan maksimal 2MB"
                       accept={{ 'application/pdf': ['.pdf'] }}
                       maxFiles={1}
                       id="dtksPrintout"
@@ -623,7 +637,7 @@ export default function BbpRegister() {
                     <DropZone
                       setValue={field.onChange}
                       fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                      helperText="*Catatan: File yang diizinkan berupa pdf. Dengan maksimal 2MB"
                       accept={{ 'application/pdf': ['.pdf'] }}
                       maxFiles={1}
                       id="noScholarshipStatement"
@@ -644,7 +658,7 @@ export default function BbpRegister() {
                     <DropZone
                       setValue={field.onChange}
                       fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                      helperText="*Catatan: File yang diizinkan berupa pdf. Dengan maksimal 2MB"
                       accept={{ 'application/pdf': ['.pdf'] }}
                       maxFiles={1}
                       id="noGovernmentEmployeeStatement"
@@ -665,7 +679,7 @@ export default function BbpRegister() {
                     <DropZone
                       setValue={field.onChange}
                       fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                      helperText="*Catatan: File yang diizinkan berupa pdf. Dengan maksimal 2MB"
                       accept={{ 'application/pdf': ['.pdf'] }}
                       maxFiles={1}
                       id="gradeTranscript"
@@ -686,7 +700,7 @@ export default function BbpRegister() {
                     <DropZone
                       setValue={field.onChange}
                       fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                      helperText="*Catatan: File yang diizinkan berupa pdf. Dengan maksimal 2MB"
                       accept={{ 'application/pdf': ['.pdf'] }}
                       maxFiles={1}
                       id="passBook"
@@ -707,10 +721,31 @@ export default function BbpRegister() {
                     <DropZone
                       setValue={field.onChange}
                       fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                      helperText="*Catatan: File yang diizinkan berupa pdf. Dengan maksimal 2MB"
                       accept={{ 'application/pdf': ['.pdf'] }}
                       maxFiles={1}
                       id="tuitionReceipt"
+                      Icon={HiDocumentArrowUp}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="biodata"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="">
+                  <FormLabel className="text-md">Biodata Mahasiswa</FormLabel>
+                  <FormControl className="w-[522px]">
+                    <DropZone
+                      setValue={field.onChange}
+                      fileValue={field.value as unknown as FileWithPreview[]}
+                      helperText="*Catatan: File yang diizinkan berupa pdf. Dengan maksimal 2MB"
+                      accept={{ 'application/pdf': ['.pdf'] }}
+                      maxFiles={1}
+                      id="biodata"
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>

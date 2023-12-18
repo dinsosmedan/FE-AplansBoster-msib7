@@ -15,6 +15,7 @@ import CreateDataMaster from './dataMaster/CreateDataMaster'
 import CreateEvent from './event/CreateEvent'
 import ModalEditDataBBP from './service/bbp/ModalEditData'
 import ModalEditPengajuanBBP from './service/bbp/ModalEditPengajuan'
+import StatusDropdown from './event/StatusDropdown'
 
 export {
   Header,
@@ -33,5 +34,6 @@ export {
   CreateDataMaster,
   CreateEvent,
   ModalEditDataBBP,
-  ModalEditPengajuanBBP
+  ModalEditPengajuanBBP,
+  StatusDropdown
 }

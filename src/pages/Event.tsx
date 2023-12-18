@@ -6,7 +6,7 @@ import { HiMagnifyingGlass, HiNewspaper } from 'react-icons/hi2'
 import * as React from 'react'
 import { useDeleteEvent, useGetEvent, useGetEventType } from '@/store/server'
 import { formatToView } from '@/lib/services/formatDate'
-import { useAlert, useAuth } from '@/store/client'
+import { useAlert } from '@/store/client'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -21,7 +21,7 @@ interface FormValues {
 
 const Event = () => {
   useTitle('Event')
-  const user = useAuth((state) => state.user)
+  // const user = useAuth((state) => state.user)
 
   const { alert } = useAlert()
   const [isShow, setIsShow] = React.useState(false)
@@ -35,11 +35,11 @@ const Event = () => {
   const { data: events, isFetching, refetch } = useGetEvent(status, year, page)
   const { mutateAsync: deleteEvent } = useDeleteEvent()
 
-  if (
-    !user?.role.permissions.find((permission) => permission.slugName === 'pengajuan-dtks' && !permission.isPermitted)
-  ) {
-    return <div>You are not have permission to access this menu</div>
-  }
+  // if (
+  //   !user?.role.permissions.find((permission) => permission.slugName === 'pengajuan-dtks' && !permission.isPermitted)
+  // ) {
+  //   return <div>You are not have permission to access this menu</div>
+  // }
 
   const forms = useForm<FormValues>()
 
@@ -59,6 +59,11 @@ const Event = () => {
     setIsShow(true)
   }
 
+  const handleCreate = () => {
+    setEventId('')
+    setIsShow(true)
+  }
+
   const onSubmit = async (values: FormValues) => {
     Object.keys(values).forEach((key) => {
       if (values[key as keyof FormValues] !== '' && values[key as keyof FormValues] !== undefined) {
@@ -75,14 +80,14 @@ const Event = () => {
     <Container>
       {isFetching && <Loading />}
       <div className="flex justify-end my-5">
-        <Button className="py-6 rounded-lg" onClick={() => setIsShow(true)}>
+        <Button className="py-6 rounded-lg" onClick={handleCreate}>
           <HiNewspaper className="text-2xl" />
-          <p className="text-sm ml-3">Tambah Event</p>
+          <span className="text-sm ml-3">Tambah Event</span>
         </Button>
       </div>
 
       <Form {...forms}>
-        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex items-center justify-between gap-8 mb-5">
+        <div className="flex items-center justify-between gap-8 mb-5">
           <FormField
             control={forms.control}
             name="type"
@@ -138,11 +143,11 @@ const Event = () => {
               </FormItem>
             )}
           />
-          <Button className="gap-2 border-none rounded-lg" type="submit">
+          <Button className="gap-2 border-none rounded-lg" onClick={forms.handleSubmit(onSubmit)}>
             <HiMagnifyingGlass className="text-lg" />
             <span>Cari Data</span>
           </Button>
-        </form>
+        </div>
       </Form>
 
       <Table>

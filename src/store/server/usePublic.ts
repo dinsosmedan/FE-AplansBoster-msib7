@@ -2,6 +2,7 @@ import {
   getBankListFn,
   getPublicEventTuitionFn,
   getStudyProgramsFn,
+  getTuitionApplicationPublicFn,
   getUniversitiesFn,
   showAssistanceCheckFn,
   storePublicEventTuitionFn
@@ -41,10 +42,15 @@ export const useCreatePublicEventTuition = () => {
   return useMutation(storePublicEventTuitionFn, {
     onSuccess: () => {
       void queryClient.invalidateQueries('public-event-tuition')
+      void queryClient.invalidateQueries('tuition-application-public')
       handleMessage({ title: 'Pengajuan BBP', variant: 'create' })
     },
     onError: (error: AxiosError) => {
       handleOnError(error)
     }
   })
+}
+
+export const useGetTuitionApplicationPublic = () => {
+  return useQuery('tuition-application-public', async () => await getTuitionApplicationPublicFn())
 }
