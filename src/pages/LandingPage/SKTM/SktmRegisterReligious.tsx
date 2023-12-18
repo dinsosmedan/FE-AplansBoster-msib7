@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { HiDocumentArrowUp, HiMagnifyingGlass, HiPaperAirplane } from 'react-icons/hi2'
 import { Textarea } from '@/components/ui/textarea'
-import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from '@/components/ui/select'
 import DropZone, { type FileWithPreview } from '../../../components/atoms/DropZone'
 
 interface FormValues {
@@ -26,7 +25,7 @@ export default function SktmUnregisterReligious() {
   return (
     <ContainerUser title={'Form Pengajuan SKTM Untuk Pelayanan ke Pengadilan Agama / LBH  (Terdaftar DTKS)'}>
       <Form {...forms}>
-        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6 pt-16">
+        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6 pt-14">
           <div className="grid grid-cols-2 gap-5">
             <div className="flex">
               <div className="w-full">
@@ -35,7 +34,7 @@ export default function SktmUnregisterReligious() {
                   control={forms.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-semibold dark:text-white">NIK Pemohon</FormLabel>
+                      <FormLabel className="font-semibold dark:text-white">NIK </FormLabel>
                       <FormControl>
                         <Input className="rounded-r-none" {...field} type="number" placeholder="Cari NIK Masyarakat" />
                       </FormControl>
@@ -88,7 +87,6 @@ export default function SktmUnregisterReligious() {
               )}
             />
           </div>
-          <div className="grid grid-cols-1 pb-10">
             <FormField
               name="nik"
               control={forms.control}
@@ -101,55 +99,18 @@ export default function SktmUnregisterReligious() {
                 </FormItem>
               )}
             />
-          </div>
-          <div className="grid grid-cols-2 gap-5">
             <FormField
               name="nik"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Pilih Jenjang Pendidikan</FormLabel>
+                  <FormLabel className="font-semibold dark:text-white">No. Hp</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Jawaban" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                        <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                        <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Input {...field} type="text" placeholder="Masukan No.Hp Anda" />
                   </FormControl>
                 </FormItem>
               )}
             />
-            <FormField
-              name="prodi"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Universitas/Sekolah Tujuan</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Jawaban" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                        <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                        <SelectItem value="m@support.com">The Little Krishna</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
           <p className="text-[18px] text-primary">
             *Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB
           </p>
@@ -239,189 +200,7 @@ export default function SktmUnregisterReligious() {
               )}
             />
           </div>
-          <FormField
-            name="identityCard"
-            control={forms.control}
-            render={({ field }) => (
-              <FormItem className="">
-                <FormLabel className="text-xl">
-                  Surat Keterangan Dari Sekolah / Surat Pengumuman dari pihak Universitas
-                </FormLabel>
-                <FormControl className="w-[522px]">
-                  <DropZone
-                    setValue={field.onChange}
-                    fileValue={field.value as unknown as FileWithPreview[]}
-                    helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
-                    accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
-                    maxFiles={1}
-                    id="fotoKtp"
-                    Icon={HiDocumentArrowUp}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="grid grid-cols-2 gap-12">
-            <div className="pt-7">
-              <FormField
-                name="identityCard"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="">
-                    <FormLabel className="text-xl">Scan Fotocopy Slip Gaji</FormLabel>
-                    <FormControl className="w-[522px]">
-                      <DropZone
-                        setValue={field.onChange}
-                        fileValue={field.value as unknown as FileWithPreview[]}
-                        helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
-                        accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
-                        maxFiles={1}
-                        id="fotoKtp"
-                        Icon={HiDocumentArrowUp}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <FormField
-              name="identityCard"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem className="">
-                  <FormLabel className="text-xl">
-                    Scan Surat Keterangan Dari Kepling Apabila Tinggal Menumpang/Sewa ditandatangani pakai materai
-                    Rp.10.000
-                  </FormLabel>
-                  <FormControl className="w-[522px]">
-                    <DropZone
-                      setValue={field.onChange}
-                      fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
-                      accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
-                      maxFiles={1}
-                      id="fotoKtp"
-                      Icon={HiDocumentArrowUp}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <FormField
-            name="identityCard"
-            control={forms.control}
-            render={({ field }) => (
-              <FormItem className="">
-                <FormLabel className="text-xl">
-                  Surat Pernyataan Berpenghasilan di bawah UMR (±Rp.3000.000) ditandatangani Lurah
-                </FormLabel>
-                <FormControl className="w-[522px]">
-                  <DropZone
-                    setValue={field.onChange}
-                    fileValue={field.value as unknown as FileWithPreview[]}
-                    helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
-                    accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
-                    maxFiles={1}
-                    id="fotoKtp"
-                    Icon={HiDocumentArrowUp}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <p className="py-5 text-xl font-semibold">Foto Rumah</p>
-          <div className="grid grid-cols-2 gap-12 pb-10">
-            <FormField
-              name="identityCard"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem className="">
-                  <FormLabel className="text-xl">Tampak Depan</FormLabel>
-                  <FormControl className="w-[522px]">
-                    <DropZone
-                      setValue={field.onChange}
-                      fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
-                      accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
-                      maxFiles={1}
-                      id="fotoKtp"
-                      Icon={HiDocumentArrowUp}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="identityCard"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem className="">
-                  <FormLabel className="text-xl">Ruang Tamu</FormLabel>
-                  <FormControl className="w-[522px]">
-                    <DropZone
-                      setValue={field.onChange}
-                      fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
-                      accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
-                      maxFiles={1}
-                      id="fotoKtp"
-                      Icon={HiDocumentArrowUp}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="identityCard"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem className="">
-                  <FormLabel className="text-xl">Kamar</FormLabel>
-                  <FormControl className="w-[522px]">
-                    <DropZone
-                      setValue={field.onChange}
-                      fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
-                      accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
-                      maxFiles={1}
-                      id="fotoKtp"
-                      Icon={HiDocumentArrowUp}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="identityCard"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem className="">
-                  <FormLabel className="text-xl">Dapur</FormLabel>
-                  <FormControl className="w-[522px]">
-                    <DropZone
-                      setValue={field.onChange}
-                      fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
-                      accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
-                      maxFiles={1}
-                      id="fotoKtp"
-                      Icon={HiDocumentArrowUp}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex justify-end gap-7 items-center">
+          <div className="flex justify-end gap-7 items-center pt-10">
             <Button variant="outline" className="border-primary text-primary w-[165px] h-[60px]">
               <p className="text-xl font-semibold">Kembali</p>
             </Button>
