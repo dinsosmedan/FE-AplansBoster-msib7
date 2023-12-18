@@ -4,7 +4,8 @@ import {
   getEventTuitionAssistanceFn,
   getEventTypeFn,
   showEventFn,
-  storeEventFn
+  storeEventFn,
+  updateEventFn
 } from '@/api/event.api'
 import { handleMessage } from '@/lib/services/handleMessage'
 import { handleOnError } from '@/lib/utils'
@@ -51,4 +52,16 @@ export const useGetEventById = (id: string) => {
 
 export const useGetEventTuitionAssistance = (year: string, status: string) => {
   return useQuery(['eventTuitionAssistance', year, status], async () => await getEventTuitionAssistanceFn(year, status))
+}
+
+export const useUpdateEvent = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(updateEventFn, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries('events')
+      handleMessage({ title: 'Data Event', variant: 'update' })
+    },
+    onError: (error: AxiosError) => handleOnError(error)
+  })
 }

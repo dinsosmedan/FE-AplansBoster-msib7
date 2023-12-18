@@ -9,7 +9,7 @@ interface StatusProps {
 
 export default function Status({ label, isSuccess, isWarning, isDanger }: StatusProps) {
   return (
-    <div
+    <span
       className={cn(
         'flex items-center gap-2 px-2 py-1 rounded-full bg-zinc-100',
         label === isSuccess && 'bg-green-100',
@@ -17,7 +17,7 @@ export default function Status({ label, isSuccess, isWarning, isDanger }: Status
         label === isDanger && 'bg-red-100'
       )}
     >
-      <div
+      <span
         className={cn(
           'w-2 h-2 rounded-full bg-zinc-600',
           label === isSuccess && 'bg-green-600',
@@ -25,7 +25,7 @@ export default function Status({ label, isSuccess, isWarning, isDanger }: Status
           label === isDanger && 'bg-red-600'
         )}
       />
-      <p
+      <span
         className={cn(
           'text-xs font-semibold capitalize text-zinc-600',
           label === isSuccess && 'text-green-600',
@@ -34,7 +34,7 @@ export default function Status({ label, isSuccess, isWarning, isDanger }: Status
         )}
       >
         {label}
-      </p>
-    </div>
+      </span>
+    </span>
   )
 }

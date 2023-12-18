@@ -27,6 +27,7 @@ const DataPbi = () => {
 
   React.useEffect(() => {
     setBreadcrumbs([
+      { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/linjamsos', label: 'Linjamsos' },
       { url: '/data-penerima/dayasos/pbi', label: 'PBI' }
     ])

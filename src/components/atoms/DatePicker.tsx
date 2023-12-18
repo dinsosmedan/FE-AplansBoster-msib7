@@ -9,10 +9,10 @@ interface DatePickerProps {
   selected: Date
   onChange: (date: Date) => void
   placeholder?: string
-  // className?: string
+  className?: string
 }
 
-export default function DatePicker({ selected, onChange, placeholder }: DatePickerProps) {
+export default function DatePicker({ selected, onChange, placeholder, className }: DatePickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -20,7 +20,8 @@ export default function DatePicker({ selected, onChange, placeholder }: DatePick
           variant="outline"
           className={cn(
             'hover:text-black w-full justify-start text-left font-normal bg-[#F7FBFF] border-[#D4D7E3]',
-            selected && 'text-muted-foreground'
+            selected && 'text-muted-foreground',
+            className
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4 text-[#8897AD]" />
@@ -30,11 +31,11 @@ export default function DatePicker({ selected, onChange, placeholder }: DatePick
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="single"
+          captionLayout="dropdown-buttons"
           selected={selected}
           onSelect={(date) => {
             date !== undefined && onChange(date)
           }}
-          initialFocus
         />
       </PopoverContent>
     </Popover>
