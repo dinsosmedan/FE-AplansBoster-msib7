@@ -11,7 +11,7 @@ export default function LandingPage() {
 
   return (
     <>
-      <section className="md:h-[calc(100vh-110px)] h-[calc(100vh-80px)] lg:gap-[40px] flex justify-between w-full bg-[url('@/assets/images/bg-landing-page.svg')] bg-cover">
+      <section className="h-[calc(100vh-80px)] lg:gap-[40px] flex justify-between w-full bg-[url('@/assets/images/bg-landing-page.svg')] bg-cover">
         <div className="lg:relative lg:flex-1">
           <img src={ImageCover} alt="image-cover" className="absolute bottom-0 w-full" />
         </div>
