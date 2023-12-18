@@ -2,15 +2,21 @@ import {
   getBankListFn,
   getPublicEventTuitionFn,
   getStudyProgramsFn,
+  getTuitionApplicationPublicFn,
   getUniversitiesFn,
   showAssistanceCheckFn,
-  storePublicEventDtksFn
+  storePublicEventDtksFn,
+  storeDTKSCourtPublicFn,
+  storeDTKSSchoolFn,
+  storePublicEventTuitionFn
 } from '@/api/public.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
-import { type AxiosError } from 'axios'
-import { useMutation, useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
+import { handleMessage } from '@/lib/services/handleMessage'
+import { handleOnError } from '@/lib/utils'
+import { type AxiosError } from 'axios'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 
 export const useGetAssistanceCheck = (nik: string, enabled: boolean) => {
   return useQuery(['assistance-check', nik], async () => await showAssistanceCheckFn(nik), {
@@ -56,6 +62,55 @@ export const usePublicEventDTKS = () => {
           description: 'Terjadi masalah dengan permintaan Anda.'
         })
       }
+    }
+  })
+}
+
+export const useCreatePublicEventTuition = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(storePublicEventTuitionFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('public-event-tuition')
+      void queryClient.invalidateQueries('tuition-application-public')
+      handleMessage({ title: 'Pengajuan BBP', variant: 'create' })
+    },
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    }
+  })
+}
+
+export const useGetTuitionApplicationPublic = () => {
+  return useQuery('tuition-application-public', async () => await getTuitionApplicationPublicFn())
+}
+
+export const useCreateDTKSCourtPublic = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(storeDTKSCourtPublicFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('public-event-tuition')
+      void queryClient.invalidateQueries('tuition-application-public')
+      handleMessage({ title: 'Pengajuan BBP', variant: 'create' })
+    },
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    }
+  })
+}
+
+export const useCreateDTKSSchool = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(storeDTKSSchoolFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('public-event-tuition')
+      void queryClient.invalidateQueries('tuition-application-public')
+      handleMessage({ title: 'Pengajuan BBP', variant: 'create' })
+    },
+    onError: (error: AxiosError) => {
+      handleOnError(error)
     }
   })
 }

@@ -26,3 +26,49 @@ export interface ITuitionAssistanceEvents {
   data: ITuitionAssistanceEvent[]
   meta: IMeta
 }
+
+export interface IPath {
+  storage: string
+  url: string
+  originalName: string
+}
+
+export interface IIndigencyCertificate {
+  id: string
+  user: {
+    id: string
+    name: string
+  }
+  applicant: {
+    id: string
+    name: string
+  }
+  applicantPhoneNumber: string
+  peopleConcerned: IBeneficary
+  certificateDestination: string
+  applicationCategory: string
+  dtksStatus: string
+  applicationStatus: string
+  petitionLetterPath: null | IPath
+  domicileLetterPath: null | IPath
+  familyCardPath: null | IPath
+  idCardPath: null | IPath
+  educationLevel: string
+  schoolLetterPath: null | IPath
+  salarySlipPath: null | IPath
+  localsApprovalLetterPath: null | IPath
+  lowIncomeLetterPath: null | IPath
+  frontViewHousePath: null | IPath
+  sittingViewPath: null | IPath
+  chamberViewHousePath: null | IPath
+  kitchenViewHousePath: null | IPath
+  isApplicationOnline: boolean
+  note: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface IIndigencyCertificates {
+  data: IIndigencyCertificate[]
+  meta: IMeta
+}

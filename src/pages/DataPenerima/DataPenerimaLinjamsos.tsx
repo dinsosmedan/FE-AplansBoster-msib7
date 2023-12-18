@@ -8,7 +8,10 @@ const DataPenerimaLinjamsos = () => {
   const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
 
   React.useEffect(() => {
-    setBreadcrumbs([{ url: '/data-penerima/linjamsos', label: 'Linjamsos' }])
+    setBreadcrumbs([
+      { url: '/data-penerima', label: 'Data Penerima' },
+      { url: '/data-penerima/linjamsos', label: 'Linjamsos' }
+    ])
   }, [])
 
   return (

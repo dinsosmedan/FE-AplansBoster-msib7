@@ -108,7 +108,7 @@ export default function NonDtksCourts() {
             <div className="py-14 px-7">
               <HiAcademicCap className="w-[70px] h-[70px] text-primary" />
               <p className="text-xl font-semibold py-[26px]">
-                SKTM Untuk Pelayanan ke Pengadilan Agama / LBH (Terdaftar DTKS)
+                SKTM Untuk Pelayanan ke Pengadilan Agama / LBH (Tidak Terdaftar DTKS)
               </p>
               <Button className="disabled:bg-black w-full h-[60px]  " disabled>
                 <p className="text-xl text-white">Diproses</p>

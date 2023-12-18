@@ -1,7 +1,12 @@
 import ENV from '@/lib/environment'
-import { type IUniversity } from '@/lib/types/linjamsos.type'
+import { type IApplication, type IUniversity } from '@/lib/types/linjamsos.type'
 import { type IBank, type IAssistanceCheck, type IPublicEventTuition } from '@/lib/types/public.type'
-import { type PublicDTKSFields } from '@/lib/validations/landingPage/public.validation'
+import {
+  type DtksSchoolFields,
+  type DtksCourtsFields,
+  type publicEventTuitionFields,
+  type PublicDTKSFields
+} from '@/lib/validations/landingPage/public.validation'
 import axios from 'axios'
 import axiosPublic from './axiosPublicInstance'
 
@@ -76,6 +81,152 @@ export const storePublicEventDtksFn = async (fields: PublicDTKSFields) => {
   }
 
   await axiosPublic.post('/public/application/dtks', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
+interface IStorePublicEventTuition extends publicEventTuitionFields {
+  event: string
+}
+
+export const storePublicEventTuitionFn = async (data: IStorePublicEventTuition) => {
+  const formdata = new FormData()
+  formdata.append('identityNumber', data.identityNumber)
+  formdata.append('event', data.event)
+  formdata.append('name', data.name)
+  formdata.append('birthPlace', data.birthPlace)
+  formdata.append('birthDate', data.birthDate as string)
+  formdata.append('address', data.address)
+  formdata.append('areaLevel3', data.areaLevel3)
+  formdata.append('areaLevel4', data.areaLevel4)
+  formdata.append('gender', data.gender)
+  formdata.append('phoneNumber', data.phoneNumber)
+  formdata.append('email', data.email)
+  formdata.append('universityId', data.universityId)
+  formdata.append('universityName', data.universityName)
+  formdata.append('studyProgramId', data.studyProgramId)
+  formdata.append('studyProgramName', data.studyProgramName)
+  formdata.append('semester', data.semester as unknown as string)
+  formdata.append('gpa', data.gpa as unknown as string)
+  formdata.append('tuitionFee', data.tuitionFee as unknown as string)
+  formdata.append('bankAccountNumber', data.bankAccountNumber)
+  formdata.append('bankAccountName', data.bankAccountName)
+  formdata.append('bank', data.bank)
+
+  if (Array.isArray(data.photo) && data.photo.length > 0) {
+    formdata.append('photo', data.photo[0] as File)
+  }
+  if (Array.isArray(data.applicationLetter) && data.applicationLetter.length > 0) {
+    formdata.append('applicationLetter', data.applicationLetter[0] as File)
+  }
+  if (Array.isArray(data.familyCard) && data.familyCard.length > 0) {
+    formdata.append('familyCard', data.familyCard[0] as File)
+  }
+  if (Array.isArray(data.identityCard) && data.identityCard.length > 0) {
+    formdata.append('identityCard', data.identityCard[0] as File)
+  }
+  if (Array.isArray(data.studentCard) && data.studentCard.length > 0) {
+    formdata.append('studentCard', data.studentCard[0] as File)
+  }
+  if (Array.isArray(data.tuitionReceipt) && data.tuitionReceipt.length > 0) {
+    formdata.append('tuitionReceipt', data.tuitionReceipt[0] as File)
+  }
+  if (Array.isArray(data.activeStudentCertificate) && data.activeStudentCertificate.length > 0) {
+    formdata.append('activeStudentCertificate', data.activeStudentCertificate[0] as File)
+  }
+  if (Array.isArray(data.noScholarshipStatement) && data.noScholarshipStatement.length > 0) {
+    formdata.append('noScholarshipStatement', data.noScholarshipStatement[0] as File)
+  }
+  if (Array.isArray(data.noGovernmentEmployeeStatement) && data.noGovernmentEmployeeStatement.length > 0) {
+    formdata.append('noGovernmentEmployeeStatement', data.noGovernmentEmployeeStatement[0] as File)
+  }
+  if (Array.isArray(data.dtksPrintout) && data.dtksPrintout.length > 0) {
+    formdata.append('dtksPrintout', data.dtksPrintout[0] as File)
+  }
+  if (Array.isArray(data.passBook) && data.passBook.length > 0) {
+    formdata.append('passBook', data.passBook[0] as File)
+  }
+  if (Array.isArray(data.gradeTranscript) && data.gradeTranscript.length > 0) {
+    formdata.append('gradeTranscript', data.gradeTranscript[0] as File)
+  }
+  if (Array.isArray(data.biodata) && data.biodata.length > 0) {
+    formdata.append('biodata', data.biodata[0] as File)
+  }
+
+  await axiosPublic.post('/public/application/tuition-assistance', formdata, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
+export const getTuitionApplicationPublicFn = async (): Promise<IApplication[]> => {
+  const response = await axiosPublic.get('/public/application/tuition-assistance')
+  return response.data?.data
+}
+
+export const storeDTKSCourtPublicFn = async (data: DtksCourtsFields) => {
+  const formdata = new FormData()
+  formdata.append('peopleConcernedIdentityNumber', data.peopleConcernedIdentityNumber)
+  formdata.append('peopleConcernedName', data.peopleConcernedName)
+  formdata.append('peopleConcernedAreaLevel3', data.peopleConcernedAreaLevel3)
+  formdata.append('peopleConcernedAreaLevel4', data.peopleConcernedAreaLevel4)
+  formdata.append('peopleConcernedAddress', data.peopleConcernedAddress)
+  formdata.append('applicantPhoneNumber', data.applicantPhoneNumber)
+  formdata.append('certificateDestination', data.certificateDestination)
+  formdata.append('categoryApplication', 'dtks-courts')
+
+  if (Array.isArray(data.petitionLetter) && data.petitionLetter.length > 0) {
+    formdata.append('petitionLetter', data.petitionLetter[0] as File)
+  }
+  if (Array.isArray(data.domicileLetter) && data.domicileLetter.length > 0) {
+    formdata.append('domicileLetter', data.domicileLetter[0] as File)
+  }
+  if (Array.isArray(data.familyCard) && data.familyCard.length > 0) {
+    formdata.append('familyCard', data.familyCard[0] as File)
+  }
+  if (Array.isArray(data.idCard) && data.idCard.length > 0) {
+    formdata.append('idCard', data.idCard[0] as File)
+  }
+
+  await axiosPublic.post('/public/application/indigency-certificate', formdata, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
+export const storeDTKSSchoolFn = async (data: DtksSchoolFields) => {
+  const formdata = new FormData()
+  formdata.append('peopleConcernedIdentityNumber', data.peopleConcernedIdentityNumber)
+  formdata.append('peopleConcernedName', data.peopleConcernedName)
+  formdata.append('peopleConcernedAreaLevel3', data.peopleConcernedAreaLevel3)
+  formdata.append('peopleConcernedAreaLevel4', data.peopleConcernedAreaLevel4)
+  formdata.append('peopleConcernedAddress', data.peopleConcernedAddress)
+  formdata.append('applicantPhoneNumber', data.applicantPhoneNumber)
+  formdata.append('certificateDestination', data.certificateDestination)
+  formdata.append('educationLevel', data.educationLevel)
+  formdata.append('categoryApplication', 'dtks-schools')
+
+  if (Array.isArray(data.petitionLetter) && data.petitionLetter.length > 0) {
+    formdata.append('petitionLetter', data.petitionLetter[0] as File)
+  }
+  if (Array.isArray(data.familyCard) && data.familyCard.length > 0) {
+    formdata.append('familyCard', data.familyCard[0] as File)
+  }
+  if (Array.isArray(data.idCard) && data.idCard.length > 0) {
+    formdata.append('idCard', data.idCard[0] as File)
+  }
+  if (Array.isArray(data.domicileLetter) && data.domicileLetter.length > 0) {
+    formdata.append('domicileLetter', data.domicileLetter[0] as File)
+  }
+  if (Array.isArray(data.schoolLetter) && data.schoolLetter.length > 0) {
+    formdata.append('schoolLetter', data.schoolLetter[0] as File)
+  }
+
+  await axiosPublic.post('/public/application/indigency-certificate', formdata, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }

@@ -48,7 +48,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
   const { data: events } = useGetEvent()
   const { data: bankLists } = useGetBank()
   const { data: universities } = useGetUniversities()
-  const { data: studyPrograms } = useGetStudyPrograms(university)
+  const { data: studyPrograms } = useGetStudyPrograms(university as string)
 
   React.useEffect(() => {
     if (isSuccess) {
@@ -192,30 +192,25 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Prodi</FormLabel>
-                    <FormControl>
-                      <FormItem>
-                        <FormLabel className="font-semibold dark:text-white">Program Studi</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          value={field.value}
-                          disabled={!universities || !studyPrograms}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Pilih Program Studi" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {studyPrograms?.map((studyProgram) => (
-                              <SelectItem key={studyProgram.id} value={studyProgram.id}>
-                                {studyProgram.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormItem>
-                    </FormControl>
+                    <FormLabel className="font-semibold dark:text-white">Program Studi</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      disabled={!universities || !studyPrograms}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Program Studi" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {studyPrograms?.map((studyProgram) => (
+                          <SelectItem key={studyProgram.id} value={studyProgram.id}>
+                            {studyProgram.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />

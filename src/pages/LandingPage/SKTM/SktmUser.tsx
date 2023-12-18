@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { HiAcademicCap, HiArrowDownTray, HiBuildingLibrary } from 'react-icons/hi2'
+import { HiAcademicCap, HiBuildingLibrary } from 'react-icons/hi2'
 import CardLandingPage from '../../../components/organisms/landingPage/CardLandingPage'
 import { Button } from '@/components/ui/button'
 import { BgEmpty } from '@/assets'
@@ -61,35 +61,6 @@ export default function UserSktm() {
               href={'/user/sktm/non-dtks-courts'}
             />
           </div>
-          <section className="flex flex-col gap-8">
-            <div className="h-fit bg-white rounded-lg px-10 py-14">
-              <p className="font-semibold text-xl pb-6">Persyaratan</p>
-              <ol className="list-decimal list-inside pl-3">
-                <li className="text-lg leading-relaxed">
-                  Mengisi Template Surat Permohonan yang bisa di download di bawah untuk di tujukan kepada Bapak Kepala
-                  Dinas Sosial Kota Medan;
-                </li>
-                <li className="text-lg leading-relaxed">Fotocopy Surat Domisili dari Kelurahan Setempat;</li>
-                <li className="text-lg leading-relaxed">Fotocopy Kartu Keluarga;</li>
-                <li className="text-lg leading-relaxed">Fotocopy Kartu Tanda Penduduk (KTP);</li>
-                <li className="text-lg leading-relaxed">Jenjang SD-SMA: Surat Keterangan dari sekolah</li>
-                <li className="text-lg leading-relaxed">
-                  Jenjang Universitas: Print-an Surat Pengumuman dari Pihak Universitas baik berupa download-an alamat
-                  link online atau pengumuman dari universitas.
-                </li>
-              </ol>
-              <div className="flex gap-4 items-center pt-6">
-                <p className="text-xl text-primary font-medium">Download Template Surat Permohonan</p>
-                <Button variant="outline" className="border-primary border-2 rounded-lg">
-                  <p className="text-base text-primary">Unduh</p>
-                  <HiArrowDownTray className="text-2xl ml-2 text-primary" />
-                </Button>
-              </div>
-            </div>
-            <Button className="w-full py-8">
-              <p className="text-xl">Daftar Sekarang</p>
-            </Button>
-          </section>
         </TabsContent>
         <TabsContent value="request" className="flex flex-row gap-10 ">
           <div className="w-[1356px] h-[540px] bg-white">

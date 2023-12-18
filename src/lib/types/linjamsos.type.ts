@@ -1,5 +1,6 @@
 import { type IBeneficary } from './beneficary.type'
 import { type IAddress, type IMeta } from './dayasos.type'
+import { type IPath } from './service.type'
 
 export interface IVulnerableGroupHandlingDetail {
   id: string
@@ -191,19 +192,20 @@ export interface IStudyProgram {
   name: string
 }
 export interface IDocument {
-  applicationLetter: string | null
-  photo: string | null
-  familyCard: string | null
-  identityCard: string | null
-  studentCard: string | null
-  activeStudentCertificate: string | null
-  noScholarshipStatement: string | null
-  noGovernmentEmployeeStatement: string | null
-  biodata: string | null
-  dtksPrintout: string | null
-  passBook: string | null
-  tuitionReceipt: string | null
+  applicationLetter: IPath | null
+  photo: IPath | null
+  familyCard: IPath | null
+  identityCard: IPath | null
+  studentCard: IPath | null
+  activeStudentCertificate: IPath | null
+  noScholarshipStatement: IPath | null
+  noGovernmentEmployeeStatement: IPath | null
+  biodata: IPath | null
+  dtksPrintout: IPath | null
+  passBook: IPath | null
+  tuitionReceipt: IPath | null
   createdAt: string
+  gradeTranscript: IPath | null
   updatedAt: string
 }
 export interface IApplication {
