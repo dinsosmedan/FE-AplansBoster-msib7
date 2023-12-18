@@ -21,8 +21,6 @@ export default function BbpUser() {
 
   useDisableBodyScroll(isLoading)
 
-  console.log(submissionProcess)
-
   React.useEffect(() => {
     if (id) {
       setDetails(data?.find((item) => item.id === id) as IPublicEventTuition)

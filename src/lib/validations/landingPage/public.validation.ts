@@ -52,93 +52,116 @@ export const publicEventTuitionValidation = yup.object({
 export type publicEventTuitionFields = yup.InferType<typeof publicEventTuitionValidation>
 
 export const DtksSchoolValidation = yup.object({
-    peopleConcernedIdentityNumber: yup.string().required('NIK harus diisi'),
-    peopleConcernedName: yup.string().required('Nama harus diisi'),
-    peopleConcernedAreaLevel3: yup.string().required('Kecamatan harus diisi'),
-    peopleConcernedAreaLevel4: yup.string().required('Kelurahan harus diisi'),
-    peopleConcernedAddress: yup.string().required('Alamat harus diisi'),
-    publicphoneNumber: yup.string()
+  peopleConcernedIdentityNumber: yup.string().required('NIK harus diisi'),
+  peopleConcernedName: yup.string().required('Nama harus diisi'),
+  peopleConcernedAreaLevel3: yup.string().required('Kecamatan harus diisi'),
+  peopleConcernedAreaLevel4: yup.string().required('Kelurahan harus diisi'),
+  peopleConcernedAddress: yup.string().required('Alamat harus diisi'),
+  publicphoneNumber: yup
+    .string()
     .matches(phoneRegExp, 'Nomor telepon tidak valid')
     .min(7, 'Nomor telepon minimal 7 karakter')
     .max(20, 'Nomor telepon maksimal 20 karakter')
     .required('Nomor Telepon wajib diisi'),
-    certificateDestination: yup.string().required('Pilih Universitas/Sekolah yang dituju'),
-    educationLevel: yup.string().required('Pilih jenjang pendidikan'),
-    petitionLetter: yup.mixed().required('Surat permohonan harus diupload'),
-    familyCard: yup.mixed().required('Kartu keluarga harus diupload'),
-    idCard: yup.mixed().required('KTP harus diupload'),
-    domicileLetter: yup.mixed().required('Surat keterangan domisili harus diupload'),
-    IndigencyCertificateApplication: yup.mixed().required('Surat permohonan Surat Keterangan Dari Sekolah / Surat Pengumuman dari pihak Universitas harus diupload')
+  certificateDestination: yup.string().required('Pilih Universitas/Sekolah yang dituju'),
+  educationLevel: yup.string().required('Pilih jenjang pendidikan'),
+  petitionLetter: yup.mixed().required('Surat permohonan harus diupload'),
+  familyCard: yup.mixed().required('Kartu keluarga harus diupload'),
+  idCard: yup.mixed().required('KTP harus diupload'),
+  domicileLetter: yup.mixed().required('Surat keterangan domisili harus diupload'),
+  IndigencyCertificateApplication: yup
+    .mixed()
+    .required('Surat permohonan Surat Keterangan Dari Sekolah / Surat Pengumuman dari pihak Universitas harus diupload')
 })
 
 export type DtksSchoolFields = yup.InferType<typeof DtksSchoolValidation>
 
 export const NonDtksSchoolValidation = yup.object({
-   peopleConcernedIdentityNumber: yup.string().required('NIK harus diisi'),
-    peopleConcernedName: yup.string().required('Nama harus diisi'),
-    peopleConcernedAreaLevel3: yup.string().required('Kecamatan harus diisi'),
-    peopleConcernedAreaLevel4: yup.string().required('Kelurahan harus diisi'),
-    peopleConcernedAddress: yup.string().required('Alamat harus diisi'),
-    publicphoneNumber: yup.string()
+  peopleConcernedIdentityNumber: yup.string().required('NIK harus diisi'),
+  peopleConcernedName: yup.string().required('Nama harus diisi'),
+  peopleConcernedAreaLevel3: yup.string().required('Kecamatan harus diisi'),
+  peopleConcernedAreaLevel4: yup.string().required('Kelurahan harus diisi'),
+  peopleConcernedAddress: yup.string().required('Alamat harus diisi'),
+  publicphoneNumber: yup
+    .string()
     .matches(phoneRegExp, 'Nomor telepon tidak valid')
     .min(7, 'Nomor telepon minimal 7 karakter')
     .max(20, 'Nomor telepon maksimal 20 karakter')
     .required('Nomor Telepon wajib diisi'),
-    certificateDestination: yup.string().required('Pilih Universitas/Sekolah yang dituju'),
-    educationLevel: yup.string().required('Pilih jenjang pendidikan'),
-    familyCard: yup.mixed().required('Kartu keluarga harus diupload'),
-    idCard: yup.mixed().required('KTP harus diupload'),
-    domicileLetter: yup.mixed().required('Surat keterangan domisili harus diupload'),
-    IndigencyCertificateApplication: yup.mixed().required('Surat permohonan Surat Keterangan Dari Sekolah / Surat Pengumuman dari pihak Universitas harus diupload'),
-    salarySlip: yup.mixed().required('Slip gaji harus diupload'),
-    localsApprovalLetter: yup.mixed().required('Scan Surat Keterangan Dari Kepling Apabila Tinggal Menumpang/Sewa ditandatangani pakai materai Rp.10.000 harus diupload'),
-    lowIncomeLetter: yup.mixed().required('Surat Keterangan Penghasilan Dari RT/RW harus diupload'),
-    frontViewHouse: yup.mixed().required('Foto Depan Rumah harus diupload'),
-    sittingViewHouse: yup.mixed().required('Foto Ruang Tamu harus diupload'),
-    chamberViewHouse: yup.mixed().required('Foto Kamar Tidur harus diupload'),
-    kitchenViewHouse: yup.mixed().required('Foto Dapur harus diupload')
+  certificateDestination: yup.string().required('Pilih Universitas/Sekolah yang dituju'),
+  educationLevel: yup.string().required('Pilih jenjang pendidikan'),
+  familyCard: yup.mixed().required('Kartu keluarga harus diupload'),
+  idCard: yup.mixed().required('KTP harus diupload'),
+  domicileLetter: yup.mixed().required('Surat keterangan domisili harus diupload'),
+  IndigencyCertificateApplication: yup
+    .mixed()
+    .required(
+      'Surat permohonan Surat Keterangan Dari Sekolah / Surat Pengumuman dari pihak Universitas harus diupload'
+    ),
+  salarySlip: yup.mixed().required('Slip gaji harus diupload'),
+  localsApprovalLetter: yup
+    .mixed()
+    .required(
+      'Scan Surat Keterangan Dari Kepling Apabila Tinggal Menumpang/Sewa ditandatangani pakai materai Rp.10.000 harus diupload'
+    ),
+  lowIncomeLetter: yup.mixed().required('Surat Keterangan Penghasilan Dari RT/RW harus diupload'),
+  frontViewHouse: yup.mixed().required('Foto Depan Rumah harus diupload'),
+  sittingViewHouse: yup.mixed().required('Foto Ruang Tamu harus diupload'),
+  chamberViewHouse: yup.mixed().required('Foto Kamar Tidur harus diupload'),
+  kitchenViewHouse: yup.mixed().required('Foto Dapur harus diupload')
 })
 export type NonDtksSchoolFields = yup.InferType<typeof NonDtksSchoolValidation>
 
 export const DtksCourtsValidation = yup.object({
-   peopleConcernedIdentityNumber: yup.string().required('NIK harus diisi'),
-    peopleConcernedName: yup.string().required('Nama harus diisi'),
-    peopleConcernedAreaLevel3: yup.string().required('Kecamatan harus diisi'),
-    peopleConcernedAreaLevel4: yup.string().required('Kelurahan harus diisi'),
-    peopleConcernedAddress: yup.string().required('Alamat harus diisi'),
-    publicphoneNumber: yup.string()
+  peopleConcernedIdentityNumber: yup.string().required('NIK harus diisi'),
+  peopleConcernedName: yup.string().required('Nama harus diisi'),
+  peopleConcernedAreaLevel3: yup.string().required('Kecamatan harus diisi'),
+  peopleConcernedAreaLevel4: yup.string().required('Kelurahan harus diisi'),
+  peopleConcernedAddress: yup.string().required('Alamat harus diisi'),
+  applicantPhoneNumber: yup
+    .string()
     .matches(phoneRegExp, 'Nomor telepon tidak valid')
     .min(7, 'Nomor telepon minimal 7 karakter')
     .max(20, 'Nomor telepon maksimal 20 karakter')
     .required('Nomor Telepon wajib diisi'),
-    petitionLetter: yup.mixed().required('Surat permohonan harus diupload'),
-    familyCard: yup.mixed().required('Kartu keluarga harus diupload'),
-    idCard: yup.mixed().required('KTP harus diupload'),
-    domicileLetter: yup.mixed().required('Surat keterangan domisili harus diupload')
+  petitionLetter: yup.mixed().required('Surat permohonan harus diupload'),
+  familyCard: yup.mixed().required('Kartu keluarga harus diupload'),
+  idCard: yup.mixed().required('KTP harus diupload'),
+  domicileLetter: yup.mixed().required('Surat keterangan domisili harus diupload'),
+  certificateDestination: yup.string().required('Tujuan Surat harus diisi')
 })
 
 export type DtksCourtsFields = yup.InferType<typeof DtksCourtsValidation>
 
 export const NonDtksCourtsValidation = yup.object({
-peopleConcernedIdentityNumber: yup.string().required('NIK harus diisi'),
-    peopleConcernedName: yup.string().required('Nama harus diisi'),
-    peopleConcernedAreaLevel3: yup.string().required('Kecamatan harus diisi'),
-    peopleConcernedAreaLevel4: yup.string().required('Kelurahan harus diisi'),
-    peopleConcernedAddress: yup.string().required('Alamat harus diisi'),
-    publicphoneNumber: yup.string()
+  peopleConcernedIdentityNumber: yup.string().required('NIK harus diisi'),
+  peopleConcernedName: yup.string().required('Nama harus diisi'),
+  peopleConcernedAreaLevel3: yup.string().required('Kecamatan harus diisi'),
+  peopleConcernedAreaLevel4: yup.string().required('Kelurahan harus diisi'),
+  peopleConcernedAddress: yup.string().required('Alamat harus diisi'),
+  publicPhoneNumber: yup
+    .string()
     .matches(phoneRegExp, 'Nomor telepon tidak valid')
     .min(7, 'Nomor telepon minimal 7 karakter')
     .max(20, 'Nomor telepon maksimal 20 karakter')
     .required('Nomor Telepon wajib diisi'),
-     familyCard: yup.mixed().required('Kartu keluarga harus diupload'),
-    idCard: yup.mixed().required('KTP harus diupload'),
-    domicileLetter: yup.mixed().required('Surat keterangan domisili harus diupload'),
-    IndigencyCertificateApplication: yup.mixed().required('Surat permohonan Surat Keterangan Dari Sekolah / Surat Pengumuman dari pihak Universitas harus diupload'),
-    salarySlip: yup.mixed().required('Slip gaji harus diupload'),
-    localsApprovalLetter: yup.mixed().required('Scan Surat Keterangan Dari Kepling Apabila Tinggal Menumpang/Sewa ditandatangani pakai materai Rp.10.000 harus diupload'),
-    lowIncomeLetter: yup.mixed().required('Surat Keterangan Penghasilan Dari RT/RW harus diupload'),
-    frontViewHouse: yup.mixed().required('Foto Depan Rumah harus diupload'),
-    sittingViewHouse: yup.mixed().required('Foto Ruang Tamu harus diupload'),
-    chamberViewHouse: yup.mixed().required('Foto Kamar Tidur harus diupload'),
-    kitchenViewHouse: yup.mixed().required('Foto Dapur harus diupload')
+  familyCard: yup.mixed().required('Kartu keluarga harus diupload'),
+  idCard: yup.mixed().required('KTP harus diupload'),
+  domicileLetter: yup.mixed().required('Surat keterangan domisili harus diupload'),
+  IndigencyCertificateApplication: yup
+    .mixed()
+    .required(
+      'Surat permohonan Surat Keterangan Dari Sekolah / Surat Pengumuman dari pihak Universitas harus diupload'
+    ),
+  salarySlip: yup.mixed().required('Slip gaji harus diupload'),
+  localsApprovalLetter: yup
+    .mixed()
+    .required(
+      'Scan Surat Keterangan Dari Kepling Apabila Tinggal Menumpang/Sewa ditandatangani pakai materai Rp.10.000 harus diupload'
+    ),
+  lowIncomeLetter: yup.mixed().required('Surat Keterangan Penghasilan Dari RT/RW harus diupload'),
+  frontViewHouse: yup.mixed().required('Foto Depan Rumah harus diupload'),
+  sittingViewHouse: yup.mixed().required('Foto Ruang Tamu harus diupload'),
+  chamberViewHouse: yup.mixed().required('Foto Kamar Tidur harus diupload'),
+  kitchenViewHouse: yup.mixed().required('Foto Dapur harus diupload')
 })
