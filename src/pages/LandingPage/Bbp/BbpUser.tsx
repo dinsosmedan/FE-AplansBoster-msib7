@@ -42,32 +42,32 @@ export default function BbpUser() {
   if (isLoading || isLoadingDetails) return <Loading />
 
   return (
-    <section className="bg-[#F9F9F9] lg:px-10 py-[38px]">
+    <section className="bg-[#F9F9F9] lg:px-10 py-[38px] pb-[200px]">
       <Tabs defaultValue="open">
-        <div className="w-full bg-[#FFFFFF] border border-[#E4E4E4] rounded-lg">
-          <p className="md:text-[26px] font-semibold mb-7 px-10 mt-9">Bantuan Biaya Pendidikan </p>
+        <div className="w-full bg-[#FFFFFF] border border-[#E4E4E4] rounded-lg pt-10 lg:pt-0  ">
+          <p className="md:text-[26px] text-[18px] font-semibold mb-7 px-9 mt-9">Bantuan Biaya Pendidikan </p>
           <TabsList className="p-0 h-auto bg-white gap-5 px-7">
             <TabsTrigger
               value="open"
               className="shadow-none border-b-8 border-white text-black data-[state=active]:border-primary data-[state=active]:text-primary pb-5"
             >
-              <p className="text-lg font-medium">Sedang dibuka</p>
+              <p className="md:text-lg font-medium">Sedang dibuka</p>
             </TabsTrigger>
             <TabsTrigger
               value="request"
               className="shadow-none border-b-8 border-white text-black data-[state=active]:border-primary data-[state=active]:text-primary pb-5"
             >
-              <p className="text-lg font-medium">Proses Pengajuan</p>
+              <p className="md:text-lg font-medium">Proses Pengajuan</p>
             </TabsTrigger>
           </TabsList>
         </div>
-        <TabsContent value="open" className="mt-11 lg:flex lg:flex-row justify-between bg-[#F9F9F9] gap-10 mx-5">
-          <div className="flex flex-col gap-8">
+        <TabsContent value="open" className="mt-11 lg:flex lg:flex-row lg:justify-between grid place-items-center lg:place-items-start bg-[#F9F9F9] gap-10">
+          <div className="flex gap-8 lg:flex-col lg:justify-start justify-center">
             {data?.map((item, index) => (
               <CardLandingPage
                 key={index}
                 className={cn(
-                  'w-[400px]',
+                  'lg:w-[400px] w-[90%] shadow-sm',
                   (item.id === id || (!id && index === 0)) && 'border-2 border-primary bg-[#F9F4F5] SH'
                 )}
                 title={item.batch}
@@ -78,12 +78,12 @@ export default function BbpUser() {
               />
             ))}
           </div>
-          <section className="flex flex-col gap-8">
-            <div className="bg-white rounded-lg px-10 py-14 h-fit">
+          <section className="flex flex-col gap-8 w-[95%] mt-5 lg:mt-0 lg:justify-start justify-center">
+            <div className="bg-white rounded-lg md:px-10 px-7 md:py-14 py-9 h-fit shadow">
               <p className="font-semibold text-xl">Informasi Tentang Beasiswa</p>
               <Markdown values={details?.eventDescription} />
 
-              <section className="flex flex-col gap-5 border-t border-zinc-200 py-3">
+              <section className="flex flex-col gap-5 border-t border-zinc-200 py-3 ">
                 <FileDownload
                   title={`Pengumuman Beasiswa ${details?.batch}`}
                   url={details?.requiredDocuments?.scholarshipApplicationLetter?.url as string}
@@ -112,8 +112,8 @@ export default function BbpUser() {
               </section>
             </div>
             <Link to={`/user/bbp/form/${id ?? data?.[0].id}`}>
-              <Button className="w-full py-8">
-                <p className="text-xl">Daftar Sekarang</p>
+              <Button className="w-full py-6">
+                <p className="md:text-lg">Daftar Sekarang</p>
               </Button>
             </Link>
           </section>
@@ -225,15 +225,15 @@ const FileDownload = ({ fileName, url, title }: IFileDownloadProps) => {
   }
 
   return (
-    <div className="flex gap-4 items-center justify-between w-full">
-      <p className="text-base font-semibold max-w-[80%]">{title}</p>
+    <div className="md:flex gap-4 items-center justify-between w-full">
+      <p className="text-base font-semibold md:max-w-[80%] w-full">{title}</p>
       <Button
         variant="outline"
-        className="border-primary border-2 rounded-lg gap-2 items-center"
+        className="border-primary border-2 w-full md:w-[180px] mt-4 md:mt-0 rounded-lg gap-2 items-center"
         onClick={() => handleDownload(url, fileName)}
       >
         <p className="text-sm text-primary">Unduh</p>
-        <HiArrowDownTray className="text-xl text-primary" />
+        <HiArrowDownTray className="text-lg text-primary" />
       </Button>
     </div>
   )
