@@ -38,7 +38,7 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-      <section className="py-[70px] md:px-14 px-5 bg-[#F9F9F9] relative overflow-hidden">
+      <section className="py-[70px] md:px-14 px-5 bg-[#F9F9F9] relative overflow-hidden lg:mb-0 pb-20 mb-[100px]">
         <div className="w-96 h-96 opacity-20 bg-rose-600 rounded-full absolute top-[calc(-192px+38px)] right-[calc(-192px+103px)] blur-3xl" />
         <div className="text-center mb-11 mt-0">
           <Button
@@ -83,8 +83,8 @@ export default function LandingPage() {
           />
         </div>
       </section>
-      <section className="hidden lg:block">
-        <div className="py-[98px] bg-[#1B232F] flex items-center gap-14 justify-center">
+      <section className="hidden lg:block ">
+        <div className="py-[98px] bg-[#1B232F] flex items-center gap-14 justify-center pb-[200px]">
           <div className="flex flex-col items-end gap-5">
             <p className="text-[#FFB60A] text-[70px] font-bold font-volkhov">700.000 +</p>
             <p className="text-[#FFB60A] text-[70px] font-bold font-volkhov">450.000 +</p>

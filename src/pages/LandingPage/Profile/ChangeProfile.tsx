@@ -17,7 +17,7 @@ export default function ChangeProfile() {
     console.log(values)
   }
   return (
-    <div className="bg-white lg:w-[90%] w-[90%] h-[100%]  md:p-10 py-10 shadow-xl rounded-lg mt-10 lg:mt-0 mx-auto">
+    <div className="bg-white lg:w-[90%] w-[90%] h-[100%]  md:p-10 py-10 shadow-sm rounded-lg mt-10 lg:mt-0 mx-auto">
       <p className="text-[30px] font-semibold ml-7">Profil</p>
       <p className="text-[14px] ml-7">Ubah profile akun Kamu disini</p>
       <Form {...forms}>
@@ -74,7 +74,7 @@ export default function ChangeProfile() {
           </div>
           <div className="flex justify-end gap-5 items-center pt-20 px-7 items-center">
             <Button className="md:w-[200px] w-[100%] h-[50px]">
-              <p className="text-lg">Edit</p>
+              <p className="text-lg">Ubah</p>
               <HiPencil className="w-4 h-4 ml-3 mb-1" />
             </Button>
           </div>
