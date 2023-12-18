@@ -6,6 +6,7 @@ import {
   getUniversitiesFn,
   showAssistanceCheckFn,
   storeDTKSCourtPublicFn,
+  storeDTKSSchoolFn,
   storePublicEventTuitionFn
 } from '@/api/public.api'
 import { handleMessage } from '@/lib/services/handleMessage'
@@ -60,6 +61,21 @@ export const useCreateDTKSCourtPublic = () => {
   const queryClient = useQueryClient()
 
   return useMutation(storeDTKSCourtPublicFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('public-event-tuition')
+      void queryClient.invalidateQueries('tuition-application-public')
+      handleMessage({ title: 'Pengajuan BBP', variant: 'create' })
+    },
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    }
+  })
+}
+
+export const useCreateDTKSSchool = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(storeDTKSSchoolFn, {
     onSuccess: () => {
       void queryClient.invalidateQueries('public-event-tuition')
       void queryClient.invalidateQueries('tuition-application-public')
