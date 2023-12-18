@@ -1,7 +1,7 @@
 import ENV from '@/lib/environment'
 import { type IApplication, type IUniversity } from '@/lib/types/linjamsos.type'
 import { type IBank, type IAssistanceCheck, type IPublicEventTuition } from '@/lib/types/public.type'
-import { type publicEventTuitionFields } from '@/lib/validations/landingPage/public.validation'
+import { type DtksSchoolFields, type publicEventTuitionFields } from '@/lib/validations/landingPage/public.validation'
 import axios from 'axios'
 import axiosPublic from './axiosPublicInstance'
 
@@ -115,4 +115,39 @@ export const storePublicEventTuitionFn = async (data: IStorePublicEventTuition) 
 export const getTuitionApplicationPublicFn = async (): Promise<IApplication[]> => {
   const response = await axiosPublic.get('/public/application/tuition-assistance')
   return response.data?.data
+}
+
+export const storeDTKSSchoolFn = async (data: DtksSchoolFields) => {
+  const formdata = new FormData()
+  formdata.append('peopleConcernedIdentityNumber', data.peopleConcernedIdentityNumber)
+  formdata.append('peopleConcernedName', data.peopleConcernedName)
+  formdata.append('peopleConcernedAreaLevel3', data.peopleConcernedAreaLevel3)
+  formdata.append('peopleConcernedAreaLevel4', data.peopleConcernedAreaLevel4)
+  formdata.append('peopleConcernedAddress', data.peopleConcernedAddress)
+  formdata.append('applicantPhoneNumber', data.applicantPhoneNumber)
+  formdata.append('certificateDestination', data.certificateDestination)
+  formdata.append('educationLevel', data.educationLevel)
+  formdata.append('categoryApplication', 'dtks-schools')
+
+  if (Array.isArray(data.petitionLetter) && data.petitionLetter.length > 0) {
+    formdata.append('petitionLetter', data.petitionLetter[0] as File)
+  }
+  if (Array.isArray(data.familyCard) && data.familyCard.length > 0) {
+    formdata.append('familyCard', data.familyCard[0] as File)
+  }
+  if (Array.isArray(data.idCard) && data.idCard.length > 0) {
+    formdata.append('idCard', data.idCard[0] as File)
+  }
+  if (Array.isArray(data.domicileLetter) && data.domicileLetter.length > 0) {
+    formdata.append('domicileLetter', data.domicileLetter[0] as File)
+  }
+  if (Array.isArray(data.schoolLetter) && data.schoolLetter.length > 0) {
+    formdata.append('schoolLetter', data.schoolLetter[0] as File)
+  }
+
+  await axiosPublic.post('/public/application/indigency-certificate', formdata, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
 }

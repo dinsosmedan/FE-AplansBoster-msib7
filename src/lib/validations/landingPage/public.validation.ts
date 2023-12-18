@@ -57,7 +57,7 @@ export const DtksSchoolValidation = yup.object({
     peopleConcernedAreaLevel3: yup.string().required('Kecamatan harus diisi'),
     peopleConcernedAreaLevel4: yup.string().required('Kelurahan harus diisi'),
     peopleConcernedAddress: yup.string().required('Alamat harus diisi'),
-    publicphoneNumber: yup.string()
+    applicantPhoneNumber: yup.string()
     .matches(phoneRegExp, 'Nomor telepon tidak valid')
     .min(7, 'Nomor telepon minimal 7 karakter')
     .max(20, 'Nomor telepon maksimal 20 karakter')
@@ -68,7 +68,7 @@ export const DtksSchoolValidation = yup.object({
     familyCard: yup.mixed().required('Kartu keluarga harus diupload'),
     idCard: yup.mixed().required('KTP harus diupload'),
     domicileLetter: yup.mixed().required('Surat keterangan domisili harus diupload'),
-    IndigencyCertificateApplication: yup.mixed().required('Surat permohonan Surat Keterangan Dari Sekolah / Surat Pengumuman dari pihak Universitas harus diupload')
+    schoolLetter: yup.mixed().required('Surat permohonan Surat Keterangan Dari Sekolah / Surat Pengumuman dari pihak Universitas harus diupload')
 })
 
 export type DtksSchoolFields = yup.InferType<typeof DtksSchoolValidation>
@@ -106,7 +106,7 @@ export const DtksCourtsValidation = yup.object({
     peopleConcernedAreaLevel3: yup.string().required('Kecamatan harus diisi'),
     peopleConcernedAreaLevel4: yup.string().required('Kelurahan harus diisi'),
     peopleConcernedAddress: yup.string().required('Alamat harus diisi'),
-    publicphoneNumber: yup.string()
+    applicantPhoneNumber: yup.string()
     .matches(phoneRegExp, 'Nomor telepon tidak valid')
     .min(7, 'Nomor telepon minimal 7 karakter')
     .max(20, 'Nomor telepon maksimal 20 karakter')
@@ -142,3 +142,5 @@ peopleConcernedIdentityNumber: yup.string().required('NIK harus diisi'),
     chamberViewHouse: yup.mixed().required('Foto Kamar Tidur harus diupload'),
     kitchenViewHouse: yup.mixed().required('Foto Dapur harus diupload')
 })
+
+export type NonDtksCourtsFields = yup.InferType<typeof NonDtksCourtsValidation>
