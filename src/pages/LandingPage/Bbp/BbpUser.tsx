@@ -138,7 +138,7 @@ export default function BbpUser() {
               <div
                 className={cn(
                   'border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center',
-                  submissionProcessDetail.application_status === 'pending'
+                  submissionProcessDetail?.application_status === 'pending'
                     ? 'bg-primary text-white'
                     : 'bg-white text-primary'
                 )}
@@ -151,7 +151,7 @@ export default function BbpUser() {
               <div
                 className={cn(
                   'border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center',
-                  submissionProcessDetail.application_status === 'processed'
+                  submissionProcessDetail?.application_status === 'processed'
                     ? 'bg-primary text-white'
                     : 'bg-white text-primary'
                 )}
@@ -164,9 +164,9 @@ export default function BbpUser() {
               <div
                 className={cn(
                   'border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center',
-                  submissionProcessDetail.application_status === 'rejected' ||
-                    submissionProcessDetail.application_status === 'approved' ||
-                    submissionProcessDetail.application_status === 'revision'
+                  submissionProcessDetail?.application_status === 'rejected' ||
+                    submissionProcessDetail?.application_status === 'approved' ||
+                    submissionProcessDetail?.application_status === 'revision'
                     ? 'bg-primary text-white'
                     : 'bg-white text-primary'
                 )}
@@ -178,7 +178,7 @@ export default function BbpUser() {
               <div
                 className={cn(
                   'w-[135px] h-[60px] rounded-lg flex items-center',
-                  submissionProcessDetail.application_status === 'pending' && 'bg-primary text-white'
+                  submissionProcessDetail?.application_status === 'pending' && 'bg-primary text-white'
                 )}
               >
                 <p className="text-base text-center">Pengajuan Terkirim</p>
@@ -186,7 +186,7 @@ export default function BbpUser() {
               <div
                 className={cn(
                   'w-[135px] h-[60px] rounded-lg flex items-center',
-                  submissionProcessDetail.application_status === 'processed' && 'bg-primary text-white'
+                  submissionProcessDetail?.application_status === 'processed' && 'bg-primary text-white'
                 )}
               >
                 <p className="text-base text-[##858585] text-center">Pengajuan Diproses</p>
@@ -194,9 +194,9 @@ export default function BbpUser() {
               <div
                 className={cn(
                   'w-[135px] h-[60px] rounded-lg flex items-center',
-                  (submissionProcessDetail.application_status === 'rejected' ||
-                    submissionProcessDetail.application_status === 'approved' ||
-                    submissionProcessDetail.application_status === 'revision') &&
+                  (submissionProcessDetail?.application_status === 'rejected' ||
+                    submissionProcessDetail?.application_status === 'approved' ||
+                    submissionProcessDetail?.application_status === 'revision') &&
                     'bg-primary text-white'
                 )}
               >
