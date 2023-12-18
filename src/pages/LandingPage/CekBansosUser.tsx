@@ -78,7 +78,7 @@ export default function CekBansosUser() {
           </Button>
         </form>
       </section>
-      <div className="md:px-14 px-5 pb-9 flex flex-col gap-5 mt-[72px] min-h-[calc(100vh-340px)]">
+      <div className="md:px-14 px-5 pb-9 flex flex-col gap-5 mt-[72px] min-h-[calc(100vh-180px)]">
         {!isSuccessBeneficary && !isSuccessAssistance && !isErrorAssistance && !isErrorBeneficary && (
           <NoData
             image={CekBansosIlustration}
@@ -143,7 +143,7 @@ export default function CekBansosUser() {
           </section>
         )}
         {isSuccessAssistance && (
-          <section className="bg-white py-14 lg:px-32 md:px-14 px-5">
+          <section className="bg-white py-14 lg:px-32 md:px-14 px-5 mb-20 lg:mb-0">
             <Table containerClassName="max-w-none">
               <TableHeader>
                 <TableRow className="hover:bg-white">
