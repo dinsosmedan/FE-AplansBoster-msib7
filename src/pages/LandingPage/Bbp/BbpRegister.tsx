@@ -101,8 +101,6 @@ export default function BbpRegister() {
     })
   }
 
-  console.log(forms.formState.errors)
-
   if (isLoading) return <Loading />
 
   return (
@@ -119,28 +117,30 @@ export default function BbpRegister() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className="focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 rounded-md rounded-r-none"
-                          type="number"
-                          placeholder="Cari NIK"
-                        />
-                      </FormControl>
+                      <div className="flex items-center">
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className="focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 rounded-md rounded-r-none"
+                            type="number"
+                            placeholder="Cari NIK"
+                          />
+                        </FormControl>
+                        <div className="flex items-end">
+                          <Button
+                            type="button"
+                            className="rounded-md rounded-l-none"
+                            onClick={async () => await refetch()}
+                            loading={isLoadingAssistance}
+                          >
+                            <HiMagnifyingGlass className="h-5 w-5" />
+                          </Button>
+                        </div>
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </div>
-              <div className="flex items-end">
-                <Button
-                  type="button"
-                  className="rounded-md rounded-l-none"
-                  onClick={async () => await refetch()}
-                  loading={isLoadingAssistance}
-                >
-                  <HiMagnifyingGlass className="h-5 w-5" />
-                </Button>
               </div>
             </div>
             <FormField
