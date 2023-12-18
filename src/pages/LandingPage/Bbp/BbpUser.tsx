@@ -27,10 +27,10 @@ export default function BbpUser() {
   if (isLoading) return <Loading />
 
   return (
-    <section className="bg-[#F9F9F9] px-10 py-[38px]">
+    <section className="bg-[#F9F9F9] lg:px-10 py-[38px]">
       <Tabs defaultValue="open">
         <div className="w-full bg-[#FFFFFF] border border-[#E4E4E4] rounded-lg">
-          <p className="text-[26px] font-semibold mb-7 px-10 mt-9">Bantuan Biaya Pendidikan </p>
+          <p className="md:text-[26px] font-semibold mb-7 px-10 mt-9">Bantuan Biaya Pendidikan </p>
           <TabsList className="p-0 h-auto bg-white gap-5 px-7">
             <TabsTrigger
               value="open"
@@ -46,7 +46,7 @@ export default function BbpUser() {
             </TabsTrigger>
           </TabsList>
         </div>
-        <TabsContent value="open" className="mt-11 flex flex-row justify-between bg-[#F9F9F9] gap-10">
+        <TabsContent value="open" className="mt-11 lg:flex lg:flex-row justify-between bg-[#F9F9F9] gap-10 mx-5">
           <div className="flex flex-col gap-8">
             {data?.map((item, index) => (
               <CardLandingPage
@@ -67,7 +67,7 @@ export default function BbpUser() {
 
               <section className="flex flex-col gap-5 border-t border-zinc-200 py-3">
                 <div className="flex gap-4 items-center justify-between w-full">
-                  <p className="text-base font-semibold max-w-[80%]">Pengumuman Beasiswa Gel II</p>
+                  <p className="text-base font-semibold max-w-[80%]">Pengumuman Beasiswa</p>
                   <Button variant="outline" className="border-primary border-2 rounded-lg gap-2 items-center">
                     <p className="text-sm text-primary">Unduh</p>
                     <HiArrowDownTray className="text-xl text-primary" />

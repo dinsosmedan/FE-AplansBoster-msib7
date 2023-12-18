@@ -7,7 +7,7 @@ export default function NotFound() {
   const navigate = useNavigate()
   return (
     <main className="flex relative justify-center items-center h-screen max-h-screen overflow-hidden">
-      <section className="flex justify-between items-center gap-[140px]">
+      <section className="lg:flex justify-between items-center gap-[140px]">
         <img src={NotFoundIllustration} alt="not-found-illustration" className="h-96" />
         <div className="flex flex-col gap-9 px-16 items-center">
           <img src={NotFoundNumber} alt="404" className="h-36" />
