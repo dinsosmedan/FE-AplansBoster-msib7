@@ -1,5 +1,12 @@
 import ENV from '@/lib/environment'
-import { type IUser, type IAuthResponse, type IResetPassword } from '@/lib/types/user.type'
+import {
+  type IUser,
+  type IAuthResponse,
+  type IResetPassword,
+  type IUserPublic,
+  type IChangePassword,
+  type IChangeProfile
+} from '@/lib/types/user.type'
 import { type ForgetPasswordInput, type LoginInput } from '@/lib/validations/auth.validation'
 import axios from 'axios'
 import api from './axiosInstance'
@@ -45,7 +52,7 @@ export const loginUserFn = async (fields: LoginUserFields): Promise<IAuthRespons
   return response.data
 }
 
-export const getMePublicFn = async (): Promise<IUser> => {
+export const getMePublicFn = async (): Promise<IUserPublic> => {
   const response = await axiosPublic.get('/auth/me')
   return response.data
 }
@@ -82,5 +89,13 @@ export const forgetPasswordUserFn = async (fields: ForgotPasswordUserFields) => 
 }
 export const resetPasswordUserFn = async (fields: IResetPassword) => {
   const response = await axiosPublic.post('/public/auth/reset', fields)
+  return response.data
+}
+export const changePasswordUserFn = async (fields: IChangePassword) => {
+  const response = await axiosPublic.put('/public/account/change-password', fields)
+  return response.data
+}
+export const changeProfileUserFn = async (fields: IChangeProfile) => {
+  const response = await axiosPublic.put('/public/account', fields)
   return response.data
 }
