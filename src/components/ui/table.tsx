@@ -78,7 +78,7 @@ const TableHead = React.forwardRef<HTMLTableCellElement, React.ThHTMLAttributes<
       )}
       {...props}
     >
-      <p className="w-max mx-auto">{props.children}</p>
+      <div className="w-max mx-auto">{props.children}</div>
     </th>
   )
 )
@@ -91,7 +91,7 @@ interface TableCellProps extends React.TdHTMLAttributes<HTMLTableCellElement> {
 const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
   ({ className, position = 'left', ...props }, ref) => (
     <td ref={ref} className={cn('p-4 align-middle [&:has([role=checkbox])]:pr-0', className)} {...props}>
-      <p
+      <div
         className={cn(
           'w-max',
           position === 'left' && '',
@@ -100,7 +100,7 @@ const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
         )}
       >
         {props.children}
-      </p>
+      </div>
     </td>
   )
 )

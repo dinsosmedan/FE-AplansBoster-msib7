@@ -1,17 +1,6 @@
-import ENV from '@/lib/environment'
-import axios from 'axios'
 import api from './axiosInstance'
 import { type userFields } from '@/lib/validations/user.validation'
 import { type rolePermissionFields } from '@/lib/validations/rolepermission.validation'
-
-const apiPublic = axios.create({
-  baseURL: ENV.apiUrl,
-  headers: { Accept: 'application/json' }
-})
-
-apiPublic.defaults.headers.post['Content-Type'] = 'application/json'
-
-// ADMIN
 
 export const getAdminFn = async (): Promise<any> => {
   const response = await api.get('/management/admin')

@@ -51,7 +51,7 @@ export default function RegisterUser() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
-                <FormControl className="w-[522px]">
+                <FormControl className="w-[100%]">
                   <Input
                     {...field}
                     value={field.value ?? ''}
@@ -70,7 +70,7 @@ export default function RegisterUser() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
-                <FormControl className="w-[522px]">
+                <FormControl className="w-[100%]">
                   <Input
                     {...field}
                     value={field.value ?? ''}
@@ -89,7 +89,7 @@ export default function RegisterUser() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
-                <FormControl className="w-[522px]">
+                <FormControl className="w-[100%]">
                   <Input
                     {...field}
                     value={field.value ?? ''}
@@ -108,7 +108,7 @@ export default function RegisterUser() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-semibold dark:text-white">No. Telepon</FormLabel>
-                <FormControl className="w-[522px]">
+                <FormControl className="w-[100%]">
                   <Input
                     {...field}
                     value={field.value ?? ''}
@@ -132,7 +132,7 @@ export default function RegisterUser() {
                     Petunjuk Swafoto
                   </p>
                 </FormLabel>
-                <FormControl className="w-[522px]">
+                <FormControl className="w-[100%]">
                   <DropZone
                     setValue={field.onChange}
                     fileValue={field.value as unknown as FileWithPreview[]}
@@ -153,7 +153,7 @@ export default function RegisterUser() {
             render={({ field }) => (
               <FormItem className="">
                 <FormLabel>Foto KTP</FormLabel>
-                <FormControl className="w-[522px]">
+                <FormControl className="w-[100%]">
                   <DropZone
                     setValue={field.onChange}
                     fileValue={field.value as unknown as FileWithPreview[]}
@@ -175,7 +175,7 @@ export default function RegisterUser() {
             render={({ field }) => (
               <FormItem className="">
                 <FormLabel className="font-semibold dark:text-white">Password</FormLabel>
-                <FormControl className="w-[522px]">
+                <FormControl className="w-[100%]">
                   <Password
                     {...field}
                     value={field.value ?? ''}
@@ -187,7 +187,7 @@ export default function RegisterUser() {
               </FormItem>
             )}
           />
-          <Button className="rounded-lg w-full py-6 text-lg" loading={isLoading} onClick={forms.handleSubmit(onSubmit)}>
+          <Button className="rounded-lg w-full md:py-6 md:text-lg" loading={isLoading} onClick={forms.handleSubmit(onSubmit)}>
             Buat Akun
           </Button>
           <Link to="/user/login" className="text-primary">

@@ -3,13 +3,13 @@ import { Link, Outlet } from 'react-router-dom'
 
 export default function ProfileLayout() {
   return (
-    <div className="min-h-screen">
-      <div className="bg-[url('@/assets/images/bg-profile.svg')] h-[275px] relative">
-        <div className="absolute top-[207px] rounded-lg z-10 ml-10 flex flex-row gap-10">
-          <div className="py-[53px]  h-[446px] bg-white w-[486px] flex flex-col items-center px-16 shadow-xl rounded-lg">
+    <div className="min-h-[1500px] bg-[#F9F9F9] lg:min-h-[1000px] pb-20 mb-20 ">
+      <div className="bg-[url('@/assets/images/bg-profile.svg')] h-[275px] lg:relative">
+        <div className="pt-[200px] rounded-lg z-10 lg:mx-10  lg:flex lg:flex-row lg:gap-10">
+          <div className="md:py-[53px] py-10  h-[100%] bg-white lg:w-[486px] w-[90%] mx-auto flex flex-col items-center md:px-16 px-5 shadow-sm rounded-lg">
             <img
               className="w-[155px] h-[155px] rounded-full object-cover mb-10"
-              src={'https://ui-avatars.com/api/?name=krisna'}
+              src={'https://ui-avatars.com/api/?background=fce9ee&color=dd2153&bold=true&name=kontol'}
               alt=""
             />
             <div className="flex justify-between w-full items-center hover:bg-[#F6F6F6] rounded-lg py-3 px-3 ">
@@ -19,7 +19,7 @@ export default function ProfileLayout() {
                 </div>
                 <div className="flex items-center">
                   <Link to={'/user/profile'}>
-                    <p className="text-xl ">Profile</p>
+                    <p className="text-md ">Profile</p>
                   </Link>
                 </div>
               </div>
@@ -32,7 +32,7 @@ export default function ProfileLayout() {
                 </div>
                 <div className="flex items-center">
                   <Link to={'/user/profile/change-password'}>
-                    <p className="text-xl">Ubah Password</p>
+                    <p className="text-md">Ubah Password</p>
                   </Link>
                 </div>
               </div>

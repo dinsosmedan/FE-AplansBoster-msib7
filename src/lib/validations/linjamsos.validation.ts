@@ -104,8 +104,20 @@ export const indigencyCertificateValidation = Yup.object({
 export type indigencyCertificateFields = Yup.InferType<typeof indigencyCertificateValidation>
 
 export const updateTuitionAssistanceServiceValidation = Yup.object({
-  status: Yup.string().required('Status wajib diisi'),
-  note: Yup.string()
+  applicationStatus: Yup.string().required('Status wajib diisi'),
+  message: Yup.string()
 })
 
 export type updateTuitionAssistanceServiceFields = Yup.InferType<typeof updateTuitionAssistanceServiceValidation>
+
+export const updateIndigencyCertificateServiceValidation = Yup.object({
+  applicantPhoneNumber: Yup.string()
+    .matches(phoneRegExp, 'Nomor telepon tidak valid')
+    .min(7, 'Nomor telepon minimal 7 karakter')
+    .max(20, 'Nomor telepon maksimal 20 karakter'),
+  statusDtks: Yup.string(),
+  certificateDestination: Yup.string(),
+  categoryApplication: Yup.string()
+})
+
+export type updateIndigencyCertificateServiceFields = Yup.InferType<typeof updateIndigencyCertificateServiceValidation>

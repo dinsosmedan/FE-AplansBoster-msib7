@@ -120,7 +120,7 @@ export default function DropZone({
             >
               <div className="flex items-center gap-2">
                 <HiOutlineDocument className="text-slate-500" />
-                <span className="truncate-1 text-sm text-slate-500">{file.name}</span>
+                <span className="truncate-1 text-sm text-slate-500">{file?.name ?? file}</span>
               </div>
 
               <button

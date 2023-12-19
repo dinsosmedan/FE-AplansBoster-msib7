@@ -35,10 +35,13 @@ const Pokmas = () => {
   useTitle(`${id ? 'Update' : 'Tambah'} Data`)
   const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
 
-  setBreadcrumbs([
-    { url: '/data-penerima/dayasos', label: 'Dayasos & PFM' },
-    { url: '/data-penerima/dayasos/pokmas', label: 'Pokmas' }
-  ])
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima', label: 'Data Penerima' },
+      { url: '/data-penerima/dayasos', label: 'Dayasos & PFM' },
+      { url: '/data-penerima/dayasos/pokmas', label: 'Pokmas' }
+    ])
+  }, [])
 
   const [NIK, setNIK] = React.useState('')
   const [index, setIndex] = React.useState(0)

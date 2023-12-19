@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 export default function FooterUser() {
   return (
-    <footer className="bg-[#161C28] font-poppins">
+    <footer className="bg-[#161C28] font-poppins lg:px-10 mt-[-100px]">
       <section className="md:p-20 p-8 pt-20 md:pt-20">
         <div className="lg:flex justify-between">
           <div>
@@ -44,13 +44,12 @@ export default function FooterUser() {
                 </li>
               </ul>
             </div>
-            
           </div>
           <div className="flex flex-col text-white mt-10">
             <p className="font-semibold text-xl">Lokasi Kami</p>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 ">
               <HiOutlineMapPin />
-              <span className="text-white/70 text-sm">Jl. Pinang Baris No. 114B</span>
+              <span className="text-white/70 text-sm">Jl. Pinang Baris No. 114 <br />Lalang, Kec. Medan Sunggal <br />Kota Medan, Sumatera Utara 20127</span>
             </div>
             <div className="flex flex-col text-white gap-2 mr-20 mt-10">
             <p className="font-semibold text-xl">Ikuti Kami</p>
@@ -67,7 +66,7 @@ export default function FooterUser() {
         </div>
       </section>
       <div className="py-[30px] border-t border-[#3c3c3c]">
-        <p className="text-center text-white/80">Copyright &copy; 2024 | dinas sosial kota medan</p>
+        <p className="text-center text-white/80">Copyright &copy; 2024 | Dinas Sosial Kota Medan</p>
       </div>
     </footer>
   )

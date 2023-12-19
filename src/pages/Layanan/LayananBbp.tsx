@@ -6,7 +6,8 @@ import {
   ModalEditPengajuanBBP,
   Pagination,
   Search,
-  Status
+  Status,
+  StatusDropdown
 } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
@@ -14,44 +15,61 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useForm } from 'react-hook-form'
 import FilterLayanan from './../../components/atoms/FilterLayanan'
 import { useCreateParams, useGetParams, useTitle } from '@/hooks'
-import { useGetTuitionAssistanceByEventId } from '@/store/server/useService'
+import { useGetTuitionAssistanceByEventId, useUpdateTuitionAssistanceEventStatus } from '@/store/server/useService'
 import { useParams } from 'react-router-dom'
 import { useGetEventById } from '@/store/server'
 import * as React from 'react'
+import { useTitleHeader } from '@/store/client'
 
-interface FormValues {
-  search: string
-}
+const dataLayanan = [
+  { text: 'Data Pengajuan', tab: 'pending' },
+  { text: 'Data Direvisi/Diproses', tab: 'processed' },
+  { text: 'Data Diterima', tab: 'approved' },
+  { text: 'Data Ditolak', tab: 'rejected' }
+]
 
 export default function LayananBbp() {
   useTitle('Bantuan Biaya Pendidikan (BBP)')
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
   const { id } = useParams<{ id: string }>()
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/layanan', label: 'Layanan' },
+      { url: `/layanan/bbp/${id}`, label: 'BBP' }
+    ])
+  }, [])
 
   const [isShow, setIsShow] = React.useState(false)
   const [isShowPengajuan, setIsShowPengajuan] = React.useState(false)
   const [tuitionAssistanceId, setTuitionAssistanceId] = React.useState('')
 
   const createParams = useCreateParams()
-  const { search, page, applicationStatus } = useGetParams(['search', 'page', 'applicationStatus'])
+  const { search, tab, page } = useGetParams(['search', 'tab', 'page'])
 
   const { data: event } = useGetEventById(id as string)
+  const { mutate: update, isLoading: isLoadingUpdate } = useUpdateTuitionAssistanceEventStatus()
   const { data, refetch, isFetching } = useGetTuitionAssistanceByEventId({
     eventId: id as string,
-    applicationStatus: applicationStatus || 'processed',
+    applicationStatus: tab || 'pending',
     search,
     page: parseInt(page) || 1
   })
 
-  const forms = useForm<FormValues>()
+  const forms = useForm<{ search: string }>()
 
-  const onSearch = async (values: FormValues) => {
+  const onSearch = async (values: { search: string }) => {
     createParams({ key: 'search', value: values.search })
     await refetch()
   }
 
+  const handleChangeStatusDTKS = async (values: string, id: string) => {
+    update({ id, fields: { dtksStatus: values } })
+  }
+
   return (
     <Container>
-      {isFetching && <Loading />}
+      {(isFetching || isLoadingUpdate) && <Loading />}
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSearch)} className="flex flex-col gap-6">
           <div className="flex flex-row justify-between gap-3 py-6 items-center">
@@ -81,7 +99,7 @@ export default function LayananBbp() {
           </div>
         </form>
       </Form>
-      <FilterLayanan action={async () => await refetch()} />
+      <FilterLayanan jenis={`bbp/${id}`} data={dataLayanan} />
       <section className="border rounded-xl mt-5 overflow-hidden">
         <Table>
           <TableHeader className="bg-[#FFFFFF]">
@@ -131,14 +149,22 @@ export default function LayananBbp() {
                     {item.beneficiary.address.fullAddress ?? '-'}
                   </TableCell>
                   <TableCell className="bg-[#F9FAFC] capitalize">{item.phoneNumber ?? '-'}</TableCell>
-                  <TableCell className="bg-[#F9FAFC] capitalize">{}</TableCell>
+                  <TableCell className="bg-[#F9FAFC] capitalize">
+                    <StatusDropdown
+                      value={item.dtksStatus ?? ''}
+                      action={async (status: string) => await handleChangeStatusDTKS(status, item.id)}
+                    />
+                  </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action
                       onEdit={() => {
                         setIsShow(true)
                         setTuitionAssistanceId(item.id)
                       }}
-                      onDetail={() => setIsShowPengajuan(true)}
+                      onDetail={() => {
+                        setIsShowPengajuan(true)
+                        setTuitionAssistanceId(item.id)
+                      }}
                       editText="Edit data"
                       detailText="Edit Pengajuan"
                     />
@@ -169,7 +195,11 @@ export default function LayananBbp() {
           tuitionAssistanceId={tuitionAssistanceId}
           eventId={id as string}
         />
-        <ModalEditPengajuanBBP isShow={isShowPengajuan} setIsShow={setIsShowPengajuan} />
+        <ModalEditPengajuanBBP
+          isShow={isShowPengajuan}
+          setIsShow={setIsShowPengajuan}
+          tuitionAssistanceId={tuitionAssistanceId}
+        />
       </section>
     </Container>
   )

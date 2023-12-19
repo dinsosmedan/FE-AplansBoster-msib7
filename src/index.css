@@ -14,6 +14,10 @@ body {
 }
 
 @layer base {
+  .rdp-vhidden {
+    @apply hidden;
+  }
+
   .no-scroll::-webkit-scrollbar {
     display: none;
   }

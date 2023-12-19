@@ -14,7 +14,8 @@ export interface ITuitionAssistanceEvent {
   tuitionFee: null | number
   bankAccNumber: string | null
   bankAccName: null | string
-  application_status: string
+  applicationStatus: string | null
+  certificateDestination: string | null
   message: null | string
   dtksStatus: null | string
   documents: IDocument
@@ -24,5 +25,79 @@ export interface ITuitionAssistanceEvent {
 
 export interface ITuitionAssistanceEvents {
   data: ITuitionAssistanceEvent[]
+  meta: IMeta
+}
+
+export interface IPath {
+  storage: string
+  url: string
+  originalName: string
+}
+
+export interface IIndigencyCertificate {
+  id: string
+  user: {
+    id: string
+    name: string
+  }
+  applicant: {
+    id: string
+    name: string
+  }
+  applicantPhoneNumber: string
+  peopleConcerned: IBeneficary
+  certificateDestination: string
+  applicationCategory: string
+  dtksStatus: string
+  applicationStatus: string
+  petitionLetterPath: null | IPath
+  domicileLetterPath: null | IPath
+  familyCardPath: null | IPath
+  idCardPath: null | IPath
+  educationLevel: string
+  schoolLetterPath: null | IPath
+  salarySlipPath: null | IPath
+  localsApprovalLetterPath: null | IPath
+  lowIncomeLetterPath: null | IPath
+  frontViewHousePath: null | IPath
+  sittingViewPath: null | IPath
+  chamberViewHousePath: null | IPath
+  kitchenViewHousePath: null | IPath
+  isApplicationOnline: boolean
+  note: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface IIndigencyCertificates {
+  data: IIndigencyCertificate[]
+  meta: IMeta
+}
+
+export interface IDTKSApplication {
+  id: string
+  beneficiary: IBeneficary
+  question1: boolean
+  question2: boolean
+  question3: boolean
+  question4: boolean
+  question5: boolean
+  question6: boolean
+  question7: boolean
+  question8: boolean
+  question9: boolean
+  question10: boolean
+  assistanceProgram: string
+  disabilityStatus: string
+  pregnantDate: string
+  remoteIndigenousStatus: boolean
+  tribeName: string
+  isApproved: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+export interface IDTKSApplications {
+  data: IDTKSApplication[]
   meta: IMeta
 }

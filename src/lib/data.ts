@@ -10,9 +10,9 @@ import {
   HiOutlineFolderOpen,
   HiOutlineMagnifyingGlassCircle,
   HiOutlineSquares2X2,
-  HiOutlineUserGroup,
+  // HiOutlineUserGroup,
   HiSquares2X2,
-  HiUserGroup,
+  // HiUserGroup,
   HiOutlineChartBar,
   HiChartBar,
   HiMegaphone,
@@ -81,12 +81,12 @@ export const MENU_MANAJEMEN = [
     activeIcon: HiCog6Tooth,
     inactiveIcon: HiOutlineCog6Tooth
   },
-  {
-    link: '/manajemen-user',
-    title: 'Manajemen User',
-    activeIcon: HiUserGroup,
-    inactiveIcon: HiOutlineUserGroup
-  },
+  // {
+  //   link: '/manajemen-user',
+  //   title: 'Manajemen User',
+  //   activeIcon: HiUserGroup,
+  //   inactiveIcon: HiOutlineUserGroup
+  // },
   {
     link: '/manajemen-admin',
     title: 'Manajemen Admin',

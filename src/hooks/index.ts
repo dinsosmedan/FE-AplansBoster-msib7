@@ -9,6 +9,7 @@ import { formatRibuan, hitungPersentase } from './useAngka'
 import useDeleteParams from './useDeleteParams'
 import useNotFound from './useNotFound'
 import useScrollToTop from './useScrolltoTop'
+import useGetDevices from './useGetDevices'
 
 export {
   useDisableBodyScroll,
@@ -22,5 +23,6 @@ export {
   formatRibuan,
   hitungPersentase,
   useNotFound,
-  useScrollToTop
+  useScrollToTop,
+  useGetDevices
 }

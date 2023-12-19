@@ -333,7 +333,6 @@ export const getCountBbpFn = async () => {
   return response.data?.data
 }
 
-
 interface UpdateVeteranParams {
   id: string
   fields: veteranFields

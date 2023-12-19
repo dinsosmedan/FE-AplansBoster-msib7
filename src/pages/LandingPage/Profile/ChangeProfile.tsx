@@ -17,19 +17,20 @@ export default function ChangeProfile() {
     console.log(values)
   }
   return (
-    <div className="bg-white w-[840px] h-[500px] shadow-xl rounded-lg ">
-      <p className="text-[30px] font-semibold ml-7 mt-9">Profil</p>
+    <div className="bg-white lg:w-[90%] w-[90%] h-[100%]  md:p-10 py-10 shadow-sm rounded-lg mt-10 lg:mt-0 mx-auto">
+      <p className="md:text-[28px] text-[24px]  font-semibold ml-7">Profil</p>
+      <p className="text-[14px] ml-7 text-[#8b8b8b]">Ubah profile akun Kamu disini</p>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)}>
-          <div className=" grid grid-cols-2 gap-7 px-7 pt-[62px]">
+          <div className=" grid grid-cols-1 gap-7 px-7 pt-[50px]">
             <FormField
               name="nik"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
+                  <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Nama Anda" />
+                    <Input {...field} type="text" placeholder="Masukkan Tempat Lahir " />
                   </FormControl>
                 </FormItem>
               )}
@@ -39,9 +40,9 @@ export default function ChangeProfile() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
+                  <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Tempat Lahir " />
+                    <Input {...field} type="text" placeholder="Masukkan Nama Anda" />
                   </FormControl>
                 </FormItem>
               )}
@@ -71,13 +72,10 @@ export default function ChangeProfile() {
               )}
             />
           </div>
-          <div className="flex justify-end gap-5 items-center pt-20 pr-7 ">
-            <Button variant="outline" className="border-primary text-primary w-[100px] h-[50px]">
-              <p className="text-lg font-semibold">Cancel </p>
-            </Button>
-            <Button className="w-[141px] h-[50px]">
-              <p className="text-lg font-semibold">Edit</p>
-              <HiPencil className="w-5 h-5 ml-3 mb-1" />
+          <div className="flex justify-end gap-5 items-center pt-20 px-7 items-center">
+            <Button className="md:w-[200px] w-[100%] h-[45px]">
+              <p className="text-md">Ubah Profile</p>
+              <HiPencil className="w-3 h-3 ml-3 mb-1" />
             </Button>
           </div>
         </form>

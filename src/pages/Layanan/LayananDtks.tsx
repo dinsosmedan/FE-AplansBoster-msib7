@@ -1,58 +1,50 @@
-import { Container, Modal, Pagination, Search } from '@/components'
+import { Container, Loading, Pagination, Search } from '@/components'
 import { Button } from '@/components/ui/button'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { useAlert } from '@/store/client'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { HiOutlineExclamationCircle, HiOutlineEye } from 'react-icons/hi2'
+import { HiOutlineExclamationCircle } from 'react-icons/hi2'
 import FilterLayanan from './../../components/atoms/FilterLayanan'
+import { useCreateParams, useGetParams, useTitle } from '@/hooks'
+import { useTitleHeader } from '@/store/client'
+import { useGetDTKSApplication } from '@/store/server/useService'
+import { cn } from '@/lib/utils'
 
 const dataLayanan = [
-  { 'text': 'Data Pengajuan', 'tab': 'pending' },
-  { 'text': 'Data Diterima', 'tab': 'approved' },
+  { text: 'Data Pengajuan', tab: 'pending' },
+  { text: 'Data Diterima', tab: 'approved' }
 ]
 export default function LayananDtks() {
-  interface FormValues {
-    nik: string
-    jadwalAwal: string
-    tahunNotifikasi: string
-    tahunAnggaran: string
-    jumlahPeserta: string
-    batch: string
-    jadwalAkhir: string
-    jenisEvent: string
-  }
-  const { alert } = useAlert()
-  const showAlert = () => {
-    void alert({
-      title: 'User ditambahkan',
-      description: 'User berhasil ditambahkan',
-      submitText: 'Oke',
-      variant: 'success'
-    }).then(() => {
-      console.log('oke')
-    })
-  }
-  const [isShow, setIsShow] = React.useState(false)
-  const [currentPage, setCurrentPage] = React.useState(1)
-  // const [isActive, setIsActive] = React.useState('Data Pengajuan')
-  const forms = useForm<FormValues>({
-    mode: 'onTouched'
-  })
+  useTitle('Data Terpadu Kesejahteraan Sosial (DTKS)')
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/layanan', label: 'Layanan' },
+      { url: '/layanan/layanan-dtks', label: 'DTKS' }
+    ])
+  }, [])
 
-  const onSubmit = async (values: FormValues) => {
+  const createParams = useCreateParams()
+  const { page, tab } = useGetParams(['page', 'tab'])
+
+  const { data, isFetching } = useGetDTKSApplication(parseInt(page) || 1, tab === 'approved')
+
+  // const [isShow, setIsShow] = React.useState(false)
+  const forms = useForm<{ search: string }>()
+
+  const onSubmit = async (values: { search: string }) => {
     console.log(values)
   }
+
   return (
     <Container>
+      {isFetching && <Loading />}
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="w-12/12">
             <FormField
-              name="nik"
+              name="search"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
@@ -71,6 +63,7 @@ export default function LayananDtks() {
         <Table>
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
+              <TableHead className="text-white font-bold text-[15px] bg-primary">No</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">NIK</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">No. KK</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">Nama</TableHead>
@@ -82,32 +75,52 @@ export default function LayananDtks() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="text-left bg-[#F9FAFC]">Batch 3</TableCell>
-              <TableCell className="text-left bg-[#F9FAFC]">100/100</TableCell>
-              <TableCell className="text-left bg-[#F9FAFC]">11-11-2022</TableCell>
-              <TableCell className="text-left bg-[#F9FAFC]">11-11-2022</TableCell>
-              <TableCell className="text-center bg-[#F9FAFC]">
-                <div className="bg-[#E9FFEF] rounded-full flex items-center w-fit gap-2 py-1 px-2 mx-auto">
-                  <div className="w-2 h-2 rounded-full bg-[#409261]" />
-                  <p className="text-[#409261] text-xs">Aktif</p>
-                </div>
-              </TableCell>
-              <TableCell className="text-left bg-[#F9FAFC]">11-11-2022</TableCell>
-              <TableCell className="text-left bg-[#F9FAFC]">11-11-2022</TableCell>
-              <TableCell
-                className="flex items-center justify-center text-left bg-[#F9FAFC] "
-                onClick={() => setIsShow(true)}
-              >
-                <Button className="py-6">
-                  <p className="text-base font-bold pr-3">Action</p>
-                  <HiOutlineExclamationCircle className="h-6 w-6" />
-                </Button>
-              </TableCell>
-            </TableRow>
+            {data?.data.length !== 0 ? (
+              data?.data.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell className="bg-[#F9FAFC]">
+                    {(data.meta.currentPage - 1) * data.meta.perPage + index + 1}
+                  </TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.beneficiary.identityNumber}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.beneficiary.familyCardNumber}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.beneficiary.address.areaLevel3?.name}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{item.beneficiary.address.areaLevel4?.name}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]" position="center">
+                    {item.assistanceProgram}
+                  </TableCell>
+                  <TableCell
+                    className={cn('bg-[#F9FAFC]', item.isApproved ? 'text-green-500' : 'text-yellow-500')}
+                    position="center"
+                  >
+                    {item.isApproved ? 'Pending' : 'Approved'}
+                  </TableCell>
+                  <TableCell className="flex items-center justify-center text-left bg-[#F9FAFC]">
+                    <Button className="py-6">
+                      <p className="text-base font-bold pr-3">Action</p>
+                      <HiOutlineExclamationCircle className="h-6 w-6" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center">
+                  Tidak ada data
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
-        <Modal isShow={isShow} className="md:max-w-3xl max-h-[calc(100vh-50px)] overflow-y-auto">
+        {(data?.meta?.total as number) > 30 ? (
+          <Pagination
+            currentPage={page !== '' ? parseInt(page) : 1}
+            totalCount={data?.meta.total as number}
+            pageSize={30}
+            onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
+          />
+        ) : null}
+        {/* <Modal isShow={isShow} className="md:max-w-3xl max-h-[calc(100vh-50px)] overflow-y-auto">
           <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
             <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Data Pengajuan DTKS</h3>
             <p className="text-sm text-[#A1A1A1]">Data Pengajuan SKTM</p>
@@ -188,18 +201,6 @@ export default function LayananDtks() {
                     </FormItem>
                   )}
                 />
-                {/* <FormField
-                  name="batch"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">Jenis Pekerjaan</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="" disabled />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                /> */}
                 <FormField
                   name="jadwalAkhir"
                   control={forms.control}
@@ -533,14 +534,8 @@ export default function LayananDtks() {
               <p className="text-white font-bold">Update</p>
             </Button>
           </Modal.Footer>
-        </Modal>
+        </Modal> */}
       </section>
-      <Pagination
-        currentPage={currentPage}
-        totalCount={100}
-        pageSize={10}
-        onPageChange={(page) => setCurrentPage(page)}
-      />
     </Container>
   )
 }
