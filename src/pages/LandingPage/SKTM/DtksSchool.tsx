@@ -1,10 +1,9 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { HiAcademicCap, HiArrowDownTray, HiBuildingLibrary } from 'react-icons/hi2'
-import CardLandingPage from '../../../components/organisms/landingPage/CardLandingPage'
 import { Button } from '@/components/ui/button'
 import { Link } from 'react-router-dom'
 import { useGetIndigencyCertificateApplicationPublic } from '@/store/server'
-import { Loading } from '@/components'
+import { Loading, CardLandingPage } from '@/components'
 import { cn } from '@/lib/utils'
 
 export default function DtksSchool() {
