@@ -10,12 +10,12 @@ import { HiOutlinePencilAlt, HiUserAdd, HiTrash } from 'react-icons/hi'
 import useTitle from '@/hooks/useTitle'
 import { Container, Loading, Pagination, Search } from '@/components'
 import {
-  useCreateUser,
-  useDeleteUser,
+  useCreateAdmin,
+  useDeleteAdmin,
   useGetRole,
-  useGetUser,
-  useGetUserById,
-  useUpdateUser
+  useGetAdmin,
+  useGetAdminById,
+  useUpdateAdmin
 } from '@/store/server/useUserManagement'
 import { userValidation, type userFields } from '@/lib/validations/user.validation'
 // import { toast } from '@/components/ui/use-toast'
@@ -31,7 +31,7 @@ const ManajemenAdmin = () => {
   const { alert } = useAlert()
 
   const { data: role } = useGetRole()
-  const { data: users, isLoading } = useGetUser()
+  const { data: admins, isLoading } = useGetAdmin()
 
   const forms = useForm<userFields>({
     mode: 'onTouched',
@@ -47,14 +47,15 @@ const ManajemenAdmin = () => {
     }
   })
   const [isShow, setIsShow] = React.useState(false)
-  const { mutate: Register, isLoading: isLoadingCreate } = useCreateUser()
+  const [isShowUpdate, setIsShowUpdate] = React.useState(false)
+  const { mutate: Register, isLoading: isLoadingCreate } = useCreateAdmin()
 
   const [currentPage, setCurrentPage] = React.useState(1)
-  const { mutateAsync: deleteUser, isLoading: isLoadingDelete } = useDeleteUser()
+  const { mutateAsync: deleteUser, isLoading: isLoadingDelete } = useDeleteAdmin()
 
   const [userId, setUserId] = React.useState('')
-  const { data: user, isSuccess, isLoading: isLoadingUser } = useGetUserById(userId)
-  const { mutate: updateUser, isLoading: isLoadingUpdate } = useUpdateUser()
+  const { data: user, isSuccess, isLoading: isLoadingUser } = useGetAdminById(userId)
+  const { mutate: updateUser, isLoading: isLoadingUpdate } = useUpdateAdmin()
 
   React.useEffect(() => {
     if (isSuccess && user) {
@@ -70,10 +71,10 @@ const ManajemenAdmin = () => {
     }
   }, [isSuccess, user])
 
-  const handleUpdateUser = (id: string) => {
-    setUserId(id)
-    setIsShow(true)
-  }
+  // const handleUpdate = (id: string) => {
+  //   setUserId(id)
+  //   setIsShow(true)
+  // }
 
   const handleDeleteUser = (id: string) => {
     void alert({
@@ -95,22 +96,32 @@ const ManajemenAdmin = () => {
     }
     updateUser({ id: userId, fields: newData }, { onSuccess })
   }
+
+  const handleModalButtonClick = (userId: any) => {
+    setUserId(userId)
+    if (userId) {
+      setIsShowUpdate(true)
+    } else {
+      setIsShow(true)
+    }
+  }
+
   const onSuccess = () => {
     forms.reset()
     setIsShow(false)
-    navigate('/manajemen-user')
+    navigate('/manajemen-admin')
   }
 
-  if (isLoading && isLoadingDelete && isLoadingUser) {
+  if (isLoading || isLoadingDelete || isLoadingUser) {
     return <Loading />
   }
   return (
-    <Container className="relative pt-[34px] pb-[22px] px-7">
+    <Container>
       <div className="flex items-center mb-[18px]">
         <Search placeholder="Search" className="w-[398px] py-[23px]" />
-        <Button className="w-fit py-6 px-4 ml-auto bg-primary" onClick={() => setIsShow(true)}>
+        <Button className="w-fit py-6 px-4 ml-auto bg-primary" onClick={() => handleModalButtonClick(userId)}>
           <HiUserAdd className="w-6 h-6 text-white" />
-          <p className="text-white font-semibold text-sm pl-2 w-max">Tambah User</p>
+          <p className="text-white font-semibold text-sm pl-2 w-max">Tambah Admin</p>
         </Button>
       </div>
 
@@ -118,7 +129,6 @@ const ManajemenAdmin = () => {
         <TableHeader className="bg-primary">
           <TableRow>
             <TableHead className="text-white">NIP</TableHead>
-            <TableHead className="text-white">NIK</TableHead>
             <TableHead className="text-white">Nama</TableHead>
             <TableHead className="text-white">Email</TableHead>
             <TableHead className="text-white">No. HP</TableHead>
@@ -128,11 +138,10 @@ const ManajemenAdmin = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users?.data?.length !== 0 ? (
-            users?.data.map((item: any) => (
+          {admins?.data?.length !== 0 ? (
+            admins?.data.map((item: any) => (
               <TableRow key={item.id}>
                 <TableCell className="font-semibold">{item.employeeIdentityNumber || '-'}</TableCell>
-                <TableCell className="font-semibold">{item.identityNumber || '-'}</TableCell>
                 <TableCell className="font-semibold">{item.name}</TableCell>
                 <TableCell className="text-center">{item.email || '-'}</TableCell>
                 <TableCell className="text-center">{item.phoneNumber || '-'}</TableCell>
@@ -140,11 +149,11 @@ const ManajemenAdmin = () => {
                 <TableCell>
                   <div
                     className={`${
-                      item.isActive ? '[#E9FFEF]' : '[#FFD6E1]'
+                      item.isActive ? 'bg-green-200' : 'bg-red-200'
                     } rounded-full flex items-center w-fit gap-2 py-1 px-2 mx-auto`}
                   >
-                    <div className={`w-2 h-2 rounded-full bg-${item.isActive ? '[#409261]' : 'red-500'}`} />
-                    <p className={`text-${item.isActive ? '[#409261]' : 'red-500'} text-xs`}>
+                    <div className={`w-2 h-2 rounded-full ${item.isActive ? 'bg-[#409261]' : 'bg-red-500'}`} />
+                    <p className={`${item.isActive ? 'text-[#409261]' : 'text-red-500'} text-xs`}>
                       {item.isActive ? 'Active' : 'Inactive'}
                     </p>
                   </div>
@@ -154,9 +163,7 @@ const ManajemenAdmin = () => {
                     size="icon"
                     variant="base"
                     className="bg-[#959595] text-white hover:bg-[#828282] hover:text-white"
-                    onClick={() => {
-                      handleUpdateUser(item.id)
-                    }}
+                    onClick={() => handleModalButtonClick(item.id)}
                   >
                     <HiOutlinePencilAlt className="text-lg" />
                   </Button>
@@ -191,10 +198,8 @@ const ManajemenAdmin = () => {
 
       <Modal isShow={isShow} className="max-h-[calc(100vh-200px)] overflow-y-auto">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">
-            {userId ? 'Perbaharui' : 'Tambah'} Admin
-          </h3>
-          <p className="text-sm text-[#A1A1A1]">{userId ? 'Perbaharui data Admin.' : 'Masukkan data Admin baru.'}</p>
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Tambah</h3>
+          <p className="text-sm text-[#A1A1A1]">Masukkan data Admin baru.</p>
         </Modal.Header>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-3">
@@ -247,20 +252,149 @@ const ManajemenAdmin = () => {
                   </FormItem>
                 )}
               />
-              {!userId ? (
-                <FormField
-                  name="password"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white">Password</FormLabel>
-                      <FormControl>
-                        <Input {...field} value={field.value ?? ''} placeholder="Masukkan Password (default)" />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              ) : null}
+              <FormField
+                name="password"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Password</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan Password (default)" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="role"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Role</FormLabel>
+                    <FormControl>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {role?.data.map((item: any, index: any) => (
+                            <SelectItem key={index} value={item.id}>
+                              {item.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="isActive"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Status</FormLabel>
+                    <FormControl>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Pilih Status" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="1">Aktif</SelectItem>
+                          <SelectItem value="0">Tidak Aktif</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <Modal.Footer>
+              <Button
+                variant="outline"
+                className="rounded-lg text-primary border-primary"
+                onClick={() => setIsShow(false)}
+                loading={isLoading}
+              >
+                Cancel
+              </Button>
+              <Button className="rounded-lg" type="submit" loading={isLoadingCreate}>
+                Tambah
+              </Button>
+            </Modal.Footer>
+          </form>
+        </Form>
+      </Modal>
+
+      <Modal isShow={isShowUpdate} className="max-h-[calc(100vh-200px)] overflow-y-auto">
+        <Modal.Header setIsShow={setIsShowUpdate} className="gap-1 flex flex-col">
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Perbaharui</h3>
+          <p className="text-sm text-[#A1A1A1]">Perbaharui data Admin.</p>
+        </Modal.Header>
+        <Form {...forms}>
+          <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-3">
+            <div className="grid grid-cols-2 gap-3">
+              <FormField
+                name="employeeIdentityNumber"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">NIP</FormLabel>
+                    <FormControl>
+                      <Input readOnly {...field} value={field.value ?? ''} placeholder="Masukkan NIP" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="email"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan Email" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="name"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan Nama" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="phoneNumber"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">No. HP</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value} placeholder="Masukkan No. HP" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="password"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Password</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan Password (default)" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
               <FormField
                 name="role"
                 control={forms.control}
@@ -311,12 +445,13 @@ const ManajemenAdmin = () => {
               <Button
                 variant="outline"
                 className="rounded-lg text-primary border-primary"
-                onClick={() => setIsShow(false)}
+                onClick={() => setIsShowUpdate(false)}
+                loading={isLoading}
               >
                 Cancel
               </Button>
-              <Button className="rounded-lg" type="submit" loading={isLoadingCreate || isLoadingUpdate}>
-                {userId ? 'Ubah' : 'Tambah'}
+              <Button className="rounded-lg" type="submit" loading={isLoadingUpdate}>
+                Ubah
               </Button>
             </Modal.Footer>
           </form>

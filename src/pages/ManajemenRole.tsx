@@ -68,7 +68,7 @@ const ManajemenRole = () => {
     navigate('/manajemen-role')
   }
 
-  if (isLoadingDelete) {
+  if (isLoadingDelete || isLoadingCreate) {
     return <Loading />
   }
 
