@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { HiAcademicCap, HiArrowDownTray, HiGift } from 'react-icons/hi2'
+import { HiAcademicCap, HiGift } from 'react-icons/hi2'
 import CardLandingPage from '../../../components/organisms/landingPage/CardLandingPage'
 import { Button } from '@/components/ui/button'
 import { Link } from 'react-router-dom'

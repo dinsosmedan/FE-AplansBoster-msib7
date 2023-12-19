@@ -10,7 +10,9 @@ import {
   updateIndigencyStatusFn,
   showIndigencyCertificateApplicationFn,
   getDTKSApplicationFn,
-  updateIndigencyCertificateApplicationFn
+  updateIndigencyCertificateApplicationFn,
+  showDTKSApplicationFn,
+  updateDTKSApplicationFn
 } from '@/api/service.api'
 import { handleMessage } from '@/lib/services/handleMessage'
 import { handleOnError } from '@/lib/utils'
@@ -128,6 +130,24 @@ export const useUpdateIndigencyApplication = () => {
     onSuccess: () => {
       void queryClient.invalidateQueries('indigency-centificate-2')
       handleMessage({ title: 'Data BBP Application', variant: 'update' })
+    },
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    }
+  })
+}
+
+export const useGetDTKSApplicationById = (id: string) => {
+  return useQuery(['dtks-application', id], async () => await showDTKSApplicationFn(id), { enabled: !!id })
+}
+
+export const useUpdateDTKSApplication = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(updateDTKSApplicationFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('dtks-application')
+      handleMessage({ title: 'Data DTKS Application', variant: 'update' })
     },
     onError: (error: AxiosError) => {
       handleOnError(error)

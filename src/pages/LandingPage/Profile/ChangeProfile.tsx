@@ -18,8 +18,8 @@ interface FormValues {
 export default function ChangeProfile() {
   const { alert } = useAlert()
   const { data: user, isLoading, isSuccess: isSuccessGet } = useGetMePublic()
-const { mutate: updateProfile, isLoading: isLoadingUpdate } = useChangeProfileUser()
-const forms = useForm<FormValues>({
+  const { mutate: updateProfile, isLoading: isLoadingUpdate } = useChangeProfileUser()
+  const forms = useForm<FormValues>({
     mode: 'onTouched'
   })
   const onSubmit = async (values: FormValues) => {
@@ -41,9 +41,9 @@ const forms = useForm<FormValues>({
   React.useEffect(() => {
     if (isSuccessGet) {
       forms.reset({
-      name: user?.data.name,
-      email: user?.data.email,
-      phoneNumber: user?.data.phoneNumber as string
+        name: user?.data.name,
+        email: user?.data.email,
+        phoneNumber: user?.data.phoneNumber as string
       })
     }
   }, [isSuccessGet])
@@ -65,7 +65,7 @@ const forms = useForm<FormValues>({
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan NIK" readOnly={true} disabled/>
+                    <Input {...field} type="text" placeholder="Masukkan NIK" readOnly={true} disabled />
                   </FormControl>
                 </FormItem>
               )}
@@ -77,7 +77,7 @@ const forms = useForm<FormValues>({
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Nama Anda"/>
+                    <Input {...field} type="text" placeholder="Masukkan Nama Anda" />
                   </FormControl>
                 </FormItem>
               )}
@@ -89,7 +89,7 @@ const forms = useForm<FormValues>({
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">E-mail</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Email"/>
+                    <Input {...field} type="text" placeholder="Masukkan Email" />
                   </FormControl>
                 </FormItem>
               )}
@@ -101,7 +101,7 @@ const forms = useForm<FormValues>({
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">No. Telepon</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Nomor Telepon"/>
+                    <Input {...field} type="text" placeholder="Masukkan Nomor Telepon" />
                   </FormControl>
                 </FormItem>
               )}

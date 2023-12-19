@@ -15,7 +15,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import { eventValidation, type eventFields } from '@/lib/validations/event.validation'
 import { useCreateEvent, useGetEventById, useGetEventType, useUpdateEvent } from '@/store/server'
-import { formatDateToString, formatStringToDate } from '@/lib/services/formatDate'
+import { formatDateToString } from '@/lib/services/formatDate'
 import { ImSpinner2 } from 'react-icons/im'
 
 interface CreateEventProps {

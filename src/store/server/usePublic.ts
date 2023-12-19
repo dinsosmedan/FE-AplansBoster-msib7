@@ -10,7 +10,8 @@ import {
   storeDTKSCourtPublicFn,
   storeDTKSSchoolFn,
   storeNonDtksCourtsFn,
-  storePublicEventTuitionFn
+  storePublicEventTuitionFn,
+  storeIndigencyCertificateApplicationNoDTKS
 } from '@/api/public.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -124,7 +125,10 @@ export const useCreateNonDTKSCourts = () => {
     onSuccess: () => {
       void queryClient.invalidateQueries('public-event-tuition')
       void queryClient.invalidateQueries('tuition-application-public')
-      handleMessage({ title: 'Pengajuan  SKTM Untuk Pelayanan ke Pengadilan Agama / LBH (Tidak Terdaftar DTKS)', variant: 'create' })
+      handleMessage({
+        title: 'Pengajuan  SKTM Untuk Pelayanan ke Pengadilan Agama / LBH (Tidak Terdaftar DTKS)',
+        variant: 'create'
+      })
     },
     onError: (error: AxiosError) => {
       handleOnError(error)
@@ -137,6 +141,23 @@ export const useGetIndigencyCertificateApplicationPublic = (applicationCategory:
     select: (data) => {
       const transformedData = data.filter((item) => item.applicationCategory === applicationCategory)
       return transformedData
+    }
+  })
+}
+
+export const useCreateIndigencyCertificateApplicationNoDTKS = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(storeIndigencyCertificateApplicationNoDTKS, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('indigency-centificate-2')
+      handleMessage({
+        title: 'Pengajuan SKTM',
+        variant: 'create'
+      })
+    },
+    onError: (error: AxiosError) => {
+      handleOnError(error)
     }
   })
 }

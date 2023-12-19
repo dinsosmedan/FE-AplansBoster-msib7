@@ -762,10 +762,18 @@ export default function BbpRegister() {
             />
           </div>
           <div className="md:flex justify-end gap-7 items-center pt-10">
-            <Button variant="outline" className="border-primary text-primary px-8 py-6 rounded-lg md:w-[50%] lg:w-[15%] w-full" type="button">
+            <Button
+              variant="outline"
+              className="border-primary text-primary px-8 py-6 rounded-lg md:w-[50%] lg:w-[15%] w-full"
+              type="button"
+            >
               <p className="text-base font-semibold">Kembali</p>
             </Button>
-            <Button className="px-8 py-6 rounded-lg items-center gap-3 md:w-[50%] lg:w-[15%] w-full mt-5 md:mt-0" loading={isLoadingCreate} type="submit">
+            <Button
+              className="px-8 py-6 rounded-lg items-center gap-3 md:w-[50%] lg:w-[15%] w-full mt-5 md:mt-0"
+              loading={isLoadingCreate}
+              type="submit"
+            >
               <p className="text-base font-semibold">Kirim Pengajuan</p>
               <HiPaperAirplane className="w-5 h-5" />
             </Button>

@@ -4,6 +4,7 @@ import {
 } from '@/lib/validations/linjamsos.validation'
 import api from './axiosInstance'
 import {
+  type IDTKSApplication,
   type IDTKSApplications,
   type IIndigencyCertificate,
   type IIndigencyCertificates,
@@ -150,4 +151,18 @@ export const updateIndigencyCertificateApplicationFn = async ({
   fields
 }: updateIndigencyCertificateApplicationParams) => {
   await api.post(`/service/indigency-certificate/${id}`, fields)
+}
+
+export const showDTKSApplicationFn = async (id: string): Promise<IDTKSApplication> => {
+  const response = await api.get(`/service/dtks-application/${id}`)
+  return response.data?.data
+}
+
+interface updateDTKSApplicationParams {
+  id: string
+  fields: { status: boolean }
+}
+
+export const updateDTKSApplicationFn = async ({ id, fields }: updateDTKSApplicationParams) => {
+  await api.put(`/service/dtks-application/${id}`, fields)
 }

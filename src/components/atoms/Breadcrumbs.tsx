@@ -14,7 +14,7 @@ interface BreadcrumbsProps {
 export default function Breadcrumbs({ breadcrumbs }: BreadcrumbsProps) {
   return (
     <div className="flex items-center gap-1">
-      {breadcrumbs?.slice(0, 2).map((breadcrumb, index) => (
+      {breadcrumbs?.map((breadcrumb, index) => (
         <React.Fragment key={index}>
           {index !== 0 && <span className="text-font/40">/</span>}
           <Link

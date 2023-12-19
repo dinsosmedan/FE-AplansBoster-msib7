@@ -40,6 +40,7 @@ const DataSktm = () => {
       { url: '/data-penerima/linjamsos/sktm', label: 'SKTM' }
     ])
   }, [])
+
   const navigate = useNavigate()
   const { alert } = useAlert()
   const createParams = useCreateParams()
@@ -66,7 +67,7 @@ const DataSktm = () => {
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
-  const { data: indigency, isLoading: isLoadingIndigencyCertificate } = useGetIndigencyCertificateByID(selectedId)
+  const { isLoading: isLoadingIndigencyCertificate } = useGetIndigencyCertificateByID(selectedId)
   const showDetail = (id: string) => {
     setSelectedId(id)
     setIsShow(true)
@@ -330,18 +331,22 @@ const DataSktm = () => {
                   <TableCell className="text-left bg-[#F9FAFC]">
                     {(indigencys.meta.currentPage - 1) * indigencys.meta.perPage + index + 1}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.applicant?.name ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.peopleConcerned?.name ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.issueYear ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item?.application?.applicant.name ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
-                    {ubahFormatDateTime(item.issueDate) ?? '-'}
+                    {item?.application.peopleConcerned?.name ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.isDtks ? 'DTKS' : 'Non DTKS'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item?.issueYear ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.applicant?.address.areaLevel3?.name ?? '-'}
+                    {ubahFormatDateTime(item?.issueDate) ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.applicant?.address.areaLevel4?.name ?? '-'}
+                    {item?.application?.dtksStatus ? 'DTKS' : 'Non DTKS'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {item?.application?.peopleConcerned?.address?.areaLevel3?.name ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {item?.application?.peopleConcerned?.address?.areaLevel4?.name ?? '-'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action onDelete={async () => await handleDelete(item.id)} onDetail={() => showDetail(item.id)} />
@@ -371,49 +376,49 @@ const DataSktm = () => {
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data SKTM</h3>
           <p className="text-sm text-[#A1A1A1]">View Data Detail Data SKTM</p>
         </Modal.Header>
-        {isLoadingIndigencyCertificate && <Loading />}
+        {/* {isLoadingIndigencyCertificate && <Loading />}
         <div className="grid grid-cols-3 gap-y-5">
           <div>
             <p className="text-sm font-bold">Nama Pemohon</p>
-            <p className="text-base capitalize">{indigency?.applicant.name ?? '-'}</p>
+            <p className="text-base capitalize">{indigency?.application.name ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">NIK Pemohon</p>
-            <p className="text-base capitalize">{indigency?.applicant.identityNumber ?? '-'}</p>
+            <p className="text-base capitalize">{indigency?.application.identityNumber ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">No. KK Pemohon</p>
-            <p className="text-base capitalize">{indigency?.applicant.familyCardNumber ?? '-'}</p>
+            <p className="text-base capitalize">{indigency?.application.familyCardNumber ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">Kecamatan Pemohon</p>
-            <p className="text-base capitalize">{indigency?.applicant.address.areaLevel3?.name ?? '-'}</p>
+            <p className="text-base capitalize">{indigency?.application.address.areaLevel3?.name ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">Kelurahan Pemohon</p>
-            <p className="text-base capitalize">{indigency?.applicant.address.areaLevel4?.name ?? '-'}</p>
+            <p className="text-base capitalize">{indigency?.application.address.areaLevel4?.name ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">Alamat Lengkap Pemohon</p>
-            <p className="text-base capitalize">{indigency?.applicant.address.fullAddress ?? '-'}</p>
+            <p className="text-base capitalize">{indigency?.application.address.fullAddress ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">Pekerjaan Pemohon</p>
-            <p className="text-base capitalize">{indigency?.applicant.occupation ?? '-'}</p>
+            <p className="text-base capitalize">{indigency?.application.occupation ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">Tempat / Tanggal Lahir Pemohon</p>
             <p className="text-base capitalize">
-              {indigency?.applicant.birthPlace ?? '-'} / {indigency?.applicant.birthDate ?? '-'}
+              {indigency?.application.birthPlace ?? '-'} / {indigency?.application.birthDate ?? '-'}
             </p>
           </div>
           <div>
             <p className="text-sm font-bold">Status DTKS Pemohon</p>
-            <p className="text-base capitalize">{indigency?.applicant.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
+            <p className="text-base capitalize">{indigency?.application.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">Usia Pemohon</p>
-            <p className="text-base capitalize">{indigency?.applicant.age ?? '-'}</p>
+            <p className="text-base capitalize">{indigency?.application.age ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">Nama Yang Bersangkutan</p>
@@ -481,7 +486,7 @@ const DataSktm = () => {
             <p className="text-sm font-bold">Pengajuan Online</p>
             <p className="text-base capitalize">{indigency?.isApplicationOnline ? 'Ya' : 'Tida'}</p>
           </div>
-        </div>
+        </div> */}
       </Modal>
     </Container>
   )

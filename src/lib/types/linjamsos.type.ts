@@ -87,20 +87,49 @@ export interface IPeopleConcerned {
   updatedAt: string
 }
 
+export interface IIndigencyCertificateDetail {
+  id: string
+  application: {
+    id: string
+    applicant: {
+      id: string
+      name: string
+    }
+    applicantPhoneNumber: null | string
+    peopleConcerned: IPeopleConcerned
+    certificateDestination: string
+    applicationCategory: null | string
+    dtksStatus: string
+    applicationStatus: string
+    petitionLetterPath: null | IPath
+    domicileLetterPath: null | IPath
+    familyCardPath: null | IPath
+    idCardPath: null | IPath
+    educationLevel: null | string
+    schoolLetterPath: null | IPath
+    salarySlipPath: null | IPath
+    localsApprovalLetterPath: null | IPath
+    lowIncomeLetterPath: null | IPath
+    frontViewHousePath: null | IPath
+    sittingViewPath: null | IPath
+    chamberViewHousePath: null | IPath
+    kitchenViewHousePath: null | IPath
+    isApplicationOnline: boolean
+    note: null | string
+    createdAt: string
+    updatedAt: string
+  }
+  issuedCertificate: null
+  issueDate: string
+  issueYear: string
+  createdAt: string
+  updatedAt: string
+}
+
 export interface IIndigencyCertificate {
   success: boolean
   message: string
-  data: Array<{
-    id: string
-    applicant: IApplicant
-    peopleConcerned: IPeopleConcerned
-    certificateDestination: string
-    issueDate: string
-    issueYear: string
-    isDtks: boolean
-    createdAt: string
-    updatedAt: string
-  }>
+  data: IIndigencyCertificateDetail[]
   meta: IMeta
 }
 export interface IIndigencyCertificateByID {
