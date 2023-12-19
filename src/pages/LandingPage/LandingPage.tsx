@@ -11,7 +11,7 @@ export default function LandingPage() {
 
   return (
     <>
-      <section className="h-[calc(100vh-80px)] lg:gap-[40px] flex justify-between w-full bg-[url('@/assets/images/bg-landing-page.svg')] bg-cover">
+      <section className="h-[calc(100vh-80px)] relative lg:gap-[40px] flex justify-between w-full bg-[url('@/assets/images/bg-landing-page.svg')] bg-cover">
         <div className="lg:relative lg:flex-1">
           <img src={ImageCover} alt="image-cover" className="absolute bottom-0 w-full" />
         </div>
@@ -19,10 +19,12 @@ export default function LandingPage() {
           <div className="max-w-[450px]">
             <div className="flex flex-col items-center lg:items-start text-white">
               <h1 className="font-volkhov max-w-[500px] font-bold text-[32px] md:text-[48px] text-center lg:text-start lg:text-[64px]">
-                Pelayanan Online <br /><span className="text-[#FFB60A] ">Aplans Boster</span>
+                Pelayanan Online <br />
+                <span className="text-[#FFB60A] ">Aplans Boster</span>
               </h1>
               <p className="md:text-xl text-sm lg:text-start text-center mt-8 mb-20 leading-relaxed">
-                Selamat datang di di Aplikasi Pelayanan Sosial Berbasis Online Terintegrasi. <br /> Dinas Sosial Kota Medan
+                Selamat datang di di Aplikasi Pelayanan Sosial Berbasis Online Terintegrasi. <br /> Dinas Sosial Kota
+                Medan
               </p>
               <div className=" hidden lg:block">
                 <Button

@@ -6,7 +6,11 @@ import {
   updateTuitionAssistanceEventFn,
   updateTuitionAssistanceEventStatusFn,
   updateIndigencyCertificateStatusFn,
-  updateApplicationStatusFn
+  updateApplicationStatusFn,
+  updateIndigencyStatusFn,
+  showIndigencyCertificateApplicationFn,
+  getDTKSApplicationFn,
+  updateIndigencyCertificateApplicationFn
 } from '@/api/service.api'
 import { handleMessage } from '@/lib/services/handleMessage'
 import { handleOnError } from '@/lib/utils'
@@ -86,6 +90,44 @@ export const useUpdateApplicationStatus = () => {
     onSuccess: () => {
       void queryClient.invalidateQueries('indigency-centificate-2')
       handleMessage({ title: 'Data BBP Pengajuan', variant: 'update' })
+    },
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    }
+  })
+}
+
+export const useUpdateIndigencyStatus = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(updateIndigencyStatusFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('indigency-centificate-2')
+      handleMessage({ title: 'Data SKTM Pengajuan', variant: 'update' })
+    },
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    }
+  })
+}
+
+export const useGetIndigencyCertificateEventById = (id: string) => {
+  return useQuery(['indigency-centificate-2', id], async () => await showIndigencyCertificateApplicationFn(id), {
+    enabled: !!id
+  })
+}
+
+export const useGetDTKSApplication = (page: number, status: boolean) => {
+  return useQuery(['dtks-application', page, status], async () => await getDTKSApplicationFn(page, status))
+}
+
+export const useUpdateIndigencyApplication = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(updateIndigencyCertificateApplicationFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('indigency-centificate-2')
+      handleMessage({ title: 'Data BBP Application', variant: 'update' })
     },
     onError: (error: AxiosError) => {
       handleOnError(error)

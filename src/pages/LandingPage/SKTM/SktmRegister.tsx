@@ -107,7 +107,7 @@ export default function SktmRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukan Nama" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukan Nama" />
                   </FormControl>
                 </FormItem>
               )}
@@ -185,7 +185,7 @@ export default function SktmRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">No. Hp</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" placeholder="Masukan No.Hp Anda" />
+                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukan No.Hp Anda" />
                   </FormControl>
                 </FormItem>
               )}
@@ -197,7 +197,7 @@ export default function SktmRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Pilih Jenjang Pendidikan</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Jawaban" />
@@ -223,7 +223,12 @@ export default function SktmRegister() {
               <FormItem>
                 <FormLabel className="font-semibold dark:text-white">Universitas/Sekolah Tujuan</FormLabel>
                 <FormControl>
-                  <Input {...field} type="text" placeholder="Masukkan Universitas/Sekolah Tujuan" />
+                  <Input
+                    {...field}
+                    value={field.value ?? ''}
+                    type="text"
+                    placeholder="Masukkan Universitas/Sekolah Tujuan"
+                  />
                 </FormControl>
               </FormItem>
             )}
@@ -285,7 +290,7 @@ export default function SktmRegister() {
                       helperText="*Catatan: File pdf. Dengan maksimal 2MB"
                       accept={{ 'application/pdf': ['.pdf'] }}
                       maxFiles={1}
-                      id="fotoKtp"
+                      id="familyCard"
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
@@ -330,7 +335,7 @@ export default function SktmRegister() {
                     helperText="*Catatan: File pdf. Dengan maksimal 2MB"
                     accept={{ 'application/pdf': ['.pdf'] }}
                     maxFiles={1}
-                    id="IndigencyCertificateApplication"
+                    id="schoolLetter"
                     Icon={HiDocumentArrowUp}
                   />
                 </FormControl>

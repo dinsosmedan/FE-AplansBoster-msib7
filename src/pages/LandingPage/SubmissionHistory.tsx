@@ -13,8 +13,8 @@ export default function SubmissionHistory() {
       <div className="bg-white h-[647px] w-[90%] md:px-5 shadow-sm mb-[150px]">
         <div className="py-[53px] px-8 md:flex md:justify-between">
           <div className="mb-5 md:mb-0">
-          <p className="md:text-[24px] text-[20px] font-semibold">Riwayat Pengajuan</p>
-          <p className="text-[14px] text-[#8b8b8b]">Lihat riwayat pengajuan online yang pernah kamu ajuakan</p>
+            <p className="md:text-[24px] text-[20px] font-semibold">Riwayat Pengajuan</p>
+            <p className="text-[14px] text-[#8b8b8b]">Lihat riwayat pengajuan online yang pernah kamu ajuakan</p>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger className="bg-[#ECF0F4] w-[100%]  md:w-auto rounded-lg inline-flex relative items-center justify-center text-sm font-medium transition-colors outline-none ring-0 disabled:pointer-events-none disabled:opacity-50 overflow-hidden  h-10 px-4 py-2">
@@ -43,7 +43,7 @@ export default function SubmissionHistory() {
                 <div className="bg-[#5BC665] w-[18px] h-[18px] rounded-md flex items-center justify-center">
                   <HiMiniCheck className="text-white" />
                 </div>
-                <span className="text-base font-medium text-sm">Diterima</span>
+                <span className="font-medium text-sm">Diterima</span>
               </div>
               <small className="text-[#8B8B8B] ">7 Jam Lalu</small>
             </div>
@@ -58,7 +58,7 @@ export default function SubmissionHistory() {
                 <div className="bg-primary w-[18px] h-[18px] rounded-md flex items-center justify-center">
                   <HiXMark className="text-white" />
                 </div>
-                <span className="text-base font-medium text-sm">Diterima</span>
+                <span className="font-medium text-sm">Diterima</span>
               </div>
               <small className="text-[#8B8B8B] text-">7 Jam Lalu</small>
             </div>

@@ -121,6 +121,7 @@ export default function BbpRegister() {
                         <FormControl>
                           <Input
                             {...field}
+                            value={field.value ?? ''}
                             className="focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 rounded-md rounded-r-none"
                             type="number"
                             placeholder="Cari NIK"
@@ -153,7 +154,7 @@ export default function BbpRegister() {
                     <Input
                       {...field}
                       type="text"
-                      value={field.value}
+                      value={field.value ?? ''}
                       className="rounded-md"
                       placeholder="Masukkan Nama Anda"
                     />
@@ -172,7 +173,7 @@ export default function BbpRegister() {
                     <Input
                       {...field}
                       type="text"
-                      value={field.value}
+                      value={field.value ?? ''}
                       className="rounded-md"
                       placeholder="Masukkan Tempat Lahir "
                     />
@@ -423,7 +424,13 @@ export default function BbpRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">UKT</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value} className="rounded-md" type="number" placeholder="Rp. " />
+                    <Input
+                      {...field}
+                      value={field.value ?? ''}
+                      className="rounded-md"
+                      type="number"
+                      placeholder="Rp. "
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
