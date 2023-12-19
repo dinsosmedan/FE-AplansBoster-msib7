@@ -19,7 +19,7 @@ export default function ProfileLayout() {
                 </div>
                 <div className="flex items-center">
                   <Link to={'/user/profile'}>
-                    <p className="text-lg ">Profile</p>
+                    <p className="text-md ">Profile</p>
                   </Link>
                 </div>
               </div>
@@ -32,7 +32,7 @@ export default function ProfileLayout() {
                 </div>
                 <div className="flex items-center">
                   <Link to={'/user/profile/change-password'}>
-                    <p className="text-lg">Ubah Password</p>
+                    <p className="text-md">Ubah Password</p>
                   </Link>
                 </div>
               </div>

@@ -15,23 +15,23 @@ export default function ChangePassword() {
     console.log(values)
   }
   return (
-    <div className="bg-white w-[840px] h-[386px] shadow-xl rounded-lg ">
-      <p className="text-[30px] font-semibold ml-7 mt-9">Ubah Password</p>
+    <div className="bg-white lg:w-[90%] w-[90%] h-[100%]  md:p-10 py-10 shadow-sm rounded-lg mt-10 lg:mt-0 mx-auto ">
+      <p className="md:text-[28px] text-[24px] font-semibold ml-7 mt-9">Ubah Password</p>
+      <p className="text-[14px] ml-7 text-[#8b8b8b]">Ubah password akun Kamu disini</p>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)}>
-          <div className=" grid grid-cols-2 gap-7 px-7 pt-[52px]">
+          <div className=" grid grid-cols-1 gap-7 px-7 pt-[52px]">
             <FormField
               name="password"
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-lg font-semibold dark:text-white">Password</FormLabel>
+                  <FormLabel className="font-semibold dark:text-white">Password</FormLabel>
                   <FormControl>
                     <Password
                       {...field}
                       value={field.value ?? ''}
                       placeholder="Masukkan Password Anda"
-                      className="py-6 rounded-lg"
                     />
                   </FormControl>
                   <FormMessage />
@@ -43,13 +43,12 @@ export default function ChangePassword() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-lg font-semibold dark:text-white">Konfirmasi Password</FormLabel>
+                  <FormLabel className="font-semibold dark:text-white">Konfirmasi Password</FormLabel>
                   <FormControl>
                     <Password
                       {...field}
                       value={field.value ?? ''}
                       placeholder="Masukkan Password Anda"
-                      className="py-6 rounded-lg"
                     />
                   </FormControl>
                   <FormMessage />
@@ -57,9 +56,9 @@ export default function ChangePassword() {
               )}
             />
           </div>
-          <div className="flex justify-end gap-5 items-center pt-[62px] pr-7 ">
-            <Button className="w-[200px] h-[50px]">
-              <p className="text-lg font-semibold">Ubah Password</p>
+          <div className="flex justify-end gap-5 items-center pt-20 px-7 items-center">
+            <Button className="md:w-[200px] w-[100%] h-[45px]">
+              <p className="text-md font-semibold">Ubah Password</p>
             </Button>
           </div>
         </form>

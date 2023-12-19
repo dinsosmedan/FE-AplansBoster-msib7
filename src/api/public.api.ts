@@ -4,7 +4,9 @@ import { type IBank, type IAssistanceCheck, type IPublicEventTuition } from '@/l
 import {
   type DtksSchoolFields,
   type DtksCourtsFields,
-  type publicEventTuitionFields
+  type publicEventTuitionFields,
+  type PublicDTKSFields,
+  type NonDtksCourtsFields
 } from '@/lib/validations/landingPage/public.validation'
 import axios from 'axios'
 import axiosPublic from './axiosPublicInstance'
@@ -40,6 +42,51 @@ export const getBankListFn = async (): Promise<IBank[]> => {
 export const getPublicEventTuitionFn = async (): Promise<IPublicEventTuition[]> => {
   const response = await apiPublic.get('/public/event/tuition-assistance')
   return response.data?.data
+}
+export const storePublicEventDtksFn = async (fields: PublicDTKSFields) => {
+  const formData = new FormData()
+  formData.append('identityNumber', fields.identityNumber)
+  formData.append('familyCardNumber', fields.identityNumber)
+  formData.append('name', fields.name)
+  formData.append('birthPlace', fields.birthPlace)
+  formData.append('birthDate', fields.birthDate as unknown as string)
+  formData.append('motherName', fields.motherName)
+  formData.append('gender', fields.gender)
+  formData.append('occupation', fields.occupation)
+  formData.append('maritalStatus', fields.maritalStatus)
+  formData.append('areaLevel3', fields.areaLevel3)
+  formData.append('areaLevel4', fields.areaLevel4)
+  formData.append('address', fields.address)
+  formData.append('question1', fields.question1.toString())
+  formData.append('question2', fields.question2.toString())
+  formData.append('question3', fields.question3.toString())
+  formData.append('question4', fields.question4.toString())
+  formData.append('question5', fields.question5.toString())
+  formData.append('question6', fields.question6.toString())
+  formData.append('question7', fields.question7.toString())
+  formData.append('question8', fields.question8.toString())
+  formData.append('question9', fields.question9.toString())
+  formData.append('question10', fields.question9.toString())
+  formData.append('assistanceProgram', fields.assistanceProgram)
+  formData.append('disabilityStatus', fields.disabilityStatus)
+  formData.append('pregnantDate', fields.pregnantDate as unknown as string)
+  formData.append('familyRelationship', fields.familyRelationship)
+  formData.append('remoteIndigenousStatus', fields.remoteIndigenousStatus)
+  formData.append('tribeName', fields.tribeName)
+
+  if (Array.isArray(fields.indentityPath) && fields.indentityPath.length > 0) {
+    formData.append('indentityPath', fields.indentityPath[0])
+  }
+
+  if (Array.isArray(fields.housePath) && fields.housePath.length > 0) {
+    formData.append('housePath', fields.housePath[0])
+  }
+
+  await axiosPublic.post('/public/application/dtks', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
 }
 
 interface IStorePublicEventTuition extends publicEventTuitionFields {
@@ -191,4 +238,56 @@ export const storeDTKSSchoolFn = async (data: DtksSchoolFields) => {
 export const getIndigencyCertificateApplicationPublicFn = async (): Promise<IIndigencyCertificate[]> => {
   const response = await axiosPublic.get('/public/application/indigency-certificate')
   return response.data?.data
+}
+
+export const storeNonDtksCourtsFn = async (data: NonDtksCourtsFields) => {
+  const formdata = new FormData()
+  formdata.append('peopleConcernedIdentityNumber', data.peopleConcernedIdentityNumber)
+  formdata.append('peopleConcernedName', data.peopleConcernedName)
+  formdata.append('peopleConcernedAreaLevel3', data.peopleConcernedAreaLevel3)
+  formdata.append('peopleConcernedAreaLevel4', data.peopleConcernedAreaLevel4)
+  formdata.append('peopleConcernedAddress', data.peopleConcernedAddress)
+  formdata.append('applicantPhoneNumber', data.applicantPhoneNumber)
+  formdata.append('certificateDestination', data.certificateDestination)
+  formdata.append('categoryApplication', 'non-dtks-courts')
+
+  if (Array.isArray(data.petitionLetter) && data.petitionLetter.length > 0) {
+    formdata.append('petitionLetter', data.petitionLetter[0] as File)
+  }
+  if (Array.isArray(data.familyCard) && data.familyCard.length > 0) {
+    formdata.append('familyCard', data.familyCard[0] as File)
+  }
+  if (Array.isArray(data.idCard) && data.idCard.length > 0) {
+    formdata.append('idCard', data.idCard[0] as File)
+  }
+  if (Array.isArray(data.domicileLetter) && data.domicileLetter.length > 0) {
+    formdata.append('domicileLetter', data.domicileLetter[0] as File)
+  }
+  if (Array.isArray(data.salarySlip) && data.salarySlip.length > 0) {
+    formdata.append('salarySlip', data.salarySlip[0] as File)
+  }
+  if (Array.isArray(data.localsApprovalLetter) && data.localsApprovalLetter.length > 0) {
+    formdata.append('localsApprovalLetter', data.localsApprovalLetter[0] as File)
+  }
+  if (Array.isArray(data.lowIncomeLetter) && data.lowIncomeLetter.length > 0) {
+    formdata.append('lowIncomeLetter', data.lowIncomeLetter[0] as File)
+  }
+  if (Array.isArray(data.frontViewHouse) && data.frontViewHouse.length > 0) {
+    formdata.append('frontViewHouse', data.frontViewHouse[0] as File)
+  }
+  if (Array.isArray(data.sittingViewHouse) && data.sittingViewHouse.length > 0) {
+    formdata.append('sittingViewHouse', data.sittingViewHouse[0] as File)
+  }
+  if (Array.isArray(data.chamberViewHouse) && data.chamberViewHouse.length > 0) {
+    formdata.append('chamberViewHouse', data.chamberViewHouse[0] as File)
+  }
+  if (Array.isArray(data.kitchenViewHouse) && data.kitchenViewHouse.length > 0) {
+    formdata.append('kitchenViewHouse', data.kitchenViewHouse[0] as File)
+  }
+
+  await axiosPublic.post('/public/application/indigency-certificate', formdata, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
 }
