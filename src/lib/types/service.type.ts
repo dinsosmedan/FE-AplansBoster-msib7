@@ -14,7 +14,8 @@ export interface ITuitionAssistanceEvent {
   tuitionFee: null | number
   bankAccNumber: string | null
   bankAccName: null | string
-  application_status: string
+  applicationStatus: string | null
+  certificateDestination: string | null
   message: null | string
   dtksStatus: null | string
   documents: IDocument
@@ -70,5 +71,33 @@ export interface IIndigencyCertificate {
 
 export interface IIndigencyCertificates {
   data: IIndigencyCertificate[]
+  meta: IMeta
+}
+
+export interface IDTKSApplication {
+  id: string
+  beneficiary: IBeneficary
+  question1: boolean
+  question2: boolean
+  question3: boolean
+  question4: boolean
+  question5: boolean
+  question6: boolean
+  question7: boolean
+  question8: boolean
+  question9: boolean
+  question10: boolean
+  assistanceProgram: string
+  disabilityStatus: string
+  pregnantDate: string
+  remoteIndigenousStatus: boolean
+  tribeName: string
+  isApproved: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+export interface IDTKSApplications {
+  data: IDTKSApplication[]
   meta: IMeta
 }

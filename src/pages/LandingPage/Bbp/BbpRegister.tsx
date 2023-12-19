@@ -106,8 +106,8 @@ export default function BbpRegister() {
   return (
     <ContainerUser title={`Form Pengajuan Bantuan Biaya Pendidikan ${details}`}>
       <Form {...forms}>
-        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6 pt-16">
-          <p className="text-[20px] font-semibold mt-5">Informasi Pribadi</p>
+        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6 pt-5">
+          <p className="text-[18px] font-semibold mt-5">Informasi Pribadi</p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             <div className="flex">
               <div className="w-full">
@@ -121,6 +121,7 @@ export default function BbpRegister() {
                         <FormControl>
                           <Input
                             {...field}
+                            value={field.value ?? ''}
                             className="focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 rounded-md rounded-r-none"
                             type="number"
                             placeholder="Cari NIK"
@@ -153,7 +154,7 @@ export default function BbpRegister() {
                     <Input
                       {...field}
                       type="text"
-                      value={field.value}
+                      value={field.value ?? ''}
                       className="rounded-md"
                       placeholder="Masukkan Nama Anda"
                     />
@@ -172,7 +173,7 @@ export default function BbpRegister() {
                     <Input
                       {...field}
                       type="text"
-                      value={field.value}
+                      value={field.value ?? ''}
                       className="rounded-md"
                       placeholder="Masukkan Tempat Lahir "
                     />
@@ -326,7 +327,7 @@ export default function BbpRegister() {
               )}
             />
           </div>
-          <p className="font-semibold text-[20px] mt-5">Akademis</p>
+          <p className="font-semibold text-[18px] mt-5">Akademis</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <FormField
               name="universityId"
@@ -423,14 +424,20 @@ export default function BbpRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">UKT</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value} className="rounded-md" type="number" placeholder="Rp. " />
+                    <Input
+                      {...field}
+                      value={field.value ?? ''}
+                      className="rounded-md"
+                      type="number"
+                      placeholder="Rp. "
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <p className="font-semibold text-[20px] mt-5">Rekening</p>
+          <p className="font-semibold text-[18px] mt-5">Rekening</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <FormField
               name="bank"
@@ -754,11 +761,11 @@ export default function BbpRegister() {
               )}
             />
           </div>
-          <div className="flex justify-end gap-7 items-center pt-10">
-            <Button variant="outline" className="border-primary text-primary px-8 py-6 rounded-lg" type="button">
+          <div className="md:flex justify-end gap-7 items-center pt-10">
+            <Button variant="outline" className="border-primary text-primary px-8 py-6 rounded-lg md:w-[50%] lg:w-[15%] w-full" type="button">
               <p className="text-base font-semibold">Kembali</p>
             </Button>
-            <Button className="px-8 py-6 rounded-lg items-center gap-3" loading={isLoadingCreate} type="submit">
+            <Button className="px-8 py-6 rounded-lg items-center gap-3 md:w-[50%] lg:w-[15%] w-full mt-5 md:mt-0" loading={isLoadingCreate} type="submit">
               <p className="text-base font-semibold">Kirim Pengajuan</p>
               <HiPaperAirplane className="w-5 h-5" />
             </Button>

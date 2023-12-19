@@ -3,14 +3,24 @@ import { HiXMark } from 'react-icons/hi2'
 import { useDisableBodyScroll } from '@/hooks'
 import { cn } from '@/lib/utils'
 import { Button } from '../ui/button'
+import { ImSpinner2 } from 'react-icons/im'
 
 interface ModalProps {
   isShow: boolean
   children: React.ReactNode
   className?: string
+  isLoading?: boolean
 }
 
-const Modal = ({ isShow, children, className }: ModalProps) => {
+const Loading = () => {
+  return (
+    <div className="min-h-[500px] flex">
+      <ImSpinner2 className="animate-spin m-auto text-3xl text-primary" />
+    </div>
+  )
+}
+
+const Modal = ({ isShow, children, className, isLoading }: ModalProps) => {
   useDisableBodyScroll(isShow)
 
   return (
@@ -27,7 +37,7 @@ const Modal = ({ isShow, children, className }: ModalProps) => {
           className
         )}
       >
-        {children}
+        {isLoading ? <Loading /> : children}
       </article>
     </section>
   )

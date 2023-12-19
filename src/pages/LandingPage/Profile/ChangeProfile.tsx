@@ -53,8 +53,8 @@ const forms = useForm<FormValues>({
   }
   return (
     <div className="bg-white lg:w-[90%] w-[90%] h-[100%]  md:p-10 py-10 shadow-sm rounded-lg mt-10 lg:mt-0 mx-auto">
-      <p className="text-[30px] font-semibold ml-7">Profil</p>
-      <p className="text-[14px] ml-7">Ubah profile akun Kamu disini</p>
+      <p className="md:text-[28px] text-[24px]  font-semibold ml-7">Profil</p>
+      <p className="text-[14px] ml-7 text-[#8b8b8b]">Ubah profile akun Kamu disini</p>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)}>
           <div className=" grid grid-cols-1 gap-7 px-7 pt-[50px]">

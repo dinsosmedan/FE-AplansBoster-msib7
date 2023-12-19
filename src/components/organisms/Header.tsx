@@ -32,61 +32,59 @@ export default function Header() {
     }).then(() => logout())
   }
 
-  if (isLoadingLogout) {
-    return <Loading />
-  }
+  console.log(user)
 
   return (
-    <header className="h-24 flex items-center px-8 z-[20] sticky top-0 bg-white border-b border-[#E9E9E9] text-font">
-      <nav className="flex items-center justify-between flex-1">
-        <div className="flex flex-col">
-          <h4 className="font-bold text-2xl">{title}</h4>
-          {isHadBreadcrumbs ? <Breadcrumbs breadcrumbs={breadcrumbs} /> : null}
-        </div>
-        <div className="flex items-center gap-6">
-          <Button size="icon" variant="ghost" className="rounded-full">
-            <HiBell className="text-2xl text-primary" />
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <div className="flex items-center gap-4">
-                {isLoading ? (
-                  <>
-                    <Skeleton className="w-12 h-12 rounded-[14px]" />
-                    <div className="flex flex-col gap-3">
-                      <Skeleton className="w-[120px] h-3 rounded-[14px]" />
-                      <Skeleton className="w-[80px] h-3 rounded-[14px]" />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <img
-                      src="https://source.unsplash.com/random/900×700/?man"
-                      alt="profile"
-                      loading="lazy"
-                      className="w-12 h-12 object-cover rounded-[14px]"
-                    />
-                    <div className="flex flex-col">
-                      <p className="font-bold">{user?.data.name}</p>
-                      <p className="text-sm text-[#8F8F8F] text-left">{user?.data.role.name}</p>
-                    </div>
-                  </>
-                )}
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="mr-5">
-              <DropdownMenuItem>
-                <DropdownMenuLabel className="text-primary  w-[170px]">Pengaturan</DropdownMenuLabel>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <button onClick={handleLogout} className="flex-1 w-full text-left">
-                  <DropdownMenuLabel className="text-primary">Keluar</DropdownMenuLabel>
-                </button>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </nav>
-    </header>
+    <>
+      {isLoadingLogout && <Loading />}
+      <header className="h-24 flex items-center px-8 z-[20] sticky top-0 bg-white border-b border-[#E9E9E9] text-font">
+        <nav className="flex items-center justify-between flex-1">
+          <div className="flex flex-col">
+            <h4 className="font-bold text-2xl">{title}</h4>
+            {isHadBreadcrumbs ? <Breadcrumbs breadcrumbs={breadcrumbs} /> : null}
+          </div>
+          <div className="flex items-center gap-6">
+            <Button size="icon" variant="ghost" className="rounded-full">
+              <HiBell className="text-2xl text-primary" />
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div className="flex items-center gap-4">
+                  {isLoading ? (
+                    <>
+                      <Skeleton className="w-12 h-12 rounded-[14px]" />
+                      <div className="flex flex-col gap-3">
+                        <Skeleton className="w-[120px] h-3 rounded-[14px]" />
+                        <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <img
+                        src="https://source.unsplash.com/random/900×700/?man"
+                        alt="profile"
+                        loading="lazy"
+                        className="w-12 h-12 object-cover rounded-[14px]"
+                      />
+                      <div className="flex flex-col">
+                        <p className="font-bold">{user?.data.name}</p>
+                        <p className="text-sm text-[#8F8F8F] text-left">{user?.data.role.name}</p>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="mr-5">
+                <DropdownMenuItem>
+                  <button onClick={handleLogout} className="flex-1 w-full text-left">
+                    <DropdownMenuLabel className="text-primary">Keluar</DropdownMenuLabel>
+                  </button>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </nav>
+      </header>
+    </>
   )
 }

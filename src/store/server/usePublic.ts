@@ -1,5 +1,6 @@
 import {
   getBankListFn,
+  getIndigencyCertificateApplicationPublicFn,
   getPublicEventTuitionFn,
   getStudyProgramsFn,
   getTuitionApplicationPublicFn,
@@ -8,6 +9,7 @@ import {
   storePublicEventDtksFn,
   storeDTKSCourtPublicFn,
   storeDTKSSchoolFn,
+  storeNonDtksCourtsFn,
   storePublicEventTuitionFn
 } from '@/api/public.api'
 import { toast } from '@/components/ui/use-toast'
@@ -107,10 +109,34 @@ export const useCreateDTKSSchool = () => {
     onSuccess: () => {
       void queryClient.invalidateQueries('public-event-tuition')
       void queryClient.invalidateQueries('tuition-application-public')
-      handleMessage({ title: 'Pengajuan BBP', variant: 'create' })
+      handleMessage({ title: 'Pengajuan SKTM Untuk Sekolah/Universitas (Terdaftar DTKS)', variant: 'create' })
     },
     onError: (error: AxiosError) => {
       handleOnError(error)
+    }
+  })
+}
+
+export const useCreateNonDTKSCourts = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(storeNonDtksCourtsFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('public-event-tuition')
+      void queryClient.invalidateQueries('tuition-application-public')
+      handleMessage({ title: 'Pengajuan  SKTM Untuk Pelayanan ke Pengadilan Agama / LBH (Tidak Terdaftar DTKS)', variant: 'create' })
+    },
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    }
+  })
+}
+
+export const useGetIndigencyCertificateApplicationPublic = (applicationCategory: string) => {
+  return useQuery('indigency-centificate-2', async () => await getIndigencyCertificateApplicationPublicFn(), {
+    select: (data) => {
+      const transformedData = data.filter((item) => item.applicationCategory === applicationCategory)
+      return transformedData
     }
   })
 }
