@@ -191,7 +191,7 @@ const DataSktm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Nama / NIK" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama / NIK" />
                   </FormControl>
                 </FormItem>
               )}
@@ -202,7 +202,7 @@ const DataSktm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} type="number" placeholder="Masukkan Tahun Pembuatan" />
+                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Tahun Pembuatan" />
                   </FormControl>
                 </FormItem>
               )}

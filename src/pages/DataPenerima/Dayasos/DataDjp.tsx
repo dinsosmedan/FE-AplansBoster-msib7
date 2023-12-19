@@ -160,7 +160,7 @@ const DataDjp = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} placeholder="Cari berdasarkan NIK atau Nama" />
+                    <Input {...field} value={field.value ?? ''} placeholder="Cari berdasarkan NIK atau Nama" />
                   </FormControl>
                 </FormItem>
               )}

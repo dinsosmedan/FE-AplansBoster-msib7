@@ -38,8 +38,6 @@ export default function ModalEditDataSKTM({ isShow, setIsShow, indigencyId }: Mo
     }
   }, [isSuccess])
 
-  console.log(data)
-
   const onSubmit = (values: updateIndigencyCertificateServiceFields) => {
     const newData = { id: indigencyId, fields: values }
     update(newData, {

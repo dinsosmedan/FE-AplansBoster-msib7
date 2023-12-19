@@ -23,7 +23,7 @@ export default function TextEditor({ id, value, onChange }: TextEditorProps) {
       init={defaultInit}
       apiKey={ENV.apiKeyTinyMce}
       value={value}
-      onEditorChange={(newValue) => onChange(newValue)}
+      onEditorChange={(newValue: string) => onChange(newValue)}
     />
   )
 }

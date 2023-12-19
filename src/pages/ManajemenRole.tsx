@@ -141,7 +141,7 @@ const ManajemenRole = () => {
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">Role</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} value={field.value ?? ''} />
                   </FormControl>
                 </FormItem>
               )}

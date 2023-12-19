@@ -72,10 +72,6 @@ const ChartSktm = () => {
 const ChartBbp = () => {
   const { data, isLoading } = useCountTuitionAssistance()
 
-  // if (isLoading) {
-  //   return <Skeleton className="w-[300px] h-[300px] rounded-full" />
-  // }
-  // console.log(data)
   const label = data ? data.map((val: any) => val.budgetYear.toString()) : []
   const value = data ? data.map((val: any) => val.count.toString()) : []
 
@@ -104,7 +100,6 @@ const ChartPenanganan = () => {
   const label = data ? data.map((val: any) => val.budgetYear.toString()) : []
   // const values = Object.values(data)
 
-  // console.log(total)
   return (
     <>
       <LongCard props={['Penangan Kelompok Rentan', 'Perkembangan Data PKR']}>
@@ -125,8 +120,6 @@ const ChartPenanganan = () => {
 }
 const CardData = () => {
   const { data, isLoading } = useCountBbp()
-
-  // console.log(data)
 
   return (
     <>

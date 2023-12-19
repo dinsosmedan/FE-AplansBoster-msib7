@@ -92,7 +92,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan NIK Masyarakat" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan NIK Masyarakat" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -115,7 +115,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">No.KK</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" placeholder="Masukkan No.KK" />
+                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan No.KK" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -129,7 +129,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Nama" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -143,7 +143,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Alamat</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Alamat" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Alamat" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -232,7 +232,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Tempat Lahir</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Tempat Lahir" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tempat Lahir" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -307,7 +307,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Pekerjaan</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Pekerjaan" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Pekerjaan" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -321,7 +321,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Golongan Darah</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Golongan Darah" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Golongan Darah" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -409,7 +409,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Nama Ibu</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Nama Ibu" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Ibu" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -423,7 +423,7 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Nama Bapak</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Nama Bapak" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Bapak" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

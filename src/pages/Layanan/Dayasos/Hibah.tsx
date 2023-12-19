@@ -216,7 +216,7 @@ const Hibah = () => {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
                   <FormControl>
-                    <Textarea {...field} placeholder="Masukkan Alamat Lengkap Masyarakat." />
+                    <Textarea {...field} value={field.value ?? ''} placeholder="Masukkan Alamat Lengkap Masyarakat." />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

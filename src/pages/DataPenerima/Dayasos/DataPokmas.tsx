@@ -191,7 +191,7 @@ const DataPokmas = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Nama Kelompok Masyarakat" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Nama Kelompok Masyarakat" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -202,7 +202,7 @@ const DataPokmas = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Kode Kegiatan " />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Kode Kegiatan " />
                     </FormControl>
                   </FormItem>
                 )}
@@ -286,7 +286,7 @@ const DataPokmas = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Tahun" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun" />
                     </FormControl>
                   </FormItem>
                 )}

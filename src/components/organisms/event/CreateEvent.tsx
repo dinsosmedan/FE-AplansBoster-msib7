@@ -100,7 +100,6 @@ export default function CreateEvent({ isShow, setIsShow, eventId }: CreateEventP
       endDate: formatDateToString(values.endDate as Date)
     }
 
-    console.log(newData)
     if (!eventId) return createEvent(newData, { onSuccess })
     updateEvent({ id: eventId, fields: newData }, { onSuccess })
   }

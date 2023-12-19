@@ -164,7 +164,7 @@ export default function DataDtks() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Nama" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama" />
                   </FormControl>
                 </FormItem>
               )}
@@ -175,7 +175,7 @@ export default function DataDtks() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan NIK" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan NIK" />
                   </FormControl>
                 </FormItem>
               )}
@@ -186,7 +186,7 @@ export default function DataDtks() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan No KK" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan No KK" />
                   </FormControl>
                 </FormItem>
               )}

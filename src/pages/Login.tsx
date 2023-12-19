@@ -72,7 +72,7 @@ export default function Login() {
                     <FormItem>
                       <FormLabel className="font-semibold dark:text-white">NIP</FormLabel>
                       <FormControl>
-                        <Input {...field} type="text" placeholder="Masukkan NIP Anda" />
+                        <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan NIP Anda" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

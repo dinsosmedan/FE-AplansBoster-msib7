@@ -125,7 +125,7 @@ const Djpm = () => {
                 <FormItem className="mt-5 mb-8">
                   <FormLabel className="font-semibold dark:text-white">No. Telepon</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" placeholder="Masukkan No. Telepon" />
+                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan No. Telepon" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -135,7 +135,9 @@ const Djpm = () => {
             <FormField
               name="beneficiary"
               control={forms.control}
-              render={({ field }) => <Input {...field} type="text" hidden className="hidden" />}
+              render={({ field }) => (
+                <Input {...field} value={field.value ?? ''} type="text" hidden className="hidden" />
+              )}
             />
             <div className="grid grid-cols-3 gap-5">
               <FormField
@@ -145,7 +147,7 @@ const Djpm = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">No. Rekening Bank Sumut</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan No. Rekening" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan No. Rekening" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -158,7 +160,7 @@ const Djpm = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nama Rekening Bank Sumut</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama Rekening" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Rekening" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -171,7 +173,12 @@ const Djpm = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kantor Cabang Bank Sumut</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Kantor Cabang Rekening" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="text"
+                        placeholder="Masukkan Kantor Cabang Rekening"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -205,7 +212,12 @@ const Djpm = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nominal Bantuan</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan Nominal Bantuan" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="number"
+                        placeholder="Masukkan Nominal Bantuan"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -218,7 +230,7 @@ const Djpm = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Tahun anggaran</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Tahun Anggaran" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Anggaran" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -234,7 +246,7 @@ const Djpm = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Tempat Tugas</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama Rekening" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Rekening" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -247,7 +259,12 @@ const Djpm = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Alamat Tugas</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Alamat Lengkap Tugas" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="text"
+                        placeholder="Masukkan Alamat Lengkap Tugas"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

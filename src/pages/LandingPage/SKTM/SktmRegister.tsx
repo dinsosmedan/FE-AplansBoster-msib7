@@ -171,7 +171,7 @@ export default function SktmRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
                   <FormControl>
-                    <Textarea {...field} placeholder="Masukan Alamat Lengkap" />
+                    <Textarea {...field} value={field.value ?? ''} placeholder="Masukan Alamat Lengkap" />
                   </FormControl>
                 </FormItem>
               )}

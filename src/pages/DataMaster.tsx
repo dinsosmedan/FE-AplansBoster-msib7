@@ -97,7 +97,7 @@ export default function DataMaster() {
               render={({ field }) => (
                 <FormItem className="w-[40%]">
                   <FormControl>
-                    <Input {...field} placeholder="Cari berdasarkan NIK atau Nama" />
+                    <Input {...field} value={field.value ?? ''} placeholder="Cari berdasarkan NIK atau Nama" />
                   </FormControl>
                 </FormItem>
               )}

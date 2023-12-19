@@ -120,7 +120,7 @@ const DataVeteran = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Nama" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama" />
                   </FormControl>
                 </FormItem>
               )}

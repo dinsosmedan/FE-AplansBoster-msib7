@@ -43,7 +43,8 @@ export default function ChangeProfile() {
       forms.reset({
         name: user?.data.name,
         email: user?.data.email,
-        phoneNumber: user?.data.phoneNumber as string
+        phoneNumber: user?.data.phoneNumber as string,
+        nik: user.data.identityNumber
       })
     }
   }, [isSuccessGet])
@@ -65,7 +66,14 @@ export default function ChangeProfile() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan NIK" readOnly={true} disabled />
+                    <Input
+                      {...field}
+                      value={field.value ?? ''}
+                      type="text"
+                      placeholder="Masukkan NIK"
+                      readOnly={true}
+                      disabled
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -77,7 +85,7 @@ export default function ChangeProfile() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Nama Anda" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Anda" />
                   </FormControl>
                 </FormItem>
               )}
@@ -89,7 +97,7 @@ export default function ChangeProfile() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">E-mail</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Email" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Email" />
                   </FormControl>
                 </FormItem>
               )}
@@ -101,7 +109,7 @@ export default function ChangeProfile() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">No. Telepon</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Nomor Telepon" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nomor Telepon" />
                   </FormControl>
                 </FormItem>
               )}
