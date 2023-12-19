@@ -6,6 +6,7 @@ import {
   getUniversitiesFn,
   showAssistanceCheckFn,
   storeDTKSSchoolFn,
+  storeNonDtksCourtsFn,
   storePublicEventTuitionFn
 } from '@/api/public.api'
 import { handleMessage } from '@/lib/services/handleMessage'
@@ -56,21 +57,6 @@ export const useGetTuitionApplicationPublic = () => {
   return useQuery('tuition-application-public', async () => await getTuitionApplicationPublicFn())
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export const useCreateDTKSSchool = () => {
   const queryClient = useQueryClient()
 
@@ -78,7 +64,22 @@ export const useCreateDTKSSchool = () => {
     onSuccess: () => {
       void queryClient.invalidateQueries('public-event-tuition')
       void queryClient.invalidateQueries('tuition-application-public')
-      handleMessage({ title: 'Pengajuan BBP', variant: 'create' })
+      handleMessage({ title: 'Pengajuan SKTM Untuk Sekolah/Universitas (Terdaftar DTKS)', variant: 'create' })
+    },
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    }
+  })
+}
+
+export const useCreateNonDTKSCourts = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(storeNonDtksCourtsFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('public-event-tuition')
+      void queryClient.invalidateQueries('tuition-application-public')
+      handleMessage({ title: 'Pengajuan  SKTM Untuk Pelayanan ke Pengadilan Agama / LBH (Tidak Terdaftar DTKS)', variant: 'create' })
     },
     onError: (error: AxiosError) => {
       handleOnError(error)
