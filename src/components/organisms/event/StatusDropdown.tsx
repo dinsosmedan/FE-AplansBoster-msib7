@@ -36,7 +36,7 @@ export default function StatusDropdown({ action, value }: StatusDropdownProps) {
         {STATUS_DTKS.map((status, index) => (
           <DropdownMenuItem key={index} className="cursor-pointer flex-1 w-full text-left hover:bg-zinc-100">
             <DropdownMenuLabel
-              className="text-font"
+              className="text-font w-full flex-1"
               onClick={async () => await handleChange(status.value, status.label)}
             >
               {status.label}

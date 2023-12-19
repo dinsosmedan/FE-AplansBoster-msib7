@@ -1,10 +1,16 @@
-import { type updateTuitionAssistanceFields } from '@/lib/validations/linjamsos.validation'
+import {
+  type updateIndigencyCertificateServiceFields,
+  type updateTuitionAssistanceFields
+} from '@/lib/validations/linjamsos.validation'
 import api from './axiosInstance'
 import {
+  type IDTKSApplications,
+  type IIndigencyCertificate,
   type IIndigencyCertificates,
   type ITuitionAssistanceEvent,
   type ITuitionAssistanceEvents
 } from '@/lib/types/service.type'
+import { formatDateToString } from '@/lib/services/formatDate'
 
 export interface getTuitionAssistanceParams {
   eventId: string
@@ -57,7 +63,12 @@ export const updateTuitionAssistanceEventStatusFn = async ({ id, fields }: dtksS
   await api.put(`/service/tuition-assistance-application/${id}/dtks-status`, fields)
 }
 
-export const updateIndigencyCertificateStatusFn = async ({ id, fields }: dtksStatusParams) => {
+interface indigencyStatusParams {
+  id: string
+  fields: { statusDtks: string }
+}
+
+export const updateIndigencyCertificateStatusFn = async ({ id, fields }: indigencyStatusParams) => {
   await api.put(`/service/indigency-certificate/dtks-status/${id}`, fields)
 }
 
@@ -92,4 +103,51 @@ export const updateApplicationStatusFn = async ({ id, fields }: updateApplicatio
   }
 
   await api.put(`service/tuition-assistance-application/${id}/status`, data)
+}
+
+interface updateIndigencyStatusParams {
+  id: string
+  fields: {
+    applicationStatus?: string
+    message?: string
+    issueDate?: Date
+    issuedCertificate?: File[]
+  }
+}
+
+export const updateIndigencyStatusFn = async ({ id, fields }: updateIndigencyStatusParams) => {
+  const formData = new FormData()
+
+  formData.append('applicationStatus', fields.applicationStatus as string)
+  formData.append('_method', 'PUT')
+  if (fields.applicationStatus === 'approved') {
+    formData.append('issueDate', formatDateToString(fields.issueDate as Date))
+    formData.append('issuedCertificate', fields.issuedCertificate?.[0] as File)
+  } else if (fields.applicationStatus === 'rejected' || fields.applicationStatus === 'revision') {
+    formData.append('message', fields.message as string)
+  }
+
+  await api.post(`/service/indigency-certificate/status/${id}`, formData)
+}
+
+export const showIndigencyCertificateApplicationFn = async (id: string): Promise<IIndigencyCertificate> => {
+  const response = await api.get(`/service/indigency-certificate/${id}`)
+  return response.data?.data
+}
+
+export const getDTKSApplicationFn = async (page: number, status: boolean): Promise<IDTKSApplications> => {
+  const response = await api.get(`/service/dtks-application?page=${page}&status=${status}`)
+  return response.data
+}
+
+interface updateIndigencyCertificateApplicationParams {
+  id: string
+  fields: updateIndigencyCertificateServiceFields
+}
+
+export const updateIndigencyCertificateApplicationFn = async ({
+  id,
+  fields
+}: updateIndigencyCertificateApplicationParams) => {
+  await api.post(`/service/indigency-certificate/${id}`, fields)
 }

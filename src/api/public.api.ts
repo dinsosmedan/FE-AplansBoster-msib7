@@ -10,6 +10,7 @@ import {
 } from '@/lib/validations/landingPage/public.validation'
 import axios from 'axios'
 import axiosPublic from './axiosPublicInstance'
+import { type IIndigencyCertificate } from '@/lib/types/service.type'
 
 const apiPublic = axios.create({
   baseURL: ENV.apiUrl,
@@ -232,6 +233,11 @@ export const storeDTKSSchoolFn = async (data: DtksSchoolFields) => {
       'Content-Type': 'multipart/form-data'
     }
   })
+}
+
+export const getIndigencyCertificateApplicationPublicFn = async (): Promise<IIndigencyCertificate[]> => {
+  const response = await axiosPublic.get('/public/application/indigency-certificate')
+  return response.data?.data
 }
 
 export const storeNonDtksCourtsFn = async (data: NonDtksCourtsFields) => {

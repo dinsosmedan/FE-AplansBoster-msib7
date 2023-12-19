@@ -1,5 +1,6 @@
 import {
   getBankListFn,
+  getIndigencyCertificateApplicationPublicFn,
   getPublicEventTuitionFn,
   getStudyProgramsFn,
   getTuitionApplicationPublicFn,
@@ -127,6 +128,15 @@ export const useCreateNonDTKSCourts = () => {
     },
     onError: (error: AxiosError) => {
       handleOnError(error)
+    }
+  })
+}
+
+export const useGetIndigencyCertificateApplicationPublic = (applicationCategory: string) => {
+  return useQuery('indigency-centificate-2', async () => await getIndigencyCertificateApplicationPublicFn(), {
+    select: (data) => {
+      const transformedData = data.filter((item) => item.applicationCategory === applicationCategory)
+      return transformedData
     }
   })
 }

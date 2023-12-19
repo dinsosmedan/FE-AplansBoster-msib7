@@ -109,3 +109,15 @@ export const updateTuitionAssistanceServiceValidation = Yup.object({
 })
 
 export type updateTuitionAssistanceServiceFields = Yup.InferType<typeof updateTuitionAssistanceServiceValidation>
+
+export const updateIndigencyCertificateServiceValidation = Yup.object({
+  applicantPhoneNumber: Yup.string()
+    .matches(phoneRegExp, 'Nomor telepon tidak valid')
+    .min(7, 'Nomor telepon minimal 7 karakter')
+    .max(20, 'Nomor telepon maksimal 20 karakter'),
+  statusDtks: Yup.string(),
+  certificateDestination: Yup.string(),
+  categoryApplication: Yup.string()
+})
+
+export type updateIndigencyCertificateServiceFields = Yup.InferType<typeof updateIndigencyCertificateServiceValidation>
