@@ -22,6 +22,17 @@ export interface IUser {
     role: IRole
   }
 }
+export interface IUserPublic {
+  data: {
+    id: string
+    identityNumber: string
+    name: string
+    phoneNumber: null | string
+    isActive: boolean
+    email: string
+    role: IRole
+  }
+}
 export interface IAuthResponse {
   message: string
   data: IAuth
@@ -34,6 +45,14 @@ export interface IErrorResponse {
 export interface IResetPassword {
   password: string
   token: string
+}
+export interface IChangePassword {
+  password: string
+}
+export interface IChangeProfile {
+  name: string
+  email: string
+  phoneNumber: string
 }
 
 export interface IAuth {
