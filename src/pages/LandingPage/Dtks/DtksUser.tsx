@@ -51,7 +51,7 @@ export default function DtksUser() {
             </Link>
           </section>
         </TabsContent>
-        <TabsContent value="request" className="flex flex-row gap-10">
+        <TabsContent value="request" className="flex flex-row gap-10 mb-[100px]">
           <div className="w-[40%] h-[349] bg-white rounded-lg bg-[url('@/assets/images/line-curve.svg')] bg-no-repeat">
             <div className="py-14 px-7">
               <HiAcademicCap className="w-[70px] h-[70px] text-primary" />

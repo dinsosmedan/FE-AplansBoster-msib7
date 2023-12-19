@@ -61,7 +61,7 @@ export default function UserSktm() {
             />
           </div>
         </TabsContent>
-        <TabsContent value="request" className="flex flex-row gap-10 ">
+        <TabsContent value="request" className="flex flex-row gap-10 mb-[100px] ">
           <NoData
             title="Tidak Ada Proses Pengajuan"
             desc="Mohon Maaf, Anda Belum Melakukan Pengajuan"

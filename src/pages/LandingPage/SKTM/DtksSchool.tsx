@@ -99,7 +99,7 @@ export default function DtksSchool() {
             </Link>
           </section>
         </TabsContent>
-        <TabsContent value="request" className="flex flex-row gap-10 ">
+        <TabsContent value="request" className="flex flex-row gap-10 mb-[100px] ">
           {data?.length !== 0 ? (
             <>
               {data?.map((item, index) => (
