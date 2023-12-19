@@ -5,7 +5,8 @@ import {
   type DtksSchoolFields,
   type DtksCourtsFields,
   type publicEventTuitionFields,
-  type PublicDTKSFields
+  type PublicDTKSFields,
+  type NonDtksCourtsFields
 } from '@/lib/validations/landingPage/public.validation'
 import axios from 'axios'
 import axiosPublic from './axiosPublicInstance'
@@ -224,6 +225,58 @@ export const storeDTKSSchoolFn = async (data: DtksSchoolFields) => {
   }
   if (Array.isArray(data.schoolLetter) && data.schoolLetter.length > 0) {
     formdata.append('schoolLetter', data.schoolLetter[0] as File)
+  }
+
+  await axiosPublic.post('/public/application/indigency-certificate', formdata, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
+export const storeNonDtksCourtsFn = async (data: NonDtksCourtsFields) => {
+  const formdata = new FormData()
+  formdata.append('peopleConcernedIdentityNumber', data.peopleConcernedIdentityNumber)
+  formdata.append('peopleConcernedName', data.peopleConcernedName)
+  formdata.append('peopleConcernedAreaLevel3', data.peopleConcernedAreaLevel3)
+  formdata.append('peopleConcernedAreaLevel4', data.peopleConcernedAreaLevel4)
+  formdata.append('peopleConcernedAddress', data.peopleConcernedAddress)
+  formdata.append('applicantPhoneNumber', data.applicantPhoneNumber)
+  formdata.append('certificateDestination', data.certificateDestination)
+  formdata.append('categoryApplication', 'non-dtks-courts')
+
+  if (Array.isArray(data.petitionLetter) && data.petitionLetter.length > 0) {
+    formdata.append('petitionLetter', data.petitionLetter[0] as File)
+  }
+  if (Array.isArray(data.familyCard) && data.familyCard.length > 0) {
+    formdata.append('familyCard', data.familyCard[0] as File)
+  }
+  if (Array.isArray(data.idCard) && data.idCard.length > 0) {
+    formdata.append('idCard', data.idCard[0] as File)
+  }
+  if (Array.isArray(data.domicileLetter) && data.domicileLetter.length > 0) {
+    formdata.append('domicileLetter', data.domicileLetter[0] as File)
+  }
+  if (Array.isArray(data.salarySlip) && data.salarySlip.length > 0) {
+    formdata.append('salarySlip', data.salarySlip[0] as File)
+  }
+  if (Array.isArray(data.localsApprovalLetter) && data.localsApprovalLetter.length > 0) {
+    formdata.append('localsApprovalLetter', data.localsApprovalLetter[0] as File)
+  }
+  if (Array.isArray(data.lowIncomeLetter) && data.lowIncomeLetter.length > 0) {
+    formdata.append('lowIncomeLetter', data.lowIncomeLetter[0] as File)
+  }
+  if (Array.isArray(data.frontViewHouse) && data.frontViewHouse.length > 0) {
+    formdata.append('frontViewHouse', data.frontViewHouse[0] as File)
+  }
+  if (Array.isArray(data.sittingViewHouse) && data.sittingViewHouse.length > 0) {
+    formdata.append('sittingViewHouse', data.sittingViewHouse[0] as File)
+  }
+  if (Array.isArray(data.chamberViewHouse) && data.chamberViewHouse.length > 0) {
+    formdata.append('chamberViewHouse', data.chamberViewHouse[0] as File)
+  }
+  if (Array.isArray(data.kitchenViewHouse) && data.kitchenViewHouse.length > 0) {
+    formdata.append('kitchenViewHouse', data.kitchenViewHouse[0] as File)
   }
 
   await axiosPublic.post('/public/application/indigency-certificate', formdata, {
