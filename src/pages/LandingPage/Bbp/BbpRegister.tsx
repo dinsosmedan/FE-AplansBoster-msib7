@@ -92,7 +92,6 @@ export default function BbpRegister() {
       event: id as string
     }
 
-    console.log(formatDateToString(values.birthDate as Date), newData)
     create(newData, {
       onSuccess: () => {
         forms.reset()

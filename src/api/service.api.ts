@@ -136,8 +136,12 @@ export const showIndigencyCertificateApplicationFn = async (id: string): Promise
   return response.data?.data
 }
 
-export const getDTKSApplicationFn = async (page: number, status: boolean): Promise<IDTKSApplications> => {
-  const response = await api.get(`/service/dtks-application?page=${page}&status=${status}`)
+export const getDTKSApplicationFn = async (
+  page: number,
+  status: boolean,
+  search: string
+): Promise<IDTKSApplications> => {
+  const response = await api.get(`/service/dtks-application?page=${page}&status=${status}&q=${search}`)
   return response.data
 }
 

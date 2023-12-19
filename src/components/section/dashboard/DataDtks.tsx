@@ -96,12 +96,6 @@ const TabelDtks = () => {
 const ChartJenisKelamin = () => {
   const { data, isLoading } = useGetGenderDtks()
 
-  // if (isLoading) return <Loading />
-
-  // const values = Object.values(data)
-
-  // console.log(Object.values(data))
-
   return (
     <>
       <LongCard props={['Jenis Kelamin', 'Persentasi Data DTKS Berdasarkan Jenis Kelamin']}>
@@ -145,12 +139,6 @@ const ChartDtks = () => {
 }
 const CardData = () => {
   const { data, isLoading } = useCountDataDtks()
-
-  // if (isLoading) return <Loading />
-
-  // console.log({ beneficiaries, nonbeneficiaries, familybeneficiaries })
-  // const { beneficiaries, nonBeneficiaries, familyBeneficiaries } = data
-  // console.log({ beneficiaries, nonBeneficiaries, familyBeneficiaries })
 
   return (
     <>

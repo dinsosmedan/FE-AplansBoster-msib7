@@ -23,9 +23,7 @@ const Bpnt = () => {
     mode: 'onTouched'
   })
 
-  const onSubmit = async (values: FormValues) => {
-    console.log(values)
-  }
+  const onSubmit = async () => {}
 
   return (
     <div className="container bg-white py-5">
@@ -43,7 +41,7 @@ const Bpnt = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan NIK Masyarakat" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan NIK Masyarakat" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -62,7 +60,7 @@ const Bpnt = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">No KK</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan No KK Masyarakat" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan No KK Masyarakat" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -76,7 +74,7 @@ const Bpnt = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Nama Masyarakat" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Masyarakat" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -171,7 +169,7 @@ const Bpnt = () => {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
                   <FormControl>
-                    <Textarea {...field} placeholder="Masukkan Alamat Lengkap Masyarakat." />
+                    <Textarea {...field} value={field.value ?? ''} placeholder="Masukkan Alamat Lengkap Masyarakat." />
                   </FormControl>
                 </FormItem>
               )}

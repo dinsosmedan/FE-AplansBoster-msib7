@@ -118,7 +118,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value} disabled />
+                    <Input {...field} value={field.value ?? ''} disabled />
                   </FormControl>
                 </FormItem>
               )}
@@ -130,7 +130,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value} disabled />
+                    <Input {...field} value={field.value ?? ''} disabled />
                   </FormControl>
                 </FormItem>
               )}
@@ -142,7 +142,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value} placeholder="Masukkan Email" />
+                    <Input {...field} value={field.value ?? ''} placeholder="Masukkan Email" />
                   </FormControl>
                 </FormItem>
               )}
@@ -154,7 +154,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">IPK</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value} placeholder="Masukkan IPK" />
+                    <Input {...field} value={field.value ?? ''} placeholder="Masukkan IPK" />
                   </FormControl>
                 </FormItem>
               )}
@@ -214,7 +214,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">No. HP</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value} placeholder="Masukkkan nomor handphone" />
+                    <Input {...field} value={field.value ?? ''} placeholder="Masukkkan nomor handphone" />
                   </FormControl>
                 </FormItem>
               )}
@@ -226,7 +226,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">Jenis Kelamin</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value} disabled />
+                    <Input {...field} value={field.value ?? ''} disabled />
                   </FormControl>
                 </FormItem>
               )}
@@ -238,7 +238,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">Tempat Lahir</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value} disabled />
+                    <Input {...field} value={field.value ?? ''} disabled />
                   </FormControl>
                 </FormItem>
               )}
@@ -250,7 +250,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">Tanggal Lahir</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value} disabled />
+                    <Input {...field} value={field.value ?? ''} disabled />
                   </FormControl>
                 </FormItem>
               )}
@@ -262,7 +262,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">Alamat</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value} disabled />
+                    <Input {...field} value={field.value ?? ''} disabled />
                   </FormControl>
                 </FormItem>
               )}
@@ -274,7 +274,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">Semester</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value} placeholder="Masukkan semester" />
+                    <Input {...field} value={field.value ?? ''} placeholder="Masukkan semester" />
                   </FormControl>
                 </FormItem>
               )}
@@ -286,7 +286,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value} disabled />
+                    <Input {...field} value={field.value ?? ''} disabled />
                   </FormControl>
                 </FormItem>
               )}
@@ -298,7 +298,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value} disabled />
+                    <Input {...field} value={field.value ?? ''} disabled />
                   </FormControl>
                 </FormItem>
               )}
@@ -310,7 +310,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">UKT</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value} placeholder="Masukkan UKT" />
+                    <Input {...field} value={field.value ?? ''} placeholder="Masukkan UKT" />
                   </FormControl>
                 </FormItem>
               )}
@@ -348,7 +348,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">No Rekening/Bank</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value} type="number" placeholder="Masukkan nomor rekening" />
+                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan nomor rekening" />
                   </FormControl>
                 </FormItem>
               )}

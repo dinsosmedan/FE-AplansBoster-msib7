@@ -64,8 +64,6 @@ export default function SktmUnregisterReligious() {
     })
   }
 
-  console.log(forms.formState.errors)
-
   return (
     <ContainerUser title={'Form Pengajuan SKTM Untuk Pelayanan ke Pengadilan Agama / LBH  (Terdaftar DTKS)'}>
       <Form {...forms}>
@@ -183,7 +181,7 @@ export default function SktmUnregisterReligious() {
               <FormItem>
                 <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
                 <FormControl>
-                  <Textarea {...field} placeholder="Masukkan Alamat" className="rounded-md" />
+                  <Textarea {...field} value={field.value ?? ''} placeholder="Masukkan Alamat" className="rounded-md" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -32,8 +32,6 @@ export default function Header() {
     }).then(() => logout())
   }
 
-  console.log(user)
-
   return (
     <>
       {isLoadingLogout && <Loading />}
@@ -61,7 +59,7 @@ export default function Header() {
                   ) : (
                     <>
                       <img
-                        src="https://source.unsplash.com/random/900×700/?man"
+                        src={`https://ui-avatars.com/api/?name=${user?.data.name}`}
                         alt="profile"
                         loading="lazy"
                         className="w-12 h-12 object-cover rounded-[14px]"

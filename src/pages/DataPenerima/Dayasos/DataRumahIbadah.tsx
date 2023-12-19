@@ -161,7 +161,7 @@ const DataRumahIbadah = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Nama Rumah Ibadah" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Nama Rumah Ibadah" />
                   </FormControl>
                 </FormItem>
               )}

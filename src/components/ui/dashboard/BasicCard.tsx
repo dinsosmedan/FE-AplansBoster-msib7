@@ -3,8 +3,6 @@ import { formatRibuan } from '@/hooks'
 const BasicCard = ({ props }: any) => {
   const [judul, angka, satuan] = props
 
-  // console.log(formatRibuan(angka));
-
   return (
     <>
       <div className="rounded-xl bg-white p-4">

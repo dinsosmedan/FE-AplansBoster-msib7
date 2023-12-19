@@ -4,9 +4,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
-import { HiOutlineExclamationCircle, HiOutlineEye } from 'react-icons/hi2'
+import { HiOutlineArrowPath, HiOutlineExclamationCircle, HiOutlineEye } from 'react-icons/hi2'
 import FilterLayanan from './../../components/atoms/FilterLayanan'
-import { useCreateParams, useGetParams, useTitle } from '@/hooks'
+import { useCreateParams, useDeleteParams, useGetParams, useTitle } from '@/hooks'
 import { useTitleHeader } from '@/store/client'
 import { useGetDTKSApplication, useGetDTKSApplicationById, useUpdateDTKSApplication } from '@/store/server/useService'
 import { cn } from '@/lib/utils'
@@ -60,12 +60,13 @@ export default function LayananDtks() {
   }, [])
 
   const createParams = useCreateParams()
-  const { page, tab } = useGetParams(['page', 'tab'])
+  const deleteParams = useDeleteParams()
+  const { page, tab, search } = useGetParams(['page', 'tab', 'search'])
 
   const [isShow, setIsShow] = React.useState(false)
   const [dtksId, setDtksId] = React.useState('')
 
-  const { data, isFetching } = useGetDTKSApplication(parseInt(page) || 1, tab === 'approved')
+  const { data, isFetching, refetch } = useGetDTKSApplication(parseInt(page) || 1, tab === 'approved', search)
   const { mutate: update, isLoading: isLoadingUpdate } = useUpdateDTKSApplication()
   const { data: detail, isLoading, isSuccess } = useGetDTKSApplicationById(dtksId)
 
@@ -106,7 +107,13 @@ export default function LayananDtks() {
   }, [isSuccess])
 
   const onSearch = async (values: { search: string }) => {
-    console.log(values)
+    createParams({ key: 'search', value: values.search })
+    await refetch()
+  }
+
+  const handleReset = () => {
+    forms.reset({ search: '' })
+    deleteParams('search')
   }
 
   const onSubmit = async (values: FormValues) => {
@@ -123,20 +130,31 @@ export default function LayananDtks() {
     <Container>
       {isFetching && <Loading />}
       <Form {...forms}>
-        <form onSubmit={forms.handleSubmit(onSearch)} className="flex flex-col gap-6">
-          <div className="w-12/12">
+        <form onSubmit={forms.handleSubmit(onSearch)} className="flex gap-4">
+          <div className="w-full">
             <FormField
               name="search"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Search value={field.value} onChange={field.onChange} placeholder="Masukkan Nama / NIK" />
+                    <Search
+                      value={field.value ?? ''}
+                      onChange={field.onChange}
+                      placeholder="Masukkan Nama / NIK"
+                      className="w-full"
+                    />
                   </FormControl>
                 </FormItem>
               )}
             />
           </div>
+          {search && (
+            <Button type="button" className="gap-3" onClick={handleReset}>
+              <HiOutlineArrowPath className="text-xl" />
+              <span>Reset</span>
+            </Button>
+          )}
         </form>
       </Form>
       <FilterLayanan jenis={'layanan-dtks'} data={dataLayanan} />
@@ -211,7 +229,7 @@ export default function LayananDtks() {
         <Modal isShow={isShow} className="md:max-w-3xl max-h-[calc(100vh-50px)] overflow-y-auto" isLoading={isLoading}>
           <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
             <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Data Pengajuan DTKS</h3>
-            <p className="text-sm text-[#A1A1A1]">Data Pengajuan SKTM</p>
+            <p className="text-sm text-[#A1A1A1]">Data Pengajuan DTKS</p>
           </Modal.Header>
           <Form {...formsUpdate}>
             <form onSubmit={formsUpdate.handleSubmit(onSubmit)} className="flex flex-col gap-3">
@@ -377,7 +395,7 @@ export default function LayananDtks() {
                         3. Apakah Kepala Keluarga Atau Pengurus Keluarga Masih Bekerja ?
                       </FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="" disabled />
+                        <Input {...field} value={field.value ?? ''} disabled />
                       </FormControl>
                     </FormItem>
                   )}

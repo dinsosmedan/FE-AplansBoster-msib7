@@ -119,8 +119,11 @@ export const useGetIndigencyCertificateEventById = (id: string) => {
   })
 }
 
-export const useGetDTKSApplication = (page: number, status: boolean) => {
-  return useQuery(['dtks-application', page, status], async () => await getDTKSApplicationFn(page, status))
+export const useGetDTKSApplication = (page: number, status: boolean, search: string) => {
+  return useQuery(
+    ['dtks-application', page, status, search],
+    async () => await getDTKSApplicationFn(page, status, search)
+  )
 }
 
 export const useUpdateIndigencyApplication = () => {

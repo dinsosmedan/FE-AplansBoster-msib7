@@ -57,7 +57,7 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Nama Anda" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Anda" />
                   </FormControl>
                 </FormItem>
               )}
@@ -69,7 +69,7 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">NIK </FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" placeholder="Cari NIK" />
+                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Cari NIK" />
                   </FormControl>
                 </FormItem>
               )}
@@ -81,7 +81,7 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">No. KK</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan No. KK " />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan No. KK " />
                   </FormControl>
                 </FormItem>
               )}
@@ -93,7 +93,7 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Tempat Lahir</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Tempat Lahir " />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tempat Lahir " />
                   </FormControl>
                 </FormItem>
               )}
@@ -116,7 +116,7 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Nama Ibu Kandung</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukan Nama Ibu Kandung" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukan Nama Ibu Kandung" />
                   </FormControl>
                 </FormItem>
               )}
@@ -244,7 +244,7 @@ export default function DtksRegister() {
               <FormItem>
                 <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
                 <FormControl>
-                  <Textarea {...field} placeholder="Masukan Alamat Lengkap Anda" />
+                  <Textarea {...field} value={field.value ?? ''} placeholder="Masukan Alamat Lengkap Anda" />
                 </FormControl>
               </FormItem>
             )}
@@ -617,7 +617,7 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Nama Suku</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukan Nama Suku" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukan Nama Suku" />
                   </FormControl>
                 </FormItem>
               )}

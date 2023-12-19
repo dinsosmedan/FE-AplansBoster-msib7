@@ -27,8 +27,6 @@ export default function RegisterUser() {
   })
 
   const onSubmit = async (data: RegisterUserFields) => {
-    console.log(data)
-
     register(data, {
       onSuccess: () => {
         void alert({

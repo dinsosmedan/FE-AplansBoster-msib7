@@ -163,7 +163,7 @@ const Bbp = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Masukkan Email Anda</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder=" Masukkan Email Anda" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder=" Masukkan Email Anda" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -174,7 +174,7 @@ const Bbp = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} hidden className="hidden" />
+                      <Input {...field} value={field.value ?? ''} hidden className="hidden" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -188,7 +188,7 @@ const Bbp = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Masukkan IPK</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" placeholder=" Masukkan IPK Anda" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder=" Masukkan IPK Anda" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -260,7 +260,7 @@ const Bbp = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Semester</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan Semester" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Semester" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -301,7 +301,7 @@ const Bbp = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Masukkan No. HP</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="Masukkan No. HP" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan No. HP" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -315,7 +315,7 @@ const Bbp = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">UKT</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="Masukan UKT" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukan UKT" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -359,7 +359,7 @@ const Bbp = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">No. Rekening</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan No Rekening " />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan No Rekening " />
                     </FormControl>
                   </FormItem>
                 )}

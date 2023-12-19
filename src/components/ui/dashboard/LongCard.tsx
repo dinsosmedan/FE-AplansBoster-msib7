@@ -111,8 +111,6 @@ const Chart = ({ data, label: labels, backgroundColor, isPercent }: any) => {
 }
 
 const Tabel = ({ data }: any) => {
-  // console.log(data);
-
   return (
     <>
       <Table>

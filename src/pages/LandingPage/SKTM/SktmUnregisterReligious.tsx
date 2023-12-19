@@ -93,7 +93,7 @@ export default function SktmReligious() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukan Nama" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukan Nama" />
                   </FormControl>
                 </FormItem>
               )}
@@ -156,7 +156,7 @@ export default function SktmReligious() {
               <FormItem>
                 <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
                 <FormControl>
-                  <Textarea {...field} placeholder="Masukan Alamat Lengkap" />
+                  <Textarea {...field} value={field.value ?? ''} placeholder="Masukan Alamat Lengkap" />
                 </FormControl>
               </FormItem>
             )}
@@ -169,7 +169,12 @@ export default function SktmReligious() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Universitas/Sekolah Tujuan</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Universitas/Sekolah Tujuan" />
+                    <Input
+                      {...field}
+                      value={field.value ?? ''}
+                      type="text"
+                      placeholder="Masukkan Universitas/Sekolah Tujuan"
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -181,7 +186,7 @@ export default function SktmReligious() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">No.Hp</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" placeholder="Masukan No.Hp" />
+                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukan No.Hp" />
                   </FormControl>
                 </FormItem>
               )}

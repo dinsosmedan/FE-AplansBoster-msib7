@@ -163,7 +163,12 @@ const DataUnregister = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Nama Atau Diagnosa Penyakit" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="text"
+                        placeholder="Nama Atau Diagnosa Penyakit"
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -174,7 +179,7 @@ const DataUnregister = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Nomor Surat" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Nomor Surat" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -185,7 +190,7 @@ const DataUnregister = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Bulan" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Bulan" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -197,7 +202,7 @@ const DataUnregister = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Tahun" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun" />
                     </FormControl>
                   </FormItem>
                 )}

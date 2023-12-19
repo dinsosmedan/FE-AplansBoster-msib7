@@ -72,8 +72,6 @@ const CardData = () => {
 const CardDjpm = () => {
   const { data, isLoading } = useCountServiceFund()
 
-  // if (isLoading) return <Loading />
-
   const values = data ? Object.values(data) : []
 
   return <>{isLoading ? <Skeleton className="w-full h-[300px]" /> : <BigCard data={values}></BigCard>}</>
@@ -81,9 +79,6 @@ const CardDjpm = () => {
 const ChartPokmas = () => {
   const { data: CommunityGroup, isLoading } = useCommunityGroupAssistance()
 
-  // if (isLoading) return <Loading />
-
-  // console.log(data)
   const data = CommunityGroup ? CommunityGroup.map((val: any) => val.count) : []
   const label = CommunityGroup ? CommunityGroup.map((val: any) => val.applicationYear.toString()) : []
   const color = ['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']
