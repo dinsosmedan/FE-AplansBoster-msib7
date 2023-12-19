@@ -3,8 +3,9 @@ import { HiAcademicCap, HiArrowDownTray, HiBuildingLibrary } from 'react-icons/h
 import { Button } from '@/components/ui/button'
 import { Link } from 'react-router-dom'
 import { useGetIndigencyCertificateApplicationPublic } from '@/store/server'
-import { Loading, CardLandingPage } from '@/components'
+import { Loading, CardLandingPage, NoData } from '@/components'
 import { cn } from '@/lib/utils'
+import { BgEmpty } from '@/assets'
 
 export default function DtksSchool() {
   const { data, isLoading } = useGetIndigencyCertificateApplicationPublic('dtks-schools')
@@ -99,107 +100,118 @@ export default function DtksSchool() {
           </section>
         </TabsContent>
         <TabsContent value="request" className="flex flex-row gap-10 ">
-          {data?.map((item, index) => (
-            <div
-              key={index}
-              className="min-w-[400px] h-fit bg-white rounded-lg bg-[url('@/assets/images/line-curve.svg')] bg-no-repeat border-2 border-primary"
-            >
-              <div className="mt-14 pb-5 px-7">
-                <HiAcademicCap className="w-[70px] h-[70px] text-primary" />
-                <p className="text-xl font-semibold py-[26px]">{item.applicationCategory}</p>
-                <Button className="disabled:bg-black w-full h-[60px]" disabled>
-                  <p className="text-xl text-white capitalize">{item.applicationStatus}</p>
-                </Button>
+          {data?.length !== 0 ? (
+            <>
+              {data?.map((item, index) => (
+                <div
+                  key={index}
+                  className="min-w-[400px] h-fit bg-white rounded-lg bg-[url('@/assets/images/line-curve.svg')] bg-no-repeat border-2 border-primary"
+                >
+                  <div className="mt-14 pb-5 px-7">
+                    <HiAcademicCap className="w-[70px] h-[70px] text-primary" />
+                    <p className="text-xl font-semibold py-[26px]">{item.applicationCategory}</p>
+                    <Button className="disabled:bg-black w-full h-[60px]" disabled>
+                      <p className="text-xl text-white capitalize">{item.applicationStatus}</p>
+                    </Button>
+                  </div>
+                </div>
+              ))}
+              <div className="bg-white w-full pb-14">
+                <div className="pt-24 px-[90px] flex flex-row justify-center">
+                  <div
+                    className={cn(
+                      'border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center',
+                      data?.[0].applicationStatus === 'pending' ||
+                        data?.[0].applicationStatus === 'processed' ||
+                        data?.[0].applicationStatus === 'rejected' ||
+                        data?.[0].applicationStatus === 'approved' ||
+                        data?.[0].applicationStatus === 'revision'
+                        ? 'bg-primary text-white'
+                        : 'bg-white text-primary'
+                    )}
+                  >
+                    <p className="text-[26px]">1</p>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="border-2 border-dashed w-[250px] h-0 border-primary" />
+                  </div>
+                  <div
+                    className={cn(
+                      'border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center',
+                      data?.[0].applicationStatus === 'processed' ||
+                        data?.[0].applicationStatus === 'rejected' ||
+                        data?.[0].applicationStatus === 'approved' ||
+                        data?.[0].applicationStatus === 'revision'
+                        ? 'bg-primary text-white'
+                        : 'bg-white text-primary'
+                    )}
+                  >
+                    <p className="text-[26px]">2</p>
+                  </div>
+                  <div className="flex items-center px-2 ">
+                    <div className="border-2 border-dashed w-[250px] h-0 border-primary " />
+                  </div>
+                  <div
+                    className={cn(
+                      'border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center',
+                      data?.[0].applicationStatus === 'rejected' ||
+                        data?.[0].applicationStatus === 'approved' ||
+                        data?.[0].applicationStatus === 'revision'
+                        ? 'bg-primary text-white'
+                        : 'bg-white text-primary'
+                    )}
+                  >
+                    <p className="text-[26px]">3</p>
+                  </div>
+                </div>
+                <div className="flex flex-row items-center justify-center pt-3 gap-[200px] ">
+                  <div
+                    className={cn(
+                      'w-[135px] h-[60px] rounded-lg flex items-center',
+                      (data?.[0].applicationStatus === 'pending' ||
+                        data?.[0].applicationStatus === 'processed' ||
+                        data?.[0].applicationStatus === 'rejected' ||
+                        data?.[0].applicationStatus === 'approved' ||
+                        data?.[0].applicationStatus === 'revision') &&
+                        'bg-primary text-white'
+                    )}
+                  >
+                    <p className="text-base text-center">Pengajuan Terkirim</p>
+                  </div>
+                  <div
+                    className={cn(
+                      'w-[135px] h-[60px] rounded-lg flex items-center',
+                      (data?.[0].applicationStatus === 'processed' ||
+                        data?.[0].applicationStatus === 'rejected' ||
+                        data?.[0].applicationStatus === 'approved' ||
+                        data?.[0].applicationStatus === 'revision') &&
+                        'bg-primary text-white'
+                    )}
+                  >
+                    <p className="text-base text-[##858585] text-center">Pengajuan Diproses</p>
+                  </div>
+                  <div
+                    className={cn(
+                      'w-[135px] h-[60px] rounded-lg flex items-center',
+                      (data?.[0].applicationStatus === 'rejected' ||
+                        data?.[0].applicationStatus === 'approved' ||
+                        data?.[0].applicationStatus === 'revision') &&
+                        'bg-primary text-white'
+                    )}
+                  >
+                    <p className="text-base text-[##858585] text-center max-w">Pengajuan Diterima / Ditolak</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
-          <div className="bg-white w-full pb-14">
-            <div className="pt-24 px-[90px] flex flex-row justify-center">
-              <div
-                className={cn(
-                  'border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center',
-                  data?.[0].applicationStatus === 'pending' ||
-                    data?.[0].applicationStatus === 'processed' ||
-                    data?.[0].applicationStatus === 'rejected' ||
-                    data?.[0].applicationStatus === 'approved' ||
-                    data?.[0].applicationStatus === 'revision'
-                    ? 'bg-primary text-white'
-                    : 'bg-white text-primary'
-                )}
-              >
-                <p className="text-[26px]">1</p>
-              </div>
-              <div className="flex items-center">
-                <div className="border-2 border-dashed w-[250px] h-0 border-primary" />
-              </div>
-              <div
-                className={cn(
-                  'border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center',
-                  data?.[0].applicationStatus === 'processed' ||
-                    data?.[0].applicationStatus === 'rejected' ||
-                    data?.[0].applicationStatus === 'approved' ||
-                    data?.[0].applicationStatus === 'revision'
-                    ? 'bg-primary text-white'
-                    : 'bg-white text-primary'
-                )}
-              >
-                <p className="text-[26px]">2</p>
-              </div>
-              <div className="flex items-center px-2 ">
-                <div className="border-2 border-dashed w-[250px] h-0 border-primary " />
-              </div>
-              <div
-                className={cn(
-                  'border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center',
-                  data?.[0].applicationStatus === 'rejected' ||
-                    data?.[0].applicationStatus === 'approved' ||
-                    data?.[0].applicationStatus === 'revision'
-                    ? 'bg-primary text-white'
-                    : 'bg-white text-primary'
-                )}
-              >
-                <p className="text-[26px]">3</p>
-              </div>
-            </div>
-            <div className="flex flex-row items-center justify-center pt-3 gap-[200px] ">
-              <div
-                className={cn(
-                  'w-[135px] h-[60px] rounded-lg flex items-center',
-                  (data?.[0].applicationStatus === 'pending' ||
-                    data?.[0].applicationStatus === 'processed' ||
-                    data?.[0].applicationStatus === 'rejected' ||
-                    data?.[0].applicationStatus === 'approved' ||
-                    data?.[0].applicationStatus === 'revision') &&
-                    'bg-primary text-white'
-                )}
-              >
-                <p className="text-base text-center">Pengajuan Terkirim</p>
-              </div>
-              <div
-                className={cn(
-                  'w-[135px] h-[60px] rounded-lg flex items-center',
-                  (data?.[0].applicationStatus === 'processed' ||
-                    data?.[0].applicationStatus === 'rejected' ||
-                    data?.[0].applicationStatus === 'approved' ||
-                    data?.[0].applicationStatus === 'revision') &&
-                    'bg-primary text-white'
-                )}
-              >
-                <p className="text-base text-[##858585] text-center">Pengajuan Diproses</p>
-              </div>
-              <div
-                className={cn(
-                  'w-[135px] h-[60px] rounded-lg flex items-center',
-                  (data?.[0].applicationStatus === 'rejected' ||
-                    data?.[0].applicationStatus === 'approved' ||
-                    data?.[0].applicationStatus === 'revision') &&
-                    'bg-primary text-white'
-                )}
-              >
-                <p className="text-base text-[##858585] text-center max-w">Pengajuan Diterima / Ditolak</p>
-              </div>
-            </div>
-          </div>
+            </>
+          ) : (
+            <NoData
+              title="Tidak Ada Proses Pengajuan"
+              desc="Mohon Maaf, Anda Belum Melakukan Pengajuan"
+              image={BgEmpty}
+              className="w-full"
+            />
+          )}
         </TabsContent>
       </Tabs>
     </section>

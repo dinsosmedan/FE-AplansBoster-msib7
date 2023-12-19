@@ -52,11 +52,7 @@ export default function ChangePassword() {
                 <FormItem className="">
                   <FormLabel className="font-semibold dark:text-white">Password</FormLabel>
                   <FormControl>
-                    <Password
-                      {...field}
-                      value={field.value ?? ''}
-                      placeholder="Masukkan Password Anda"
-                    />
+                    <Password {...field} value={field.value ?? ''} placeholder="Masukkan Password Anda" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -69,11 +65,7 @@ export default function ChangePassword() {
                 <FormItem className="">
                   <FormLabel className="font-semibold dark:text-white">Konfirmasi Password</FormLabel>
                   <FormControl>
-                    <Password
-                      {...field}
-                      value={field.value ?? ''}
-                      placeholder="Masukkan Password Anda"
-                    />
+                    <Password {...field} value={field.value ?? ''} placeholder="Masukkan Password Anda" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

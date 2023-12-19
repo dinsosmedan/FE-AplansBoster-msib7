@@ -187,7 +187,11 @@ export default function RegisterUser() {
               </FormItem>
             )}
           />
-          <Button className="rounded-lg w-full md:py-6 md:text-lg" loading={isLoading} onClick={forms.handleSubmit(onSubmit)}>
+          <Button
+            className="rounded-lg w-full md:py-6 md:text-lg"
+            loading={isLoading}
+            onClick={forms.handleSubmit(onSubmit)}
+          >
             Buat Akun
           </Button>
           <Link to="/user/login" className="text-primary">

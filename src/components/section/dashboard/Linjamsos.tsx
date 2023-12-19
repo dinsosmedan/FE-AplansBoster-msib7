@@ -2,7 +2,12 @@ import BasicCard from '@/components/ui/dashboard/BasicCard'
 import LongCard from '@/components/ui/dashboard/LongCard'
 import TitleSign from '@/components/ui/dashboard/TitleSign'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useCountBbp, useCountIndigencyCertificate, useCountTuitionAssistance, useVulnerableGroup } from '@/store/server'
+import {
+  useCountBbp,
+  useCountIndigencyCertificate,
+  useCountTuitionAssistance,
+  useVulnerableGroup
+} from '@/store/server'
 
 const SectionLinjamsos = () => {
   return (
@@ -49,18 +54,18 @@ const ChartSktm = () => {
 
   return (
     <LongCard props={['SKTM', 'Persentasi Data SKTM Berdasarkan DTKS']}>
-      {
-        isLoading ? <Skeleton className="w-[300px] h-[300px] rounded-full" /> : (
-          <LongCard.Chart
-            // data={[30, 15]}
-            data={value}
-            isPercent={true}
-            // label={['DTKS', 'Non DTKS']}
-            label={label}
-            backgroundColor={['#F94144', '#F3722C']}
-          />
-        )
-      }
+      {isLoading ? (
+        <Skeleton className="w-[300px] h-[300px] rounded-full" />
+      ) : (
+        <LongCard.Chart
+          // data={[30, 15]}
+          data={value}
+          isPercent={true}
+          // label={['DTKS', 'Non DTKS']}
+          label={label}
+          backgroundColor={['#F94144', '#F3722C']}
+        />
+      )}
     </LongCard>
   )
 }
@@ -76,18 +81,18 @@ const ChartBbp = () => {
 
   return (
     <LongCard props={['Bantuan Biaya Pendidikan', 'Persentasi Data Biaya Pendidikan']}>
-      {
-        isLoading ? <Skeleton className="w-[300px] h-[300px] rounded-full" /> : (
-          <LongCard.Chart
-            // data={[20, 5, 13]}
-            data={value}
-            isPercent={true}
-            // label={['Diterima', 'Diterima', 'Prelist']}
-            label={label}
-            backgroundColor={['#F94144', '#F3722C', '#F9C74F']}
-          />
-        )
-      }
+      {isLoading ? (
+        <Skeleton className="w-[300px] h-[300px] rounded-full" />
+      ) : (
+        <LongCard.Chart
+          // data={[20, 5, 13]}
+          data={value}
+          isPercent={true}
+          // label={['Diterima', 'Diterima', 'Prelist']}
+          label={label}
+          backgroundColor={['#F94144', '#F3722C', '#F9C74F']}
+        />
+      )}
     </LongCard>
   )
 }
@@ -125,17 +130,17 @@ const CardData = () => {
 
   return (
     <>
-      {
-        isLoading ? (
-          <>
-            <Skeleton className="w-12 h-12 rounded-[14px]" />
-            <div className="flex flex-col gap-3">
-              <Skeleton className="w-[120px] h-3 rounded-[14px]" />
-              <Skeleton className="w-[80px] h-3 rounded-[14px]" />
-              <Skeleton className="w-[80px] h-3 rounded-[14px]" />
-            </div>
-          </>
-        ) : <>
+      {isLoading ? (
+        <>
+          <Skeleton className="w-12 h-12 rounded-[14px]" />
+          <div className="flex flex-col gap-3">
+            <Skeleton className="w-[120px] h-3 rounded-[14px]" />
+            <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+            <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+          </div>
+        </>
+      ) : (
+        <>
           <div className="grid grid-cols-3 gap-5 mt-5">
             <BasicCard props={['Bantuan Biaya Pendidikan', data.premiumAssistanceBeneficiary, 'Data']} />
             <BasicCard props={['Total Penangan Kelompok Rentan', data.vulnerableGroupHandling, 'Data']} />
@@ -146,7 +151,7 @@ const CardData = () => {
             <BasicCard props={['Total PKH', data.familyHopePrograms, 'Data']} />
           </div>
         </>
-      }
+      )}
     </>
   )
 }

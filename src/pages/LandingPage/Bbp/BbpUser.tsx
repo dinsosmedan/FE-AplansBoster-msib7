@@ -4,12 +4,13 @@ import CardLandingPage from '../../../components/organisms/landingPage/CardLandi
 import { Button } from '@/components/ui/button'
 import { Link, useParams } from 'react-router-dom'
 import { useGetPublicEventTuition, useGetTuitionApplicationPublic } from '@/store/server'
-import { Loading, Markdown } from '@/components'
+import { Loading, Markdown, NoData } from '@/components'
 import { useDisableBodyScroll } from '@/hooks'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { type IPublicEventTuition } from '@/lib/types/public.type'
 import { type IApplication } from '@/lib/types/linjamsos.type'
+import { BgEmpty } from '@/assets'
 
 export default function BbpUser() {
   const { id } = useParams<{ id: string }>()
@@ -24,16 +25,12 @@ export default function BbpUser() {
   React.useEffect(() => {
     if (id) {
       setDetails(data?.find((item) => item.id === id) as IPublicEventTuition)
-    } else {
-      setDetails(data?.[0] as IPublicEventTuition)
     }
   }, [isSuccess, id])
 
   React.useEffect(() => {
     if (id) {
       setSubmissionProcessDetail(submissionProcess?.find((item) => item.event.id === id) as IApplication)
-    } else {
-      setSubmissionProcessDetail(submissionProcess?.[0] as IApplication)
     }
   }, [isSuccess, id])
 
@@ -59,14 +56,17 @@ export default function BbpUser() {
             </TabsTrigger>
           </TabsList>
         </div>
-        <TabsContent value="open" className="mt-11 lg:flex lg:flex-row lg:justify-between grid place-items-center lg:place-items-start bg-[#F9F9F9] gap-10">
+        <TabsContent
+          value="open"
+          className="mt-11 lg:flex lg:flex-row lg:justify-between grid place-items-center lg:place-items-start bg-[#F9F9F9] gap-10"
+        >
           <div className="flex gap-8 lg:flex-col lg:justify-start justify-center">
             {data?.map((item, index) => (
               <CardLandingPage
                 key={index}
                 className={cn(
                   'lg:w-[400px] w-[90%] shadow-sm',
-                  (item.id === id || (!id && index === 0)) && 'border-2 border-primary bg-[#F9F4F5] SH'
+                  item.id === id && 'border-2 border-primary bg-[#F9F4F5] SH'
                 )}
                 title={item.batch}
                 desc={item.eventDescription}
@@ -76,132 +76,140 @@ export default function BbpUser() {
               />
             ))}
           </div>
-          <section className="flex flex-col gap-8 w-[95%] mt-5 lg:mt-0 lg:justify-start justify-center">
-            <div className="bg-white rounded-lg md:px-10 px-7 md:py-14 py-9 h-fit shadow">
-              <p className="font-semibold text-xl">Informasi Tentang Beasiswa</p>
-              <Markdown values={details?.eventDescription} />
+          {Object.keys(details).length !== 0 ? (
+            <section className="flex flex-col gap-8 w-[95%] mt-5 lg:mt-0 lg:justify-start justify-center">
+              <div className="bg-white rounded-lg md:px-10 px-7 md:py-14 py-9 h-fit shadow">
+                <p className="font-semibold text-xl">Informasi Tentang Beasiswa</p>
+                <Markdown values={details?.eventDescription} />
 
-              <section className="flex flex-col gap-5 border-t border-zinc-200 py-3 ">
-                <FileDownload
-                  title={`Pengumuman Beasiswa ${details?.batch}`}
-                  url={details?.requiredDocuments?.scholarshipApplicationLetter?.url as string}
-                  fileName={details?.requiredDocuments?.scholarshipApplicationLetter?.originalName as string}
-                />
-                <FileDownload
-                  title="Biodata Mahasiswa Calon Penerima Bantuan Biaya Pendidikan"
-                  url={details?.requiredDocuments?.biodata?.url as string}
-                  fileName={details?.requiredDocuments?.biodata?.originalName as string}
-                />
-                {/* <FileDownload
+                <section className="flex flex-col gap-5 border-t border-zinc-200 py-3 ">
+                  <FileDownload
+                    title={`Pengumuman Beasiswa ${details?.batch}`}
+                    url={details?.requiredDocuments?.scholarshipApplicationLetter?.url as string}
+                    fileName={details?.requiredDocuments?.scholarshipApplicationLetter?.originalName as string}
+                  />
+                  <FileDownload
+                    title="Biodata Mahasiswa Calon Penerima Bantuan Biaya Pendidikan"
+                    url={details?.requiredDocuments?.biodata?.url as string}
+                    fileName={details?.requiredDocuments?.biodata?.originalName as string}
+                  />
+                  {/* <FileDownload
                   title="Template Surat Permohonan Ditujukan Kepada Bapak Wali Kota Medan Cq. Kepala Dinas Sosial Kota Medan"
                   url={details?.requiredDocuments?.biodata?.url as string}
                   fileName={details?.requiredDocuments?.biodata?.originalName as string}
                 /> */}
-                <FileDownload
-                  title="Template Surat Pernyataan Tidak Menerima Beasiswa/Bantuan Biaya Pendidikan Dari Sumber Lain"
-                  url={details?.requiredDocuments?.nonReceiptOfScholarshipLetter?.url as string}
-                  fileName={details?.requiredDocuments?.nonReceiptOfScholarshipLetter?.originalName as string}
-                />
-                <FileDownload
-                  title="Template Surat Pernyataan Tidak Berstatus Sebagai Aparatur Sipil Negara (ASN)"
-                  url={details?.requiredDocuments?.nonGovernmentEmployeeLetter?.url as string}
-                  fileName={details?.requiredDocuments?.nonGovernmentEmployeeLetter?.originalName as string}
-                />
-              </section>
-            </div>
-            <Link to={`/user/bbp/form/${id ?? data?.[0].id}`}>
-              <Button className="w-full py-6">
-                <p className="md:text-lg">Daftar Sekarang</p>
-              </Button>
-            </Link>
-          </section>
+                  <FileDownload
+                    title="Template Surat Pernyataan Tidak Menerima Beasiswa/Bantuan Biaya Pendidikan Dari Sumber Lain"
+                    url={details?.requiredDocuments?.nonReceiptOfScholarshipLetter?.url as string}
+                    fileName={details?.requiredDocuments?.nonReceiptOfScholarshipLetter?.originalName as string}
+                  />
+                  <FileDownload
+                    title="Template Surat Pernyataan Tidak Berstatus Sebagai Aparatur Sipil Negara (ASN)"
+                    url={details?.requiredDocuments?.nonGovernmentEmployeeLetter?.url as string}
+                    fileName={details?.requiredDocuments?.nonGovernmentEmployeeLetter?.originalName as string}
+                  />
+                </section>
+              </div>
+              <Link to={`/user/bbp/form/${id ?? data?.[0].id}`}>
+                <Button className="w-full py-6">
+                  <p className="md:text-lg">Daftar Sekarang</p>
+                </Button>
+              </Link>
+            </section>
+          ) : null}
         </TabsContent>
         <TabsContent value="request" className="flex flex-row gap-10">
-          {submissionProcess?.map((item, index) => (
-            <div
-              key={index}
-              className="w-[40%] h-[349px] bg-white rounded-lg bg-[url('@/assets/images/line-curve.svg')] bg-no-repeat"
-            >
-              <div className="py-14 px-7">
-                <HiAcademicCap className="w-[70px] h-[70px] text-primary" />
-                <p className="text-xl  font-semibold py-[26px]">{item.event.batch}</p>
-                <Button className="disabled:bg-black w-full h-[60px]" disabled>
-                  <p className="text-xl text-white capitalize">{item.application_status}</p>
-                </Button>
+          {Object.keys(submissionProcessDetail).length !== 0 ? (
+            <>
+              <div className="w-[40%] h-[349px] bg-white rounded-lg bg-[url('@/assets/images/line-curve.svg')] bg-no-repeat">
+                <div className="py-14 px-7">
+                  <HiAcademicCap className="w-[70px] h-[70px] text-primary" />
+                  <p className="text-xl  font-semibold py-[26px]">{submissionProcessDetail?.event?.batch}</p>
+                  <Button className="disabled:bg-black w-full h-[60px]" disabled>
+                    <p className="text-xl text-white capitalize">{submissionProcessDetail?.application_status}</p>
+                  </Button>
+                </div>
               </div>
-            </div>
-          ))}
-          <div className="bg-white w-[925px]">
-            <div className="pt-24 px-[90px] flex flex-row">
-              <div
-                className={cn(
-                  'border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center',
-                  submissionProcessDetail?.application_status === 'pending'
-                    ? 'bg-primary text-white'
-                    : 'bg-white text-primary'
-                )}
-              >
-                <p className="text-[26px]">1</p>
+              <div className="bg-white w-[925px]">
+                <div className="pt-24 px-[90px] flex flex-row">
+                  <div
+                    className={cn(
+                      'border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center',
+                      submissionProcessDetail?.application_status === 'pending'
+                        ? 'bg-primary text-white'
+                        : 'bg-white text-primary'
+                    )}
+                  >
+                    <p className="text-[26px]">1</p>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="border-2 border-dashed w-[250px] h-0 border-primary" />
+                  </div>
+                  <div
+                    className={cn(
+                      'border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center',
+                      submissionProcessDetail?.application_status === 'processed'
+                        ? 'bg-primary text-white'
+                        : 'bg-white text-primary'
+                    )}
+                  >
+                    <p className="text-[26px]">2</p>
+                  </div>
+                  <div className="flex items-center px-2 ">
+                    <div className="border-2 border-dashed w-[250px] h-0 border-primary " />
+                  </div>
+                  <div
+                    className={cn(
+                      'border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center',
+                      submissionProcessDetail?.application_status === 'rejected' ||
+                        submissionProcessDetail?.application_status === 'approved' ||
+                        submissionProcessDetail?.application_status === 'revision'
+                        ? 'bg-primary text-white'
+                        : 'bg-white text-primary'
+                    )}
+                  >
+                    <p className="text-[26px]">3</p>
+                  </div>
+                </div>
+                <div className="flex flex-row items-center justify-center pt-3 gap-[200px] ">
+                  <div
+                    className={cn(
+                      'w-[135px] h-[60px] rounded-lg flex items-center',
+                      submissionProcessDetail?.application_status === 'pending' && 'bg-primary text-white'
+                    )}
+                  >
+                    <p className="text-base text-center">Pengajuan Terkirim</p>
+                  </div>
+                  <div
+                    className={cn(
+                      'w-[135px] h-[60px] rounded-lg flex items-center',
+                      submissionProcessDetail?.application_status === 'processed' && 'bg-primary text-white'
+                    )}
+                  >
+                    <p className="text-base text-[##858585] text-center">Pengajuan Diproses</p>
+                  </div>
+                  <div
+                    className={cn(
+                      'w-[135px] h-[60px] rounded-lg flex items-center',
+                      (submissionProcessDetail?.application_status === 'rejected' ||
+                        submissionProcessDetail?.application_status === 'approved' ||
+                        submissionProcessDetail?.application_status === 'revision') &&
+                        'bg-primary text-white'
+                    )}
+                  >
+                    <p className="text-base text-[##858585] text-center max-w">Pengajuan Diterima / Ditolak</p>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center">
-                <div className="border-2 border-dashed w-[250px] h-0 border-primary" />
-              </div>
-              <div
-                className={cn(
-                  'border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center',
-                  submissionProcessDetail?.application_status === 'processed'
-                    ? 'bg-primary text-white'
-                    : 'bg-white text-primary'
-                )}
-              >
-                <p className="text-[26px]">2</p>
-              </div>
-              <div className="flex items-center px-2 ">
-                <div className="border-2 border-dashed w-[250px] h-0 border-primary " />
-              </div>
-              <div
-                className={cn(
-                  'border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center',
-                  submissionProcessDetail?.application_status === 'rejected' ||
-                    submissionProcessDetail?.application_status === 'approved' ||
-                    submissionProcessDetail?.application_status === 'revision'
-                    ? 'bg-primary text-white'
-                    : 'bg-white text-primary'
-                )}
-              >
-                <p className="text-[26px]">3</p>
-              </div>
-            </div>
-            <div className="flex flex-row items-center justify-center pt-3 gap-[200px] ">
-              <div
-                className={cn(
-                  'w-[135px] h-[60px] rounded-lg flex items-center',
-                  submissionProcessDetail?.application_status === 'pending' && 'bg-primary text-white'
-                )}
-              >
-                <p className="text-base text-center">Pengajuan Terkirim</p>
-              </div>
-              <div
-                className={cn(
-                  'w-[135px] h-[60px] rounded-lg flex items-center',
-                  submissionProcessDetail?.application_status === 'processed' && 'bg-primary text-white'
-                )}
-              >
-                <p className="text-base text-[##858585] text-center">Pengajuan Diproses</p>
-              </div>
-              <div
-                className={cn(
-                  'w-[135px] h-[60px] rounded-lg flex items-center',
-                  (submissionProcessDetail?.application_status === 'rejected' ||
-                    submissionProcessDetail?.application_status === 'approved' ||
-                    submissionProcessDetail?.application_status === 'revision') &&
-                    'bg-primary text-white'
-                )}
-              >
-                <p className="text-base text-[##858585] text-center max-w">Pengajuan Diterima / Ditolak</p>
-              </div>
-            </div>
-          </div>
+            </>
+          ) : (
+            <NoData
+              title="Tidak Ada Proses Pengajuan"
+              desc="Mohon Maaf, Anda Belum Melakukan Pengajuan"
+              image={BgEmpty}
+              className="w-full"
+            />
+          )}
         </TabsContent>
       </Tabs>
     </section>

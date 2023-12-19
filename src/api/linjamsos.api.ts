@@ -8,9 +8,9 @@ import {
   type IFamilyHopeId,
   type IVulnerableGroupHandlingDetail,
   type IUnregisterDetail,
-  type IIndigencyCertificateByID,
   type ITuitionAssistance,
-  type ITuitionAssistanceID
+  type ITuitionAssistanceID,
+  type IIndigencyCertificateDetail
 } from '@/lib/types/linjamsos.type'
 import api from './axiosInstance'
 import {
@@ -162,7 +162,7 @@ export const getIndigencyCertificateFn = async ({
   )
   return response.data
 }
-export const showDetailIndigencyCertificateFn = async (id: string): Promise<IIndigencyCertificateByID> => {
+export const showDetailIndigencyCertificateFn = async (id: string): Promise<IIndigencyCertificateDetail> => {
   const response = await api.get(`/indigency-certificate/${id}`)
   return response.data?.data
 }

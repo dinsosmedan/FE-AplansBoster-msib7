@@ -14,7 +14,7 @@ import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-const possibleEducationLevel = [
+export const possibleEducationLevel = [
   'TK/PAUD',
   'SD/Sederajat',
   'SMP/Sederajat',
