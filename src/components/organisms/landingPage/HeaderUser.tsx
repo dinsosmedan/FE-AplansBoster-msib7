@@ -126,7 +126,7 @@ export default function HeaderUser() {
           </nav>
         </div>
       </div>
-      <div className="h-10 pb-8 pt-7 fixed inset-x-0 top-15 bg-white flex items-center md:px-14 px-5 z-50 lg:hidden block justify-center border-2 border-white border-t-[#f5f5f5]">
+      <div className="h-10 pb-8 pt-7 fixed inset-x-0 top-15 bg-white flex items-center md:px-14 px-5 z-50 lg:hidden block justify-center border-2 border-white border-t-[#f5f5f5] shadow-lg">
         <ul className="flex font-semibold ">
           <li>
               <Link to="/" className="hover:text-primary pe-7">

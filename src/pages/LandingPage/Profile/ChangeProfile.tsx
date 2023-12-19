@@ -18,8 +18,8 @@ export default function ChangeProfile() {
   }
   return (
     <div className="bg-white lg:w-[90%] w-[90%] h-[100%]  md:p-10 py-10 shadow-sm rounded-lg mt-10 lg:mt-0 mx-auto">
-      <p className="text-[30px] font-semibold ml-7">Profil</p>
-      <p className="text-[14px] ml-7">Ubah profile akun Kamu disini</p>
+      <p className="md:text-[28px] text-[24px]  font-semibold ml-7">Profil</p>
+      <p className="text-[14px] ml-7 text-[#8b8b8b]">Ubah profile akun Kamu disini</p>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)}>
           <div className=" grid grid-cols-1 gap-7 px-7 pt-[50px]">
@@ -73,9 +73,9 @@ export default function ChangeProfile() {
             />
           </div>
           <div className="flex justify-end gap-5 items-center pt-20 px-7 items-center">
-            <Button className="md:w-[200px] w-[100%] h-[50px]">
-              <p className="text-lg">Ubah</p>
-              <HiPencil className="w-4 h-4 ml-3 mb-1" />
+            <Button className="md:w-[200px] w-[100%] h-[45px]">
+              <p className="text-md">Ubah Profile</p>
+              <HiPencil className="w-3 h-3 ml-3 mb-1" />
             </Button>
           </div>
         </form>
