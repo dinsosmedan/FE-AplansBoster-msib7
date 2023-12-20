@@ -141,7 +141,6 @@ export default function RegisterUser() {
                     Icon={HiDocumentArrowUp}
                   />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
@@ -162,7 +161,6 @@ export default function RegisterUser() {
                     Icon={HiDocumentArrowUp}
                   />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />

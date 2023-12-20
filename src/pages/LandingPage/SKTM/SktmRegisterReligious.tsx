@@ -244,7 +244,6 @@ export default function SktmUnregisterReligious() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -265,7 +264,6 @@ export default function SktmUnregisterReligious() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -286,7 +284,6 @@ export default function SktmUnregisterReligious() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -307,7 +304,6 @@ export default function SktmUnregisterReligious() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />

@@ -1,7 +1,6 @@
 import ContainerUser from '@/components/organisms/landingPage/ContainerUser'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { HiDocumentArrowUp, HiMagnifyingGlass, HiPaperAirplane } from 'react-icons/hi2'
@@ -211,7 +210,6 @@ export default function SktmReligious() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -232,7 +230,6 @@ export default function SktmReligious() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -253,7 +250,6 @@ export default function SktmReligious() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -274,7 +270,6 @@ export default function SktmReligious() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -296,7 +291,6 @@ export default function SktmReligious() {
                         Icon={HiDocumentArrowUp}
                       />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -321,7 +315,6 @@ export default function SktmReligious() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -345,7 +338,6 @@ export default function SktmReligious() {
                     Icon={HiDocumentArrowUp}
                   />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
@@ -368,7 +360,6 @@ export default function SktmReligious() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -389,7 +380,6 @@ export default function SktmReligious() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -410,7 +400,6 @@ export default function SktmReligious() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -431,7 +420,6 @@ export default function SktmReligious() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />

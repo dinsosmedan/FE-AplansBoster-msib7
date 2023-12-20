@@ -641,7 +641,6 @@ export default function DtksRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -662,7 +661,6 @@ export default function DtksRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />

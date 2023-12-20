@@ -11,7 +11,7 @@ import {
 } from '@/lib/validations/landingPage/public.validation'
 import axios from 'axios'
 import axiosPublic from './axiosPublicInstance'
-import { type IIndigencyCertificate } from '@/lib/types/service.type'
+import { type IDTKSApplication, type IIndigencyCertificate } from '@/lib/types/service.type'
 
 const apiPublic = axios.create({
   baseURL: ENV.apiUrl,
@@ -347,4 +347,9 @@ export const storeIndigencyCertificateApplicationNoDTKS = async (data: NonDtksSc
       'Content-Type': 'multipart/form-data'
     }
   })
+}
+
+export const getDTKSApplicationPublicFn = async (): Promise<IDTKSApplication> => {
+  const response = await axiosPublic.get('/public/application/dtks')
+  return response.data?.data?.[0]
 }
