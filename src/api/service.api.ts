@@ -5,6 +5,7 @@ import {
   type ITuitionAssistanceEvent,
   type ITuitionAssistanceEvents
 } from '@/lib/types/service.type'
+import axiosPublic from './axiosPublicInstance'
 
 export interface getTuitionAssistanceParams {
   eventId: string
@@ -92,4 +93,10 @@ export const updateApplicationStatusFn = async ({ id, fields }: updateApplicatio
   }
 
   await api.put(`service/tuition-assistance-application/${id}/status`, data)
+}
+
+export const getFetchRiwayatSktmFn = async (filter: any): Promise<any> => {
+  const url = filter == 'SKTM' ? 'public/application/indigency-certificate/history' : 'public/application/tuition-assistance/history'
+  const response = await axiosPublic.get(url)
+  return response.data?.data
 }

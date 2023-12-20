@@ -6,7 +6,8 @@ import {
   updateTuitionAssistanceEventFn,
   updateTuitionAssistanceEventStatusFn,
   updateIndigencyCertificateStatusFn,
-  updateApplicationStatusFn
+  updateApplicationStatusFn,
+  getFetchRiwayatSktmFn
 } from '@/api/service.api'
 import { handleMessage } from '@/lib/services/handleMessage'
 import { handleOnError } from '@/lib/utils'
@@ -91,4 +92,7 @@ export const useUpdateApplicationStatus = () => {
       handleOnError(error)
     }
   })
+}
+export const useFetchRiwayatSktm = (filter: any) => {
+  return useQuery(['fetch-riwayat-sktm'], async () => await getFetchRiwayatSktmFn(filter), { enabled: true })
 }
