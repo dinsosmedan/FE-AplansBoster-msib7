@@ -30,7 +30,7 @@ export default function BbpUser() {
 
   React.useEffect(() => {
     if (id) {
-      setSubmissionProcessDetail(submissionProcess?.find((item) => item.event.id === id) as IApplication)
+      setSubmissionProcessDetail(submissionProcess?.find((item) => item.event.id === id) ?? ({} as IApplication))
     }
   }, [isSuccess, id])
 
@@ -39,7 +39,7 @@ export default function BbpUser() {
   return (
     <section className="bg-[#F9F9F9] lg:px-10 py-[38px] pb-[200px]">
       <Tabs defaultValue="open">
-        <div className="w-full bg-[#FFFFFF] border border-[#E4E4E4] rounded-lg pt-10 lg:pt-0  ">
+        <div className="w-full bg-[#FFFFFF] border border-[#E4E4E4] rounded-lg pt-10 lg:pt-0">
           <p className="md:text-[26px] text-[18px] font-semibold mb-7 px-9 mt-9">Bantuan Biaya Pendidikan </p>
           <TabsList className="p-0 h-auto bg-white gap-5 px-7">
             <TabsTrigger
@@ -66,7 +66,7 @@ export default function BbpUser() {
                 key={index}
                 className={cn(
                   'lg:w-[400px] w-[90%] shadow-sm',
-                  item.id === id && 'border-2 border-primary bg-[#F9F4F5] SH'
+                  item.id === id && 'border-2 border-primary bg-[#F9F4F5]'
                 )}
                 title={item.batch}
                 desc={item.eventDescription}
@@ -82,7 +82,7 @@ export default function BbpUser() {
                 <p className="font-semibold text-xl">Informasi Tentang Beasiswa</p>
                 <Markdown values={details?.eventDescription} />
 
-                <section className="flex flex-col gap-5 border-t border-zinc-200 py-3 ">
+                <section className="flex flex-col gap-5 border-t border-zinc-200 py-3">
                   <FileDownload
                     title={`Pengumuman Beasiswa ${details?.batch}`}
                     url={details?.requiredDocuments?.scholarshipApplicationLetter?.url as string}

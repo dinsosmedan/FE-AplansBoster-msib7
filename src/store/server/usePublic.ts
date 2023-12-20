@@ -11,7 +11,8 @@ import {
   storeDTKSSchoolFn,
   storeNonDtksCourtsFn,
   storePublicEventTuitionFn,
-  storeIndigencyCertificateApplicationNoDTKS
+  storeIndigencyCertificateApplicationNoDTKS,
+  getDTKSApplicationPublicFn
 } from '@/api/public.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -160,4 +161,8 @@ export const useCreateIndigencyCertificateApplicationNoDTKS = () => {
       handleOnError(error)
     }
   })
+}
+
+export const useGetDTKSApplicationPublic = () => {
+  return useQuery('dtks-application-public', async () => await getDTKSApplicationPublicFn())
 }

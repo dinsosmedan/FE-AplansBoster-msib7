@@ -5,24 +5,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useDisableBodyScroll, useTitle } from '@/hooks'
 import { CekBansosIlustration, NotFoundBansos } from '@/assets'
 import { useGetAssistanceCheck } from '@/store/server/usePublic'
-import { useGetBeneficaryByNIK } from '@/store/server'
 import { Loading, NoData } from '@/components'
 import { cn } from '@/lib/utils'
-import { useToast } from '@/components/ui/use-toast'
 
 export default function CekBansosUser() {
   useTitle('Cek Bansos')
 
-  const { toast } = useToast()
   const [NIK, setNIK] = React.useState('')
-
-  const {
-    data: beneficary,
-    refetch: refetchBeneficary,
-    isFetching: isFetchingBeneficary,
-    isSuccess: isSuccessBeneficary,
-    isError: isErrorBeneficary
-  } = useGetBeneficaryByNIK(NIK, false)
 
   const {
     data: assistances,
@@ -32,29 +21,18 @@ export default function CekBansosUser() {
     isError: isErrorAssistance
   } = useGetAssistanceCheck(NIK, false)
 
-  useDisableBodyScroll(isFetchingBeneficary || isFetchingAssistance)
-
-  React.useEffect(() => {
-    if (isErrorBeneficary) {
-      toast({
-        title: 'NIK Tidak Ditemukan',
-        description: 'Mohon periksa kembali NIK Anda',
-        variant: 'destructive'
-      })
-    }
-  }, [isErrorBeneficary])
+  useDisableBodyScroll(isFetchingAssistance)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (NIK) {
-      await refetchBeneficary()
       await refetchAssistance()
     }
   }
 
   return (
     <section className="bg-[#F9F9F9]">
-      {(isFetchingBeneficary || isFetchingAssistance) && <Loading />}
+      {isFetchingAssistance && <Loading />}
       <section className="h-[250px] w-full bg-[url('@/assets/images/bg-cek-bansos.svg')] bg-cover relative">
         <div className="flex items-center justify-center h-full">
           <h1 className="lg:text-5xl md:text-3xl text-3xl font-bold text-white">
@@ -79,68 +57,68 @@ export default function CekBansosUser() {
         </form>
       </section>
       <div className="md:px-14 px-5 pb-9 flex flex-col gap-5 mt-[72px] min-h-[calc(100vh-180px)]">
-        {!isSuccessBeneficary && !isSuccessAssistance && !isErrorAssistance && !isErrorBeneficary && (
+        {!isSuccessAssistance && !isErrorAssistance && (
           <NoData
             image={CekBansosIlustration}
             title="Cek BANSOS Anda"
             desc="Silahkan Masukkan NIK Anda Untuk Mengecek Daftar Bantuan Sosial Anda"
           />
         )}
-        {isSuccessBeneficary && (
-          <section className="bg-white px-9 py-8 hidden lg:block">
-            <Table containerClassName="max-w-none">
-              <TableHeader>
-                <TableRow className="hover:bg-white border-none">
-                  <TableHead className="text-black font-bold text-xl">NIK</TableHead>
-                  <TableHead className="text-black font-bold text-xl">Nama</TableHead>
-                  <TableHead className="text-black font-bold text-xl">Jenis Kelamin</TableHead>
-                  <TableHead className="text-black font-bold text-xl">Kecamatan</TableHead>
-                  <TableHead className="text-black font-bold text-xl">Kelurahan</TableHead>
-                  <TableHead className="text-black font-bold text-xl">DTKS</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow className="hover:bg-white">
-                  <TableCell position="center">{beneficary?.identityNumber}</TableCell>
-                  <TableCell position="center">{beneficary?.name}</TableCell>
-                  <TableCell position="center">{beneficary?.gender}</TableCell>
-                  <TableCell position="center">{beneficary?.address.areaLevel3?.name}</TableCell>
-                  <TableCell position="center">{beneficary?.address.areaLevel4?.name}</TableCell>
-                  <TableCell position="center">{beneficary?.isDtks ? 'IYA' : 'TIDAK'}</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </section>
-        )}
-        {isSuccessBeneficary && (
-          <section className="bg-white px-9 py-8 lg:hidden">
-            <div className="flex flex-col gap-5 grid md:grid-cols-2 text-center">
-              <div>
-                <p className="text-base font-bold">NIK</p>
-                <p className="text-base ">{beneficary?.identityNumber}</p>
-              </div>
-              <div>
-                <p className="text-base font-bold">Nama</p>
-                <p className="text-base ">{beneficary?.name}</p>
-              </div>
-              <div>
+        {isSuccessAssistance && (
+          <React.Fragment>
+            <section className="bg-white px-9 py-8 hidden lg:block">
+              <Table containerClassName="max-w-none">
+                <TableHeader>
+                  <TableRow className="hover:bg-white border-none">
+                    <TableHead className="text-black font-bold text-xl">NIK</TableHead>
+                    <TableHead className="text-black font-bold text-xl">Nama</TableHead>
+                    {/* <TableHead className="text-black font-bold text-xl">Jenis Kelamin</TableHead> */}
+                    <TableHead className="text-black font-bold text-xl">Kecamatan</TableHead>
+                    <TableHead className="text-black font-bold text-xl">Kelurahan</TableHead>
+                    <TableHead className="text-black font-bold text-xl">DTKS</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow className="hover:bg-white">
+                    <TableCell position="center">{assistances?.identityNumber}</TableCell>
+                    <TableCell position="center">{assistances?.name}</TableCell>
+                    {/* <TableCell position="center">{assistances?.gender}</TableCell> */}
+                    <TableCell position="center">{assistances?.address.areaLevel3?.name}</TableCell>
+                    <TableCell position="center">{assistances?.address.areaLevel4?.name}</TableCell>
+                    <TableCell position="center">{assistances?.isDtks ? 'IYA' : 'TIDAK'}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </section>
+            <section className="bg-white px-9 py-8 lg:hidden">
+              <div className="flex flex-col gap-5 grid md:grid-cols-2 text-center">
+                <div>
+                  <p className="text-base font-bold">NIK</p>
+                  <p className="text-base ">{assistances?.identityNumber}</p>
+                </div>
+                <div>
+                  <p className="text-base font-bold">Nama</p>
+                  <p className="text-base ">{assistances?.name}</p>
+                </div>
+                {/* <div>
                 <p className="text-base font-bold">Jenis Kelamin</p>
                 <p className="text-base ">{beneficary?.gender}</p>
+              </div> */}
+                <div>
+                  <p className="text-base font-bold">Kecamatan</p>
+                  <p className="text-base ">{assistances?.address.areaLevel3?.name}</p>
+                </div>
+                <div>
+                  <p className="text-base font-bold">Kelurahan</p>
+                  <p className="text-base">{assistances?.address.areaLevel4?.name}</p>
+                </div>
+                <div>
+                  <p className="text-base font-bold">DTKS</p>
+                  <p className="text-base">{assistances?.isDtks ? 'IYA' : 'TIDAK'}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-base font-bold">Kecamatan</p>
-                <p className="text-base ">{beneficary?.address.areaLevel3?.name}</p>
-              </div>
-              <div>
-                <p className="text-base font-bold">Kelurahan</p>
-                <p className="text-base">{beneficary?.address.areaLevel4?.name}</p>
-              </div>
-              <div>
-                <p className="text-base font-bold">DTKS</p>
-                <p className="text-base">{beneficary?.isDtks ? 'IYA' : 'TIDAK'}</p>
-              </div>
-            </div>
-          </section>
+            </section>
+          </React.Fragment>
         )}
         {isSuccessAssistance && (
           <section className="bg-white py-14 lg:px-32 md:px-14 px-5 mb-20 lg:mb-0">

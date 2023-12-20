@@ -193,5 +193,5 @@ export const STATUS_EVENT = [
 ]
 export const RIWAYAT_MENU = [
   { value: 'inactive', label: 'Inactive' },
-  { value: 'in-progress', label: 'In Progress' },
+  { value: 'in-progress', label: 'In Progress' }
 ]

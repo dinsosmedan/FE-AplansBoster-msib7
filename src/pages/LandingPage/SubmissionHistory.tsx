@@ -12,7 +12,6 @@ import { Loading } from '@/components'
 import { waktuLalu } from '@/lib/services/formatDate'
 
 export default function SubmissionHistory() {
-
   const [filter, setfilter] = React.useState('SKTM')
 
   const { data, refetch, isLoading } = useFetchRiwayatSktm(filter)
@@ -28,7 +27,7 @@ export default function SubmissionHistory() {
   // console.log(filter);
 
   const onChangeFilter = async (params: any) => {
-    await setfilter(params)
+    setfilter(params)
     await refetch()
   }
   // console.log(filter)
@@ -50,57 +49,57 @@ export default function SubmissionHistory() {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-[#ECF0F4] w-[155px] ">
               <DropdownMenuItem className=" cursor-pointer text-left">
-                <DropdownMenuLabel className='w-full' onClick={() => onChangeFilter('SKTM')}>SKTM</DropdownMenuLabel>
+                <DropdownMenuLabel className="w-full" onClick={async () => await onChangeFilter('SKTM')}>
+                  SKTM
+                </DropdownMenuLabel>
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer text-left">
-                <DropdownMenuLabel className='w-full' onClick={() => onChangeFilter('BBP')}>BBP</DropdownMenuLabel>
+                <DropdownMenuLabel className="w-full" onClick={async () => await onChangeFilter('BBP')}>
+                  BBP
+                </DropdownMenuLabel>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
         </div>
         <div className="grid grid-cols-1 gap-7">
           {data.map((riwayat: any, index: any) => {
             // console.log(riwayat);
 
-            const title = riwayat.applicationCategory == 'dtks-schools' ? 'SKTM Untuk Sekolah/Universitas (Terdaftar DTKS)' : riwayat.applicationCategory == 'non-dtks-schools' ? 'SKTM Untuk Sekolah / Universitas (Tidak Terdaftar DTKS)' : riwayat.applicationCategory == 'dtks-courts' ? 'SKTM Untuk Sekolah / Universitas (Tidak Terdaftar DTKS)' : riwayat.applicationCategory == 'non-dtks-courts' ? 'SKTM Untuk Sekolah / Universitas (Tidak Terdaftar DTKS)' : ''
-            const waktuDiberikan = new Date(riwayat.createdAt);
+            const title =
+              riwayat.applicationCategory === 'dtks-schools'
+                ? 'SKTM Untuk Sekolah/Universitas (Terdaftar DTKS)'
+                : riwayat.applicationCategory === 'non-dtks-schools'
+                ? 'SKTM Untuk Sekolah / Universitas (Tidak Terdaftar DTKS)'
+                : riwayat.applicationCategory === 'dtks-courts'
+                ? 'SKTM Untuk Sekolah / Universitas (Tidak Terdaftar DTKS)'
+                : riwayat.applicationCategory === 'non-dtks-courts'
+                ? 'SKTM Untuk Sekolah / Universitas (Tidak Terdaftar DTKS)'
+                : ''
+            const waktuDiberikan = new Date(riwayat.createdAt)
             const waktulalu = waktuLalu(waktuDiberikan)
-            return (<div className="md:pl-[90px] pl-[20px] flex" key={index}>
-              <div className="bg-red-600/10  rounded-full md:w-14 w-16 md:h-14 h-11 flex items-center justify-center ">
-                <HiAcademicCap className="md:w-10 w-8 md:h-10 h-8 text-primary" />
-              </div>
-              <div className="flex flex-col md:pl-7 pl-4 gap-1">
-                <p className="lg:text-lg text-md font-semibold">{title}</p>
-                <div className="flex items-center gap-2">
-                  <div className="bg-[#5BC665] w-[18px] h-[18px] rounded-md flex items-center justify-center">
-                    <HiMiniCheck className="text-white" />
+            return (
+              <div className="md:pl-[90px] pl-[20px] flex" key={index}>
+                <div className="bg-red-600/10  rounded-full md:w-14 w-16 md:h-14 h-11 flex items-center justify-center ">
+                  <HiAcademicCap className="md:w-10 w-8 md:h-10 h-8 text-primary" />
+                </div>
+                <div className="flex flex-col md:pl-7 pl-4 gap-1">
+                  <p className="lg:text-lg text-md font-semibold">{title}</p>
+                  <div className="flex items-center gap-2">
+                    <div className="bg-[#5BC665] w-[18px] h-[18px] rounded-md flex items-center justify-center">
+                      {}
+                      <HiMiniCheck className="text-white" />
+                    </div>
+                    {riwayat?.applicationStatus && (
+                      <span className="text-sm font-medium capitalize">{riwayat?.applicationStatus}</span>
+                    )}
                   </div>
-                  <span className="text-base font-medium ">Diterima</span>
+                  <small className="text-[#8B8B8B]">{waktulalu}</small>
                 </div>
-                <small className="text-[#8B8B8B] ">{waktulalu}</small>
               </div>
-            </div>)
-          }
-          )}
-
-          {/* <div className="md:pl-[90px] pl-[20px] flex">
-            <div className="bg-red-600/10  rounded-full md:w-14 w-16 md:h-14 h-11 flex items-center justify-center ">
-              <HiAcademicCap className="md:w-10 w-8 md:h-10 h-8 text-primary" />
-            </div>
-            <div className="flex flex-col md:pl-7 pl-4 gap-1">
-              <p className="lg:text-lg text-md font-semibold">SKTM Untuk Sekolah/Universitas (Terdaftar DTKS)</p>
-              <div className="flex items-center gap-2">
-                <div className="bg-primary w-[18px] h-[18px] rounded-md flex items-center justify-center">
-                  <HiXMark className="text-white" />
-                </div>
-                <span className="font-medium text-sm">Diterima</span>
-              </div>
-              <small className="text-[#8B8B8B] text-">7 Jam Lalu</small>
-            </div>
-          </div> */}
+            )
+          })}
         </div>
       </div>
     </div>
   )
-} 
+}

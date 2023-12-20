@@ -252,7 +252,6 @@ export default function SktmRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -273,7 +272,6 @@ export default function SktmRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -294,7 +292,6 @@ export default function SktmRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -315,7 +312,6 @@ export default function SktmRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -339,7 +335,6 @@ export default function SktmRegister() {
                     Icon={HiDocumentArrowUp}
                   />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />

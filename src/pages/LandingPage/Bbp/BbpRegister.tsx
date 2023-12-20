@@ -58,10 +58,10 @@ export default function BbpRegister() {
 
   React.useEffect(() => {
     if (assistance) {
-      forms.setValue('name', assistance.name)
-      forms.setValue('address', assistance.address.fullAddress)
-      forms.setValue('areaLevel3', assistance.address.areaLevel3?.id as string)
-      forms.setValue('areaLevel4', assistance.address.areaLevel4?.id as string)
+      forms.setValue('name', assistance?.name)
+      forms.setValue('address', assistance?.address?.fullAddress)
+      forms.setValue('areaLevel3', assistance?.address?.areaLevel3?.id as string)
+      forms.setValue('areaLevel4', assistance?.address?.areaLevel4?.id as string)
     }
   }, [assistance])
 
@@ -503,7 +503,6 @@ export default function BbpRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -524,7 +523,6 @@ export default function BbpRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -545,7 +543,6 @@ export default function BbpRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -566,7 +563,6 @@ export default function BbpRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -587,7 +583,6 @@ export default function BbpRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -608,7 +603,6 @@ export default function BbpRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -629,7 +623,6 @@ export default function BbpRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -650,7 +643,6 @@ export default function BbpRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -671,7 +663,6 @@ export default function BbpRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -692,7 +683,6 @@ export default function BbpRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -713,7 +703,6 @@ export default function BbpRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -734,7 +723,6 @@ export default function BbpRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -755,7 +743,6 @@ export default function BbpRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />

@@ -108,7 +108,10 @@ export const updateApplicationStatusFn = async ({ id, fields }: updateApplicatio
 }
 
 export const getFetchRiwayatSktmFn = async (filter: any): Promise<any> => {
-  const url = filter == 'SKTM' ? 'public/application/indigency-certificate/history' : 'public/application/tuition-assistance/history'
+  const url =
+    filter === 'SKTM'
+      ? 'public/application/indigency-certificate/history'
+      : 'public/application/tuition-assistance/history'
   const response = await axiosPublic.get(url)
   return response.data?.data
 }
