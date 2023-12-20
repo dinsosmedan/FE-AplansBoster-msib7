@@ -127,9 +127,9 @@ export default function LayananBbp() {
                   <TableCell className="bg-[#F9FAFC]">{item.beneficiary.identityNumber ?? '-'}</TableCell>
                   <TableCell className="bg-[#F9FAFC]">{item.beneficiary.name ?? '-'}</TableCell>
                   <TableCell className="bg-[#F9FAFC]">
-                    {item.application_status ? (
+                    {item.applicationStatus ? (
                       <Status
-                        label={item.application_status}
+                        label={item.applicationStatus}
                         isWarning="pending"
                         isDanger="rejected"
                         isSuccess="approved"

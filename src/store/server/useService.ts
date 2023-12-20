@@ -7,7 +7,13 @@ import {
   updateTuitionAssistanceEventStatusFn,
   updateIndigencyCertificateStatusFn,
   updateApplicationStatusFn,
-  getFetchRiwayatSktmFn
+  getFetchRiwayatSktmFn,
+  updateIndigencyStatusFn,
+  showIndigencyCertificateApplicationFn,
+  getDTKSApplicationFn,
+  updateIndigencyCertificateApplicationFn,
+  showDTKSApplicationFn,
+  updateDTKSApplicationFn
 } from '@/api/service.api'
 import { handleMessage } from '@/lib/services/handleMessage'
 import { handleOnError } from '@/lib/utils'
@@ -95,4 +101,62 @@ export const useUpdateApplicationStatus = () => {
 }
 export const useFetchRiwayatSktm = (filter: any) => {
   return useQuery(['fetch-riwayat-sktm'], async () => await getFetchRiwayatSktmFn(filter), { enabled: true })
+}
+export const useUpdateIndigencyStatus = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(updateIndigencyStatusFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('indigency-centificate-2')
+      handleMessage({ title: 'Data SKTM Pengajuan', variant: 'update' })
+    },
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    }
+  })
+}
+
+export const useGetIndigencyCertificateEventById = (id: string) => {
+  return useQuery(['indigency-centificate-2', id], async () => await showIndigencyCertificateApplicationFn(id), {
+    enabled: !!id
+  })
+}
+
+export const useGetDTKSApplication = (page: number, status: boolean, search: string) => {
+  return useQuery(
+    ['dtks-application', page, status, search],
+    async () => await getDTKSApplicationFn(page, status, search)
+  )
+}
+
+export const useUpdateIndigencyApplication = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(updateIndigencyCertificateApplicationFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('indigency-centificate-2')
+      handleMessage({ title: 'Data BBP Application', variant: 'update' })
+    },
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    }
+  })
+}
+
+export const useGetDTKSApplicationById = (id: string) => {
+  return useQuery(['dtks-application', id], async () => await showDTKSApplicationFn(id), { enabled: !!id })
+}
+
+export const useUpdateDTKSApplication = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(updateDTKSApplicationFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('dtks-application')
+      handleMessage({ title: 'Data DTKS Application', variant: 'update' })
+    },
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    }
+  })
 }

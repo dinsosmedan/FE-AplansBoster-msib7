@@ -9,13 +9,6 @@ interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
 
 const Table = React.forwardRef<HTMLTableElement, TableProps>(({ className, containerClassName, ...props }, ref) => {
   const expanded = useExpandedBar((state) => state.expanded)
-  // const [scrollBarWidth, setScrollBarWidth] = React.useState(0)
-
-  // React.useEffect(() => {
-  //   const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth
-  //   setScrollBarWidth(scrollBarWidth)
-  // }, [])
-  // console.log({ scrollBarWidth, width: `max-w-[calc(100vw-390px${scrollBarWidth === 0 ? '+8px' : ''})]` })
 
   return (
     <div
@@ -78,7 +71,7 @@ const TableHead = React.forwardRef<HTMLTableCellElement, React.ThHTMLAttributes<
       )}
       {...props}
     >
-      <p className="w-max mx-auto">{props.children}</p>
+      <div className="w-max mx-auto">{props.children}</div>
     </th>
   )
 )
@@ -91,7 +84,7 @@ interface TableCellProps extends React.TdHTMLAttributes<HTMLTableCellElement> {
 const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
   ({ className, position = 'left', ...props }, ref) => (
     <td ref={ref} className={cn('p-4 align-middle [&:has([role=checkbox])]:pr-0', className)} {...props}>
-      <p
+      <div
         className={cn(
           'w-max',
           position === 'left' && '',
@@ -100,7 +93,7 @@ const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
         )}
       >
         {props.children}
-      </p>
+      </div>
     </td>
   )
 )

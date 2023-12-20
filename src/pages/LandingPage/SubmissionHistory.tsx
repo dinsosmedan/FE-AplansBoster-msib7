@@ -94,7 +94,7 @@ export default function SubmissionHistory() {
                 <div className="bg-primary w-[18px] h-[18px] rounded-md flex items-center justify-center">
                   <HiXMark className="text-white" />
                 </div>
-                <span className="text-base font-medium text-sm">Diterima</span>
+                <span className="font-medium text-sm">Diterima</span>
               </div>
               <small className="text-[#8B8B8B] text-">7 Jam Lalu</small>
             </div>

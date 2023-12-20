@@ -57,7 +57,7 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Nama Anda" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Anda" />
                   </FormControl>
                 </FormItem>
               )}
@@ -69,7 +69,7 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">NIK </FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" placeholder="Cari NIK" />
+                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Cari NIK" />
                   </FormControl>
                 </FormItem>
               )}
@@ -81,7 +81,7 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">No. KK</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan No. KK " />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan No. KK " />
                   </FormControl>
                 </FormItem>
               )}
@@ -93,7 +93,7 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Tempat Lahir</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Tempat Lahir " />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tempat Lahir " />
                   </FormControl>
                 </FormItem>
               )}
@@ -116,7 +116,7 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Nama Ibu Kandung</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukan Nama Ibu Kandung" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukan Nama Ibu Kandung" />
                   </FormControl>
                 </FormItem>
               )}
@@ -127,15 +127,15 @@ export default function DtksRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Jenis Kelamin</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Jenis Kelamin" />
-                        </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="LAKI-LAKI">Laki-laki</SelectItem>
-                        <SelectItem value="PEREMPUAN">Perempuan</SelectItem>
-                      </SelectContent>
-                    </Select>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih Jenis Kelamin" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="LAKI-LAKI">Laki-laki</SelectItem>
+                      <SelectItem value="PEREMPUAN">Perempuan</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />
@@ -244,7 +244,7 @@ export default function DtksRegister() {
               <FormItem>
                 <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
                 <FormControl>
-                  <Textarea {...field} placeholder="Masukan Alamat Lengkap Anda" />
+                  <Textarea {...field} value={field.value ?? ''} placeholder="Masukan Alamat Lengkap Anda" />
                 </FormControl>
               </FormItem>
             )}
@@ -537,7 +537,9 @@ export default function DtksRegister() {
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="Penyandang Disabilitas Fisik">Penyandang Disabilitas Fisik</SelectItem>
-                        <SelectItem value="Penyandang Disabilitas Intelektual">Penyandang Disabilitas Intelektual</SelectItem>
+                        <SelectItem value="Penyandang Disabilitas Intelektual">
+                          Penyandang Disabilitas Intelektual
+                        </SelectItem>
                         <SelectItem value="Penyandang Disabilitas Mental">Penyandang Disabilitas Mental</SelectItem>
                         <SelectItem value="Penyandang Disabilitas Sensorik">Penyandang Disabilitas Sensorik</SelectItem>
                       </SelectContent>
@@ -563,26 +565,26 @@ export default function DtksRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Status Orang Tua</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Status Orang Tua" />
-                        </SelectTrigger>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Status Orang Tua" />
+                      </SelectTrigger>
                     </FormControl>
-                      <SelectContent>
-                        <SelectItem value="KEPALA KELUARGA">KEPALA KELUARGA</SelectItem>
-                        <SelectItem value="SUAMI">SUAMI</SelectItem>
-                        <SelectItem value="ISTRI">ISTRI</SelectItem>
-                        <SelectItem value="ANAK">ANAK</SelectItem>
-                        <SelectItem value="FAMILI LAIN">FAMILI LAIN</SelectItem>
-                        <SelectItem value="CUCU">CUCU</SelectItem>
-                        <SelectItem value="MERTUA">MERTUA</SelectItem>
-                        <SelectItem value="ORANG TUA">ORANG TUA</SelectItem>
-                        <SelectItem value="BLM DITENTUKAN">BELUM DITENTUKAN</SelectItem>
-                        <SelectItem value="MENANTU">MENANTU</SelectItem>
-                        <SelectItem value="PEMBANTU">PEMBANTU</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <SelectContent>
+                      <SelectItem value="KEPALA KELUARGA">KEPALA KELUARGA</SelectItem>
+                      <SelectItem value="SUAMI">SUAMI</SelectItem>
+                      <SelectItem value="ISTRI">ISTRI</SelectItem>
+                      <SelectItem value="ANAK">ANAK</SelectItem>
+                      <SelectItem value="FAMILI LAIN">FAMILI LAIN</SelectItem>
+                      <SelectItem value="CUCU">CUCU</SelectItem>
+                      <SelectItem value="MERTUA">MERTUA</SelectItem>
+                      <SelectItem value="ORANG TUA">ORANG TUA</SelectItem>
+                      <SelectItem value="BLM DITENTUKAN">BELUM DITENTUKAN</SelectItem>
+                      <SelectItem value="MENANTU">MENANTU</SelectItem>
+                      <SelectItem value="PEMBANTU">PEMBANTU</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />
@@ -600,7 +602,7 @@ export default function DtksRegister() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                      <SelectItem value="1">Ya</SelectItem>
+                        <SelectItem value="1">Ya</SelectItem>
                         <SelectItem value="0">Tidak</SelectItem>
                       </SelectContent>
                     </Select>
@@ -615,7 +617,7 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Nama Suku</FormLabel>
                   <FormControl>
-                  <Input {...field} type="text" placeholder="Masukan Nama Suku" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukan Nama Suku" />
                   </FormControl>
                 </FormItem>
               )}

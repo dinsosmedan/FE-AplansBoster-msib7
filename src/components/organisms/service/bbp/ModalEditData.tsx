@@ -12,7 +12,6 @@ import { useGetTuitionAssistanceEventById, useUpateTuitionAssistanceEvent } from
 import { useGetBank, useGetEvent, useGetStudyPrograms, useGetUniversities } from '@/store/server'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { ImSpinner2 } from 'react-icons/im'
 
 interface FormValuesEditData extends updateTuitionAssistanceFields {
   nik?: string
@@ -103,310 +102,295 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
   }
 
   return (
-    <Modal isShow={isShow} className="md:max-w-3xl max-h-[calc(100vh-50px)] overflow-y-auto">
+    <Modal isShow={isShow} className="md:max-w-3xl max-h-[calc(100vh-50px)] overflow-y-auto" isLoading={isLoading}>
       <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
         <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Edit Data</h3>
         <p className="text-sm text-[#A1A1A1]">Data Pengajuan BBP</p>
       </Modal.Header>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <Form {...forms}>
-          <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-3">
-            <div className="grid grid-cols-2 gap-3">
-              <FormField
-                name="nik"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value} disabled />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="name"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value} disabled />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="email"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value} placeholder="Masukkan Email" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="gpa"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">IPK</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value} placeholder="Masukkan IPK" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="universityId"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Perguruan Tinggi</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Universitas" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {universities?.map((university) => (
-                            <SelectItem key={university.id} value={university.id}>
-                              {university.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="studyProgramId"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Program Studi</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      disabled={!universities || !studyPrograms}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Program Studi" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {studyPrograms?.map((studyProgram) => (
-                          <SelectItem key={studyProgram.id} value={studyProgram.id}>
-                            {studyProgram.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="phoneNumber"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">No. HP</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value} placeholder="Masukkkan nomor handphone" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="gender"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Jenis Kelamin</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value} disabled />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="birthPlace"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Tempat Lahir</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value} disabled />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="birthDate"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Tanggal Lahir</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value} disabled />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="address"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Alamat</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value} disabled />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="semester"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Semester</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value} placeholder="Masukkan semester" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="kecamatan"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value} disabled />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="kelurahan"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value} disabled />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="tuitionFee"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">UKT</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value} placeholder="Masukkan UKT" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="event"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Batch</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value} disabled>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Batch" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {events?.data.map((event) => (
-                          <SelectItem key={event.id} value={event.id}>
-                            {event.batch}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <p className="text-2xl font-bold py-5 text-center">Data Bank</p>
-            <div className="grid grid-cols-2 gap-3">
-              <FormField
-                name="bankAccountNumber"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">No Rekening/Bank</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value} type="number" placeholder="Masukkan nomor rekening" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="bank"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nama Bank</FormLabel>
+
+      <Form {...forms}>
+        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-3">
+          <div className="grid grid-cols-2 gap-3">
+            <FormField
+              name="nik"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} disabled />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="name"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} disabled />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="email"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} placeholder="Masukkan Email" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="gpa"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel className="font-semibold dark:text-white">IPK</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} placeholder="Masukkan IPK" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="universityId"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel className="font-semibold dark:text-white">Perguruan Tinggi</FormLabel>
+                  <FormControl>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Pilih Bank" />
+                          <SelectValue placeholder="Pilih Universitas" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {bankLists?.map((bank) => (
-                          <SelectItem key={bank.id} value={bank.id}>
-                            {bank.name}
+                        {universities?.map((university) => (
+                          <SelectItem key={university.id} value={university.id}>
+                            {university.name}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <Modal.Footer className="mt-4">
-              <Button
-                variant="cancel"
-                className="rounded-lg text-[#898989] bg-[#E4E4E4]"
-                onClick={() => setIsShow(false)}
-              >
-                Cancel
-              </Button>
-              <Button className="rounded-lg" type="submit" loading={isLoadingUpdate}>
-                <p className="text-white font-bold">Update</p>
-              </Button>
-            </Modal.Footer>
-          </form>
-        </Form>
-      )}
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="studyProgramId"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel className="font-semibold dark:text-white">Program Studi</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value} disabled={!universities || !studyPrograms}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Program Studi" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {studyPrograms?.map((studyProgram) => (
+                        <SelectItem key={studyProgram.id} value={studyProgram.id}>
+                          {studyProgram.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="phoneNumber"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel className="font-semibold dark:text-white">No. HP</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} placeholder="Masukkkan nomor handphone" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="gender"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel className="font-semibold dark:text-white">Jenis Kelamin</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} disabled />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="birthPlace"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel className="font-semibold dark:text-white">Tempat Lahir</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} disabled />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="birthDate"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel className="font-semibold dark:text-white">Tanggal Lahir</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} disabled />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="address"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel className="font-semibold dark:text-white">Alamat</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} disabled />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="semester"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel className="font-semibold dark:text-white">Semester</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} placeholder="Masukkan semester" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="kecamatan"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} disabled />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="kelurahan"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} disabled />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="tuitionFee"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel className="font-semibold dark:text-white">UKT</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} placeholder="Masukkan UKT" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="event"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold dark:text-white">Batch</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value} disabled>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Batch" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {events?.data.map((event) => (
+                        <SelectItem key={event.id} value={event.id}>
+                          {event.batch}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+          </div>
+          <p className="text-2xl font-bold py-5 text-center">Data Bank</p>
+          <div className="grid grid-cols-2 gap-3">
+            <FormField
+              name="bankAccountNumber"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel className="font-semibold dark:text-white">No Rekening/Bank</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan nomor rekening" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="bank"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold dark:text-white">Nama Bank</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Bank" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {bankLists?.map((bank) => (
+                        <SelectItem key={bank.id} value={bank.id}>
+                          {bank.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+          </div>
+          <Modal.Footer className="mt-4">
+            <Button
+              variant="cancel"
+              className="rounded-lg text-[#898989] bg-[#E4E4E4]"
+              onClick={() => setIsShow(false)}
+            >
+              Cancel
+            </Button>
+            <Button className="rounded-lg" type="submit" loading={isLoadingUpdate}>
+              <p className="text-white font-bold">Update</p>
+            </Button>
+          </Modal.Footer>
+        </form>
+      </Form>
     </Modal>
-  )
-}
-
-const Loading = () => {
-  return (
-    <div className="min-h-[500px] flex">
-      <ImSpinner2 className="animate-spin m-auto text-3xl text-primary" />
-    </div>
   )
 }

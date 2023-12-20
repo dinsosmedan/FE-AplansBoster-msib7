@@ -242,7 +242,7 @@ const Pokmas = () => {
               <FormItem className="-mt-3">
                 <FormLabel>Alamat Lengkap</FormLabel>
                 <FormControl>
-                  <Textarea {...field} placeholder="Masukkan Alamat Lengkap Masyarakat." />
+                  <Textarea {...field} value={field.value ?? ''} placeholder="Masukkan Alamat Lengkap Masyarakat." />
                 </FormControl>
                 <FormMessage />
               </FormItem>

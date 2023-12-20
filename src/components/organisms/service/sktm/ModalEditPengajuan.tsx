@@ -1,4 +1,4 @@
-import { HiOutlineEye } from 'react-icons/hi2'
+import { HiDocumentArrowUp, HiOutlineEye } from 'react-icons/hi2'
 import { Modal } from '../..'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
@@ -6,30 +6,32 @@ import { useForm } from 'react-hook-form'
 import { type updateTuitionAssistanceServiceFields } from '@/lib/validations/linjamsos.validation'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
-import { useGetTuitionAssistanceEventById, useUpdateApplicationStatus } from '@/store/server/useService'
+import { useGetIndigencyCertificateEventById, useUpdateIndigencyStatus } from '@/store/server/useService'
 import { Link } from 'react-router-dom'
+import { DatePicker } from '@/components'
+import DropZone, { type FileWithPreview } from '@/components/atoms/DropZone'
 
 interface ModalEditPengajuanBBPProps {
   isShow: boolean
   setIsShow: (value: boolean) => void
-  tuitionAssistanceId?: string
+  indigencyId?: string
 }
 
 interface FormValues extends updateTuitionAssistanceServiceFields {
-  assistanceAmount?: number
-  budgetYear?: number
+  issueDate?: Date
+  issuedCertificate?: File[]
 }
 
-export default function ModalEditPengajuanBBP({ isShow, setIsShow, tuitionAssistanceId }: ModalEditPengajuanBBPProps) {
+export default function ModalEditPengajuanSKTM({ isShow, setIsShow, indigencyId }: ModalEditPengajuanBBPProps) {
   const forms = useForm<FormValues>()
   const status = forms.watch('applicationStatus')
 
-  const { data, isLoading } = useGetTuitionAssistanceEventById(tuitionAssistanceId as string)
-  const { mutate: update, isLoading: isLoadingUpdate } = useUpdateApplicationStatus()
+  const { data, isLoading } = useGetIndigencyCertificateEventById(indigencyId as string)
+  const { mutate: update, isLoading: isLoadingUpdate } = useUpdateIndigencyStatus()
 
   const onSubmit = async (values: FormValues) => {
     const newData = {
-      id: tuitionAssistanceId as string,
+      id: indigencyId as string,
       fields: values
     }
 
@@ -45,25 +47,43 @@ export default function ModalEditPengajuanBBP({ isShow, setIsShow, tuitionAssist
     <Modal isShow={isShow} className="md:max-w-3xl max-h-[calc(100vh-50px)] overflow-y-auto" isLoading={isLoading}>
       <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
         <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Edit Data Pengajuan</h3>
-        <p className="text-sm text-[#A1A1A1]">Data Pengajuan BBP</p>
+        <p className="text-sm text-[#A1A1A1]">Data Pengajuan SKTM</p>
       </Modal.Header>
       <section className="flex flex-col">
         <p className="w-full text-center py-4 bg-primary text-white font-bold">Berkas Mahasiswa</p>
-        <Berkas title="Surat Permohonan" url={data?.documents.applicationLetter?.url as string} />
-        <Berkas title="PAS FOTO" url={data?.documents.photo?.url as string} />
-        <Berkas title="KARTU KELUARGA" url={data?.documents.familyCard?.url as string} />
-        <Berkas title="KTP" url={data?.documents.identityCard?.url as string} />
-        <Berkas title="KTM" url={data?.documents.studentCard?.url as string} />
-        <Berkas title="SURAT AKTIF KULIAH" url={data?.documents.activeStudentCertificate?.url as string} />
-        <Berkas title="SCAN PRINTOUT DTKS" url={data?.documents.dtksPrintout?.url as string} />
-        <Berkas
-          title="SURAT PERNYATAAN TIDAK MENDAPATKAN BEASISWA"
-          url={data?.documents.noScholarshipStatement?.url as string}
-        />
-        <Berkas title="SURAT PERNYATAAN BUKAN ASN" url={data?.documents.noGovernmentEmployeeStatement?.url as string} />
-        <Berkas title="TRANSKRIP NILAI" url={data?.documents.gradeTranscript?.url as string} />
-        <Berkas title="SCAN BUKU TABUNGAN" url={data?.documents.passBook?.url as string} />
-        <Berkas title="BUKTI PEMBAYARAN UKT TERAKHIR" url={data?.documents.tuitionReceipt?.url as string} />
+        {data?.petitionLetterPath?.url && <Berkas title="SURAT PERMOHONAN" url={data?.petitionLetterPath?.url} />}
+        {data?.domicileLetterPath?.url && (
+          <Berkas title="SCAN FOTO COPY SURAT DOMISILI DARI KELURAHAN SETEMPAT" url={data?.domicileLetterPath?.url} />
+        )}
+        {data?.familyCardPath?.url && <Berkas title="KARTU KELUARGA" url={data?.familyCardPath?.url} />}
+        {data?.idCardPath?.url && <Berkas title="KTP" url={data?.idCardPath?.url} />}
+        {data?.schoolLetterPath?.url && (
+          <Berkas
+            title="SURAT KETERANGAN DARI SEKOLAH/SURAT PENGUMUMAN DARI PIHAK UNIVERSITAS"
+            url={data?.schoolLetterPath?.url}
+          />
+        )}
+        {/* <Berkas
+          title="SCAN FOTO COPY SURAT DOMISILI DARI KELURAHAN SETEMPAT"
+          url={data?. as string}
+        /> */}
+        {data?.salarySlipPath?.url && <Berkas title="SCAN FOTOCOPY SLIP GAJI" url={data?.salarySlipPath?.url} />}
+        {data?.localsApprovalLetterPath?.url && (
+          <Berkas
+            title="SCAN SURAT KETERANGAN DARI KEPLING APABILA TINGGAL MENUMPANG/SEWA DITANDATANGAI PAKAI MATERAI RP.10.000"
+            url={data?.localsApprovalLetterPath?.url}
+          />
+        )}
+        {data?.lowIncomeLetterPath?.url && (
+          <Berkas
+            title="SURAT PERNYATAAN BERPENGHASILAN DI BAWAH UMR (±Rp.3000.000) DITANDATANGAI LURAH"
+            url={data?.lowIncomeLetterPath?.url}
+          />
+        )}
+        {data?.frontViewHousePath?.url && <Berkas title="RUMAH TAMPAK DEPAN" url={data?.frontViewHousePath?.url} />}
+        {data?.sittingViewPath?.url && <Berkas title="RUMAH RUANG TAMU" url={data?.sittingViewPath?.url} />}
+        {data?.chamberViewHousePath?.url && <Berkas title="RUMAH RUANG KAMAR" url={data?.chamberViewHousePath?.url} />}
+        {data?.kitchenViewHousePath?.url && <Berkas title="RUMAH RUANG DAPUR" url={data?.kitchenViewHousePath?.url} />}
       </section>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-3">
@@ -92,25 +112,33 @@ export default function ModalEditPengajuanBBP({ isShow, setIsShow, tuitionAssist
           {status === 'approved' && (
             <>
               <FormField
-                name="assistanceAmount"
+                name="issuedCertificate"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Jumlah bantuan</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">Surat terbit SKTM</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan jumlah bantuan" type="number" />
+                      <DropZone
+                        setValue={field.onChange}
+                        fileValue={field.value as unknown as FileWithPreview[]}
+                        helperText="*Catatan: File yang diizinkan berupa pdf. Dengan maksimal 2MB"
+                        accept={{ 'application/pdf': ['.pdf'] }}
+                        maxFiles={1}
+                        id="applicationLetter"
+                        Icon={HiDocumentArrowUp}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
               />
               <FormField
-                name="budgetYear"
+                name="issueDate"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Tahun Anggaran</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">Tanggal surat terbit SKTM</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan tahun anggaran" />
+                      <DatePicker selected={field.value as Date} onChange={field.onChange} placeholder="dd/mm/yyyy" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -137,6 +165,7 @@ export default function ModalEditPengajuanBBP({ isShow, setIsShow, tuitionAssist
               variant="cancel"
               className="rounded-lg text-[#898989] bg-[#E4E4E4]"
               onClick={() => setIsShow(false)}
+              type="button"
             >
               Cancel
             </Button>

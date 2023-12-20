@@ -1,20 +1,56 @@
+import { Loading } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { useAlert } from '@/store/client'
+import { useChangeProfileUser, useGetMePublic } from '@/store/server'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { HiPencil } from 'react-icons/hi2'
 
 interface FormValues {
   nik: string
-  prodi: string
+  name: string
+  email: string
+  phoneNumber: string
 }
 
 export default function ChangeProfile() {
+  const { alert } = useAlert()
+  const { data: user, isLoading, isSuccess: isSuccessGet } = useGetMePublic()
+  const { mutate: updateProfile, isLoading: isLoadingUpdate } = useChangeProfileUser()
   const forms = useForm<FormValues>({
     mode: 'onTouched'
   })
   const onSubmit = async (values: FormValues) => {
-    console.log(values)
+    const { name, email, phoneNumber } = values
+    updateProfile(
+      { name, email, phoneNumber },
+      {
+        onSuccess: () => {
+          void alert({
+            title: 'Berhasil Reset Password',
+            description: 'Yay! Reset Password Berhasil, Silakan Login kembali!',
+            submitText: 'Oke',
+            variant: 'success'
+          })
+        }
+      }
+    )
+  }
+  React.useEffect(() => {
+    if (isSuccessGet) {
+      forms.reset({
+        name: user?.data.name,
+        email: user?.data.email,
+        phoneNumber: user?.data.phoneNumber as string,
+        nik: user.data.identityNumber
+      })
+    }
+  }, [isSuccessGet])
+
+  if (isLoading && isLoadingUpdate) {
+    return <Loading />
   }
   return (
     <div className="bg-white lg:w-[90%] w-[90%] h-[100%]  md:p-10 py-10 shadow-sm rounded-lg mt-10 lg:mt-0 mx-auto">
@@ -30,52 +66,59 @@ export default function ChangeProfile() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Tempat Lahir " />
+                    <Input
+                      {...field}
+                      value={field.value ?? ''}
+                      type="text"
+                      placeholder="Masukkan NIK"
+                      readOnly={true}
+                      disabled
+                    />
                   </FormControl>
                 </FormItem>
               )}
             />
             <FormField
-              name="nik"
+              name="name"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Nama Anda" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Anda" />
                   </FormControl>
                 </FormItem>
               )}
             />
             <FormField
-              name="nik"
+              name="email"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">E-mail</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Tempat Lahir " />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Email" />
                   </FormControl>
                 </FormItem>
               )}
             />
             <FormField
-              name="nik"
+              name="phoneNumber"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">No. Telepon</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Tempat Lahir " />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nomor Telepon" />
                   </FormControl>
                 </FormItem>
               )}
             />
           </div>
-          <div className="flex justify-end gap-5 items-center pt-20 px-7 items-center">
-            <Button className="md:w-[200px] w-[100%] h-[45px]">
-              <p className="text-md">Ubah Profile</p>
-              <HiPencil className="w-3 h-3 ml-3 mb-1" />
+          <div className="flex justify-end gap-5 pt-20 px-7 items-center">
+            <Button className="md:w-[200px] w-[100%] h-[50px]">
+              <p className="text-lg">Ubah</p>
+              <HiPencil className="w-4 h-4 ml-3 mb-1" />
             </Button>
           </div>
         </form>

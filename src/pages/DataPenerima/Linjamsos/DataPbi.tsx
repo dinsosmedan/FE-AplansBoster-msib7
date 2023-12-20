@@ -149,7 +149,7 @@ const DataPbi = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="Masukkan Nama/ NIK" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama/ NIK" />
                   </FormControl>
                 </FormItem>
               )}

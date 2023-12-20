@@ -1,32 +1,24 @@
-import ENV from '@/lib/environment'
 import { type IType, type IEvents, type IEvent } from '@/lib/types/event.type'
 import { type eventFields } from '@/lib/validations/event.validation'
-import axios from 'axios'
-
-const apiPublic = axios.create({
-  baseURL: ENV.apiUrl,
-  headers: { Accept: 'application/json' }
-})
-
-apiPublic.defaults.headers.post['Content-Type'] = 'application/json'
+import api from './axiosInstance'
 
 export const getEventFn = async (status?: string, year?: string, page?: string): Promise<IEvents> => {
-  const response = await apiPublic.get(`/event?year=${year ?? ''}&status=${status ?? ''}&page=${page ?? ''}`)
+  const response = await api.get(`/event?year=${year ?? ''}&status=${status ?? ''}&page=${page ?? ''}`)
   return response.data
 }
 
 export const getEventTuitionAssistanceFn = async (year: string, status: string): Promise<IEvents> => {
-  const response = await apiPublic.get(`/event/tuition-assistance?year=${year}&status=${status}`)
+  const response = await api.get(`/event/tuition-assistance?year=${year}&status=${status}`)
   return response.data
 }
 
 export const showEventFn = async (id: string): Promise<IEvent> => {
-  const response = await apiPublic.get(`/event/${id}`)
+  const response = await api.get(`/event/${id}`)
   return response.data?.data
 }
 
 export const getEventTypeFn = async (): Promise<IType[]> => {
-  const response = await apiPublic.get('/event/type')
+  const response = await api.get('/event/type')
   return response.data?.data
 }
 
@@ -77,7 +69,7 @@ export const storeEventFn = async (fields: eventFields) => {
     formData.append('nonGovernmentEmployeeLetter', fields.nonGovernmentEmployeeLetter[0])
   }
 
-  await apiPublic.post('/event', formData, {
+  await api.post('/event', formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
@@ -85,7 +77,7 @@ export const storeEventFn = async (fields: eventFields) => {
 }
 
 export const deleteEventFn = async (id: string) => {
-  await apiPublic.delete(`/event/${id}`)
+  await api.delete(`/event/${id}`)
 }
 
 interface IUpdateEvent {
@@ -141,5 +133,5 @@ export const updateEventFn = async ({ id, fields }: IUpdateEvent) => {
     formData.append('nonGovernmentEmployeeLetter', fields.nonGovernmentEmployeeLetter[0])
   }
 
-  await apiPublic.post(`/event/${id}`, formData)
+  await api.post(`/event/${id}`, formData)
 }

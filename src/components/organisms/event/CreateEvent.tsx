@@ -15,7 +15,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import { eventValidation, type eventFields } from '@/lib/validations/event.validation'
 import { useCreateEvent, useGetEventById, useGetEventType, useUpdateEvent } from '@/store/server'
-import { formatDateToString, formatStringToDate } from '@/lib/services/formatDate'
+import { formatDateToString } from '@/lib/services/formatDate'
 import { ImSpinner2 } from 'react-icons/im'
 
 interface CreateEventProps {
@@ -100,7 +100,6 @@ export default function CreateEvent({ isShow, setIsShow, eventId }: CreateEventP
       endDate: formatDateToString(values.endDate as Date)
     }
 
-    console.log(newData)
     if (!eventId) return createEvent(newData, { onSuccess })
     updateEvent({ id: eventId, fields: newData }, { onSuccess })
   }

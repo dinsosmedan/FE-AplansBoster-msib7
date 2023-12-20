@@ -115,31 +115,31 @@ export default function CekBansosUser() {
         {isSuccessBeneficary && (
           <section className="bg-white px-9 py-8 lg:hidden">
             <div className="flex flex-col gap-5 grid md:grid-cols-2 text-center">
-                <div>
-                  <p className="text-base font-bold">NIK</p>
-                  <p className="text-base ">{beneficary?.identityNumber}</p>
-                </div>
-                <div>
-                  <p className="text-base font-bold">Nama</p>
-                  <p className="text-base ">{beneficary?.name}</p>
-                </div>
-                <div>
-                  <p className="text-base font-bold">Jenis Kelamin</p>
-                  <p className="text-base ">{beneficary?.gender}</p>
-                </div>
-                <div>
-                  <p className="text-base font-bold">Kecamatan</p>
-                  <p className="text-base ">{beneficary?.address.areaLevel3?.name}</p>
-                </div>
-                <div>
-                  <p className="text-base font-bold">Kelurahan</p>
-                  <p className="text-base">{beneficary?.address.areaLevel4?.name}</p>
-                </div>
-                <div>
-                  <p className="text-base font-bold">DTKS</p>
-                  <p className="text-base">{beneficary?.isDtks ? 'IYA' : 'TIDAK'}</p>
-                </div>
+              <div>
+                <p className="text-base font-bold">NIK</p>
+                <p className="text-base ">{beneficary?.identityNumber}</p>
               </div>
+              <div>
+                <p className="text-base font-bold">Nama</p>
+                <p className="text-base ">{beneficary?.name}</p>
+              </div>
+              <div>
+                <p className="text-base font-bold">Jenis Kelamin</p>
+                <p className="text-base ">{beneficary?.gender}</p>
+              </div>
+              <div>
+                <p className="text-base font-bold">Kecamatan</p>
+                <p className="text-base ">{beneficary?.address.areaLevel3?.name}</p>
+              </div>
+              <div>
+                <p className="text-base font-bold">Kelurahan</p>
+                <p className="text-base">{beneficary?.address.areaLevel4?.name}</p>
+              </div>
+              <div>
+                <p className="text-base font-bold">DTKS</p>
+                <p className="text-base">{beneficary?.isDtks ? 'IYA' : 'TIDAK'}</p>
+              </div>
+            </div>
           </section>
         )}
         {isSuccessAssistance && (

@@ -1,4 +1,6 @@
 import {
+  changePasswordUserFn,
+  changeProfileUserFn,
   forgetPasswordFn,
   forgetPasswordUserFn,
   getMeFn,
@@ -190,6 +192,7 @@ export const useForgetPasswordUser = () => {
     }
   })
 }
+
 export const useResetPasswordUser = () => {
   const navigate = useNavigate()
   return useMutation(resetPasswordUserFn, {
@@ -199,6 +202,50 @@ export const useResetPasswordUser = () => {
         description: 'Berhasil ganti password, Silahkan login ulang kembali.'
       })
       navigate('/user/login')
+    },
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message,
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
+    }
+  })
+}
+export const useChangePasswordUser = () => {
+  const navigate = useNavigate()
+  return useMutation(changePasswordUserFn, {
+    onSuccess: async () => {
+      toast({
+        title: 'Ganti Password Berhasil',
+        description: 'Yay!! Berhasil ganti password!'
+      })
+      navigate('/user/profile')
+    },
+    onError: (error: AxiosError) => {
+      const errorResponse = error.response?.data as IErrorResponse
+      if (errorResponse !== undefined) {
+        toast({
+          variant: 'destructive',
+          title: errorResponse.message,
+          description: 'Terjadi masalah dengan permintaan Anda.'
+        })
+      }
+    }
+  })
+}
+export const useChangeProfileUser = () => {
+  const navigate = useNavigate()
+  return useMutation(changeProfileUserFn, {
+    onSuccess: async () => {
+      toast({
+        title: 'Ganti Profile Berhasil',
+        description: 'Yay!! Berhasil ganti profile!'
+      })
+      navigate('/user/profile')
     },
     onError: (error: AxiosError) => {
       const errorResponse = error.response?.data as IErrorResponse

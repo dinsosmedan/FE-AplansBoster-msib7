@@ -34,13 +34,19 @@ export default function FooterUser() {
             <div className="flex gap-2 items-center">
               <ul>
                 <li>
-                  <a href='https://kemensos.go.id' className="text-white/70 text-sm">KEMENSOS</a>
+                  <a href="https://kemensos.go.id" className="text-white/70 text-sm">
+                    KEMENSOS
+                  </a>
                 </li>
                 <li>
-                  <a href='https://portal.pemkomedan.go.id' className="text-white/70 text-sm">PEMKO Medan</a>
+                  <a href="https://portal.pemkomedan.go.id" className="text-white/70 text-sm">
+                    PEMKO Medan
+                  </a>
                 </li>
                 <li>
-                  <a href='https://dissos.pemkomedan.go.id' className="text-white/70 text-sm">DINSOS Medan</a>
+                  <a href="https://dissos.pemkomedan.go.id" className="text-white/70 text-sm">
+                    DINSOS Medan
+                  </a>
                 </li>
               </ul>
             </div>
@@ -49,19 +55,23 @@ export default function FooterUser() {
             <p className="font-semibold text-xl">Lokasi Kami</p>
             <div className="flex gap-2 ">
               <HiOutlineMapPin />
-              <span className="text-white/70 text-sm">Jl. Pinang Baris No. 114 <br />Lalang, Kec. Medan Sunggal <br />Kota Medan, Sumatera Utara 20127</span>
+              <span className="text-white/70 text-sm">
+                Jl. Pinang Baris No. 114 <br />
+                Lalang, Kec. Medan Sunggal <br />
+                Kota Medan, Sumatera Utara 20127
+              </span>
             </div>
             <div className="flex flex-col text-white gap-2 mr-20 mt-10">
-            <p className="font-semibold text-xl">Ikuti Kami</p>
-            <div className="flex gap-2 items-center">
-              <Link to="/" className="w-8 h-8 flex rounded-full bg-[#00923F]">
-                <FaInstagram className="m-auto" />
-              </Link>
-              <Link to="/" className="w-8 h-8 flex rounded-full bg-[#00923F]">
-                <FaFacebookF className="m-auto" />
-              </Link>
+              <p className="font-semibold text-xl">Ikuti Kami</p>
+              <div className="flex gap-2 items-center">
+                <Link to="/" className="w-8 h-8 flex rounded-full bg-[#00923F]">
+                  <FaInstagram className="m-auto" />
+                </Link>
+                <Link to="/" className="w-8 h-8 flex rounded-full bg-[#00923F]">
+                  <FaFacebookF className="m-auto" />
+                </Link>
+              </div>
             </div>
-          </div>
           </div>
         </div>
       </section>

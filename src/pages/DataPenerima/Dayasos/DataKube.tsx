@@ -175,7 +175,12 @@ const DataKube = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Nama Kelompok Usaha Bersama" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="text"
+                        placeholder="Nama Kelompok Usaha Bersama"
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -234,7 +239,7 @@ const DataKube = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Tahun Anggaran" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Anggaran" />
                     </FormControl>
                   </FormItem>
                 )}

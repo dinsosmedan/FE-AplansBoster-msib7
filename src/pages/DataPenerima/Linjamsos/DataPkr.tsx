@@ -165,7 +165,7 @@ const DataPkr = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} type="text" placeholder="Masukkan NIK Masyarakat" />
+                        <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan NIK Masyarakat" />
                       </FormControl>
                     </FormItem>
                   )}
@@ -231,7 +231,7 @@ const DataPkr = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="Masukkan Tahun Anggaran" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Anggaran" />
                     </FormControl>
                   </FormItem>
                 )}

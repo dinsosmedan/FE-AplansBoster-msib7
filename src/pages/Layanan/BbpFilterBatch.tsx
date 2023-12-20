@@ -85,7 +85,7 @@ export default function BbpFilterBatch() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="Cari berdasarkan Tahun" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Cari berdasarkan Tahun" />
                     </FormControl>
                   </FormItem>
                 )}

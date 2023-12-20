@@ -26,9 +26,6 @@ export const useMutationGetBeneficaryByNIK = () => {
   return useMutation(showBeneficaryByNIKFn, {
     onSuccess: () => {
       void queryClient.invalidateQueries('beneficary')
-    },
-    onError: (error: AxiosError) => {
-      console.log(error)
     }
   })
 }

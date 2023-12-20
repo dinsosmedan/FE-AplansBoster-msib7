@@ -6,10 +6,12 @@ import {
   type DtksCourtsFields,
   type publicEventTuitionFields,
   type PublicDTKSFields,
-  type NonDtksCourtsFields
+  type NonDtksCourtsFields,
+  type NonDtksSchoolFields
 } from '@/lib/validations/landingPage/public.validation'
 import axios from 'axios'
 import axiosPublic from './axiosPublicInstance'
+import { type IIndigencyCertificate } from '@/lib/types/service.type'
 
 const apiPublic = axios.create({
   baseURL: ENV.apiUrl,
@@ -234,6 +236,11 @@ export const storeDTKSSchoolFn = async (data: DtksSchoolFields) => {
   })
 }
 
+export const getIndigencyCertificateApplicationPublicFn = async (): Promise<IIndigencyCertificate[]> => {
+  const response = await axiosPublic.get('/public/application/indigency-certificate')
+  return response.data?.data
+}
+
 export const storeNonDtksCourtsFn = async (data: NonDtksCourtsFields) => {
   const formdata = new FormData()
   formdata.append('peopleConcernedIdentityNumber', data.peopleConcernedIdentityNumber)
@@ -280,6 +287,62 @@ export const storeNonDtksCourtsFn = async (data: NonDtksCourtsFields) => {
   }
 
   await axiosPublic.post('/public/application/indigency-certificate', formdata, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
+export const storeIndigencyCertificateApplicationNoDTKS = async (data: NonDtksSchoolFields) => {
+  const formData = new FormData()
+  formData.append('categoryApplication', 'non-dtks-schools')
+  formData.append('peopleConcernedIdentityNumber', data.peopleConcernedIdentityNumber)
+  formData.append('peopleConcernedName', data.peopleConcernedName)
+  formData.append('peopleConcernedAreaLevel3', data.peopleConcernedAreaLevel3)
+  formData.append('peopleConcernedAreaLevel4', data.peopleConcernedAreaLevel4)
+  formData.append('peopleConcernedAddress', data.peopleConcernedAddress)
+  formData.append('applicantPhoneNumber', data.publicPhoneNumber)
+  formData.append('certificateDestination', data.certificateDestination)
+  formData.append('educationLevel', data.educationLevel)
+
+  if (Array.isArray(data.familyCard) && data.familyCard.length > 0) {
+    formData.append('familyCard', data.familyCard[0] as File)
+  }
+  if (Array.isArray(data.petitionLetter) && data.petitionLetter.length > 0) {
+    formData.append('petitionLetter', data.petitionLetter[0] as File)
+  }
+  if (Array.isArray(data.idCard) && data.idCard.length > 0) {
+    formData.append('idCard', data.idCard[0] as File)
+  }
+  if (Array.isArray(data.domicileLetter) && data.domicileLetter.length > 0) {
+    formData.append('domicileLetter', data.domicileLetter[0] as File)
+  }
+  if (Array.isArray(data.indigencyCertificateApplication) && data.indigencyCertificateApplication.length > 0) {
+    formData.append('indigencyCertificateApplication', data.indigencyCertificateApplication[0] as File)
+  }
+  if (Array.isArray(data.salarySlip) && data.salarySlip.length > 0) {
+    formData.append('salarySlip', data.salarySlip[0] as File)
+  }
+  if (Array.isArray(data.localsApprovalLetter) && data.localsApprovalLetter.length > 0) {
+    formData.append('localsApprovalLetter', data.localsApprovalLetter[0] as File)
+  }
+  if (Array.isArray(data.lowIncomeLetter) && data.lowIncomeLetter.length > 0) {
+    formData.append('lowIncomeLetter', data.lowIncomeLetter[0] as File)
+  }
+  if (Array.isArray(data.sittingViewHouse) && data.sittingViewHouse.length > 0) {
+    formData.append('sittingViewHouse', data.sittingViewHouse[0] as File)
+  }
+  if (Array.isArray(data.chamberViewHouse) && data.chamberViewHouse.length > 0) {
+    formData.append('chamberViewHouse', data.chamberViewHouse[0] as File)
+  }
+  if (Array.isArray(data.kitchenViewHouse) && data.kitchenViewHouse.length > 0) {
+    formData.append('kitchenViewHouse', data.kitchenViewHouse[0] as File)
+  }
+  if (Array.isArray(data.schoolLetter) && data.schoolLetter.length > 0) {
+    formData.append('schoolLetter', data.schoolLetter[0] as File)
+  }
+
+  await axiosPublic.post('/public/application/indigency-certificate', formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
