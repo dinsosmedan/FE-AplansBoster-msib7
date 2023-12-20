@@ -7,6 +7,7 @@ import {
   updateTuitionAssistanceEventStatusFn,
   updateIndigencyCertificateStatusFn,
   updateApplicationStatusFn,
+  getFetchRiwayatSktmFn,
   updateIndigencyStatusFn,
   showIndigencyCertificateApplicationFn,
   getDTKSApplicationFn,
@@ -98,7 +99,9 @@ export const useUpdateApplicationStatus = () => {
     }
   })
 }
-
+export const useFetchRiwayatSktm = (filter: any) => {
+  return useQuery(['fetch-riwayat-sktm'], async () => await getFetchRiwayatSktmFn(filter), { enabled: true })
+}
 export const useUpdateIndigencyStatus = () => {
   const queryClient = useQueryClient()
 

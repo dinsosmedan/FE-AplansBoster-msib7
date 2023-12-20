@@ -191,3 +191,7 @@ export const STATUS_EVENT = [
   { value: 'completed', label: 'Completed' },
   { value: 'upcoming', label: 'Upcoming' }
 ]
+export const RIWAYAT_MENU = [
+  { value: 'inactive', label: 'Inactive' },
+  { value: 'in-progress', label: 'In Progress' },
+]
