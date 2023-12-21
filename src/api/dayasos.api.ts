@@ -288,7 +288,7 @@ export const getWorshipPlaceFn = async (id: string): Promise<IWorshipPlaceDetail
 }
 export const getAdministrativeAreaFn = async (order: string): Promise<any> => {
   const response = await api.get(
-    `/dashboard/dtks/count/administrative-area?limit=5&sort=${order === 'Menurun' ? 'DESC' : 'ASC'}`
+    `/dashboard/dtks/count/area-level-3?limit=5&sort=${order === 'Menurun' ? 'DESC' : 'ASC'}`
   )
   return response.data?.data
 }
