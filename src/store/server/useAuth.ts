@@ -149,6 +149,12 @@ export const useLogoutPublic = () => {
         description: 'Anda telah berhasil keluar.'
       })
       navigate('/')
+    },
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 500) {
+        useAuth.getState().removeToken()
+        window.location.href = '/user/login'
+      }
     }
   })
 }

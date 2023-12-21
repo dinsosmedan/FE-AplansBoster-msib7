@@ -46,15 +46,15 @@ export default function DtksUser() {
               desc={'Layanan Pengajuan DTKS (Data Terpadu Kesejahteraan Sosial)'}
               btnText={'Pendaftaran Pengajuan'}
               icon={HiGift}
-              href={'/'}
+              href={'/user/dtks'}
             />
           </div>
           <section className="flex flex-col gap-5 md:gap-8 w-[95%] mt-5 lg:mt-0 lg:justify-start justify-center">
             <div className="bg-white rounded-lg md:px-10 px-7 md:py-14 py-9 h-fit shadow">
-              <p className="font-semibold md:text-xl md:pb-6 pb-3">Persyaratan</p>
+              <p className="font-semibold md:text-xl md:pb-6 pb-3">File yang perlu diupload:</p>
               <ol className="list-decimal list-inside pl-3">
-                <li className="md:text-lg text-sm leading-relaxed">Foto KTP/KK</li>
-                <li className="md:text-lg text-sm leading-relaxed">Fotocopy</li>
+                <li className="md:text-lg text-sm leading-relaxed">Scan Foto KTP/KK</li>
+                <li className="md:text-lg text-sm leading-relaxed">Foto Rumah</li>
               </ol>
             </div>
             <Link to={'/user/dtks/register-dtks'}>

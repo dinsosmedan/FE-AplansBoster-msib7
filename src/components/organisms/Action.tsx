@@ -25,19 +25,19 @@ const Action = ({ onDelete, onEdit, onDetail, editText, deleteText, detailText }
       <DropdownMenuContent className="mr-5">
         {onEdit ? (
           <DropdownMenuItem className="cursor-pointer flex-1 w-full text-left hover:bg-zinc-100" onClick={onEdit}>
-            <DropdownMenuLabel className="text-primary">{editText ?? 'Edit'}</DropdownMenuLabel>
+            <DropdownMenuLabel className="text-primary w-full flex-1">{editText ?? 'Edit'}</DropdownMenuLabel>
           </DropdownMenuItem>
         ) : null}
         {onDelete ? (
           <DropdownMenuItem className="cursor-pointer flex-1 w-full text-left hover:bg-zinc-100">
-            <DropdownMenuLabel className="text-primary" onClick={onDelete}>
+            <DropdownMenuLabel className="text-primary w-full flex-1" onClick={onDelete}>
               {deleteText ?? 'Hapus'}
             </DropdownMenuLabel>
           </DropdownMenuItem>
         ) : null}
         {onDetail ? (
           <DropdownMenuItem className="cursor-pointer hover:bg-zinc-100">
-            <DropdownMenuLabel className="text-primary" onClick={onDetail}>
+            <DropdownMenuLabel className="text-primary w-full flex-1" onClick={onDetail}>
               {detailText ?? 'Detail'}
             </DropdownMenuLabel>
           </DropdownMenuItem>
