@@ -46,10 +46,10 @@ export default function DtksRegister() {
 
   return (
     <ContainerUser title={'Form Pengajuan DTKS (Data Terpadu Kesejahteraan Sosial) '}>
-      <p className="text-[30px] font-semibold mt-11">Data Individu</p>
+      <p className="text-[18px] font-semibold mt-5">Data Individu</p>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6 pt-5">
-          <div className="grid grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             <FormField
               name="name"
               control={forms.control}
@@ -187,7 +187,7 @@ export default function DtksRegister() {
               )}
             />
           </div>
-          <div className="grid grid-cols-2 gap-5 ">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <FormField
               name="areaLevel3"
               control={forms.control}
@@ -249,8 +249,8 @@ export default function DtksRegister() {
               </FormItem>
             )}
           />
-          <p className="text-[30px] font-semibold">Survey Kriteria</p>
-          <div className="grid grid-cols-2 gap-5">
+          <p className="font-semibold text-[18px] mt-5">Survey Kriteria</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <FormField
               name="question1"
               control={forms.control}
@@ -492,13 +492,13 @@ export default function DtksRegister() {
               )}
             />
           </div>
-          <p className="text-[30px] font-semibold">
+          <p className="font-semibold text-[18px] mt-5">
             Pengusulan BANSOS
-            <p className="text-[18px] text-primary font-medium">
-              *Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB
+            <p className="text-sm text-primary font-medium">
+              *Catatan: File yang diizinkan berupa jpg atau pdf. Dengan maksimal 2MB
             </p>
           </p>
-          <div className="grid grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             <FormField
               name="assistanceProgram"
               control={forms.control}
@@ -623,7 +623,7 @@ export default function DtksRegister() {
               )}
             />
           </div>
-          <div className="grid grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-12">
             <FormField
               name="indentityPath"
               control={forms.control}
@@ -634,10 +634,10 @@ export default function DtksRegister() {
                     <DropZone
                       setValue={field.onChange}
                       fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
-                      accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
+                      helperText="*Catatan: File yang diizinkan berupa jpg atau pdf. Dengan maksimal 2MB"
+                      accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'application/pdf': ['.pdf'] }}
                       maxFiles={1}
-                      id="fotoKtp"
+                      id="indentityPath"
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
@@ -654,10 +654,10 @@ export default function DtksRegister() {
                     <DropZone
                       setValue={field.onChange}
                       fileValue={field.value as unknown as FileWithPreview[]}
-                      helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
-                      accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
+                      helperText="*Catatan: File yang diizinkan berupa jpg atau pdf. Dengan maksimal 2MB"
+                      accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'application/pdf': ['.pdf'] }}
                       maxFiles={1}
-                      id="fotoKtp"
+                      id="housePath"
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
