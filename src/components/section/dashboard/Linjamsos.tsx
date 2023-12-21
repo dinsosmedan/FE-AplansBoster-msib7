@@ -100,7 +100,7 @@ const ChartPenanganan = () => {
   const { data, isLoading } = useVulnerableGroup()
 
   // if (isLoading) return <Loading />
-  const total = data.map((val: any) => val.count)
+  const total = data ? data.map((val: any) => val.count) : []
   const label = data ? data.map((val: any) => val.budgetYear.toString()) : []
   // const values = Object.values(data)
   // console.log(data);
