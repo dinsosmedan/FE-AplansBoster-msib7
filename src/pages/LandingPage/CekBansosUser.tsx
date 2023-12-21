@@ -33,7 +33,7 @@ export default function CekBansosUser() {
   return (
     <section className="bg-[#F9F9F9]">
       {isFetchingAssistance && <Loading />}
-      <section className="h-[250px] w-full bg-[url('@/assets/images/bg-cek-bansos.svg')] bg-cover relative">
+      <section className="h-[250px] w-full bg-[url('@/assets/images/bg-cek-bansos.webp')] bg-cover relative">
         <div className="flex items-center justify-center h-full">
           <h1 className="lg:text-5xl md:text-3xl text-3xl font-bold text-white">
             Cek Bantuan <span className="text-[#FFB60A]">Sosial</span>
