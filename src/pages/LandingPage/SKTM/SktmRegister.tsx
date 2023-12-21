@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from '@/components/ui/select'
 import DropZone, { type FileWithPreview } from '../../../components/atoms/DropZone'
 import { DtksSchoolValidation, type DtksSchoolFields } from '@/lib/validations/landingPage/public.validation'
-import { useCreateDTKSSchool, useGetAssistanceCheck, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { useCreateDTKSSchool, useGetIdentityCheck, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -38,7 +38,7 @@ export default function SktmRegister() {
   const { mutate: create, isLoading: isLoadingCreate } = useCreateDTKSSchool()
   const identityNumber = forms.watch('peopleConcernedIdentityNumber')
 
-  const { data: assistance, isLoading: isLoadingAssistance, refetch } = useGetAssistanceCheck(identityNumber, false)
+  const { data: assistance, isLoading: isLoadingAssistance, refetch } = useGetIdentityCheck(identityNumber, false)
   const areaLevel3 = forms.watch('peopleConcernedAreaLevel3')
   const { data: kecamatanLists } = useGetKecamatan()
   const { data: kelurahanLists } = useGetKelurahan(areaLevel3)

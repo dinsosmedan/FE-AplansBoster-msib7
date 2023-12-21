@@ -7,6 +7,8 @@ import {
 } from '@/lib/types/beneficary.type'
 import api from './axiosInstance'
 import { type beneficaryFields } from '@/lib/validations/beneficary.validation'
+import axios from 'axios'
+import ENV from '@/lib/environment'
 
 export interface BeneficiaryQuery {
   page?: number
@@ -15,6 +17,14 @@ export interface BeneficiaryQuery {
   q?: string
   isDtks: string
 }
+
+const apiPublic = axios.create({
+  baseURL: ENV.apiUrl,
+  headers: { Accept: 'application/json' }
+})
+
+apiPublic.defaults.headers.post['Content-Type'] = 'application/json'
+
 export const getBeneficiaryFn = async ({
   page,
   q,
@@ -41,7 +51,7 @@ export const showAssistanceHistoryFn = async (nik: string): Promise<IAssistanceH
 }
 
 export const showIdentityCheckFn = async (nik: string): Promise<IBeneficary> => {
-  const response = await api.get(`/identity/check/nik/${nik}`)
+  const response = await apiPublic.get(`/identity/check/nik/${nik}`)
   return response.data?.data
 }
 
