@@ -23,8 +23,7 @@ export default function LandingPage() {
                 <span className="text-[#FFB60A] ">Aplans Boster</span>
               </h1>
               <p className="md:text-xl text-sm lg:text-start text-center mt-8 mb-20 leading-relaxed">
-                Selamat datang di di Aplikasi Pelayanan Sosial Berbasis Online Terintegrasi. <br /> Dinas Sosial Kota
-                Medan
+                Selamat datang di Aplikasi Pelayanan Sosial Berbasis Online Terintegrasi. <br /> Dinas Sosial Kota Medan
               </p>
               <div className=" hidden lg:block">
                 <Button
