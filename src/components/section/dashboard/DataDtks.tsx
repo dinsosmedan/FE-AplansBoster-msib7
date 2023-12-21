@@ -38,7 +38,9 @@ const TabelDtks = () => {
   const { data, refetch, isLoading } = useGetAdministrativeArea(order)
 
   // if (isLoading) return <Loading />
+  // console.log(data.data);
 
+  // return
   const onChange = async (values: any) => {
     forms.setValue('filter', values)
     setorder(values)
@@ -86,7 +88,7 @@ const TabelDtks = () => {
                 </form>
               </Form>
             </div>
-            <LongCard.Tabel data={data} />
+            <LongCard.Tabel data={data.data} />
           </div>
         )}
       </LongCard>

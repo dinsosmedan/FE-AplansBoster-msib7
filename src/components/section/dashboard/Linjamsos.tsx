@@ -52,6 +52,8 @@ const ChartSktm = () => {
   const label = data ? data.map((val: any) => val.budgetYear.toString()) : []
   const value = data ? data.map((val: any) => val.count.toString()) : []
 
+  // console.log(data);
+
   return (
     <LongCard props={['SKTM', 'Persentasi Data SKTM Berdasarkan DTKS']}>
       {isLoading ? (
@@ -60,7 +62,7 @@ const ChartSktm = () => {
         <LongCard.Chart
           // data={[30, 15]}
           data={value}
-          isPercent={true}
+          // isPercent={true}
           // label={['DTKS', 'Non DTKS']}
           label={label}
           backgroundColor={['#F94144', '#F3722C']}
@@ -75,6 +77,8 @@ const ChartBbp = () => {
   const label = data ? data.map((val: any) => val.budgetYear.toString()) : []
   const value = data ? data.map((val: any) => val.count.toString()) : []
 
+  console.log(data);
+
   return (
     <LongCard props={['Bantuan Biaya Pendidikan', 'Persentasi Data Biaya Pendidikan']}>
       {isLoading ? (
@@ -83,7 +87,7 @@ const ChartBbp = () => {
         <LongCard.Chart
           // data={[20, 5, 13]}
           data={value}
-          isPercent={true}
+          // isPercent={true}
           // label={['Diterima', 'Diterima', 'Prelist']}
           label={label}
           backgroundColor={['#F94144', '#F3722C', '#F9C74F']}
@@ -96,9 +100,10 @@ const ChartPenanganan = () => {
   const { data, isLoading } = useVulnerableGroup()
 
   // if (isLoading) return <Loading />
-  // const total = data.map((val: any) => val.count)
+  const total = data.map((val: any) => val.count)
   const label = data ? data.map((val: any) => val.budgetYear.toString()) : []
   // const values = Object.values(data)
+  // console.log(data);
 
   return (
     <>
@@ -109,7 +114,8 @@ const ChartPenanganan = () => {
           </>
         ) : (
           <LongCard.Chart
-            data={[12, 21, 22, 31, 21]}
+            // data={[12, 21, 22, 31, 21]}
+            data={total}
             label={label}
             backgroundColor={['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']}
           />
@@ -120,6 +126,8 @@ const ChartPenanganan = () => {
 }
 const CardData = () => {
   const { data, isLoading } = useCountBbp()
+
+  console.log(data);
 
   return (
     <>
@@ -135,13 +143,13 @@ const CardData = () => {
       ) : (
         <>
           <div className="grid grid-cols-3 gap-5 mt-5">
-            <BasicCard props={['Bantuan Biaya Pendidikan', data.premiumAssistanceBeneficiary, 'Data']} />
+            <BasicCard props={['Bantuan Biaya Pendidikan', data.tuitionAssistance, 'Data']} />
             <BasicCard props={['Total Penangan Kelompok Rentan', data.vulnerableGroupHandling, 'Data']} />
             <BasicCard props={['Total SKTM', data.indigencyCertificate, 'Data']} />
           </div>
           <div className="grid grid-cols-2 gap-5 mt-5">
-            <BasicCard props={['Bantuan PBI', data.tuitionAssistance, 'Data']} />
-            <BasicCard props={['Total PKH', data.familyHopePrograms, 'Data']} />
+            <BasicCard props={['Bantuan PBI', data.premiumAssistanceBeneficiary, 'Data']} />
+            <BasicCard props={['Total PKH', data.familyHopeProgram, 'Data']} />
           </div>
         </>
       )}
