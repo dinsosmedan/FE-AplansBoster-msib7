@@ -33,6 +33,7 @@ const Kube = () => {
 
   React.useEffect(() => {
     setBreadcrumb([
+      { url: '/data-penerima/dayasos', label: 'Dayasos & PFM' },
       { label: 'Dayasos & PFM', url: '/data-penerima/dayasos' },
       { label: 'Kube', url: '/data-penerima/dayasos/kube' }
     ])

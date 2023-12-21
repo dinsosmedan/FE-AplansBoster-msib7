@@ -19,7 +19,7 @@ import {
   useGetStudyPrograms,
   useGetUniversities
 } from '@/store/server'
-import { Loading } from '@/components'
+import { Loading, SearchSelect } from '@/components'
 import * as React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
@@ -271,20 +271,18 @@ export default function BbpRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="rounded-md">
-                        <SelectValue placeholder="Pilih Kecamatan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {kecamatanLists?.map((kecamatan) => (
-                        <SelectItem key={kecamatan.id} value={kecamatan.id}>
-                          {kecamatan.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      width="md:w-[300px] lg:w-[700px]"
+                      className="rounded-md"
+                      placeholder="Pilih Kecamatan"
+                      options={
+                        kecamatanLists?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
+                      }
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -295,20 +293,18 @@ export default function BbpRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value} disabled={!areaLevel3 || !kelurahanLists}>
-                    <FormControl>
-                      <SelectTrigger className="rounded-md">
-                        <SelectValue placeholder="Pilih Kelurahan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {kelurahanLists?.map((kelurahan) => (
-                        <SelectItem key={kelurahan.id} value={kelurahan.id}>
-                          {kelurahan.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      width="md:w-[300px] lg:w-[700px]"
+                      className="rounded-md"
+                      placeholder="Pilih Kelurahan"
+                      options={
+                        kelurahanLists?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []
+                      }
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -337,20 +333,18 @@ export default function BbpRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Perguruan Tinggi</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="rounded-md">
-                        <SelectValue placeholder="Pilih Perguruan Tinggi" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {universities?.map((university) => (
-                        <SelectItem key={university.id} value={university.id}>
-                          {university.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      width="md:w-[300px] lg:w-[700px]"
+                      className="rounded-md"
+                      placeholder="Pilih Perguruan Tinggi"
+                      options={
+                        universities?.map((university) => ({ label: university.name, value: university.id })) ?? []
+                      }
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -361,20 +355,20 @@ export default function BbpRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Prodi</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value} disabled={!university || !studyPrograms}>
-                    <FormControl>
-                      <SelectTrigger className="rounded-md">
-                        <SelectValue placeholder="Pilih Prodi" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {studyPrograms?.map((studyProgram) => (
-                        <SelectItem key={studyProgram.id} value={studyProgram.id}>
-                          {studyProgram.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      width="md:w-[300px] lg:w-[700px]"
+                      className="rounded-md"
+                      disabled={!university || !studyPrograms}
+                      placeholder="Pilih Prodi"
+                      options={
+                        studyPrograms?.map((studyProgram) => ({ label: studyProgram.name, value: studyProgram.id })) ??
+                        []
+                      }
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -447,20 +441,16 @@ export default function BbpRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Nama Bank</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="rounded-md">
-                        <SelectValue placeholder="Pilih Nama Bank" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {bankLists?.map((bank) => (
-                        <SelectItem key={bank.id} value={bank.id}>
-                          {bank.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      width="md:w-[300px] lg:w-[700px]"
+                      className="rounded-md"
+                      placeholder="Pilih Nama Bank"
+                      options={bankLists?.map((bank) => ({ label: bank.name, value: bank.id })) ?? []}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -755,6 +745,7 @@ export default function BbpRegister() {
               variant="outline"
               className="border-primary text-primary px-8 py-6 rounded-lg md:w-[50%] lg:w-[15%] w-full"
               type="button"
+              onClick={() => navigate(-1)}
             >
               <p className="text-base font-semibold">Kembali</p>
             </Button>

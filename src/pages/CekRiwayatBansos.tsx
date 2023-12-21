@@ -192,12 +192,12 @@ const TableRiwayatBansos = ({ data }: TableRiwayatBansosProps) => {
         </TableHeader>
         <TableBody>
           {data.map((item, index) => (
-            <TableRow key={item.id}>
+            <TableRow key={item?.id}>
               <TableCell className="font-medium">-</TableCell>
-              <TableCell>{item.product.name}</TableCell>
-              <TableCell>{item.product.code}</TableCell>
-              <TableCell>{item.year}</TableCell>
-              <TableCell className="capitalize">{item.status}</TableCell>
+              <TableCell>{item?.product?.name}</TableCell>
+              <TableCell>{item?.product?.code}</TableCell>
+              <TableCell>{item?.year}</TableCell>
+              <TableCell className="capitalize">{item?.status}</TableCell>
               <TableCell className="flex justify-center items-center">
                 <Button variant="base" size="icon" className="mx-auto" onClick={() => handleClick(index)}>
                   <HiOutlineInformationCircle className="text-primary text-xl" />
@@ -224,7 +224,7 @@ const TableRiwayatBansos = ({ data }: TableRiwayatBansosProps) => {
             </div>
             <div>
               <p className="text-sm font-bold">Jenis Layanan</p>
-              <p className="text-base capitalize">{data[index].detail.type}</p>
+              <p className="text-base capitalize">{data[index]?.detail?.type}</p>
             </div>
             <div>
               <p className="text-sm font-bold">Nominal Bantuan</p>

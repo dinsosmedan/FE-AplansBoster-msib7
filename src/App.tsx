@@ -214,9 +214,9 @@ export default function App() {
         <Route element={<ProtectedFromDashboard />}>
           <Route element={<UserLayout />}>
             <Route path="/" element={<LandingPage />} />
-            <Route path="cek-bansos" element={<CekBansosUser />} />
 
             <Route path="/user">
+              <Route path="cek-bansos" element={<CekBansosUser />} />
               <Route element={<UserProtectedAuth />}>
                 <Route element={<AuthUserLayout />}>
                   <Route path="login" element={<LoginUser />} />

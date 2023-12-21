@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
+import { formatToView } from '@/lib/services/formatDate'
 import { useGetBeneficiary, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
@@ -208,6 +209,7 @@ export default function DataMaster() {
             <TableHead className="text-white font-bold text-[15px]">Kecamatan</TableHead>
             <TableHead className="text-white font-bold text-[15px]">Kelurahan</TableHead>
             <TableHead className="text-white font-bold text-[15px]">Status</TableHead>
+            <TableHead className="text-white font-bold text-[15px]">Tanggal Update</TableHead>
             <TableHead className="text-white font-bold text-[15px]">Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -226,6 +228,7 @@ export default function DataMaster() {
                 <TableCell className="text-center bg-[#F9FAFC]" position="center">
                   {item.isDtks ? 'DTKS' : 'Non DTKS'}
                 </TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]">{formatToView(item.createdAt) ?? '-'}</TableCell>
                 <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                   <Link to={`/data-master/info-data-master/${item.id}`}>
                     <Button variant="base" size="icon">

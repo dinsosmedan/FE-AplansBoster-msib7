@@ -12,6 +12,7 @@ import FilterLayanan from './FilterLayanan'
 import TextEditor from './TextEditor'
 import Status from './Status'
 import Markdown from './Markdown'
+import SearchSelect from './SearchSelect'
 
 export {
   Loading,
@@ -27,5 +28,6 @@ export {
   FilterLayanan,
   TextEditor,
   Status,
-  Markdown
+  Markdown,
+  SearchSelect
 }
