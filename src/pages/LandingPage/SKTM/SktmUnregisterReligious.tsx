@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea'
 import DropZone, { type FileWithPreview } from '../../../components/atoms/DropZone'
 import { NonDtksCourtsValidation, type NonDtksCourtsFields } from '@/lib/validations/landingPage/public.validation'
 import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from '@/components/ui/select'
-import { useCreateNonDTKSCourts, useGetAssistanceCheck, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { useCreateNonDTKSCourts, useGetIdentityCheck, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -22,7 +22,7 @@ export default function SktmReligious() {
 
   const { mutate: create, isLoading: isLoadingCreate } = useCreateNonDTKSCourts()
   const identityNumber = forms.watch('peopleConcernedIdentityNumber')
-  const { data: assistance, isLoading: isLoadingAssistance, refetch } = useGetAssistanceCheck(identityNumber, false)
+  const { data: assistance, isLoading: isLoadingAssistance, refetch } = useGetIdentityCheck(identityNumber, false)
 
   const areaLevel3 = forms.watch('peopleConcernedAreaLevel3')
   const { data: kecamatanLists } = useGetKecamatan()

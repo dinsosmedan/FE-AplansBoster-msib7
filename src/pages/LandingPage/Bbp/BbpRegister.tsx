@@ -11,8 +11,8 @@ import DropZone, { type FileWithPreview } from '../../../components/atoms/DropZo
 import DatePicker from './../../../components/atoms/DatePicker'
 import {
   useCreatePublicEventTuition,
-  useGetAssistanceCheck,
   useGetBank,
+  useGetIdentityCheck,
   useGetKecamatan,
   useGetKelurahan,
   useGetPublicEventTuition,
@@ -27,7 +27,7 @@ import {
   type publicEventTuitionFields
 } from '@/lib/validations/landingPage/public.validation'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { formatDateToString } from '@/lib/services/formatDate'
+import { formatDateToString, formatStringToDate } from '@/lib/services/formatDate'
 
 export default function BbpRegister() {
   const navigate = useNavigate()
@@ -47,7 +47,7 @@ export default function BbpRegister() {
 
   const { data, isLoading, isSuccess } = useGetPublicEventTuition()
   const { mutate: create, isLoading: isLoadingCreate } = useCreatePublicEventTuition()
-  const { data: assistance, isLoading: isLoadingAssistance, refetch } = useGetAssistanceCheck(identityNumber, false)
+  const { data: assistance, isLoading: isLoadingAssistance, refetch } = useGetIdentityCheck(identityNumber, false)
 
   const { data: kecamatanLists } = useGetKecamatan()
   const { data: kelurahanLists } = useGetKelurahan(areaLevel3)
@@ -59,9 +59,12 @@ export default function BbpRegister() {
   React.useEffect(() => {
     if (assistance) {
       forms.setValue('name', assistance?.name)
+      forms.setValue('birthPlace', assistance.birthPlace)
       forms.setValue('address', assistance?.address?.fullAddress)
       forms.setValue('areaLevel3', assistance?.address?.areaLevel3?.id as string)
       forms.setValue('areaLevel4', assistance?.address?.areaLevel4?.id as string)
+      forms.setValue('birthDate', formatStringToDate(assistance?.birthDate))
+      forms.setValue('gender', assistance.gender)
     }
   }, [assistance])
 
