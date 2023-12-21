@@ -32,6 +32,7 @@ const DataHibah = () => {
 
   React.useEffect(() => {
     setBreadcrumb([
+      { url: '/data-penerima', label: 'Data Penerima' },
       { label: 'Dayasos & PFM', url: '/data-penerima/dayasos' },
       { label: 'BHO', url: '/data-penerima/dayasos/bho' }
     ])

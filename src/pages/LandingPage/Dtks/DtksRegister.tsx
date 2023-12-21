@@ -14,8 +14,11 @@ import { type PublicDTKSFields, publicEventDTKS } from '@/lib/validations/landin
 import { yupResolver } from '@hookform/resolvers/yup'
 import { formatDateToString } from '@/lib/services/formatDate'
 import { useAlert } from '@/store/client'
+import { useNavigate } from 'react-router-dom'
+import { SearchSelect } from '@/components'
 
 export default function DtksRegister() {
+  const navigate = useNavigate()
   const { alert } = useAlert()
   const forms = useForm<PublicDTKSFields>({
     mode: 'onTouched',
@@ -57,7 +60,13 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Anda" />
+                    <Input
+                      {...field}
+                      value={field.value ?? ''}
+                      type="text"
+                      placeholder="Masukkan Nama Anda"
+                      className="rounded-md"
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -69,7 +78,13 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">NIK </FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Cari NIK" />
+                    <Input
+                      {...field}
+                      value={field.value ?? ''}
+                      className="rounded-md"
+                      type="number"
+                      placeholder="Cari NIK"
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -81,7 +96,13 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">No. KK</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan No. KK " />
+                    <Input
+                      {...field}
+                      value={field.value ?? ''}
+                      className="rounded-md"
+                      type="text"
+                      placeholder="Masukkan No. KK "
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -93,7 +114,13 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Tempat Lahir</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tempat Lahir " />
+                    <Input
+                      {...field}
+                      value={field.value ?? ''}
+                      className="rounded-md"
+                      type="text"
+                      placeholder="Masukkan Tempat Lahir "
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -104,7 +131,12 @@ export default function DtksRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tanggal Lahir</FormLabel>
-                  <DatePicker selected={field.value as Date} onChange={field.onChange} placeholder="dd/mm/yyy" />
+                  <DatePicker
+                    className="rounded-md"
+                    selected={field.value as Date}
+                    onChange={field.onChange}
+                    placeholder="dd/mm/yyy"
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -116,7 +148,13 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Nama Ibu Kandung</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukan Nama Ibu Kandung" />
+                    <Input
+                      {...field}
+                      value={field.value ?? ''}
+                      className="rounded-md"
+                      type="text"
+                      placeholder="Masukan Nama Ibu Kandung"
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -128,7 +166,7 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Jenis Kelamin</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <SelectTrigger>
+                    <SelectTrigger className="rounded-md">
                       <SelectValue placeholder="Pilih Jenis Kelamin" />
                     </SelectTrigger>
                     <SelectContent>
@@ -148,14 +186,14 @@ export default function DtksRegister() {
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="rounded-md">
                           <SelectValue placeholder="Pilih Jenis Perkerjaan" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="m@example.com">Krisna Asu</SelectItem>
+                        {/* <SelectItem value="m@example.com">Krisna Asu</SelectItem>
                         <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                        <SelectItem value="m@support.com">The Little Krishna</SelectItem>
+                        <SelectItem value="m@support.com">The Little Krishna</SelectItem> */}
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -171,7 +209,7 @@ export default function DtksRegister() {
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="rounded-md">
                           <SelectValue placeholder="Pilih Status Pernikahan" />
                         </SelectTrigger>
                       </FormControl>
@@ -194,20 +232,18 @@ export default function DtksRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Kecamatan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {listKecamatan?.map((kecamatan) => (
-                        <SelectItem key={kecamatan.id} value={kecamatan.id}>
-                          {kecamatan.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      width="md:w-[300px] lg:w-[700px]"
+                      className="rounded-md"
+                      placeholder="Pilih Kecamatan"
+                      options={
+                        listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
+                      }
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />
@@ -218,20 +254,17 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={!areaLevel3}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kelurahan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKelurahan?.map((kelurahan) => (
-                          <SelectItem key={kelurahan.id} value={kelurahan.id}>
-                            {kelurahan.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      disabled={!areaLevel3}
+                      width="md:w-[300px] lg:w-[700px]"
+                      className="rounded-md"
+                      placeholder="Pilih Kelurahan"
+                      options={
+                        listKelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []
+                      }
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -244,7 +277,12 @@ export default function DtksRegister() {
               <FormItem>
                 <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
                 <FormControl>
-                  <Textarea {...field} value={field.value ?? ''} placeholder="Masukan Alamat Lengkap Anda" />
+                  <Textarea
+                    {...field}
+                    value={field.value ?? ''}
+                    className="rounded-md"
+                    placeholder="Masukan Alamat Lengkap Anda"
+                  />
                 </FormControl>
               </FormItem>
             )}
@@ -262,7 +300,7 @@ export default function DtksRegister() {
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="rounded-md">
                           <SelectValue placeholder="Pilih Jawaban" />
                         </SelectTrigger>
                       </FormControl>
@@ -286,7 +324,7 @@ export default function DtksRegister() {
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="rounded-md">
                           <SelectValue placeholder="Pilih Jawaban" />
                         </SelectTrigger>
                       </FormControl>
@@ -310,7 +348,7 @@ export default function DtksRegister() {
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="rounded-md">
                           <SelectValue placeholder="Pilih Jawaban" />
                         </SelectTrigger>
                       </FormControl>
@@ -334,7 +372,7 @@ export default function DtksRegister() {
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="rounded-md">
                           <SelectValue placeholder="Pilih Jawaban" />
                         </SelectTrigger>
                       </FormControl>
@@ -358,7 +396,7 @@ export default function DtksRegister() {
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="rounded-md">
                           <SelectValue placeholder="Pilih Jawaban" />
                         </SelectTrigger>
                       </FormControl>
@@ -382,7 +420,7 @@ export default function DtksRegister() {
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="rounded-md">
                           <SelectValue placeholder="Pilih Jawaban" />
                         </SelectTrigger>
                       </FormControl>
@@ -406,7 +444,7 @@ export default function DtksRegister() {
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="rounded-md">
                           <SelectValue placeholder="Pilih Jawaban" />
                         </SelectTrigger>
                       </FormControl>
@@ -430,7 +468,7 @@ export default function DtksRegister() {
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="rounded-md">
                           <SelectValue placeholder="Pilih Jawaban" />
                         </SelectTrigger>
                       </FormControl>
@@ -454,7 +492,7 @@ export default function DtksRegister() {
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="rounded-md">
                           <SelectValue placeholder="Pilih Jawaban" />
                         </SelectTrigger>
                       </FormControl>
@@ -478,7 +516,7 @@ export default function DtksRegister() {
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="rounded-md">
                           <SelectValue placeholder="Pilih Jawaban" />
                         </SelectTrigger>
                       </FormControl>
@@ -508,7 +546,7 @@ export default function DtksRegister() {
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="rounded-md">
                           <SelectValue placeholder="Pilih Program Bansos" />
                         </SelectTrigger>
                       </FormControl>
@@ -531,7 +569,7 @@ export default function DtksRegister() {
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="rounded-md">
                           <SelectValue placeholder="Pilih Status Disabilitas" />
                         </SelectTrigger>
                       </FormControl>
@@ -554,7 +592,12 @@ export default function DtksRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tanggal Hamil</FormLabel>
-                  <DatePicker selected={field.value as Date} onChange={field.onChange} placeholder="dd/mm/yyy" />
+                  <DatePicker
+                    selected={field.value as Date}
+                    onChange={field.onChange}
+                    placeholder="dd/mm/yyy"
+                    className="rounded-md"
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -567,7 +610,7 @@ export default function DtksRegister() {
                   <FormLabel className="font-semibold dark:text-white">Status Orang Tua</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="rounded-md">
                         <SelectValue placeholder="Status Orang Tua" />
                       </SelectTrigger>
                     </FormControl>
@@ -597,7 +640,7 @@ export default function DtksRegister() {
                   <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="rounded-md">
                           <SelectValue placeholder="Status Adat Terpencil" />
                         </SelectTrigger>
                       </FormControl>
@@ -617,7 +660,13 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Nama Suku</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukan Nama Suku" />
+                    <Input
+                      {...field}
+                      value={field.value ?? ''}
+                      className="rounded-md"
+                      type="text"
+                      placeholder="Masukan Nama Suku"
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -629,7 +678,7 @@ export default function DtksRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Foto KTP/KK</FormLabel>
+                  <FormLabel className="text-md">Foto KTP/KK</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -649,7 +698,7 @@ export default function DtksRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Foto Rumah</FormLabel>
+                  <FormLabel className="text-md">Foto Rumah</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -665,13 +714,22 @@ export default function DtksRegister() {
               )}
             />
           </div>
-          <div className="flex justify-end gap-7 items-center pt-10">
-            <Button variant="outline" className="border-primary text-primary w-[165px] h-[60px]">
-              <p className="text-xl font-semibold">Kembali</p>
+          <div className="md:flex justify-end gap-7 items-center pt-10">
+            <Button
+              variant="outline"
+              className="border-primary text-primary px-8 py-6 rounded-lg md:w-fit w-full"
+              type="button"
+              onClick={() => navigate(-1)}
+            >
+              <p className="text-base font-semibold">Kembali</p>
             </Button>
-            <Button className="w-[275px] h-[60px]" loading={isLoading}>
-              <p className="text-xl font-semibold">Kirim Pengajuan</p>
-              <HiPaperAirplane className="w-6 h-6 ml-2" />
+            <Button
+              className="px-8 py-6 rounded-lg items-center gap-3 md:w-fit w-full mt-5 md:mt-0"
+              loading={isLoading}
+              type="submit"
+            >
+              <p className="text-base font-semibold flex-1">Kirim Pengajuan</p>
+              <HiPaperAirplane className="w-5 h-5" />
             </Button>
           </div>
         </form>
