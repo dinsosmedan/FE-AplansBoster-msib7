@@ -11,7 +11,7 @@ import DropZone, { type FileWithPreview } from '../../../components/atoms/DropZo
 import { NonDtksSchoolValidation, type NonDtksSchoolFields } from '@/lib/validations/landingPage/public.validation'
 import {
   useCreateIndigencyCertificateApplicationNoDTKS,
-  useGetAssistanceCheck,
+  useGetIdentityCheck,
   useGetKecamatan,
   useGetKelurahan
 } from '@/store/server'
@@ -31,7 +31,7 @@ export default function SktmUnregister() {
   const areaLevel3 = forms.watch('peopleConcernedAreaLevel3')
 
   const { mutate: create, isLoading: isLoadingCreate } = useCreateIndigencyCertificateApplicationNoDTKS()
-  const { data: assistance, isLoading: isLoadingAssistance, refetch } = useGetAssistanceCheck(identityNumber, false)
+  const { data: assistance, isLoading: isLoadingAssistance, refetch } = useGetIdentityCheck(identityNumber, false)
   const { data: kecamatanLists } = useGetKecamatan()
   const { data: kelurahanLists } = useGetKelurahan(areaLevel3)
 

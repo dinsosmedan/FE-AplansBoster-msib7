@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea'
 import DropZone, { type FileWithPreview } from '../../../components/atoms/DropZone'
 import { DtksCourtsValidation, type DtksCourtsFields } from '@/lib/validations/landingPage/public.validation'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { useCreateDTKSCourtPublic, useGetAssistanceCheck, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { useCreateDTKSCourtPublic, useGetIdentityCheck, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import * as React from 'react'
 import { useNavigate } from 'react-router'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -34,7 +34,7 @@ export default function SktmUnregisterReligious() {
     isLoading: isLoadingAssistance,
     refetch,
     isError
-  } = useGetAssistanceCheck(identityNumber, false)
+  } = useGetIdentityCheck(identityNumber, false)
 
   React.useEffect(() => {
     if (assistance) {
