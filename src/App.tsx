@@ -49,7 +49,8 @@ import {
   AuthUserLayout,
   UserProtectedAuth,
   ProtectedFromDashboard,
-  ProtectedFromUser
+  ProtectedFromUser,
+  UserProtectedRoute
 } from './components'
 
 import LayananLinjamsos from './pages/Layanan/LayananLinjamsos'
@@ -213,6 +214,8 @@ export default function App() {
         <Route element={<ProtectedFromDashboard />}>
           <Route element={<UserLayout />}>
             <Route path="/" element={<LandingPage />} />
+            <Route path="cek-bansos" element={<CekBansosUser />} />
+
             <Route path="/user">
               <Route element={<UserProtectedAuth />}>
                 <Route element={<AuthUserLayout />}>
@@ -226,40 +229,38 @@ export default function App() {
                 </Route>
               </Route>
 
-              <Route path="sktm">
-                <Route index element={<UserSktm />} />
-                <Route path="register" element={<SktmRegister />} />
-                <Route path="unregister" element={<SktmUnregister />} />
-                <Route path="register-religious" element={<SktmReligious />} />
-                <Route path="unregister-religious" element={<SktmUnregisterReligious />} />
-                <Route path="dtks-school" element={<DtksSchool />} />
-                <Route path="dtks-school/form" element={<SktmRegister />} />
-                <Route path="non-dtks-school" element={<NonDtksSchool />} />
-                <Route path="non-dtks-school/form" element={<SktmUnregister />} />
-                <Route path="dtks-courts" element={<DtksCourts />} />
-                <Route path="dtks-courts/form" element={<SktmReligious />} />
-                <Route path="non-dtks-courts" element={<NonDtksCourts />} />
-                <Route path="non-dtks-courts/form" element={<SktmUnregisterReligious />} />
-              </Route>
+              <Route element={<UserProtectedRoute />}>
+                <Route path="sktm">
+                  <Route index element={<UserSktm />} />
+                  <Route path="register" element={<SktmRegister />} />
+                  <Route path="unregister" element={<SktmUnregister />} />
+                  <Route path="register-religious" element={<SktmReligious />} />
+                  <Route path="unregister-religious" element={<SktmUnregisterReligious />} />
+                  <Route path="dtks-school" element={<DtksSchool />} />
+                  <Route path="dtks-school/form" element={<SktmRegister />} />
+                  <Route path="non-dtks-school" element={<NonDtksSchool />} />
+                  <Route path="non-dtks-school/form" element={<SktmUnregister />} />
+                  <Route path="dtks-courts" element={<DtksCourts />} />
+                  <Route path="dtks-courts/form" element={<SktmReligious />} />
+                  <Route path="non-dtks-courts" element={<NonDtksCourts />} />
+                  <Route path="non-dtks-courts/form" element={<SktmUnregisterReligious />} />
+                </Route>
 
-              <Route path="bbp">
-                <Route index element={<BbpUser />} />
-                <Route path=":id" element={<BbpUser />} />
-                <Route path="form/:id" element={<BbpRegister />} />
-              </Route>
+                <Route path="bbp">
+                  <Route index element={<BbpUser />} />
+                  <Route path=":id" element={<BbpUser />} />
+                  <Route path="form/:id" element={<BbpRegister />} />
+                </Route>
 
-              <Route path="dtks">
-                <Route index element={<DtksUser />} />
-                <Route path="register-dtks" element={<DtksRegister />} />
-              </Route>
-
-              <Route path="submission-history" element={<SubmissionHistory />} />
-              <Route path="cek-bansos" element={<CekBansosUser />} />
-              <Route path="submission-history" element={<SubmissionHistory />} />
-
-              <Route path="profile" element={<ProfileLayout />}>
-                <Route index element={<ChangeProfile />} />
-                <Route path="change-password" element={<ChangePassword />} />
+                <Route path="dtks">
+                  <Route index element={<DtksUser />} />
+                  <Route path="register-dtks" element={<DtksRegister />} />
+                </Route>
+                <Route path="submission-history" element={<SubmissionHistory />} />
+                <Route path="profile" element={<ProfileLayout />}>
+                  <Route index element={<ChangeProfile />} />
+                  <Route path="change-password" element={<ChangePassword />} />
+                </Route>
               </Route>
             </Route>
           </Route>

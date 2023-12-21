@@ -119,7 +119,9 @@ export default function NonDtksSchool() {
                 >
                   <div className="mt-14 pb-5 px-7">
                     <HiAcademicCap className="w-[70px] h-[70px] text-primary" />
-                    <p className="text-xl font-semibold py-[26px]">{item.applicationCategory}</p>
+                    <p className="text-xl font-semibold py-[26px]">
+                      SKTM Untuk Sekolah / Universitas (Tidak Terdaftar DTKS)
+                    </p>
                     <Button className="disabled:bg-black w-full h-[60px]" disabled>
                       <p className="text-xl text-white capitalize">{item.applicationStatus}</p>
                     </Button>

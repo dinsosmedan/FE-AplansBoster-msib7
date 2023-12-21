@@ -36,6 +36,8 @@ export default function BbpUser() {
 
   if (isLoading || isLoadingDetails) return <Loading />
 
+  console.log(data)
+
   return (
     <section className="bg-[#F9F9F9] lg:px-10 py-[38px] pb-[200px]">
       <Tabs defaultValue="open">
@@ -68,6 +70,8 @@ export default function BbpUser() {
                   'lg:w-[400px] w-[90%] shadow-sm',
                   item.id === id && 'border-2 border-primary bg-[#F9F4F5]'
                 )}
+                quota={item.quota}
+                filledQuota={item.filledQuota}
                 title={item.batch}
                 desc={item.eventDescription}
                 btnText="Pendaftaran Pengajuan"

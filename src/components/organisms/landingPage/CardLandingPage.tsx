@@ -13,6 +13,8 @@ interface CardLandingPageProps {
   href: string
   className?: string
   isHadButtonIcon?: boolean
+  quota?: number
+  filledQuota?: number
 }
 
 export default function CardLandingPage({
@@ -23,9 +25,12 @@ export default function CardLandingPage({
   icon: Icon,
   href,
   className,
-  isHadButtonIcon = true
+  isHadButtonIcon = true,
+  quota,
+  filledQuota
 }: CardLandingPageProps) {
   const navigate = useNavigate()
+  console.log({ quota, filledQuota })
 
   return (
     <article
@@ -38,6 +43,13 @@ export default function CardLandingPage({
         className
       )}
     >
+      {quota !== undefined && filledQuota !== undefined ? (
+        <div className="absolute top-4 right-4 px-2 py-1 bg-primary rounded-md">
+          <p className="text-white text-sm">
+            {filledQuota.toString()} / {quota.toString()}
+          </p>
+        </div>
+      ) : null}
       {Icon && <Icon className="md:text-[68px] text-[48px] text-primary" />}
       <h3 className="font-semibold md:text-xl text-md">{title}</h3>
       {desc && (
