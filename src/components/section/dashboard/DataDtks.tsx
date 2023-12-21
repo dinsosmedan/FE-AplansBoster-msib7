@@ -108,7 +108,7 @@ const ChartJenisKelamin = () => {
         ) : (
           <LongCard.Chart
             data={Object.values(data)}
-            isPercent={true}
+            // isPercent={true}
             label={['Perempuan', 'Laki-laki']}
             backgroundColor={['#F94144', '#F3722C']}
           />
@@ -130,7 +130,7 @@ const ChartDtks = () => {
         ) : (
           <LongCard.Chart
             data={Object.values(data)}
-            isPercent={true}
+            // isPercent={true}
             label={['DTKS', 'Non DTKS']}
             backgroundColor={['#F94144', '#F3722C']}
           />

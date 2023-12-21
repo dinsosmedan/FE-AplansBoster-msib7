@@ -134,8 +134,8 @@ const ChartRi = () => {
   // if (isLoading) return <Loading />
 
   // return
-  // const data = BusinessGroup.map((valdata: any) => valdata.count)
-  // const label = BusinessGroup.map((val: any) => val.budgetYear)
+  const data = WorshipPlace ? WorshipPlace.map((valdata: any) => valdata.count) : []
+  const type = WorshipPlace ? WorshipPlace.map((val: any) => val.type) : []
   console.log(WorshipPlace)
   // const color = ['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']
   // const title = ['KUBE', 'Perkembangan Data KUBE']
@@ -147,9 +147,11 @@ const ChartRi = () => {
           <Skeleton className="w-[300px] h-[300px] rounded-full" />
         ) : (
           <LongCard.Chart
-            data={[20, 5, 13, 13, 22, 15, 12]}
-            label={['Mesjid', 'Gereja', 'Kuil Hindu', 'Gereja Khatolik', 'Kuil Budha', 'Musholla', 'Kuil Budha']}
-            isPercent={true}
+            // data={[20, 5, 13, 13, 22, 15, 12]}
+            data={data}
+            label={type}
+            // label={['Mesjid', 'Gereja', 'Kuil Hindu', 'Gereja Khatolik', 'Kuil Budha', 'Musholla', 'Kuil Budha']}
+            // isPercent={true}
             backgroundColor={['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E', '#2D9CDB', '#DD2153']}
           />
         )}
