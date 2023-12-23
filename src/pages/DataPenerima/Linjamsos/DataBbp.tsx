@@ -164,10 +164,10 @@ const DataBbp = () => {
   return (
     <Container>
       {(isFetching || isLoadingExport) && <Loading />}
-      <h1 className="font-bold text-[32px] ">Bantuan Biaya Pendidikan (BBP)</h1>
+      <h1 className="font-bold text-xl ">Bantuan Biaya Pendidikan (BBP)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="flex flex-row justify-between mt-5 items-center gap-5 ">
+          <div className="flex flex-row justify-between items-center gap-5 mt-5">
             <div className="flex-1 ">
               <FormField
                 name="q"

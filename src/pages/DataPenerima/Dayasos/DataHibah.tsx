@@ -135,10 +135,10 @@ const DataHibah = () => {
   return (
     <Container>
       {(isFetching || isLoadingExport) && <Loading />}
-      <h1 className="font-bold text-2xl ">Bansos Hibah Organisasi/Lembaga (BHO)</h1>
+      <h1 className="font-bold text-xl ">Bansos Hibah Organisasi/Lembaga (BHO)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="grid grid-cols-2 gap-x-10 gap-y-5 pt-10">
+          <div className="grid grid-cols-2 gap-x-10 gap-y-5 mt-5">
             <FormField
               name="q"
               control={forms.control}

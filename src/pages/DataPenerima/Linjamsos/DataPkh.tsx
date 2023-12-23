@@ -132,10 +132,10 @@ const DataPkh = () => {
   return (
     <Container>
       {(isFetching || isLoadingExport) && <Loading />}
-      <h1 className="font-bold text-2xl ">Program Keluarga Harapan (PKH)</h1>
+      <h1 className="font-bold text-xl ">Program Keluarga Harapan (PKH)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="grid gap-x-5 gap-y-5 mt-6 ">
+          <div className="grid gap-x-5 gap-y-5 mt-5 ">
             <FormField
               name="q"
               control={forms.control}

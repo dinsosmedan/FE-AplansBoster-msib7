@@ -7,17 +7,10 @@ export default function DataPenerima() {
   useTitle('Data Penerima  ')
 
   return (
-    <Container className="flex justify-center">
-      <div className="grid grid-cols-2 gap-x-[70px] gap-y-[45px] ">
+    <Container className="justify-center p-10">
+      <div className="grid grid-cols-3 gap-x-10 gap-y-10 ">
         <CardMain
-          title="REHABSOS"
-          subTitle="Social Rehabilitation"
-          description="Program dan kegiatan Bidang Rehabilitasi Sosial dengan mempedomani rencana umum kota."
-          urlImage={BgDataRehabsos}
-          href="/data-penerima/rehabsos"
-        />
-        <CardMain
-          title="DAYASOS"
+          title="DAYASOS & PFM"
           subTitle="Social Empowerment and Poor Handling"
           description="Program dan kegiatan Bidang Pemberdayaan Sosial Dan Penanganan Fakir Miskin dengan mempedomani rencana umum kota."
           urlImage={BgDataDayasos}
@@ -29,6 +22,13 @@ export default function DataPenerima() {
           description="Program dan kegiatan Bidang Perlindungan Dan Jaminan Sosial dengan mempedomani rencana umum kota"
           urlImage={BgDataLinjmasos}
           href="/data-penerima/linjamsos"
+        />
+        <CardMain
+          title="REHABSOS"
+          subTitle="Social Rehabilitation"
+          description="Program dan kegiatan Bidang Rehabilitasi Sosial dengan mempedomani rencana umum kota."
+          urlImage={BgDataRehabsos}
+          href="/data-penerima/rehabsos"
         />
       </div>
     </Container>

@@ -154,10 +154,10 @@ const DataPkr = () => {
     <div>
       <Container>
         {(isFetching || isLoadingExport) && <Loading />}
-        <h1 className="font-bold text-[32px] ">Penanganan Kelompok Rentan (PKR)</h1>
+        <h1 className="font-bold text-xl ">Penanganan Kelompok Rentan (PKR)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-            <div className="flex flex-row justify-between pt-10 items-center gap-5 ">
+            <div className="flex flex-row justify-between mt-5 items-center gap-5 ">
               <div className="flex-1 ">
                 <FormField
                   name="q"

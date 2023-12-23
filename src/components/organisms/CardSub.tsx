@@ -13,7 +13,7 @@ export default function Card({ title, subTitle, href }: CardSubProps) {
   return (
     <Link
       to={href}
-      className="w-[400px] h-[120px] bg-primary rounded-[20px] flex items-center justify-between relative overflow-hidden group hover:bg-white border-primary border transition-all duration-700 ease-in-out"
+      className="w-[100%] h-[120px] bg-primary rounded-[20px] flex items-center justify-between relative overflow-hidden group hover:bg-white border-primary border transition-all duration-700 ease-in-out"
     >
       <div className="ml-10 group-hover:text-primary relative z-10 ">
         <p className="font-extrabold text-lg text-white group-hover:text-primary transition-colors">{title}</p>

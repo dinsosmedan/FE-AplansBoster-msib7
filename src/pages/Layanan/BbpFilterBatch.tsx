@@ -8,7 +8,7 @@ import { useCreateParams, useDeleteParams, useGetParams, useTitle } from '@/hook
 import { formatToView } from '@/lib/services/formatDate'
 import { useGetEventTuitionAssistance } from '@/store/server'
 import { useForm } from 'react-hook-form'
-import { HiMagnifyingGlass, HiOutlineExclamationCircle } from 'react-icons/hi2'
+import { HiMagnifyingGlass, HiArrowRightCircle } from 'react-icons/hi2'
 import { useNavigate } from 'react-router-dom'
 import * as React from 'react'
 import { STATUS_EVENT } from '@/lib/data'
@@ -133,8 +133,8 @@ export default function BbpFilterBatch() {
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Button className="py-6 rounded-lg" onClick={() => navigate(`/layanan/bbp/${event.id}`)}>
-                      <p className="font-bold pr-3">Action</p>
-                      <HiOutlineExclamationCircle className="h-5 w-5" />
+                      <p className="font-bold"></p>
+                      <HiArrowRightCircle className="h-5 w-5" />
                     </Button>
                   </TableCell>
                 </TableRow>
