@@ -139,10 +139,10 @@ const DataPbi = () => {
   return (
     <Container>
       {(isFetching || isLoadingExport) && <Loading />}
-      <h1 className="font-bold text-2xl ">Penerima Bantuan Iuran (PBI)</h1>
+      <h1 className="font-bold text-xl ">Penerima Bantuan Iuran (PBI)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="grid grid-cols-2 gap-x-5 gap-y-5 mt-6 ">
+          <div className="grid grid-cols-2 gap-x-5 gap-y-5 mt-5 ">
             <FormField
               name="q"
               control={forms.control}

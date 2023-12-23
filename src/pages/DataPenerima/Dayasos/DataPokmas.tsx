@@ -184,7 +184,7 @@ const DataPokmas = () => {
         <h1 className="font-bold text-xl ">Data Kelompok Masyarakat (Pokmas)</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-            <div className="grid grid-cols-3 gap-x-10 gap-y-5 pt-10">
+            <div className="grid grid-cols-3 gap-x-10 gap-y-5 mt-5">
               <FormField
                 name="q"
                 control={forms.control}
@@ -340,7 +340,7 @@ const DataPokmas = () => {
               {communityGroups?.data?.length !== 0 ? (
                 communityGroups?.data.map((item, index) => (
                   <TableRow key={item.id}>
-                    <TableCell className="text-left">
+                    <TableCell className="text-left bg-[#F9FAFC]">
                       {(communityGroups.meta.currentPage - 1) * communityGroups.meta.perPage + index + 1}
                     </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.communityActivityCode}</TableCell>

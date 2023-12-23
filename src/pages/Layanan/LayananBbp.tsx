@@ -86,12 +86,12 @@ export default function LayananBbp() {
                 )}
               />
             </div>
-            <div className="flex items-end justify-end m">
+            <div className="flex items-end justify-end">
               <Button className="bg-primary w-[143px] h-[56px] rounded-xl mr-4" type="button">
                 <p className="text-white text-base font-bold">Kirim Notifikasi</p>
               </Button>
-              <div className="bg-primary px-5 py-4 rounded-xl">
-                <p className="text-white text-base font-bold">
+              <div className="bg-[#fce9ee] px-5 py-4 rounded-xl">
+                <p className="text-primary text-base font-bold">
                   Total Kuota : {event?.filledQuota}/{event?.quota ?? event?.filledQuota}
                 </p>
               </div>

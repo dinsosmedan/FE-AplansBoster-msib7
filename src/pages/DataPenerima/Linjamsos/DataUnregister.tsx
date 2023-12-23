@@ -153,7 +153,7 @@ const DataUnregister = () => {
     <div>
       <Container>
         {(isFetching || isLoadingExport) && <Loading />}
-        <h1 className="font-bold text-[32px] ">Unregister</h1>
+        <h1 className="font-bold text-xl ">Unregister</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
             <div className="grid grid-cols-3 gap-x-5 gap-y-5 mt-5 ">

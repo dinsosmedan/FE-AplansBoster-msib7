@@ -153,7 +153,7 @@ const DataDjp = () => {
       <Title>Dana Jasa Pelayanan Masyarakat (DJPM)</Title>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-[18px]">
-          <section className="grid grid-cols-3 gap-8 pt-[70px]">
+          <section className="grid grid-cols-3 gap-8 mt-5">
             <FormField
               name="q"
               control={forms.control}

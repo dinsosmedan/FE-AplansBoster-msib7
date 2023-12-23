@@ -15,9 +15,10 @@ const DataPenerimaLinjamsos = () => {
   }, [])
 
   return (
-    <Container className="px-[120px]">
+    <Container className="px-10 pt-10">
       <h1 className="font-bold text-2xl ">LINJAMSOS</h1>
-      <div className="grid grid-cols-2 gap-x-[85px] gap-y-[40px] mt-10">
+      <p className="text-sm text-[#8F8F8F]">Perlindungan dan Jaminan Sosial</p>
+      <div className="grid grid-cols-2 gap-x-10 gap-y-10 mt-10">
         <CardSub
           title={'Bantuan Biaya Pendidikan'}
           subTitle={'Education Financial Aid'}
@@ -43,7 +44,7 @@ const DataPenerimaLinjamsos = () => {
           subTitle={'Indigency Certificate'}
           href={'/data-penerima/linjamsos/sktm'}
         />
-        <CardSub title={'Tidak Terdaftar'} subTitle={'Unregister'} href={'/data-penerima/linjamsos/unregister'} />
+        <CardSub title={'Unregister'} subTitle={'Unregister Certificate'} href={'/data-penerima/linjamsos/unregister'} />
       </div>
     </Container>
   )
