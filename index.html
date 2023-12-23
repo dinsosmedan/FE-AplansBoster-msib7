@@ -5,10 +5,22 @@
     <link rel="icon" type="image/svg+xml" href="/icon-aplans.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Aplans Boster</title>
+    <meta name="description" content="Aplikasi Pelayanan Sosial Berbasis Online Terintegrasi Dinas Sosial Kota Medan">
+    <meta property="og:title" content="Aplans Boster" />
+    <meta property="og:image" content="/icon/icon-512.png" />
+    <meta property="og:description" content="Aplikasi Pelayanan Sosial Berbasis Online Terintegrasi Dinas Sosial Kota Medan" />
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json" />
   </head>
 
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <!-- PWA -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register("serviceworker.js");
+      }
+    </script>
   </body>
 </html>
