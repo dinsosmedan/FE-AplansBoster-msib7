@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
-
+import { formatToView } from '@/lib/services/formatDate'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
@@ -278,6 +278,7 @@ const DataRumahIbadah = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Handphone</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Status</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Keterangan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -289,14 +290,15 @@ const DataRumahIbadah = () => {
                     {(worshipPlaces.meta.currentPage - 1) * worshipPlaces.meta.perPage + index + 1}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.type}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.type}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.address}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.areaLevel3?.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.areaLevel4?.name}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.areaLevel3?.name}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.areaLevel4?.name}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.picName}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.picPhone}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.status}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.picPhone}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.status}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.note}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action
                       onDelete={() => handleDelete(item.id)}

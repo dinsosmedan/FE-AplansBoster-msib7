@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
-
+import { formatToView } from '@/lib/services/formatDate'
 import {
   useGetEvent,
   useGetKecamatan,
@@ -327,6 +327,7 @@ const DataBbp = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">No.HP</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -346,23 +347,24 @@ const DataBbp = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">
                     {item.application?.beneficiary?.birthPlace ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.application?.beneficiary?.birthDate ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.application?.beneficiary?.gender ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
                     {item.application?.beneficiary?.address.fullAddress ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.application?.beneficiary?.address.areaLevel3?.name ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.application?.beneficiary?.address.areaLevel4?.name ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.application.phoneNumber ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.budgetYear ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.application.phoneNumber ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.budgetYear ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action onDetail={() => showDetail(item.id)} />
                   </TableCell>

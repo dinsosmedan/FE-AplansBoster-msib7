@@ -6,6 +6,7 @@ import { useGetNonCashFoodAssistanceBeneficiary, useGetNonCashFoodAssistanceDeta
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { Action, ExportButton, Loading, Modal, Pagination } from '@/components'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
+import { formatToView } from '@/lib/services/formatDate'
 import { Button } from '@/components/ui/button'
 import { HiMagnifyingGlass } from 'react-icons/hi2'
 import { Input } from '@/components/ui/input'
@@ -144,6 +145,7 @@ const DataBpnt = () => {
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Keanggotaan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
               </TableRow>
             </TableHeader>
@@ -157,11 +159,12 @@ const DataBpnt = () => {
                         index +
                         1}
                     </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.identityNumber}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" >{item.beneficiary.name}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.beneficiary.identityNumber}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC] capitalize" position="center">
                       {item.type}
                     </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       <Action onDetail={() => showDetail(item.id)} />
                     </TableCell>

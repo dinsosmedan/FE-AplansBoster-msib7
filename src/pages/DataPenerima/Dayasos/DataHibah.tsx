@@ -3,7 +3,7 @@ import Container from '@/components/atoms/Container'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Action, ExportButton, Loading, Modal, Search, Pagination } from '@/components'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-
+import { formatToView } from '@/lib/services/formatDate'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -201,6 +201,7 @@ const DataHibah = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Handphone</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah Bantuan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -217,9 +218,10 @@ const DataHibah = () => {
                   <TableCell className="bg-[#F9FAFC]">{item.chairmanName ?? '-'}</TableCell>
                   <TableCell className="bg-[#F9FAFC]">{item.chairmanIdentityNumber ?? '-'}</TableCell>
                   <TableCell className="bg-[#F9FAFC]">{item.address.fullAddress ?? '-'}</TableCell>
-                  <TableCell className="bg-[#F9FAFC]">{item.contactNumber ?? '-'}</TableCell>
-                  <TableCell className="bg-[#F9FAFC]">{item.aprrovedAmount ?? '-'}</TableCell>
-                  <TableCell className="bg-[#F9FAFC]">{item.budgetYear ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]" position="center">{item.contactNumber ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]" position="center">{item.aprrovedAmount ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]" position="center">{item.budgetYear ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action
                       onDelete={() => handleDelete(item.id)}
