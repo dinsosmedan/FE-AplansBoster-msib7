@@ -51,15 +51,15 @@ export default function DtksUser() {
           </div>
           <section className="flex flex-col gap-5 md:gap-8 w-[95%] mt-5 lg:mt-0 lg:justify-start justify-center">
             <div className="bg-white rounded-lg md:px-10 px-7 md:py-14 py-9 h-fit shadow">
-              <p className="font-semibold md:text-xl md:pb-6 pb-3">File yang perlu diupload:</p>
+              <p className="font-semibold text-lg md:pb-6 pb-3">File yang perlu diupload:</p>
               <ol className="list-decimal list-inside pl-3">
-                <li className="md:text-lg text-sm leading-relaxed">Scan Foto KTP/KK</li>
-                <li className="md:text-lg text-sm leading-relaxed">Foto Rumah</li>
+                <li className="text-md leading-relaxed">Scan Foto KTP/KK</li>
+                <li className="text-md leading-relaxed">Foto Rumah</li>
               </ol>
             </div>
             <Link to={'/user/dtks/register-dtks'}>
               <Button className="w-full py-6">
-                <p className="md:text-lg">Daftar Sekarang</p>
+                <p className="text-lg">Daftar Sekarang</p>
               </Button>
             </Link>
           </section>

@@ -532,7 +532,7 @@ export default function DtksRegister() {
           </div>
           <p className="font-semibold text-[18px] mt-5">
             Pengusulan BANSOS
-            <p className="text-sm text-primary font-medium">
+            <p className="text-[12px] text-primary font-medium">
               *Catatan: File yang diizinkan berupa jpg atau pdf. Dengan maksimal 2MB
             </p>
           </p>
@@ -678,7 +678,7 @@ export default function DtksRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-md">Foto KTP/KK</FormLabel>
+                  <FormLabel className="text-sm">Foto KTP/KK</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -698,7 +698,7 @@ export default function DtksRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-md">Foto Rumah</FormLabel>
+                  <FormLabel className="text-sm">Foto Rumah</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}

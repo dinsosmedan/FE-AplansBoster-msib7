@@ -484,7 +484,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-md">Scan Surat Permohonan</FormLabel>
+                  <FormLabel className="text-sm">Scan Surat Permohonan</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -504,7 +504,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-md">Pass Foto</FormLabel>
+                  <FormLabel className="text-sm">Pass Foto</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -524,7 +524,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-md">Scan Kartu Keluarga</FormLabel>
+                  <FormLabel className="text-sm">Scan Kartu Keluarga</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -544,7 +544,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-md">KTP</FormLabel>
+                  <FormLabel className="text-sm">KTP</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -564,7 +564,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-md">KTM</FormLabel>
+                  <FormLabel className="text-sm">KTM</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -584,7 +584,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-md">Surat Aktif Kuliah</FormLabel>
+                  <FormLabel className="text-sm">Surat Aktif Kuliah</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -604,7 +604,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-md">Scan Printout DTKS/PRELIST</FormLabel>
+                  <FormLabel className="text-sm">Scan Printout DTKS/PRELIST</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -624,7 +624,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-md">Surat Pernyataan Tidak Mendapatkan Mahasiswa</FormLabel>
+                  <FormLabel className="text-sm">Surat Pernyataan Tidak Mendapatkan Mahasiswa</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -644,7 +644,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-md">Surat Pernyataan Bukan ASN</FormLabel>
+                  <FormLabel className="text-sm">Surat Pernyataan Bukan ASN</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -664,7 +664,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-md">Transkrip Nilai (Legalisir)</FormLabel>
+                  <FormLabel className="text-sm">Transkrip Nilai (Legalisir)</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -684,7 +684,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-md">Scan Buku Tabungan</FormLabel>
+                  <FormLabel className="text-sm">Scan Buku Tabungan</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -704,7 +704,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-md">Bukti Pembayaran UKT Terakhir</FormLabel>
+                  <FormLabel className="text-sm">Bukti Pembayaran UKT Terakhir</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -724,7 +724,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-md">Biodata Mahasiswa</FormLabel>
+                  <FormLabel className="text-sm">Biodata Mahasiswa</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
