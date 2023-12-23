@@ -57,7 +57,7 @@ export default function SktmUnregister() {
     <ContainerUser title={'Form Pengajuan SKTM Untuk Sekolah/Universitas (Tidak Terdaftar DTKS)'}>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6 pt-16">
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid md:grid-cols-2 gap-5">
             <div className="flex">
               <div className="w-full">
                 <FormField
@@ -112,7 +112,7 @@ export default function SktmUnregister() {
               )}
             />
           </div>
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid md:grid-cols-2 gap-5">
             <FormField
               name="peopleConcernedAreaLevel3"
               control={forms.control}
@@ -162,7 +162,7 @@ export default function SktmUnregister() {
               )}
             />
           </div>
-          <div className="grid grid-cols-1 pb-10">
+          <div className="grid md:grid-cols-1 pb-10">
             <FormField
               name="peopleConcernedAddress"
               control={forms.control}
@@ -176,7 +176,7 @@ export default function SktmUnregister() {
               )}
             />
           </div>
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid md:grid-cols-2 gap-5">
             <FormField
               name="publicPhoneNumber"
               control={forms.control}
@@ -239,14 +239,14 @@ export default function SktmUnregister() {
               </FormItem>
             )}
           />
-          <p className="text-[18px] text-primary">*Catatan: File yang diizinkan berupa pdf. Dengan maksimal 2MB</p>
-          <div className="grid grid-cols-2 gap-12">
+          <p className="text-[12px] text-primary">*Catatan: File yang diizinkan berupa pdf. Dengan maksimal 2MB</p>
+          <div className="grid md:grid-cols-2 gap-12">
             <FormField
               name="petitionLetter"
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Scan Surat Permohonan</FormLabel>
+                  <FormLabel className="text-sm">Scan Surat Permohonan</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -266,7 +266,7 @@ export default function SktmUnregister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Scan Foto Copy Surat Domisili Dari Kelurahan Setempat</FormLabel>
+                  <FormLabel className="text-sm">Scan Foto Copy Surat Domisili Dari Kelurahan Setempat</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -286,7 +286,7 @@ export default function SktmUnregister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Scan Kartu Keluarga</FormLabel>
+                  <FormLabel className="text-sm">Scan Kartu Keluarga</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -306,7 +306,7 @@ export default function SktmUnregister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Scan Kartu Tanda Penduduk (KTP)</FormLabel>
+                  <FormLabel className="text-sm">Scan Kartu Tanda Penduduk (KTP)</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -327,7 +327,7 @@ export default function SktmUnregister() {
             control={forms.control}
             render={({ field }) => (
               <FormItem className="">
-                <FormLabel className="text-xl">
+                <FormLabel className="text-sm">
                   Surat Keterangan Dari Sekolah / Surat Pengumuman dari pihak Universitas
                 </FormLabel>
                 <FormControl className="w-[522px]">
@@ -344,14 +344,14 @@ export default function SktmUnregister() {
               </FormItem>
             )}
           />
-          <div className="grid grid-cols-2 gap-12">
+          <div className="grid md:grid-cols-2 gap-12">
             <div className="pt-7">
               <FormField
                 name="salarySlip"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem className="">
-                    <FormLabel className="text-xl">Scan Fotocopy Slip Gaji</FormLabel>
+                    <FormLabel className="text-sm">Scan Fotocopy Slip Gaji</FormLabel>
                     <FormControl className="w-[522px]">
                       <DropZone
                         setValue={field.onChange}
@@ -372,7 +372,7 @@ export default function SktmUnregister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">
+                  <FormLabel className="text-sm">
                     Scan Surat Keterangan Dari Kepling Apabila Tinggal Menumpang/Sewa ditandatangani pakai materai
                     Rp.10.000
                   </FormLabel>
@@ -391,13 +391,13 @@ export default function SktmUnregister() {
               )}
             />
           </div>
-          <div className="grid grid-cols-2 gap-12">
+          <div className="grid md:grid-cols-2 gap-12">
             <FormField
               name="lowIncomeLetter"
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">
+                  <FormLabel className="text-sm">
                     Surat Pernyataan Berpenghasilan di bawah UMR (±Rp.3000.000) ditandatangani Lurah
                   </FormLabel>
                   <FormControl className="w-[522px]">
@@ -419,7 +419,7 @@ export default function SktmUnregister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">
+                  <FormLabel className="text-sm">
                     Surat permohonan Surat Keterangan Dari Sekolah / Surat Pengumuman dari pihak Universitas
                   </FormLabel>
                   <FormControl className="w-[522px]">
@@ -437,8 +437,8 @@ export default function SktmUnregister() {
               )}
             />
           </div>
-          <p className="py-5 text-xl font-semibold">Foto Rumah</p>
-          <div className="grid grid-cols-2 gap-12 pb-10">
+          <p className="py-5 text-sm font-semibold">Foto Rumah</p>
+          <div className="grid md:grid-cols-2 gap-12 pb-10">
             <FormField
               name="frontViewHouse"
               control={forms.control}
@@ -464,7 +464,7 @@ export default function SktmUnregister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Ruang Tamu</FormLabel>
+                  <FormLabel className="text-sm">Ruang Tamu</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -484,7 +484,7 @@ export default function SktmUnregister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Kamar</FormLabel>
+                  <FormLabel className="text-sm">Kamar</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -504,7 +504,7 @@ export default function SktmUnregister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-xl">Dapur</FormLabel>
+                  <FormLabel className="text-sm">Dapur</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -520,13 +520,18 @@ export default function SktmUnregister() {
               )}
             />
           </div>
-          <div className="flex justify-end gap-7 items-center">
-            <Button variant="outline" className="border-primary text-primary w-[165px] h-[60px]" type="button">
-              <p className="text-xl font-semibold">Kembali</p>
+          <div className="md:flex justify-end gap-7 items-center pt-10">
+            <Button
+              variant="outline"
+              className="border-primary text-primary px-8 py-6 rounded-lg md:w-[50%] lg:w-[15%] w-full"
+              type="button"
+              onClick={() => navigate(-1)}
+            >
+              <p className="text-base font-semibold">Kembali</p>
             </Button>
-            <Button className="w-[275px] h-[60px]" type="submit" loading={isLoadingCreate}>
-              <p className="text-xl font-semibold">Kirim Pengajuan</p>
-              <HiPaperAirplane className="w-6 h-6 ml-2" />
+            <Button className="px-8 py-6 rounded-lg items-center gap-3 md:w-[50%] lg:w-[15%] w-full mt-5 md:mt-0" onClick={forms.handleSubmit(onSubmit)} loading={isLoadingCreate}>
+              <p className="text-base font-semibold">Kirim Pengajuan</p>
+              <HiPaperAirplane className="w-5 h-5" />
             </Button>
           </div>
         </form>
