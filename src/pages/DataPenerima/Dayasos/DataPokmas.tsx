@@ -4,7 +4,7 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Action, ExportButton, Loading, Modal, Container, Pagination } from '@/components'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-
+import { formatToView } from '@/lib/services/formatDate'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -333,6 +333,7 @@ const DataPokmas = () => {
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah Bantuan Disetujui</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Pencairan</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Status Pencairan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
               </TableRow>
             </TableHeader>
@@ -343,15 +344,16 @@ const DataPokmas = () => {
                     <TableCell className="text-left bg-[#F9FAFC]">
                       {(communityGroups.meta.currentPage - 1) * communityGroups.meta.perPage + index + 1}
                     </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.communityActivityCode}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.communityActivityCode}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.communityName}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.address?.areaLevel3?.name}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.address?.areaLevel4?.name}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.address?.areaLevel3?.name}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.address?.areaLevel4?.name}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.communityActivityTypeDescription}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.communityAssistanceType}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.approvedFundAmount}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.applicationYear}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.statusDisimbursement}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.communityAssistanceType}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.approvedFundAmount}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.applicationYear}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.statusDisimbursement}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       <Action
                         onDelete={() => handleDelete(item.id)}

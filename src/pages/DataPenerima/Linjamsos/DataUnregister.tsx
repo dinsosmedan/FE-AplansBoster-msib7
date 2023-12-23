@@ -13,6 +13,7 @@ import { useDeleteUnregister, useGetDetailUnregister, useUnregisters } from '@/s
 import { Action, ExportButton, Loading, Modal } from '@/components'
 import { exportUnregisterFn } from '@/api/linjamsos.api'
 import { useAlert, useTitleHeader } from '@/store/client'
+import { formatToView } from '@/lib/services/formatDate'
 import * as React from 'react'
 interface FormValues {
   q: string
@@ -246,6 +247,7 @@ const DataUnregister = () => {
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Diagnosa Penyakit</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Umur</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Masuk Rumah Sakit</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
               </TableRow>
             </TableHeader>
@@ -257,15 +259,16 @@ const DataUnregister = () => {
                       {(unregisters.meta.currentPage - 1) * unregisters.meta.perPage + index + 1}
                     </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.name ?? '-'}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.gender ?? '-'}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.gender ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
                       {getYearFromDate(item.hospitalEntryDate)}
                     </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.deseaseDiagnosis ?? '-'}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.age ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.deseaseDiagnosis ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.age ?? '-'}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]" position="center">
                       {item.hospitalEntryDate ?? '-'}
                     </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       <Action
                         onDelete={async () => await handleDelete(item.id)}

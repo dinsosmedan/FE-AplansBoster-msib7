@@ -5,7 +5,7 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Action, ExportButton, Loading, Modal, Pagination } from '@/components'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-
+import { formatToView } from '@/lib/services/formatDate'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -284,6 +284,7 @@ const DataKube = () => {
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
               </TableRow>
             </TableHeader>
@@ -296,10 +297,11 @@ const DataKube = () => {
                     </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.businessName}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.businessAddress?.fullAddress}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.businessAddress?.areaLevel3?.name}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.businessAddress?.areaLevel4?.name}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.businessAddress?.areaLevel3?.name}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.businessAddress?.areaLevel4?.name}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.businessType}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.budgetYear}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.budgetYear}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
                     <TableCell className="bg-[#F9FAFC]">
                       <Action
                         onDelete={() => handleDelete(item.id)}

@@ -15,6 +15,7 @@ import { Action, ExportButton, Loading, Modal } from '@/components'
 import React from 'react'
 import { exportFamilyHopeFn } from '@/api/linjamsos.api'
 import { useTitleHeader } from '@/store/client'
+import { formatToView } from '@/lib/services/formatDate'
 interface FormValues {
   q: string
   kelurahan: string
@@ -248,12 +249,13 @@ const DataPkh = () => {
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
               <TableHead className="text-[#534D59] font-bold text-[15px]">No .</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Pemohon</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat Lengkap</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Keanggotaan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -265,17 +267,18 @@ const DataPkh = () => {
                     {(familys.meta.currentPage - 1) * familys.meta.perPage + index + 1}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.name ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.identityNumber ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.beneficiary?.identityNumber ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
                     {item.beneficiary?.address.fullAddress ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.beneficiary?.address.areaLevel3?.name ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.beneficiary?.address.areaLevel4?.name ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.type ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.type ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action onDetail={() => showDetail(item.id)} />
                   </TableCell>

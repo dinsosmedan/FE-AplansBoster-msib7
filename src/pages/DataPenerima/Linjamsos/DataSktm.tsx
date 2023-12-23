@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useNavigate } from 'react-router-dom'
+import { formatToView } from '@/lib/services/formatDate'
 import {
   useGetIndigencyCertificateByID,
   useGetIndigencyCertificateFn,
@@ -321,6 +322,7 @@ const DataSktm = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Status DTKS</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -335,19 +337,20 @@ const DataSktm = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">
                     {item?.application.peopleConcerned?.name ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item?.issueYear ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item?.issueYear ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {ubahFormatDateTime(item?.issueDate) ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item?.application?.dtksStatus ? 'DTKS' : 'Non DTKS'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item?.application?.peopleConcerned?.address?.areaLevel3?.name ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item?.application?.peopleConcerned?.address?.areaLevel4?.name ?? '-'}
                   </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action onDelete={async () => await handleDelete(item.id)} onDetail={() => showDetail(item.id)} />
                   </TableCell>

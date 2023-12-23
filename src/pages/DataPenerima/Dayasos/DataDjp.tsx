@@ -4,7 +4,7 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Action, ExportButton, Loading, Modal, Title, Pagination, Container } from '@/components'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-
+import { formatToView } from '@/lib/services/formatDate'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -270,14 +270,15 @@ const DataDjp = () => {
           <TableHeader className="bg-white">
             <TableRow>
               <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kelamin</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tempat/ Tanggal Lahir</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Bantuan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah Bantuan Disetujui</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -288,20 +289,21 @@ const DataDjp = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">
                     {(serviceFunds.meta.currentPage - 1) * serviceFunds.meta.perPage + index + 1}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.identityNumber}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.gender}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.identityNumber}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.beneficiary.gender}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.beneficiary.birthPlace} / {item.beneficiary.birthDate}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.beneficiary.address.areaLevel4?.name}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.beneficiary.address.areaLevel3?.name}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.serviceType.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item?.assistanceAmount ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.serviceType.name}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item?.assistanceAmount ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action
                       onDetail={() => showDetail(item.id)}

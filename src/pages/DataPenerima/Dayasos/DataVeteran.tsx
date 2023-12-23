@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Action, ExportButton, Loading, Modal, Pagination, Container } from '@/components'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-
+import { formatToView } from '@/lib/services/formatDate'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -160,6 +160,7 @@ const DataVeteran = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">NPV</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Satuan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Ukuran Baju / Celana</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -171,11 +172,12 @@ const DataVeteran = () => {
                     {(veterans.meta.currentPage - 1) * veterans.meta.perPage + index + 1}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.identityNumber}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.isActive}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.veteranUnit}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.veteranUnit}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.uniformSize}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.beneficiary.identityNumber}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.isActive}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.veteranUnit}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.veteranUnit}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.uniformSize}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.beneficiary.updatedAt) ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action
                       onDelete={() => handleDelete(item.id)}
