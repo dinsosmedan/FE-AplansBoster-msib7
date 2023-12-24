@@ -19,7 +19,7 @@ const DataPenerimaDayasos = () => {
       <p className="text-sm text-[#8F8F8F]">Pemberdayaan Sosial dan Penanganan Fakir Miskin</p>
       <div className="grid grid-cols-2 gap-x-10 gap-y-10 mt-10">
         <CardSub
-          title={'Bansos Dana Jasa Pelayanan (DJP)'}
+          title={'Bansos Dana Jasa Pelayanan Masyarakat (DJPM)'}
           subTitle={'Service Fund Assistance'}
           href={'/data-penerima/dayasos/djpm'}
         />
