@@ -192,10 +192,10 @@ export const useGetServiceTypes = () => {
   return useQuery('service-types', async () => await getServiceTypesFn())
 }
 
-export const useGetServiceFunds = ({ page, idKecamatan, idKelurahan, name, assistance }: ServiceFundQuery) => {
+export const useGetServiceFunds = ({ page, idKecamatan, idKelurahan, name, assistance, budgetYear }: ServiceFundQuery) => {
   return useQuery(
-    ['service-funds', page, idKecamatan, idKelurahan, name, assistance],
-    async () => await getServiceFundsFn({ page, idKecamatan, idKelurahan, name, assistance }),
+    ['service-funds', page, idKecamatan, idKelurahan, name, assistance, budgetYear],
+    async () => await getServiceFundsFn({ page, idKecamatan, idKelurahan, name, assistance, budgetYear }),
     {
       keepPreviousData: true,
       staleTime: 10 * 60 * 1000

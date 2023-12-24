@@ -27,6 +27,7 @@ interface FormValues {
   kelurahan: string
   kecamatan: string
   type: string
+  budget_year: string
 }
 
 const DataDjp = () => {
@@ -49,8 +50,8 @@ const DataDjp = () => {
   const [isLoadingExport, setIsLoadingExport] = React.useState(false)
 
   const createParams = useCreateParams()
-  const { q, kecamatan, kelurahan, page, type } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'type'])
-  const forms = useForm<FormValues>({ defaultValues: { q: '', kelurahan: '', kecamatan: '', type: '' } })
+  const { q, kecamatan, kelurahan, page, type, budget_year: budgetYear } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'type', 'budget_year'])
+  const forms = useForm<FormValues>({ defaultValues: { q: '', kelurahan: '', kecamatan: '', type: '', budget_year: '' } })
 
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
@@ -69,7 +70,8 @@ const DataDjp = () => {
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
     name: q,
-    assistance: type
+    assistance: type,
+    budgetYear
   })
 
   useDisableBodyScroll(isFetching)
@@ -79,16 +81,23 @@ const DataDjp = () => {
     forms.reset()
   }
 
-  const onSubmit = async (values: FormValues) => {
-    const { q, kecamatan, kelurahan, type } = values
-
-    if (q || kecamatan || kelurahan || type) {
-      createParams({ key: 'q', value: q })
-      createParams({ key: 'kecamatan', value: kecamatan })
-      createParams({ key: 'kelurahan', value: kelurahan })
-      createParams({ key: 'type', value: type })
-      await refetch()
+  const updateParam = (key: any, value: any) => {
+    if (value !== '') {
+      createParams({ key, value })
+      createParams({ key: 'page', value: '' })
+    } else {
+      createParams({ key, value: '' })
     }
+  }
+
+  const onSubmit = async (values: FormValues) => {
+    updateParam('q', values.q)
+    updateParam('budget_year', values.budget_year)
+    updateParam('kecamatan', values.kecamatan)
+    updateParam('kelurahan', values.kelurahan)
+    updateParam('type', values.type)
+
+    await refetch()
   }
 
   const handleDelete = (id: string) => {
@@ -165,29 +174,6 @@ const DataDjp = () => {
                 </FormItem>
               )}
             />
-
-            <FormField
-              name="kecamatan"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Kecamatan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {listKecamatan?.map((item, index) => (
-                        <SelectItem key={index} value={item.id}>
-                          {item.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormItem>
-              )}
-            />
             <FormField
               name="type"
               control={forms.control}
@@ -201,6 +187,39 @@ const DataDjp = () => {
                     </FormControl>
                     <SelectContent>
                       {serviceTypes?.map((item, index) => (
+                        <SelectItem key={index} value={item.id}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+            <FormField
+                name="budget_year"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            <FormField
+              name="kecamatan"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Kecamatan" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {listKecamatan?.map((item, index) => (
                         <SelectItem key={index} value={item.id}>
                           {item.name}
                         </SelectItem>
