@@ -1,14 +1,16 @@
 import Container from '@/components/atoms/Container'
 import useTitle from '@/hooks/useTitle'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import * as React from 'react'
-import { useGetNonCashFoodAssistanceBeneficiary, useGetNonCashFoodAssistanceDetail } from '@/store/server'
+import { useNavigate } from 'react-router-dom'
+import { useGetNonCashFoodAssistanceBeneficiary, useGetNonCashFoodAssistanceDetail, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { Action, ExportButton, Loading, Modal, Pagination } from '@/components'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { formatToView } from '@/lib/services/formatDate'
 import { Button } from '@/components/ui/button'
-import { HiMagnifyingGlass } from 'react-icons/hi2'
+import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { exportNonCashFoodAssistanceFn } from '@/api/dayasos.api'
@@ -16,6 +18,9 @@ import { useTitleHeader } from '@/store/client'
 
 interface FormValues {
   q: string
+  kelurahan: string
+  kecamatan: string
+  type: string
 }
 
 const DataBpnt = () => {
@@ -30,16 +35,26 @@ const DataBpnt = () => {
     ])
   }, [])
 
+  const navigate = useNavigate()
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
   const [isLoadingExport, setIsLoadingExport] = React.useState(false)
 
   const createParams = useCreateParams()
-  const { page, q } = useGetParams(['page', 'q'])
-  const forms = useForm<FormValues>({ defaultValues: { q: '' } })
+  const { q, kecamatan, kelurahan, page, type } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'type'])
+  const forms = useForm<FormValues>({
+    defaultValues: {
+      q: '',
+      kecamatan: '',
+      kelurahan: '',
+      type: ''
+    }
+  })
 
-  const { data: NonCashFoodAssistanceBeneficiary, isLoading: isLoadingNonCash } =
-    useGetNonCashFoodAssistanceDetail(selectedId)
+  const areaLevel3 = forms.watch('kecamatan')
+  const { data: listKecamatan } = useGetKecamatan()
+  const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
+  const { data: NonCashFoodAssistanceBeneficiary, isLoading: isLoadingNonCash } = useGetNonCashFoodAssistanceDetail(selectedId)
 
   const {
     data: NonCashFoodAssistanceBeneficiarys,
@@ -48,6 +63,9 @@ const DataBpnt = () => {
     isLoading
   } = useGetNonCashFoodAssistanceBeneficiary({
     page: parseInt(page) ?? 1,
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    member: type,
     q
   })
 
@@ -58,13 +76,29 @@ const DataBpnt = () => {
     setIsShow(true)
   }
 
-  const onSubmit = async (values: FormValues) => {
-    if (values.q !== '') {
-      createParams({ key: 'q', value: values.q !== '' ? values.q : '' })
-      createParams({ key: 'page', value: '' }) // Set page to empty string when searching
+  const handleReset = () => {
+    navigate('/data-penerima/dayasos/bpnt')
+    forms.reset()
+  }
+  if (isLoading && isLoadingNonCash) {
+    return <Loading />
+  }
+
+  const updateParam = (key: any, value: any) => {
+    if (value !== '') {
+      createParams({ key, value })
+      createParams({ key: 'page', value: '' })
     } else {
-      createParams({ key: 'q', value: '' }) // Set q to empty string if the search query is empty
+      createParams({ key, value: '' })
     }
+  }
+
+  const onSubmit = async (values: FormValues) => {
+    updateParam('q', values.q)
+    updateParam('kecamatan', values.kecamatan)
+    updateParam('kelurahan', values.kelurahan)
+    updateParam('type', values.type)
+
     await refetch()
   }
 
@@ -122,6 +156,81 @@ const DataBpnt = () => {
                 )}
               />
             </div>
+            <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
+            <FormField
+              name="type"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Jenis Anggota" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="anggota">Anggota</SelectItem>
+                        <SelectItem value="pengurus">Pengurus</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="kecamatan"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Kecamatan" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {listKecamatan?.map((item, index) => (
+                          <SelectItem key={index} value={item.id}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="kelurahan"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      disabled={areaLevel3 === '' && kecamatan === ''}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Kelurahan" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {listKelurahan?.map((item, index) => (
+                          <SelectItem key={index} value={item.id}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </div>
             <section className="flex items-center justify-between">
               <div>
                 {NonCashFoodAssistanceBeneficiarys?.data?.length !== 0 ? (
@@ -129,6 +238,10 @@ const DataBpnt = () => {
                 ) : null}
               </div>
               <div className="flex items-center gap-3">
+                <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
+                  <HiArrowPath className="text-lg" />
+                  <span>Reset</span>
+                </Button>
                 <Button className="gap-2 border-none rounded-lg" type="submit">
                   <HiMagnifyingGlass className="text-lg" />
                   <span>Cari Data</span>

@@ -98,8 +98,11 @@ export const getWorshipPlacesFn = async ({
 }
 
 export interface NonCashFoodAssistanceBeneficiaryQuery {
-  q?: string
   page?: number
+  q?: string
+  member?: string
+  idKecamatan?: string
+  idKelurahan?: string
 }
 
 export const storeVeteranFn = async (fields: veteranFields) => {
@@ -185,11 +188,8 @@ export const getFuelCashAssistanceFn = async ({ page, q, member, idKecamatan, id
   return response.data
 }
 
-export const getNonCashFoodAssistanceBeneficiary = async ({
-  q,
-  page
-}: NonCashFoodAssistanceBeneficiaryQuery): Promise<INonCashFoodAssistanceBeneficiarys> => {
-  const response = await api.get(`/non-cash-food-assistance?q=${q}&page=${page}&limit=30`)
+export const getNonCashFoodAssistanceBeneficiary = async ({ page, q, member, idKecamatan, idKelurahan }: NonCashFoodAssistanceBeneficiaryQuery): Promise<INonCashFoodAssistanceBeneficiarys> => {
+  const response = await api.get(`/non-cash-food-assistance?q=${q}&type=${member}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&page=${page}&limit=30`)
   return response.data
 }
 
