@@ -50,7 +50,7 @@ export default function ModalEditPengajuanSKTM({ isShow, setIsShow, indigencyId 
         <p className="text-sm text-[#A1A1A1]">Data Pengajuan SKTM</p>
       </Modal.Header>
       <section className="flex flex-col">
-        <p className="w-full text-center py-4 bg-primary text-white font-bold">Berkas Mahasiswa</p>
+        <p className="w-full text-center py-4 bg-primary text-white font-bold">Berkas Pemohon</p>
         {data?.petitionLetterPath?.url && <Berkas title="SURAT PERMOHONAN" url={data?.petitionLetterPath?.url} />}
         {data?.domicileLetterPath?.url && (
           <Berkas title="SCAN FOTO COPY SURAT DOMISILI DARI KELURAHAN SETEMPAT" url={data?.domicileLetterPath?.url} />

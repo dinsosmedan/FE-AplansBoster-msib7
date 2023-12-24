@@ -79,6 +79,9 @@ export interface BusinessGroupQuery {
 export interface FuelCashQuery {
   page?: number
   q?: string
+  member?: string
+  idKecamatan?: string
+  idKelurahan?: string
 }
 
 export const getWorshipPlacesFn = async ({
@@ -177,8 +180,8 @@ export const getBusinessGroupFn = async ({
   )
   return response.data
 }
-export const getFuelCashAssistanceFn = async ({ page, q }: FuelCashQuery): Promise<IFuelCashAssistances> => {
-  const response = await api.get(`/fuel-cash-assistance?q=${q}&page=${page}&limit=30`)
+export const getFuelCashAssistanceFn = async ({ page, q, member, idKecamatan, idKelurahan }: FuelCashQuery): Promise<IFuelCashAssistances> => {
+  const response = await api.get(`/fuel-cash-assistance?q=${q}&type=${member}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&page=${page}&limit=30`)
   return response.data
 }
 

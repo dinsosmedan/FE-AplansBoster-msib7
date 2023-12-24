@@ -652,8 +652,8 @@ export const useGetVeteranById = (id?: string) => {
 }
 
 /* BANSOS BANTUAN BBM */
-export const useGetFuelCashAssistance = ({ page, q }: FuelCashQuery) => {
-  return useQuery(['fuel-cash-assistances', page, q], async () => await getFuelCashAssistanceFn({ page, q }), {
+export const useGetFuelCashAssistance = ({ page, member, idKecamatan, idKelurahan, q }: FuelCashQuery) => {
+  return useQuery(['fuel-cash-assistances', page, idKecamatan, idKelurahan, q, member], async () => await getFuelCashAssistanceFn({ page, idKecamatan, idKelurahan, q, member }), {
     keepPreviousData: true,
     staleTime: 10 * 60 * 1000
   })
