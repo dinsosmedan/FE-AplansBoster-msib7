@@ -176,7 +176,7 @@ const DataPokmas = () => {
   }
 
   if (isLoading) return <Loading />
-
+  // console.log(communityGroup.data)
   return (
     <div>
       <Container>
@@ -453,6 +453,43 @@ const DataPokmas = () => {
               <p className="text-base capitalize">{communityGroup?.statusDisimbursement ?? '-'}</p>
             </div>
           </div>
+            <div className="text-center mt-[-20px]">
+              <p className="text-lg font-bold">Data Anggota</p>
+            </div>
+            <section className="border rounded-xl overflow-hidden">
+              <Table>
+                <TableHeader className="bg-primary">
+                  <TableRow>
+                    <TableHead className="text-white font-bold text-[15px]">Nama</TableHead>
+                    <TableHead className="text-white font-bold text-[15px]">NIK</TableHead>
+                    <TableHead className="text-white font-bold text-[15px]"> Jabatan</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {communityGroup?.members?.length !== 0 ? (
+                    communityGroup?.members.map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                          {item.beneficiary.name}
+                        </TableCell>
+                        <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                          {item.beneficiary.identityNumber}
+                        </TableCell>
+                        <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                          {item.position}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={4} className="text-center">
+                        Tidak ada data
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </section>
         </Modal>
       </Container>
     </div>
