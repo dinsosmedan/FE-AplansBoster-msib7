@@ -182,23 +182,23 @@ const TableRiwayatBansos = ({ data }: TableRiwayatBansosProps) => {
       <Table>
         <TableHeader className="bg-primary">
           <TableRow>
-            <TableHead className="text-white">NIK</TableHead>
             <TableHead className="text-white">Nama</TableHead>
             <TableHead className="text-white">Jenis Bansos</TableHead>
             <TableHead className="text-white">Tahun</TableHead>
             <TableHead className="text-white">Status</TableHead>
+            <TableHead className="text-white">Keterangan</TableHead>
             <TableHead className="text-white">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {data.map((item, index) => (
             <TableRow key={item?.id}>
-              <TableCell className="font-medium">-</TableCell>
-              <TableCell>{item?.product?.name}</TableCell>
-              <TableCell>{item?.product?.code}</TableCell>
-              <TableCell>{item?.year}</TableCell>
-              <TableCell className="capitalize">{item?.status}</TableCell>
-              <TableCell className="flex justify-center items-center">
+              <TableCell position="center">{item?.product?.name}</TableCell>
+              <TableCell position="center">{item?.product?.code}</TableCell>
+              <TableCell position="center">{item?.year}</TableCell>
+              <TableCell className="capitalize" position="center">{item?.status}</TableCell>
+              <TableCell position="center">{item?.detail?.type}</TableCell>
+              <TableCell className="flex justify-center items-center" position="center">
                 <Button variant="base" size="icon" className="mx-auto" onClick={() => handleClick(index)}>
                   <HiOutlineInformationCircle className="text-primary text-xl" />
                 </Button>

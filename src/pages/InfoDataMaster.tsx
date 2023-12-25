@@ -17,6 +17,7 @@ const InfoDataMaster = () => {
             <TableRow className="text-center">
               <TableHead className="text-white">NIK</TableHead>
               <TableHead className="text-white">Nama</TableHead>
+              <TableHead className="text-white">Hubungan keluarga</TableHead>
               <TableHead className="text-white">Status</TableHead>
             </TableRow>
           </TableHeader>
@@ -24,9 +25,10 @@ const InfoDataMaster = () => {
             {beneficiary?.familyMembers?.length !== 0 ? (
               beneficiary?.familyMembers.map((item, index) => (
                 <TableRow key={index} className="text-center">
-                  <TableCell className="">{item.identityNumber}</TableCell>
-                  <TableCell className="">{item.name}</TableCell>
-                  <TableCell className="">{item.isDtks ? 'DTKS' : 'Non DTKS'}</TableCell>
+                  <TableCell className="" position="center">{item.identityNumber}</TableCell>
+                  <TableCell className="" position="center">{item.name}</TableCell>
+                  <TableCell className="" position="center">{item.familyRelationship}</TableCell>
+                  <TableCell className="" position="center">{item.isDtks ? 'DTKS' : 'Non DTKS'}</TableCell>
                 </TableRow>
               ))
             ) : (

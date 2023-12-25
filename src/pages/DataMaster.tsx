@@ -220,15 +220,15 @@ export default function DataMaster() {
                 <TableCell className="text-center bg-[#F9FAFC]" position="center">
                   {(beneficiary.meta.currentPage - 1) * beneficiary.meta.perPage + index + 1}
                 </TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]">{item.identityNumber}</TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]">{item.familyCardNumber ?? '-'}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.identityNumber}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.familyCardNumber ?? '-'}</TableCell>
                 <TableCell className="text-center bg-[#F9FAFC]">{item.name ?? '-'}</TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]">{item.address.areaLevel3?.name ?? '-'}</TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]">{item.address.areaLevel4?.name ?? '-'}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.address.areaLevel3?.name ?? '-'}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.address.areaLevel4?.name ?? '-'}</TableCell>
                 <TableCell className="text-center bg-[#F9FAFC]" position="center">
                   {item.isDtks ? 'DTKS' : 'Non DTKS'}
                 </TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]">{formatToView(item.createdAt) ?? '-'}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.createdAt) ?? '-'}</TableCell>
                 <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                   <Link to={`/data-master/info-data-master/${item.id}`}>
                     <Button variant="base" size="icon">
