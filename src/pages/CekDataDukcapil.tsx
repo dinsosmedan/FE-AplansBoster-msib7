@@ -27,7 +27,7 @@ const CekDataDukcapil = () => {
   return (
     <>
       {isFetching && <Loading />}
-      <section className="relative bg-[url('@/assets/images/bg-cekriwayat-bansos.svg')] w-full h-[412px] bg-no-repeat bg-cover">
+      <section className="relative bg-[url('@/assets/images/bg-cekriwayat-bansos.webp')] w-full h-[412px] bg-no-repeat bg-cover">
         <div className="flex items-center gap-5 px-[99px] w-full absolute bottom-[-30px]">
           <Search
             value={NIK}
