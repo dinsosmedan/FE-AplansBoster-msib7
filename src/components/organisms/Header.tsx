@@ -59,7 +59,7 @@ export default function Header() {
                   ) : (
                     <>
                       <img
-                        src={`https://ui-avatars.com/api/?name=${user?.data.name}`}
+                        src={`https://ui-avatars.com/api/?background=fce9ee&color=dd2153&bold=true&name=${user?.data.name}`}
                         alt="profile"
                         loading="lazy"
                         className="w-12 h-12 object-cover rounded-[14px]"

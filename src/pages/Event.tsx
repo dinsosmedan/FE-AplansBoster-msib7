@@ -79,7 +79,8 @@ const Event = () => {
   return (
     <Container>
       {isFetching && <Loading />}
-      <div className="flex justify-end my-5">
+      <div className="flex justify-between mb-5">
+        <h1 className="text-xl font-bold">Management Event</h1>
         <Button className="py-6 rounded-lg" onClick={handleCreate}>
           <HiNewspaper className="text-2xl" />
           <span className="text-sm ml-3">Tambah Event</span>

@@ -266,6 +266,7 @@ export default function DataDtks() {
             <TableRow>
               <TableHead className="text-white font-bold text-[15px]">No</TableHead>
               <TableHead className="text-white font-bold text-[15px]">NIK</TableHead>
+              <TableHead className="text-white font-bold text-[15px]">NO. KK</TableHead>
               <TableHead className="text-white font-bold text-[15px]">Nama</TableHead>
               <TableHead className="text-white font-bold text-[15px]">Alamat</TableHead>
               <TableHead className="text-white font-bold text-[15px]">BPNT</TableHead>
@@ -281,7 +282,8 @@ export default function DataDtks() {
                   <TableCell className="bg-[#F9FAFC]" position="center">
                     {(dtks.meta.currentPage - 1) * dtks.meta.perPage + index + 1}
                   </TableCell>
-                  <TableCell className="bg-[#F9FAFC]">{item.identityNumber}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]" position="center">{item.identityNumber}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]" position="center">{item.familyCardNumber}</TableCell>
                   <TableCell className="bg-[#F9FAFC]">{item.name}</TableCell>
                   <TableCell className="bg-[#F9FAFC]">{item.address.fullAddress}</TableCell>
                   <TableCell className="bg-[#F9FAFC]" position="center">
