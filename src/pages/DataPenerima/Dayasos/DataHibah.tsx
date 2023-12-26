@@ -7,7 +7,7 @@ import { formatToView } from '@/lib/services/formatDate'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
+import { HiMagnifyingGlass, HiPlus, HiArrowPath } from 'react-icons/hi2'
 
 import {
   useDeleteOrganizationGrantAssistance,
@@ -61,6 +61,11 @@ const DataHibah = () => {
   })
 
   useDisableBodyScroll(isFetching)
+
+  const handleReset = () => {
+    navigate('/data-penerima/dayasos/bho')
+    forms.reset()
+  }
 
   const onSubmit = async (values: FormValues) => {
     if (values.q !== '') {
@@ -138,7 +143,7 @@ const DataHibah = () => {
       <h1 className="font-bold text-xl ">Bansos Hibah Organisasi/Lembaga (BHO)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="grid grid-cols-2 gap-x-10 gap-y-5 mt-5">
+          <div className="grid grid-cols-2 gap-x-5 gap-y-5 mt-5">
             <FormField
               name="q"
               control={forms.control}
@@ -160,7 +165,7 @@ const DataHibah = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Search value={field.value} onChange={field.onChange} placeholder="Masukkan Tahun" />
+                    <Search value={field.value} onChange={field.onChange} type="number" placeholder="Masukkan Tahun" />
                   </FormControl>
                 </FormItem>
               )}
@@ -181,6 +186,10 @@ const DataHibah = () => {
               ) : null}
             </div>
             <div className="flex items-center gap-3">
+              <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
+                <HiArrowPath className="text-lg" />
+                <span>Reset</span>
+              </Button>
               <Button className="gap-2 border-none rounded-lg" type="submit">
                 <HiMagnifyingGlass className="text-lg" />
                 <span>Cari Data</span>

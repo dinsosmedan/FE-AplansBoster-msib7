@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 const dataLayanan = [
-  { text: 'Data Pengajuan/Ditolak', tab: 'pending' },
+  { text: 'Data Pending', tab: 'pending' },
   { text: 'Data Diterima', tab: 'approved' }
 ]
 
@@ -188,7 +188,7 @@ export default function LayananDtks() {
                     className={cn('bg-[#F9FAFC]', item.isApproved ? 'text-green-500' : 'text-yellow-500')}
                     position="center"
                   >
-                    {item.isApproved ? 'Approved' : 'Pending/Rejected'}
+                    {item.isApproved ? 'Approved' : 'Pending'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center text-left bg-[#F9FAFC]">
                     <Button
@@ -198,7 +198,6 @@ export default function LayananDtks() {
                         setDtksId(item.id)
                       }}
                     >
-                      <p className="text-base font-bold pr-3">Action</p>
                       <HiOutlineExclamationCircle className="h-6 w-6" />
                     </Button>
                   </TableCell>
@@ -576,7 +575,7 @@ export default function LayananDtks() {
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="true">Approved</SelectItem>
-                        <SelectItem value="false">Rejected</SelectItem>
+                        <SelectItem value="false">pending</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormItem>

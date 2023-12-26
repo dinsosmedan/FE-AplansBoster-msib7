@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from '@/components/ui/select'
 import DropZone, { type FileWithPreview } from '../../../components/atoms/DropZone'
 import DatePicker from './../../../components/atoms/DatePicker'
-import { useGetKecamatan, useGetKelurahan, usePublicEventDTKS } from '@/store/server'
+import { useGetKecamatan, useGetKelurahan, usePublicEventDTKS, useGetMePublic } from '@/store/server'
 import { type PublicDTKSFields, publicEventDTKS } from '@/lib/validations/landingPage/public.validation'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { formatDateToString } from '@/lib/services/formatDate'
@@ -26,6 +26,7 @@ export default function DtksRegister() {
   })
   const { mutate: dtks, isLoading } = usePublicEventDTKS()
   const areaLevel3 = forms.watch('areaLevel3')
+  const { data: user } = useGetMePublic()
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3)
   const onSubmit = async (data: PublicDTKSFields) => {
@@ -62,8 +63,9 @@ export default function DtksRegister() {
                   <FormControl>
                     <Input
                       {...field}
-                      value={field.value ?? ''}
+                      value={user?.data.name ?? ''}
                       type="text"
+                      readOnly={true}
                       placeholder="Masukkan Nama Anda"
                       className="rounded-md"
                     />
@@ -81,9 +83,10 @@ export default function DtksRegister() {
                   <FormControl>
                     <Input
                       {...field}
-                      value={field.value ?? ''}
+                      value={user?.data.identityNumber ?? ''}
                       className="rounded-md"
                       type="number"
+                      readOnly={true}
                       placeholder="Cari NIK"
                     />
                   </FormControl>

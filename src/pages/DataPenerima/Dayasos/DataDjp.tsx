@@ -171,90 +171,94 @@ const DataDjp = () => {
       <Title>Dana Jasa Pelayanan Masyarakat (DJPM)</Title>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-[18px]">
-          <section className="grid grid-cols-3 gap-8 mt-5">
-            <FormField
-              name="q"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} placeholder="Cari berdasarkan NIK atau Nama" />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="type"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <Select onValueChange={field.onChange} value={field.value}>
+          <section>
+            <div className="grid grid-cols-2  gap-y-5  gap-x-5 mt-5">
+              <FormField
+                name="q"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Jenis Bantuan" />
-                      </SelectTrigger>
+                      <Input {...field} value={field.value ?? ''} placeholder="Cari berdasarkan NIK atau Nama" />
                     </FormControl>
-                    <SelectContent>
-                      {serviceTypes?.map((item, index) => (
-                        <SelectItem key={index} value={item.id}>
-                          {item.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="budget_year"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun" />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="kecamatan"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <SearchSelect
-                      selected={field.value}
-                      onChange={field.onChange}
-                      width="w-[380px]"
-                      placeholder="Pilih Kecamatan"
-                      options={
-                        listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
-                      }
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="kelurahan"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <SearchSelect
-                      selected={field.value}
-                      onChange={field.onChange}
-                      disabled={!areaLevel3 && !kecamatan}
-                      width="w-[380px]"
-                      placeholder="Pilih Kelurahan"
-                      options={
-                        listKelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []
-                      }
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="type"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Jenis Bantuan" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {serviceTypes?.map((item, index) => (
+                          <SelectItem key={index} value={item.id}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid grid-cols-3 gap-y-5  gap-x-5 mt-5">
+              <FormField
+                name="kecamatan"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        width="w-[380px]"
+                        placeholder="Pilih Kecamatan"
+                        options={
+                          listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
+                        }
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="kelurahan"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        disabled={!areaLevel3 && !kecamatan}
+                        width="w-[380px]"
+                        placeholder="Pilih Kelurahan"
+                        options={
+                          listKelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []
+                        }
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="budget_year"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Tahun" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
           </section>
 
           <section className="flex items-center justify-between">

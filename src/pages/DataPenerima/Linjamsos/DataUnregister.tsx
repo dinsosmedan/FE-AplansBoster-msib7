@@ -157,7 +157,7 @@ const DataUnregister = () => {
         <h1 className="font-bold text-xl ">Unregister</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-            <div className="grid grid-cols-3 gap-x-5 gap-y-5 mt-5 ">
+            <div className="grid grid-cols-1 gap-x-5 gap-y-5 mt-5 ">
               <FormField
                 name="q"
                 control={forms.control}
@@ -174,6 +174,8 @@ const DataUnregister = () => {
                   </FormItem>
                 )}
               />
+            </div>
+            <div className="grid grid-cols-3 gap-x-5 gap-y-5">
               <FormField
                 name="letterNumber"
                 control={forms.control}
@@ -191,7 +193,7 @@ const DataUnregister = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Bulan" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Bulan" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -203,7 +205,7 @@ const DataUnregister = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Tahun" />
                     </FormControl>
                   </FormItem>
                 )}

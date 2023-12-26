@@ -176,7 +176,6 @@ const DataPokmas = () => {
   }
 
   if (isLoading) return <Loading />
-
   return (
     <div>
       <Container>
@@ -273,7 +272,7 @@ const DataPokmas = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Tahun" />
                     </FormControl>
                   </FormItem>
                 )}

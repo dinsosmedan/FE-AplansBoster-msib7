@@ -229,6 +229,7 @@ const DataPkh = () => {
               </Button>
             </div>
           </section>
+          <p className="text-primary text-sm font-bold">*data bersumber dari SIKS-NG</p>
         </form>
       </Form>
       <section className="border rounded-xl mt-5 overflow-hidden">

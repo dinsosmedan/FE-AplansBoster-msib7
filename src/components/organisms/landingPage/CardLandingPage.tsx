@@ -30,8 +30,6 @@ export default function CardLandingPage({
   filledQuota
 }: CardLandingPageProps) {
   const navigate = useNavigate()
-  console.log({ quota, filledQuota })
-
   return (
     <article
       onClick={() => navigate(href)}

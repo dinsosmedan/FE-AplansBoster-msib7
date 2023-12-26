@@ -19,19 +19,15 @@ export default function SubmissionHistory() {
   if (isLoading) {
     return <Loading />
   }
-  // console.log(data[0].createdAt)
 
   // React.useEffect(() => {
   //   setfilter(filter ?? '')
   // }, [filter])
-  // console.log(filter);
 
   const onChangeFilter = async (params: any) => {
     setfilter(params)
     await refetch()
   }
-  // console.log(filter)
-  // console.log({ filter })
 
   return (
     <div className="bg-[#F9F9F9] lg:px-[342px] py-[38px] flex justify-center pt-20">
@@ -63,8 +59,6 @@ export default function SubmissionHistory() {
         </div>
         <div className="grid grid-cols-1 gap-7">
           {data.map((riwayat: any, index: any) => {
-            // console.log(riwayat);
-
             const title =
               riwayat.applicationCategory === 'dtks-schools'
                 ? 'SKTM Untuk Sekolah/Universitas (Terdaftar DTKS)'

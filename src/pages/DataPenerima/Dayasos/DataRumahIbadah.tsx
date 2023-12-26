@@ -154,7 +154,7 @@ const DataRumahIbadah = () => {
       <h1 className="font-bold text-xl ">Rumah Ibadah (RI)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="grid grid-cols-3 gap-x-10 gap-y-5 mt-5">
+          <div className="grid grid-cols-1 gap-x-10 gap-y-5 mt-5">
             <FormField
               name="q"
               control={forms.control}
@@ -166,6 +166,8 @@ const DataRumahIbadah = () => {
                 </FormItem>
               )}
             />
+          </div>
+          <div className="grid grid-cols-3 gap-y-5  gap-x-5">
             <FormField
               name="type"
               control={forms.control}
