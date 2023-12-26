@@ -297,6 +297,7 @@ export default function BbpRegister() {
                     <SearchSelect
                       selected={field.value}
                       onChange={field.onChange}
+                      disabled={!areaLevel3 || !kelurahanLists}
                       width="md:w-[300px] lg:w-[700px]"
                       className="rounded-md"
                       placeholder="Pilih Kelurahan"

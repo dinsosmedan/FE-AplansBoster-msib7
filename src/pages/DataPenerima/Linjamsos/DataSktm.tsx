@@ -18,7 +18,7 @@ import {
   useGetKelurahan,
   useDeleteSktm
 } from '@/store/server'
-import { Action, ExportButton, Loading, Modal } from '@/components'
+import { Action, ExportButton, Loading, Modal, SearchSelect } from '@/components'
 import React from 'react'
 import { exportIndigencyCertificateFn } from '@/api/linjamsos.api'
 import { useAlert, useTitleHeader } from '@/store/client'
@@ -225,20 +225,15 @@ const DataSktm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kecamatan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKecamatan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      width="w-[380px]"
+                      placeholder="Pilih Kecamatan"
+                      options={
+                        listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
+                      }
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -249,24 +244,16 @@ const DataSktm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      disabled={areaLevel3 === '' && kecamatan === ''}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kelurahan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKelurahan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      disabled={!areaLevel3 && !kecamatan}
+                      width="w-[380px]"
+                      placeholder="Pilih Kelurahan"
+                      options={
+                        listKelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []
+                      }
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -337,7 +324,9 @@ const DataSktm = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">
                     {item?.application.peopleConcerned?.name ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item?.issueYear ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {item?.issueYear ?? '-'}
+                  </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {ubahFormatDateTime(item?.issueDate) ?? '-'}
                   </TableCell>
@@ -350,7 +339,9 @@ const DataSktm = () => {
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item?.application?.peopleConcerned?.address?.areaLevel4?.name ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {formatToView(item.updatedAt) ?? '-'}
+                  </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action onDelete={async () => await handleDelete(item.id)} onDetail={() => showDetail(item.id)} />
                   </TableCell>

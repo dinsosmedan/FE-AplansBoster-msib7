@@ -34,21 +34,22 @@ const SectionDayasos = () => {
 const CardData = () => {
   const { data, isLoading } = useCountDataDayasos()
 
-  // if (isLoading) return <Loading />
-
-  // const { veteran, serviceFund, worshipPlace, organizationGrantAssistance, jointBusinessGroupAssistance, communityGroupAssistance, fuelCashAssistance, nonCashFoodAssistance } = data
-
   return (
     <>
       {isLoading ? (
-        <>
-          <Skeleton className="w-12 h-12 rounded-[14px]" />
-          <div className="flex flex-col gap-3">
-            <Skeleton className="w-[120px] h-3 rounded-[14px]" />
-            <Skeleton className="w-[80px] h-3 rounded-[14px]" />
-            <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+        [...Array(2)].map((_, i) => (
+          <div className="grid grid-cols-4 gap-5 mt-5" key={i}>
+            {[...Array(4)].map((_, i) => (
+              <div className="rounded-xl bg-white p-4" key={i}>
+                <div className="flex flex-col gap-2">
+                  <Skeleton className="w-[120px] h-3 rounded-[14px]" />
+                  <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+                  <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+                </div>
+              </div>
+            ))}
           </div>
-        </>
+        ))
       ) : (
         <>
           <div className="grid grid-cols-4 gap-5 mt-5">
@@ -88,7 +89,9 @@ const ChartPokmas = () => {
     <>
       <LongCard props={title}>
         {isLoading ? (
-          <Skeleton className="w-[300px] h-[300px] rounded-full" />
+          <div className="my-5">
+            <Skeleton className="w-[300px] h-[300px] rounded-full" />
+          </div>
         ) : (
           <LongCard.Chart
             // data={[20, 10, 12, 13, 21]}
@@ -115,7 +118,9 @@ const ChartKube = () => {
     <>
       <LongCard props={title}>
         {isLoading ? (
-          <Skeleton className="w-[300px] h-[300px] rounded-full" />
+          <div className="my-5">
+            <Skeleton className="w-[300px] h-[300px] rounded-full" />
+          </div>
         ) : (
           <LongCard.Chart
             // data={[20, 10, 12, 13, 21]}
@@ -143,7 +148,9 @@ const ChartRi = () => {
     <>
       <LongCard props={['Rumah Ibadah', 'Persentasi Rumah Ibadah']}>
         {isLoading ? (
-          <Skeleton className="w-[300px] h-[300px] rounded-full" />
+          <div className="my-5">
+            <Skeleton className="w-[300px] h-[300px] rounded-full" />
+          </div>
         ) : (
           <LongCard.Chart
             // data={[20, 5, 13, 13, 22, 15, 12]}

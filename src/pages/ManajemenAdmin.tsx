@@ -8,7 +8,7 @@ import Modal from '@/components/organisms/Modal'
 import * as React from 'react'
 import { HiOutlinePencilAlt, HiUserAdd, HiTrash } from 'react-icons/hi'
 import useTitle from '@/hooks/useTitle'
-import { Container, Loading, Pagination, Search } from '@/components'
+import { Container, Loading, Pagination, Search, Status } from '@/components'
 import {
   useCreateAdmin,
   useDeleteAdmin,
@@ -22,16 +22,12 @@ import { userValidation, type userFields } from '@/lib/validations/user.validati
 import { useAlert } from '@/store/client'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useCreateParams, useDeleteParams, useGetParams } from '@/hooks'
 
 const ManajemenAdmin = () => {
-  useTitle('Manajemen Admin ')
+  useTitle('Manajemen Admin')
   const navigate = useNavigate()
-  // const { id } = useParams<{ id: string }>()
-
   const { alert } = useAlert()
-
-  const { data: role } = useGetRole()
-  const { data: admins, isLoading } = useGetAdmin()
 
   const forms = useForm<userFields>({
     mode: 'onTouched',
@@ -46,16 +42,24 @@ const ManajemenAdmin = () => {
       isActive: ''
     }
   })
-  const [isShow, setIsShow] = React.useState(false)
-  const [isShowUpdate, setIsShowUpdate] = React.useState(false)
-  const { mutate: Register, isLoading: isLoadingCreate } = useCreateAdmin()
 
-  const [currentPage, setCurrentPage] = React.useState(1)
-  const { mutateAsync: deleteUser, isLoading: isLoadingDelete } = useDeleteAdmin()
+  const formsSearch = useForm<{ q: string }>()
 
   const [userId, setUserId] = React.useState('')
-  const { data: user, isSuccess, isLoading: isLoadingUser } = useGetAdminById(userId)
+  const [isShow, setIsShow] = React.useState(false)
+  const [isShowUpdate, setIsShowUpdate] = React.useState(false)
+
+  const deleteParams = useDeleteParams()
+  const createParams = useCreateParams()
+  const { page, q } = useGetParams(['page', 'q'])
+
+  const { mutate: Register, isLoading: isLoadingCreate } = useCreateAdmin()
   const { mutate: updateUser, isLoading: isLoadingUpdate } = useUpdateAdmin()
+  const { mutateAsync: deleteUser, isLoading: isLoadingDelete } = useDeleteAdmin()
+
+  const { data: role } = useGetRole()
+  const { data: admins, isLoading, isFetching, refetch } = useGetAdmin(page, q)
+  const { data: user, isSuccess, isLoading: isLoadingUser } = useGetAdminById(userId)
 
   React.useEffect(() => {
     if (isSuccess && user) {
@@ -65,16 +69,15 @@ const ManajemenAdmin = () => {
         name: user?.name,
         phoneNumber: user?.phoneNumber,
         password: '',
-        role: user?.role.id,
+        role: user?.role?.id,
         isActive: user?.isActive
       })
     }
   }, [isSuccess, user])
 
-  // const handleUpdate = (id: string) => {
-  //   setUserId(id)
-  //   setIsShow(true)
-  // }
+  React.useEffect(() => {
+    if (q) formsSearch.setValue('q', q)
+  }, [q])
 
   const handleDeleteUser = (id: string) => {
     void alert({
@@ -112,13 +115,37 @@ const ManajemenAdmin = () => {
     navigate('/manajemen-admin')
   }
 
-  if (isLoading || isLoadingDelete || isLoadingUser) {
-    return <Loading />
+  const handleSearch = async (values: { q: string }) => {
+    if (values.q) {
+      createParams({ key: 'q', value: values.q })
+      await refetch()
+    } else {
+      deleteParams('q')
+      await refetch()
+    }
   }
+
   return (
     <Container>
+      {(isFetching || isLoading || isLoadingDelete) && <Loading />}
       <div className="flex items-center mb-[18px]">
-        <Search placeholder="Search" className="w-[398px] py-[23px]" />
+        <Form {...formsSearch}>
+          <form onSubmit={formsSearch.handleSubmit(handleSearch)}>
+            <FormField
+              control={formsSearch.control}
+              name="q"
+              render={({ field }) => (
+                <Search
+                  placeholder="Search"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  className="w-[398px] py-[23px]"
+                />
+              )}
+            />
+          </form>
+        </Form>
+
         <Button className="w-fit py-6 px-4 ml-auto bg-primary" onClick={() => handleModalButtonClick(userId)}>
           <HiUserAdd className="w-6 h-6 text-white" />
           <p className="text-white font-semibold text-sm pl-2 w-max">Tambah Admin</p>
@@ -146,17 +173,8 @@ const ManajemenAdmin = () => {
                 <TableCell className="text-center">{item.email || '-'}</TableCell>
                 <TableCell className="text-center">{item.phoneNumber || '-'}</TableCell>
                 <TableCell className="text-center">{item.role?.name || 'Guest'}</TableCell>
-                <TableCell>
-                  <div
-                    className={`${
-                      item.isActive ? 'bg-green-200' : 'bg-red-200'
-                    } rounded-full flex items-center w-fit gap-2 py-1 px-2 mx-auto`}
-                  >
-                    <div className={`w-2 h-2 rounded-full ${item.isActive ? 'bg-[#409261]' : 'bg-red-500'}`} />
-                    <p className={`${item.isActive ? 'text-[#409261]' : 'text-red-500'} text-xs`}>
-                      {item.isActive ? 'Active' : 'Inactive'}
-                    </p>
-                  </div>
+                <TableCell position="center">
+                  <Status label={item?.isActive ? 'Active' : 'Inactive'} isSuccess="Active" isDanger="Inactive" />
                 </TableCell>
                 <TableCell className="flex items-center justify-center">
                   <Button
@@ -188,15 +206,16 @@ const ManajemenAdmin = () => {
         </TableBody>
       </Table>
 
-      <Pagination
-        className="px-5 py-5 flex justify-end"
-        currentPage={currentPage}
-        totalCount={100}
-        pageSize={10}
-        onPageChange={(page) => setCurrentPage(page)}
-      />
+      {(admins?.meta?.total as number) > 30 ? (
+        <Pagination
+          currentPage={page !== '' ? parseInt(page) : 1}
+          totalCount={admins?.meta.total as number}
+          pageSize={30}
+          onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
+        />
+      ) : null}
 
-      <Modal isShow={isShow} className="max-h-[calc(100vh-200px)] overflow-y-auto">
+      <Modal isShow={isShow} className="max-h-[calc(100vh-200px)] overflow-y-auto" isLoading={isLoadingUser}>
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Tambah</h3>
           <p className="text-sm text-[#A1A1A1]">Masukkan data Admin baru.</p>
@@ -247,7 +266,7 @@ const ManajemenAdmin = () => {
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">No. HP</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value} placeholder="Masukkan No. HP" />
+                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan No. HP" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -270,20 +289,18 @@ const ManajemenAdmin = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Role</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Role" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {role?.data.map((item: any, index: any) => (
-                            <SelectItem key={index} value={item.id}>
-                              {item.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Role" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {role?.data.map((item: any, index: any) => (
+                          <SelectItem key={index} value={item.id}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />
@@ -293,19 +310,17 @@ const ManajemenAdmin = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Status</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Status" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="1">Aktif</SelectItem>
-                          <SelectItem value="0">Tidak Aktif</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Status" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="1">Aktif</SelectItem>
+                        <SelectItem value="0">Tidak Aktif</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />
@@ -378,7 +393,7 @@ const ManajemenAdmin = () => {
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">No. HP</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value} placeholder="Masukkan No. HP" />
+                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan No. HP" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -401,20 +416,18 @@ const ManajemenAdmin = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Role</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Role" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {role?.data.map((item: any, index: any) => (
-                            <SelectItem key={index} value={item.id}>
-                              {item.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih Role" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {role?.data.map((item: any, index: any) => (
+                          <SelectItem key={index} value={item.id}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />

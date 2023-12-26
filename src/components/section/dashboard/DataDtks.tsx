@@ -35,7 +35,7 @@ const TabelDtks = () => {
   })
 
   const [order, setorder] = useState('Menurun')
-  const { data, refetch, isLoading } = useGetAdministrativeArea(order)
+  const { data, refetch, isLoading, isFetching } = useGetAdministrativeArea(order)
 
   // return
   const onChange = async (values: any) => {
@@ -85,7 +85,18 @@ const TabelDtks = () => {
                 </form>
               </Form>
             </div>
-            <LongCard.Tabel data={data.data} />
+            {isFetching ? (
+              <div className="py-8">
+                <div className="flex flex-col gap-3">
+                  <Skeleton className="w-full h-[50px]" />
+                  <Skeleton className="w-full h-[50px]" />
+                  <Skeleton className="w-full h-[50px]" />
+                  <Skeleton className="w-full h-[50px]" />
+                </div>
+              </div>
+            ) : (
+              <LongCard.Tabel data={data.data} />
+            )}
           </div>
         )}
       </LongCard>
@@ -142,14 +153,15 @@ const CardData = () => {
   return (
     <>
       {isLoading ? (
-        <>
-          <Skeleton className="w-12 h-12 rounded-[14px]" />
-          <div className="flex flex-col gap-3">
-            <Skeleton className="w-[120px] h-3 rounded-[14px]" />
-            <Skeleton className="w-[80px] h-3 rounded-[14px]" />
-            <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+        [...Array(3)].map((_, i) => (
+          <div className="rounded-xl bg-white p-4" key={i}>
+            <div className="flex flex-col gap-2">
+              <Skeleton className="w-[120px] h-3 rounded-[14px]" />
+              <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+              <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+            </div>
           </div>
-        </>
+        ))
       ) : (
         <>
           <BasicCard props={['Total Data DTKS', data?.beneficiaries, 'Jiwa']} />

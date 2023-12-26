@@ -16,27 +16,6 @@ const SectionLinjamsos = () => {
         <TitleSign text={' Linjamsos '} />
 
         <CardData />
-        {/* <div className="grid grid-cols-3 gap-5 mt-5">
-          <LongCard props={['Data DTKS', 'Persentasi Data DTKS']}>
-            <LongCard.Chart
-              data={[12, 19]}
-              isPercent={true}
-              label={['DTKS', 'Non DTKS']}
-              backgroundColor={['#F94144', '#F3722C']}
-            />
-          </LongCard>
-          <LongCard props={['Jenis Kelamin', 'Persentasi Data DTKS Berdasarkan Jenis Kelamin']}>
-            <LongCard.Chart
-              data={[30, 15]}
-              isPercent={true}
-              label={['Laki-laki', 'Perempuan']}
-              backgroundColor={['#F94144', '#F3722C']}
-            />
-          </LongCard>
-          <LongCard props={['Prevalensi DTKS Perkecamatan', 'Prevalensi DTKS Perkecamtan']}>
-            <LongCard.Tabel />
-          </LongCard>
-        </div> */}
         <div className="grid grid-cols-3 gap-5 mt-5">
           <ChartPenanganan />
           <ChartBbp />
@@ -55,16 +34,11 @@ const ChartSktm = () => {
   return (
     <LongCard props={['SKTM', 'Persentasi Data SKTM Berdasarkan DTKS']}>
       {isLoading ? (
-        <Skeleton className="w-[300px] h-[300px] rounded-full" />
+        <div className="my-5">
+          <Skeleton className="w-[300px] h-[300px] rounded-full" />
+        </div>
       ) : (
-        <LongCard.Chart
-          // data={[30, 15]}
-          data={value}
-          // isPercent={true}
-          // label={['DTKS', 'Non DTKS']}
-          label={label}
-          backgroundColor={['#F94144', '#F3722C']}
-        />
+        <LongCard.Chart data={value} label={label} backgroundColor={['#F94144', '#F3722C']} />
       )}
     </LongCard>
   )
@@ -78,16 +52,11 @@ const ChartBbp = () => {
   return (
     <LongCard props={['Bantuan Biaya Pendidikan', 'Persentasi Data Biaya Pendidikan']}>
       {isLoading ? (
-        <Skeleton className="w-[300px] h-[300px] rounded-full" />
+        <div className="my-5">
+          <Skeleton className="w-[300px] h-[300px] rounded-full" />
+        </div>
       ) : (
-        <LongCard.Chart
-          // data={[20, 5, 13]}
-          data={value}
-          // isPercent={true}
-          // label={['Diterima', 'Diterima', 'Prelist']}
-          label={label}
-          backgroundColor={['#F94144', '#F3722C', '#F9C74F']}
-        />
+        <LongCard.Chart data={value} label={label} backgroundColor={['#F94144', '#F3722C', '#F9C74F']} />
       )}
     </LongCard>
   )
@@ -95,7 +64,6 @@ const ChartBbp = () => {
 const ChartPenanganan = () => {
   const { data, isLoading } = useVulnerableGroup()
 
-  // if (isLoading) return <Loading />
   const total = data ? data.map((val: any) => val.count) : []
   const label = data ? data.map((val: any) => val.budgetYear.toString()) : []
 
@@ -104,11 +72,12 @@ const ChartPenanganan = () => {
       <LongCard props={['Penangan Kelompok Rentan', 'Perkembangan Data PKR']}>
         {isLoading ? (
           <>
-            <Skeleton className="w-[300px] h-[300px] rounded-full" />
+            <div className="my-5">
+              <Skeleton className="w-[300px] h-[300px] rounded-full" />
+            </div>
           </>
         ) : (
           <LongCard.Chart
-            // data={[12, 21, 22, 31, 21]}
             data={total}
             label={label}
             backgroundColor={['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']}
@@ -125,11 +94,27 @@ const CardData = () => {
     <>
       {isLoading ? (
         <>
-          <Skeleton className="w-12 h-12 rounded-[14px]" />
-          <div className="flex flex-col gap-3">
-            <Skeleton className="w-[120px] h-3 rounded-[14px]" />
-            <Skeleton className="w-[80px] h-3 rounded-[14px]" />
-            <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+          <div className="grid grid-cols-3 gap-5 mt-5">
+            {[...Array(3)].map((_, i) => (
+              <div className="rounded-xl bg-white p-4" key={i}>
+                <div className="flex flex-col gap-2">
+                  <Skeleton className="w-[120px] h-3 rounded-[14px]" />
+                  <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+                  <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-2 gap-5 mt-5">
+            {[...Array(2)].map((_, i) => (
+              <div className="rounded-xl bg-white p-4" key={i}>
+                <div className="flex flex-col gap-2">
+                  <Skeleton className="w-[120px] h-3 rounded-[14px]" />
+                  <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+                  <Skeleton className="w-[80px] h-3 rounded-[14px]" />
+                </div>
+              </div>
+            ))}
           </div>
         </>
       ) : (

@@ -12,6 +12,7 @@ import { useGetTuitionAssistanceEventById, useUpateTuitionAssistanceEvent } from
 import { useGetBank, useGetEvent, useGetStudyPrograms, useGetUniversities } from '@/store/server'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { SearchSelect } from '@/components'
 
 interface FormValuesEditData extends updateTuitionAssistanceFields {
   nik?: string
@@ -72,7 +73,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
         event: eventId,
         bankAccountNumber: data.bankAccNumber as string,
         bankAccountName: data.bankAccName as string,
-        bank: ''
+        bank: data.bank.id
       })
     }
   }, [isSuccess])
@@ -166,20 +167,15 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">Perguruan Tinggi</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Universitas" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {universities?.map((university) => (
-                          <SelectItem key={university.id} value={university.id}>
-                            {university.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <SearchSelect
+                      selected={field.value as string}
+                      onChange={field.onChange}
+                      width="w-[330px]"
+                      placeholder="Pilih Perguruan Tinggi"
+                      options={
+                        universities?.map((university) => ({ label: university.name, value: university.id })) ?? []
+                      }
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -190,20 +186,19 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
               render={({ field }) => (
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">Program Studi</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value} disabled={!universities || !studyPrograms}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Program Studi" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {studyPrograms?.map((studyProgram) => (
-                        <SelectItem key={studyProgram.id} value={studyProgram.id}>
-                          {studyProgram.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <SearchSelect
+                      selected={field.value as string}
+                      onChange={field.onChange}
+                      width="w-[330px]"
+                      disabled={!university || !studyPrograms}
+                      placeholder="Pilih Prodi"
+                      options={
+                        studyPrograms?.map((studyProgram) => ({ label: studyProgram.name, value: studyProgram.id })) ??
+                        []
+                      }
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />

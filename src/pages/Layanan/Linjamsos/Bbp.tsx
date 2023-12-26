@@ -22,7 +22,7 @@ import {
   useUpdateTuitionAssistance
 } from '@/store/server'
 import { useNotFound, useToastNik } from '@/hooks'
-import { Loading } from '@/components'
+import { Loading, SearchSelect } from '@/components'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 const Bbp = () => {
@@ -204,20 +204,17 @@ const Bbp = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Universitas</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Universitas" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {universities?.map((university) => (
-                          <SelectItem key={university.id} value={university.id}>
-                            {university.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        width="w-[560px]"
+                        placeholder="Pilih Perguruan Tinggi"
+                        options={
+                          universities?.map((university) => ({ label: university.name, value: university.id })) ?? []
+                        }
+                      />
+                    </FormControl>
                   </FormItem>
                 )}
               />
@@ -229,24 +226,21 @@ const Bbp = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Program Studi</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      disabled={!universities || !studyPrograms}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Program Studi" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {studyPrograms?.map((studyProgram) => (
-                          <SelectItem key={studyProgram.id} value={studyProgram.id}>
-                            {studyProgram.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        width="w-[560px]"
+                        disabled={!university || !studyPrograms}
+                        placeholder="Pilih Prodi"
+                        options={
+                          studyPrograms?.map((studyProgram) => ({
+                            label: studyProgram.name,
+                            value: studyProgram.id
+                          })) ?? []
+                        }
+                      />
+                    </FormControl>
                   </FormItem>
                 )}
               />

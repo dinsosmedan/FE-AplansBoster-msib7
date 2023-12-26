@@ -137,7 +137,11 @@ export const updateIndigencyStatusFn = async ({ id, fields }: updateIndigencySta
     formData.append('message', fields.message as string)
   }
 
-  await api.post(`/service/indigency-certificate/status/${id}`, formData)
+  await api.post(`/service/indigency-certificate/status/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
 }
 
 export const showIndigencyCertificateApplicationFn = async (id: string): Promise<IIndigencyCertificate> => {
@@ -163,7 +167,7 @@ export const updateIndigencyCertificateApplicationFn = async ({
   id,
   fields
 }: updateIndigencyCertificateApplicationParams) => {
-  await api.post(`/service/indigency-certificate/${id}`, fields)
+  await api.put(`/service/indigency-certificate/${id}`, fields)
 }
 
 export const showDTKSApplicationFn = async (id: string): Promise<IDTKSApplication> => {

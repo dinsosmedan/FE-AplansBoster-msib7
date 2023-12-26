@@ -18,16 +18,21 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { type rolePermissionFields } from '@/lib/validations/rolepermission.validation'
 import { useAlert } from '@/store/client'
+import { useCreateParams, useDeleteParams, useGetParams } from '@/hooks'
 
 const ManajemenRole = () => {
   useTitle('Manajemen Role ')
   const navigate = useNavigate()
   const { alert } = useAlert()
 
+  const deleteParams = useDeleteParams()
+  const createParams = useCreateParams()
+  const { q } = useGetParams(['q'])
+
   const [isShow, setIsShow] = React.useState(false)
   const { mutate: RolePermission, isLoading: isLoadingCreate } = useCreateRolePermission()
-  const { data: role } = useGetRole()
-  const { data: permission } = useGetPermission()
+  const { data: role, isLoading: isLoadingRole, refetch } = useGetRole(q)
+  const { data: permission, isLoading: isLoadingPermission } = useGetPermission()
   const { mutateAsync: deleteRolePermission, isLoading: isLoadingDelete } = useDeleteRolePermission()
   const PERMISSION =
     permission?.data?.map((item: any) => ({
@@ -42,6 +47,22 @@ const ManajemenRole = () => {
       permissions: []
     }
   })
+
+  const formsSearch = useForm<{ q: string }>()
+
+  React.useEffect(() => {
+    if (q) formsSearch.setValue('q', q)
+  }, [q])
+
+  const handleSearch = async (values: { q: string }) => {
+    if (values.q) {
+      createParams({ key: 'q', value: values.q })
+      await refetch()
+    } else {
+      deleteParams('q')
+      await refetch()
+    }
+  }
 
   const handleDeleteRolePermission = (id: string) => {
     void alert({
@@ -68,14 +89,29 @@ const ManajemenRole = () => {
     navigate('/manajemen-role')
   }
 
-  if (isLoadingDelete || isLoadingCreate) {
+  if (isLoadingDelete || isLoadingCreate || isLoadingRole || isLoadingPermission) {
     return <Loading />
   }
 
   return (
     <Container className="relative pt-[34px] pb-[22px] px-7">
       <div className="flex items-center mb-[18px]">
-        <Search placeholder="Search" className="w-[398px] py-[23px]" />
+        <Form {...formsSearch}>
+          <form onSubmit={formsSearch.handleSubmit(handleSearch)}>
+            <FormField
+              control={formsSearch.control}
+              name="q"
+              render={({ field }) => (
+                <Search
+                  placeholder="Search"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  className="w-[398px] py-[23px]"
+                />
+              )}
+            />
+          </form>
+        </Form>
         <Button className="w-fit py-6 px-4 ml-auto bg-primary" onClick={() => setIsShow(true)}>
           <HiUserAdd className="w-6 h-6 text-white" />
           <p className="text-white font-semibold text-sm pl-2 w-max">Tambah Role</p>

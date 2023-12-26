@@ -1,4 +1,3 @@
-import { HiOutlineEye } from 'react-icons/hi2'
 import { Modal } from '../..'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
@@ -7,7 +6,8 @@ import { type updateTuitionAssistanceServiceFields } from '@/lib/validations/lin
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { useGetTuitionAssistanceEventById, useUpdateApplicationStatus } from '@/store/server/useService'
-import { Link } from 'react-router-dom'
+import * as React from 'react'
+import { Berkas } from '@/components'
 
 interface ModalEditPengajuanBBPProps {
   isShow: boolean
@@ -27,6 +27,14 @@ export default function ModalEditPengajuanBBP({ isShow, setIsShow, tuitionAssist
   const { data, isLoading } = useGetTuitionAssistanceEventById(tuitionAssistanceId as string)
   const { mutate: update, isLoading: isLoadingUpdate } = useUpdateApplicationStatus()
 
+  React.useEffect(() => {
+    if (data) {
+      forms.setValue('applicationStatus', data?.application_status as string)
+      forms.setValue('message', data?.message ?? '')
+      // forms.setValue('assistanceAmount', data.)
+    }
+  }, [data])
+
   const onSubmit = async (values: FormValues) => {
     const newData = {
       id: tuitionAssistanceId as string,
@@ -40,6 +48,8 @@ export default function ModalEditPengajuanBBP({ isShow, setIsShow, tuitionAssist
       }
     })
   }
+
+  console.log(data)
 
   return (
     <Modal isShow={isShow} className="md:max-w-3xl max-h-[calc(100vh-50px)] overflow-y-auto" isLoading={isLoading}>
@@ -147,24 +157,5 @@ export default function ModalEditPengajuanBBP({ isShow, setIsShow, tuitionAssist
         </form>
       </Form>
     </Modal>
-  )
-}
-
-interface BerkasProps {
-  title: string
-  url: string
-}
-
-const Berkas = ({ title, url }: BerkasProps) => {
-  return (
-    <div className="py-[18px] px-3 flex justify-between items-center border-b border-zinc-200">
-      <p className="uppercase w-max">{title}</p>
-      <Link to={url} target="_blank">
-        <Button className="gap-2 rounded-lg ml-24 items-center">
-          <HiOutlineEye />
-          <p className="text-xs">View</p>
-        </Button>
-      </Link>
-    </div>
   )
 }

@@ -1,7 +1,7 @@
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
-import { Action, ExportButton, Loading, Modal, Container, Pagination } from '@/components'
+import { Action, ExportButton, Loading, Modal, Container, Pagination, SearchSelect } from '@/components'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { formatToView } from '@/lib/services/formatDate'
@@ -19,7 +19,7 @@ import {
 } from '@/store/server'
 import { useAlert, useTitleHeader } from '@/store/client'
 import { exportCommunityGroupFn } from '@/api/dayasos.api'
-import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
+import { formatRibuan, useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 interface FormValues {
   q: string
   communityActivityCode: string
@@ -233,20 +233,15 @@ const DataPokmas = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kecamatan" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {listKecamatan?.map((item, index) => (
-                            <SelectItem key={index} value={item.id}>
-                              {item.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        width="w-[380px]"
+                        placeholder="Pilih Kecamatan"
+                        options={
+                          listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
+                        }
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -257,24 +252,16 @@ const DataPokmas = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        disabled={areaLevel3 === '' && kecamatan === ''}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kelurahan" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {listKelurahan?.map((item, index) => (
-                            <SelectItem key={index} value={item.id}>
-                              {item.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        disabled={!areaLevel3 && !kecamatan}
+                        width="w-[380px]"
+                        placeholder="Pilih Kelurahan"
+                        options={
+                          listKelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []
+                        }
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -339,25 +326,43 @@ const DataPokmas = () => {
             <TableBody>
               {communityGroups?.data?.length !== 0 ? (
                 communityGroups?.data.map((item, index) => (
-                  <TableRow key={item.id}>
+                  <TableRow key={item?.id}>
                     <TableCell className="text-left bg-[#F9FAFC]">
                       {(communityGroups.meta.currentPage - 1) * communityGroups.meta.perPage + index + 1}
                     </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.communityActivityCode}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.communityName}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.address?.areaLevel3?.name}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.address?.areaLevel4?.name}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{item.communityActivityTypeDescription}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.communityAssistanceType}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.approvedFundAmount}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.applicationYear}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.statusDisimbursement}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item?.communityActivityCode}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item?.communityName ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item?.address?.areaLevel3?.name ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item?.address?.areaLevel4?.name ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">
+                      {item?.communityActivityTypeDescription ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item?.communityAssistanceType ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">
+                      {item?.approvedFundAmount ? `Rp. ${formatRibuan(item.approvedFundAmount)}` : '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item?.applicationYear ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item?.statusDisimbursement ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {formatToView(item?.updatedAt) ?? '-'}
+                    </TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       <Action
-                        onDelete={() => handleDelete(item.id)}
-                        onDetail={() => showDetail(item.id)}
-                        onEdit={() => navigate(`/data-penerima/dayasos/pokmas/create/${item.id}`)}
+                        onDelete={() => handleDelete(item?.id)}
+                        onDetail={() => showDetail(item?.id)}
+                        onEdit={() => navigate(`/data-penerima/dayasos/pokmas/create/${item?.id}`)}
                       />
                     </TableCell>
                   </TableRow>
@@ -380,12 +385,15 @@ const DataPokmas = () => {
             onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
           />
         ) : null}
-        <Modal isShow={isShow} className="md:max-w-4xl">
+        <Modal
+          isShow={isShow}
+          className="md:max-w-4xl max-h-[calc(100vh-50px)] overflow-y-auto"
+          isLoading={isLoadingCommunityGroup}
+        >
           <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
             <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data POKMAS</h3>
             <p className="text-sm text-[#A1A1A1]">View Data Detail Data POKMAS</p>
           </Modal.Header>
-          {isLoadingCommunityGroup && <Loading />}
           <div className="grid grid-cols-3 gap-y-5">
             <div>
               <p className="text-sm font-bold">Nama Komunitas</p>
@@ -452,43 +460,43 @@ const DataPokmas = () => {
               <p className="text-base capitalize">{communityGroup?.statusDisimbursement ?? '-'}</p>
             </div>
           </div>
-            <div className="text-center mt-[-20px]">
-              <p className="text-lg font-bold">Data Anggota</p>
-            </div>
-            <section className="border rounded-xl overflow-hidden">
-              <Table>
-                <TableHeader className="bg-primary">
-                  <TableRow>
-                    <TableHead className="text-white font-bold text-[15px]">Nama</TableHead>
-                    <TableHead className="text-white font-bold text-[15px]">NIK</TableHead>
-                    <TableHead className="text-white font-bold text-[15px]"> Jabatan</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {communityGroup?.members?.length !== 0 ? (
-                    communityGroup?.members.map((item) => (
-                      <TableRow key={item.id}>
-                        <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                          {item.beneficiary.name}
-                        </TableCell>
-                        <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                          {item.beneficiary.identityNumber}
-                        </TableCell>
-                        <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                          {item.position}
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={4} className="text-center">
-                        Tidak ada data
+          <div className="text-center mt-[-20px]">
+            <p className="text-lg font-bold">Data Anggota</p>
+          </div>
+          <section className="border">
+            <Table>
+              <TableHeader className="bg-primary">
+                <TableRow>
+                  <TableHead className="text-white font-bold text-[15px]">Nama</TableHead>
+                  <TableHead className="text-white font-bold text-[15px]">NIK</TableHead>
+                  <TableHead className="text-white font-bold text-[15px]"> Jabatan</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {communityGroup?.members?.length !== 0 ? (
+                  communityGroup?.members.map((item) => (
+                    <TableRow key={item?.id}>
+                      <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                        {item?.beneficiary?.name ?? '-'}
+                      </TableCell>
+                      <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                        {item?.beneficiary?.identityNumber ?? '-'}
+                      </TableCell>
+                      <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                        {item?.position ?? '-'}
                       </TableCell>
                     </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </section>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={4} className="text-center">
+                      Tidak ada data
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </section>
         </Modal>
       </Container>
     </div>

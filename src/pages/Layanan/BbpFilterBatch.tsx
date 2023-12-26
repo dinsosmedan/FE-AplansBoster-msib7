@@ -8,7 +8,7 @@ import { useCreateParams, useDeleteParams, useGetParams, useTitle } from '@/hook
 import { formatToView } from '@/lib/services/formatDate'
 import { useGetEventTuitionAssistance } from '@/store/server'
 import { useForm } from 'react-hook-form'
-import { HiMagnifyingGlass, HiArrowRightCircle } from 'react-icons/hi2'
+import { HiMagnifyingGlass, HiArrowRightCircle, HiArrowPath } from 'react-icons/hi2'
 import { useNavigate } from 'react-router-dom'
 import * as React from 'react'
 import { STATUS_EVENT } from '@/lib/data'
@@ -46,11 +46,17 @@ export default function BbpFilterBatch() {
     await refetch()
   }
 
-  if (isLoading) return <Loading />
+  const handleReset = async () => {
+    forms.setValue('year', '')
+    forms.setValue('status', '')
+    deleteParams('year')
+    deleteParams('status')
+    await refetch()
+  }
 
   return (
     <Container>
-      {isFetching && <Loading />}
+      {(isFetching || isLoading) && <Loading />}
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="flex flex-row justify-between gap-3 py-6">
@@ -91,7 +97,18 @@ export default function BbpFilterBatch() {
                 )}
               />
             </div>
-            <div className="flex items-end justify-end">
+            <div className="flex items-center justify-end gap-2">
+              {(year || status) && (
+                <Button
+                  className="gap-2 border-primary text-primary rounded-lg"
+                  type="button"
+                  variant="outline"
+                  onClick={handleReset}
+                >
+                  <HiArrowPath className="text-lg" />
+                  <span className="w-max">Reset</span>
+                </Button>
+              )}
               <Button className="gap-2 border-none rounded-lg" type="submit">
                 <HiMagnifyingGlass className="text-lg" />
                 <span className="w-max">Cari Data</span>
@@ -100,6 +117,7 @@ export default function BbpFilterBatch() {
           </div>
         </form>
       </Form>
+
       <section className="border rounded-xl mt-5 overflow-hidden">
         <Table>
           <TableHeader className="bg-[#FFFFFF]">

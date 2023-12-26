@@ -1,4 +1,4 @@
-import { Container, CreateDataMaster, Loading, Pagination } from '@/components'
+import { Container, CreateDataMaster, Loading, Pagination, SearchSelect } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -116,20 +116,15 @@ export default function DataMaster() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kecamatan" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {listKecamatan?.map((item, index) => (
-                            <SelectItem key={index} value={item.id}>
-                              {item.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        width="w-[220px]"
+                        placeholder="Pilih Kecamatan"
+                        options={
+                          listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
+                        }
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -142,24 +137,16 @@ export default function DataMaster() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select
-                        disabled={areaLevel3 === '' && kecamatan === ''}
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Kelurahan" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {listKelurahan?.map((item, index) => (
-                            <SelectItem key={index} value={item.id}>
-                              {item.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        disabled={!areaLevel3 && !kecamatan}
+                        width="w-[220px]"
+                        placeholder="Pilih Kelurahan"
+                        options={
+                          listKelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []
+                        }
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -220,15 +207,25 @@ export default function DataMaster() {
                 <TableCell className="text-center bg-[#F9FAFC]" position="center">
                   {(beneficiary.meta.currentPage - 1) * beneficiary.meta.perPage + index + 1}
                 </TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.identityNumber}</TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.familyCardNumber ?? '-'}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                  {item.identityNumber}
+                </TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                  {item.familyCardNumber ?? '-'}
+                </TableCell>
                 <TableCell className="text-center bg-[#F9FAFC]">{item.name ?? '-'}</TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.address.areaLevel3?.name ?? '-'}</TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.address.areaLevel4?.name ?? '-'}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                  {item.address.areaLevel3?.name ?? '-'}
+                </TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                  {item.address.areaLevel4?.name ?? '-'}
+                </TableCell>
                 <TableCell className="text-center bg-[#F9FAFC]" position="center">
                   {item.isDtks ? 'DTKS' : 'Non DTKS'}
                 </TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.createdAt) ?? '-'}</TableCell>
+                <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                  {formatToView(item.createdAt) ?? '-'}
+                </TableCell>
                 <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                   <Link to={`/data-master/info-data-master/${item.id}`}>
                     <Button variant="base" size="icon">

@@ -14,7 +14,7 @@ export default function CekBansosUser() {
   const [NIK, setNIK] = React.useState('')
 
   const {
-    data: assistances,
+    data,
     refetch: refetchAssistance,
     isFetching: isFetchingAssistance,
     isSuccess: isSuccessAssistance,
@@ -80,12 +80,12 @@ export default function CekBansosUser() {
                 </TableHeader>
                 <TableBody>
                   <TableRow className="hover:bg-white">
-                    <TableCell position="center">{assistances?.identityNumber}</TableCell>
-                    <TableCell position="center">{assistances?.name}</TableCell>
-                    {/* <TableCell position="center">{assistances?.gender}</TableCell> */}
-                    <TableCell position="center">{assistances?.address.areaLevel3?.name}</TableCell>
-                    <TableCell position="center">{assistances?.address.areaLevel4?.name}</TableCell>
-                    <TableCell position="center">{assistances?.isDtks ? 'IYA' : 'TIDAK'}</TableCell>
+                    <TableCell position="center">{data?.identityNumber}</TableCell>
+                    <TableCell position="center">{data?.name}</TableCell>
+                    {/* <TableCell position="center">{data?.gender}</TableCell> */}
+                    <TableCell position="center">{data?.address.areaLevel3?.name}</TableCell>
+                    <TableCell position="center">{data?.address.areaLevel4?.name}</TableCell>
+                    <TableCell position="center">{data?.isDtks ? 'IYA' : 'TIDAK'}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -94,11 +94,11 @@ export default function CekBansosUser() {
               <div className="flex flex-col gap-5 grid md:grid-cols-2 text-center">
                 <div>
                   <p className="text-base font-bold">NIK</p>
-                  <p className="text-base ">{assistances?.identityNumber}</p>
+                  <p className="text-base ">{data?.identityNumber}</p>
                 </div>
                 <div>
                   <p className="text-base font-bold">Nama</p>
-                  <p className="text-base ">{assistances?.name}</p>
+                  <p className="text-base ">{data?.name}</p>
                 </div>
                 {/* <div>
                 <p className="text-base font-bold">Jenis Kelamin</p>
@@ -106,21 +106,21 @@ export default function CekBansosUser() {
               </div> */}
                 <div>
                   <p className="text-base font-bold">Kecamatan</p>
-                  <p className="text-base ">{assistances?.address.areaLevel3?.name}</p>
+                  <p className="text-base ">{data?.address.areaLevel3?.name}</p>
                 </div>
                 <div>
                   <p className="text-base font-bold">Kelurahan</p>
-                  <p className="text-base">{assistances?.address.areaLevel4?.name}</p>
+                  <p className="text-base">{data?.address.areaLevel4?.name}</p>
                 </div>
                 <div>
                   <p className="text-base font-bold">DTKS</p>
-                  <p className="text-base">{assistances?.isDtks ? 'IYA' : 'TIDAK'}</p>
+                  <p className="text-base">{data?.isDtks ? 'IYA' : 'TIDAK'}</p>
                 </div>
               </div>
             </section>
           </React.Fragment>
         )}
-        {isSuccessAssistance && (
+        {isSuccessAssistance && data.assistances.length > 0 ? (
           <section className="bg-white py-14 lg:px-32 md:px-14 px-5 mb-20 lg:mb-0">
             <Table containerClassName="max-w-none">
               <TableHeader>
@@ -131,7 +131,7 @@ export default function CekBansosUser() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {assistances?.assistances.map((assistance) => (
+                {data?.assistances.map((assistance) => (
                   <TableRow className="hover:bg-white" key={assistance.id}>
                     <TableCell position="center">{assistance.product.name}</TableCell>
                     <TableCell position="center">{assistance.year}</TableCell>
@@ -157,6 +157,12 @@ export default function CekBansosUser() {
               </TableBody>
             </Table>
           </section>
+        ) : (
+          <NoData
+            image={NotFoundBansos}
+            title="Tidak Ada Bantuan Sosial Terdaftar"
+            desc="Mohon Maaf, Data Anda Belum Terdaftar dalam Program Bantuan Sosial"
+          />
         )}
         {isErrorAssistance && (
           <NoData

@@ -64,6 +64,7 @@ export interface TuitionAssistanceQuery {
   year?: string
   idKecamatan?: string
   idKelurahan?: string
+  university?: string
 }
 // Penanganan Kelompok Renta //
 export const getVulnerableGroupHandlingFn = async ({
@@ -239,10 +240,13 @@ export const getTuitionAssistanceFn = async ({
   idKecamatan,
   idKelurahan,
   year,
-  status
+  status,
+  university
 }: TuitionAssistanceQuery): Promise<ITuitionAssistance> => {
   const response = await api.get(
-    `/tuition-assistance?q=${q}&page=${page}&event=${event}&area_level_4=${idKelurahan}&area_level_3=${idKecamatan}&budget_year=${year}&disbursement_status=${status}`
+    `/tuition-assistance?q=${q}&page=${page}&event=${event}&area_level_4=${idKelurahan}&area_level_3=${idKecamatan}&budget_year=${year}&disbursement_status=${status}${
+      university ? `&university=${university}` : ''
+    }`
   )
   return response.data
 }
