@@ -11,7 +11,7 @@ import Pagination from './../../../components/atoms/Pagination'
 import { useNavigate } from 'react-router-dom'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { useGetFamilyHopeByID, useGetFamilyHopeFn, useGetKecamatan, useGetKelurahan } from '@/store/server'
-import { Action, ExportButton, Loading, Modal } from '@/components'
+import { Action, ExportButton, Loading, Modal, SearchSelect } from '@/components'
 import React from 'react'
 import { exportFamilyHopeFn } from '@/api/linjamsos.api'
 import { useTitleHeader } from '@/store/client'
@@ -177,20 +177,15 @@ const DataPkh = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kecamatan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKecamatan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      width="w-[380px]"
+                      placeholder="Pilih Kecamatan"
+                      options={
+                        listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
+                      }
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -201,24 +196,16 @@ const DataPkh = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      disabled={areaLevel3 === '' && kecamatan === ''}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kelurahan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKelurahan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      disabled={!areaLevel3 && !kecamatan}
+                      width="w-[380px]"
+                      placeholder="Pilih Kelurahan"
+                      options={
+                        listKelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []
+                      }
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -267,7 +254,9 @@ const DataPkh = () => {
                     {(familys.meta.currentPage - 1) * familys.meta.perPage + index + 1}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary?.name ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.beneficiary?.identityNumber ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {item.beneficiary?.identityNumber ?? '-'}
+                  </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
                     {item.beneficiary?.address.fullAddress ?? '-'}
                   </TableCell>
@@ -277,8 +266,12 @@ const DataPkh = () => {
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.beneficiary?.address.areaLevel4?.name ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.type ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC] capitalize" position="center">
+                    {item.type ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {formatToView(item.updatedAt) ?? '-'}
+                  </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action onDetail={() => showDetail(item.id)} />
                   </TableCell>

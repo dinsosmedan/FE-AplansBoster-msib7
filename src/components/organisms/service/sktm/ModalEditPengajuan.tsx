@@ -1,4 +1,4 @@
-import { HiDocumentArrowUp, HiOutlineEye } from 'react-icons/hi2'
+import { HiDocumentArrowUp } from 'react-icons/hi2'
 import { Modal } from '../..'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
@@ -7,9 +7,10 @@ import { type updateTuitionAssistanceServiceFields } from '@/lib/validations/lin
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { useGetIndigencyCertificateEventById, useUpdateIndigencyStatus } from '@/store/server/useService'
-import { Link } from 'react-router-dom'
-import { DatePicker } from '@/components'
+import { Berkas, DatePicker } from '@/components'
 import DropZone, { type FileWithPreview } from '@/components/atoms/DropZone'
+import * as React from 'react'
+// import { formatStringToDate } from '@/lib/services/formatDate'
 
 interface ModalEditPengajuanBBPProps {
   isShow: boolean
@@ -26,8 +27,18 @@ export default function ModalEditPengajuanSKTM({ isShow, setIsShow, indigencyId 
   const forms = useForm<FormValues>()
   const status = forms.watch('applicationStatus')
 
-  const { data, isLoading } = useGetIndigencyCertificateEventById(indigencyId as string)
+  const { data, isLoading, isSuccess } = useGetIndigencyCertificateEventById(indigencyId as string)
   const { mutate: update, isLoading: isLoadingUpdate } = useUpdateIndigencyStatus()
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      forms.setValue('applicationStatus', data?.applicationStatus)
+      // forms.setValue('issuedCertificate', data?.)
+      // forms.setValue('issueDate', formatStringToDate(data as string))
+    }
+  }, [isSuccess])
+
+  console.log(data)
 
   const onSubmit = async (values: FormValues) => {
     const newData = {
@@ -101,7 +112,6 @@ export default function ModalEditPengajuanSKTM({ isShow, setIsShow, indigencyId 
                   </FormControl>
                   <SelectContent>
                     <SelectItem value="approved">Approved</SelectItem>
-                    <SelectItem value="revision">Revision</SelectItem>
                     <SelectItem value="rejected">Rejected</SelectItem>
                     <SelectItem value="processed">Processed</SelectItem>
                   </SelectContent>
@@ -124,7 +134,7 @@ export default function ModalEditPengajuanSKTM({ isShow, setIsShow, indigencyId 
                         helperText="*Catatan: File yang diizinkan berupa pdf. Dengan maksimal 2MB"
                         accept={{ 'application/pdf': ['.pdf'] }}
                         maxFiles={1}
-                        id="applicationLetter"
+                        id="issuedCertificate"
                         Icon={HiDocumentArrowUp}
                       />
                     </FormControl>
@@ -176,24 +186,5 @@ export default function ModalEditPengajuanSKTM({ isShow, setIsShow, indigencyId 
         </form>
       </Form>
     </Modal>
-  )
-}
-
-interface BerkasProps {
-  title: string
-  url: string
-}
-
-const Berkas = ({ title, url }: BerkasProps) => {
-  return (
-    <div className="py-[18px] px-3 flex justify-between items-center border-b border-zinc-200">
-      <p className="uppercase w-max">{title}</p>
-      <Link to={url} target="_blank">
-        <Button className="gap-2 rounded-lg ml-24 items-center">
-          <HiOutlineEye />
-          <p className="text-xs">View</p>
-        </Button>
-      </Link>
-    </div>
   )
 }

@@ -2,8 +2,8 @@ import api from './axiosInstance'
 import { type userFields } from '@/lib/validations/user.validation'
 import { type rolePermissionFields } from '@/lib/validations/rolepermission.validation'
 
-export const getAdminFn = async (): Promise<any> => {
-  const response = await api.get('/management/admin')
+export const getAdminFn = async (page?: string, q?: string): Promise<any> => {
+  const response = await api.get(`/management/admin?page=${page}&q=${q}`)
   return response.data
 }
 
@@ -21,8 +21,8 @@ export const updateAdminFn = async ({ id, fields }: UpdateAdminParams) => {
   await api.put(`/management/admin/${id}`, fields)
 }
 
-export const getAdminDetailFn = async (id: string) => {
-  const response = await api.get(`/management/admin/${id}`)
+export const getAdminDetailFn = async (id: string, q?: string) => {
+  const response = await api.get(`/management/admin/${id}?q=${q}`)
   return response.data?.data
 }
 
@@ -32,8 +32,8 @@ export const storeAdminFn = async (fields: userFields) => {
   await api.post('/management/admin', fields)
 }
 
-export const getRoleFn = async (): Promise<any> => {
-  const response = await api.get('/user-access/role')
+export const getRoleFn = async (q?: string): Promise<any> => {
+  const response = await api.get(`/user-access/role?q=${q}`)
   return response.data
 }
 
@@ -53,8 +53,8 @@ export const deleteRolePermissionFn = async (id: string): Promise<any> => {
 
 // User
 
-export const getUsersFn = async (): Promise<any> => {
-  const response = await api.get('/management/user')
+export const getUsersFn = async (page?: string, q?: string): Promise<any> => {
+  const response = await api.get(`/management/user?page=${page}&q=${q}`)
   return response.data
 }
 
@@ -69,10 +69,19 @@ interface UpdateUserParams {
 }
 
 export const updateUserFn = async ({ id, fields }: UpdateUserParams) => {
-  await api.put(`/management/user/${id}`, fields)
+  const body = {
+    ...fields,
+    isActive: fields.isActive === 'true'
+  }
+
+  await api.put(`/management/user/${id}`, body)
 }
 
 export const getUserDetailFn = async (id: string) => {
   const response = await api.get(`/management/user/${id}`)
   return response.data?.data
+}
+
+export const storeUserFn = async (fields: userFields) => {
+  await api.post('/management/user', fields)
 }

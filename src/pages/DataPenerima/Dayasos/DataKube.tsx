@@ -2,9 +2,8 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import Container from '@/components/atoms/Container'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
-import { Action, ExportButton, Loading, Modal, Pagination } from '@/components'
+import { Action, ExportButton, Loading, Modal, Pagination, SearchSelect } from '@/components'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { formatToView } from '@/lib/services/formatDate'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
@@ -191,20 +190,17 @@ const DataKube = () => {
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <Select onValueChange={field.onChange} value={field.value || ''}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kecamatan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKecamatan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        width="w-[370px]"
+                        placeholder="Pilih Kecamatan"
+                        options={
+                          listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
+                        }
+                      />
+                    </FormControl>
                   </FormItem>
                 )}
               />
@@ -213,24 +209,18 @@ const DataKube = () => {
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      disabled={areaLevel3 === '' && kecamatan === ''}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kelurahan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKelurahan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        disabled={!areaLevel3 && !kecamatan}
+                        width="w-[370px]"
+                        placeholder="Pilih Kelurahan"
+                        options={
+                          listKelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []
+                        }
+                      />
+                    </FormControl>
                   </FormItem>
                 )}
               />
@@ -297,11 +287,19 @@ const DataKube = () => {
                     </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.businessName}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.businessAddress?.fullAddress}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.businessAddress?.areaLevel3?.name}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.businessAddress?.areaLevel4?.name}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item.businessAddress?.areaLevel3?.name}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item.businessAddress?.areaLevel4?.name}
+                    </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.businessType}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.budgetYear}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item.budgetYear}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {formatToView(item.updatedAt) ?? '-'}
+                    </TableCell>
                     <TableCell className="bg-[#F9FAFC]">
                       <Action
                         onDelete={() => handleDelete(item.id)}

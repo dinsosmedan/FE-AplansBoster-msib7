@@ -26,6 +26,7 @@ export const useCreateEvent = () => {
   return useMutation(storeEventFn, {
     onSuccess: async () => {
       await queryClient.invalidateQueries('events')
+      await queryClient.invalidateQueries('eventTuitionAssistance')
       handleMessage({ title: 'Data Event', variant: 'create' })
     },
     onError: (error: AxiosError) => handleOnError(error)

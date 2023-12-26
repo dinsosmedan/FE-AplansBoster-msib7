@@ -1,7 +1,7 @@
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { Container, DatePicker, Loading } from '@/components'
+import { Container, DatePicker, Loading, SearchSelect } from '@/components'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
@@ -111,12 +111,12 @@ const Pokmas = () => {
       forms.reset({
         applicantPhoneNumber: communityGroup?.applicantPhoneNumber as string,
         communityName: communityGroup?.communityName,
-        communityAddress: communityGroup?.communityAddress as string,
+        communityAddress: communityGroup?.address.fullAddress,
         communityActivityCode: communityGroup?.communityActivityCode,
         communityActivityTypeDescription: communityGroup.communityActivityTypeDescription,
         communityAssistanceType: communityGroup?.communityAssistanceType,
-        areaLevel3: communityGroup.address?.areaLevel3?.name,
-        areaLevel4: communityGroup.address?.areaLevel4?.name,
+        areaLevel3: communityGroup.address?.areaLevel3?.id,
+        areaLevel4: communityGroup.address?.areaLevel4?.id,
         requestedRabAmount: communityGroup.requestedRabAmount,
         requestedBansosAmount: communityGroup.requestedBansosAmount,
         approvedFundAmount: communityGroup.approvedFundAmount,
@@ -188,20 +188,15 @@ const Pokmas = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Kecamatan</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Kecamatan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {kecamatan?.map((item, index) => (
-                        <SelectItem value={item.id} key={index}>
-                          {item.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <SearchSelect
+                      selected={field.value ?? ''}
+                      onChange={field.onChange}
+                      width="w-[540px]"
+                      placeholder="Pilih Kecamatan"
+                      options={kecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -212,24 +207,16 @@ const Pokmas = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Kelurahan</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    disabled={areaLevel3 === '' || isLoadingKelurahan}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Kelurahan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {kelurahan?.map((item, index) => (
-                        <SelectItem value={item.id} key={index}>
-                          {item.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <SearchSelect
+                      selected={field.value ?? ''}
+                      onChange={field.onChange}
+                      disabled={areaLevel3 === '' || isLoadingKelurahan}
+                      width="w-[540px]"
+                      placeholder="Pilih Kelurahan"
+                      options={kelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

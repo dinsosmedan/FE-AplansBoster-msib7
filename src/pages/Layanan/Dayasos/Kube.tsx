@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import useTitle from '@/hooks/useTitle'
 import { HiPlus } from 'react-icons/hi'
-import { Container, Loading } from '@/components'
+import { Container, Loading, SearchSelect } from '@/components'
 import { kubeValidation, type kubeFields } from '@/lib/validations/dayasos.validation'
 import {
   useCreateBusinessGroup,
@@ -187,20 +187,15 @@ const Kube = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kecamatan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {kecamatan?.map((item, index) => (
-                          <SelectItem value={item.id} key={index}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        width="w-[560px]"
+                        placeholder="Pilih Kecamatan"
+                        options={kecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -213,20 +208,16 @@ const Kube = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={areaLevel3 === ''}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kelurahan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {kelurahan?.map((item, index) => (
-                          <SelectItem value={item.id} key={index}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        disabled={!areaLevel3 || !kelurahan}
+                        width="w-[560px]"
+                        placeholder="Pilih Kelurahan"
+                        options={kelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}

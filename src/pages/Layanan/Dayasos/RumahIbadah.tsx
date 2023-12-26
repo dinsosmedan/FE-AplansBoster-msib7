@@ -5,10 +5,10 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Container, Loading } from '@/components'
+import { Container, Loading, SearchSelect } from '@/components'
 import { Textarea } from '@/components/ui/textarea'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 import { JENIS_RUMAH_IBADAH } from '@/lib/data'
 import { useNotFound, useTitle } from '@/hooks'
@@ -49,8 +49,8 @@ const Ri = () => {
   })
 
   const areaLevel3 = forms.watch('areaLevel3')
-  const { data: kecamatan, isSuccess: isSuccessKecamatan } = useGetKecamatan()
-  const { data: kelurahan, isSuccess: isSuccessKelurahan } = useGetKelurahan(areaLevel3)
+  const { data: kecamatan } = useGetKecamatan()
+  const { data: kelurahan } = useGetKelurahan(areaLevel3)
 
   const { mutate: storeWorshipPlace, isLoading } = useCreateWorshipPlace()
   const { mutate: UpdateWorshipPlace, isLoading: isLoadingUpdate } = useUpdateWorshipPlace()
@@ -175,23 +175,15 @@ const Ri = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kecamatan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectGroup>
-                          {isSuccessKecamatan &&
-                            kecamatan.map((item, index) => (
-                              <SelectItem value={item.id} key={index}>
-                                {item.name}
-                              </SelectItem>
-                            ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        width="w-[430px]"
+                        placeholder="Pilih Kecamatan"
+                        options={kecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -202,23 +194,16 @@ const Ri = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={areaLevel3 === ''}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kelurahan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectGroup>
-                          {isSuccessKelurahan &&
-                            kelurahan?.map((item, index) => (
-                              <SelectItem value={item.id} key={index}>
-                                {item.name}
-                              </SelectItem>
-                            ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        disabled={!areaLevel3 && !kelurahan}
+                        width="w-[430px]"
+                        placeholder="Pilih Kelurahan"
+                        options={kelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}

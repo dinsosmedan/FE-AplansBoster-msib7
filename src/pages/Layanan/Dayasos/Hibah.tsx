@@ -2,7 +2,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import useTitle from '@/hooks/useTitle'
 import { hibahValidation, type hibahFields } from '@/lib/validations/dayasos.validation'
@@ -14,7 +13,7 @@ import {
   useUpdateOrganizationGrantAssistance
 } from '@/store/server'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Container, Loading } from '@/components'
+import { Container, Loading, SearchSelect } from '@/components'
 import { useNavigate, useParams } from 'react-router-dom'
 import * as React from 'react'
 import { useTitleHeader } from '@/store/client'
@@ -108,6 +107,8 @@ const Hibah = () => {
 
   if (isLoadingHibah) return <Loading />
 
+  console.log(kecamatan, kelurahan)
+
   return (
     <Container className="px-[47px]">
       <div className="w-full text-center">
@@ -163,20 +164,15 @@ const Hibah = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kecamatan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {kecamatan?.map((item, index) => (
-                          <SelectItem value={item.id} key={index}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value as string}
+                        onChange={field.onChange}
+                        width="w-[560px]"
+                        placeholder="Pilih Kecamatan"
+                        options={kecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -189,20 +185,16 @@ const Hibah = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={areaLevel3 === ''}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kelurahan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {kelurahan?.map((item, index) => (
-                          <SelectItem value={item.id} key={index}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value as string}
+                        onChange={field.onChange}
+                        disabled={!areaLevel3 || !kelurahan}
+                        width="w-[560px]"
+                        placeholder="Pilih Kelurahan"
+                        options={kelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}

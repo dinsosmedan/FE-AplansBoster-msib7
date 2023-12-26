@@ -4,9 +4,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useGetNonCashFoodAssistanceBeneficiary, useGetNonCashFoodAssistanceDetail, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import {
+  useGetNonCashFoodAssistanceBeneficiary,
+  useGetNonCashFoodAssistanceDetail,
+  useGetKecamatan,
+  useGetKelurahan
+} from '@/store/server'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { Action, ExportButton, Loading, Modal, Pagination } from '@/components'
+import { Action, ExportButton, Loading, Modal, Pagination, SearchSelect } from '@/components'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { formatToView } from '@/lib/services/formatDate'
 import { Button } from '@/components/ui/button'
@@ -54,7 +59,8 @@ const DataBpnt = () => {
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
-  const { data: NonCashFoodAssistanceBeneficiary, isLoading: isLoadingNonCash } = useGetNonCashFoodAssistanceDetail(selectedId)
+  const { data: NonCashFoodAssistanceBeneficiary, isLoading: isLoadingNonCash } =
+    useGetNonCashFoodAssistanceDetail(selectedId)
 
   const {
     data: NonCashFoodAssistanceBeneficiarys,
@@ -157,80 +163,67 @@ const DataBpnt = () => {
               />
             </div>
             <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
-            <FormField
-              name="type"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Jenis Anggota" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="anggota">Anggota</SelectItem>
-                        <SelectItem value="pengurus">Pengurus</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="kecamatan"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kecamatan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKecamatan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="kelurahan"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      disabled={areaLevel3 === '' && kecamatan === ''}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kelurahan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKelurahan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
+              <FormField
+                name="type"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Pilih Jenis Anggota" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="anggota">Anggota</SelectItem>
+                          <SelectItem value="pengurus">Pengurus</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="kecamatan"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        width="w-[380px]"
+                        placeholder="Pilih Kecamatan"
+                        options={
+                          listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
+                        }
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="kelurahan"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        disabled={!areaLevel3 && !kecamatan}
+                        width="w-[380px]"
+                        placeholder="Pilih Kelurahan"
+                        options={
+                          listKelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []
+                        }
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
             <section className="flex items-center justify-between">
               <div>
                 {NonCashFoodAssistanceBeneficiarys?.data?.length !== 0 ? (
@@ -272,12 +265,16 @@ const DataBpnt = () => {
                         index +
                         1}
                     </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" >{item.beneficiary.name}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.beneficiary.identityNumber}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item.beneficiary.identityNumber}
+                    </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC] capitalize" position="center">
                       {item.type}
                     </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {formatToView(item.updatedAt) ?? '-'}
+                    </TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       <Action onDetail={() => showDetail(item.id)} />
                     </TableCell>

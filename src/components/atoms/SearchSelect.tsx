@@ -47,8 +47,8 @@ export default function SearchSelect({
             )}
             onClick={() => setOpen(!open)}
           >
-            <p className={cn('font-normal truncate-1', selected ? 'text-font' : 'text-[#A1A1A1]')}>
-              {selected ? options.filter((option) => option.value === selected)[0].label : placeholder}
+            <p className={cn('font-normal truncate-1', selected ? 'text-font' : 'text-font')}>
+              {selected ? options.filter((option) => option.value === selected)[0]?.label : placeholder}
             </p>
             <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
           </Button>

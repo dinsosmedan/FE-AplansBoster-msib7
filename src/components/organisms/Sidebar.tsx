@@ -21,7 +21,7 @@ export default function Sidebar() {
   return (
     <aside
       className={cn(
-        'flex flex-col pt-[42px] pb-5 gap-10 border-r border-[#E9E9E9] h-screen sticky top-0 z-50',
+        'flex flex-col pt-[42px] gap-10 border-r border-[#E9E9E9] h-screen sticky top-0 z-50',
         isMinimize ? 'w-24' : 'w-[300px] px-[33px]'
       )}
     >
@@ -38,7 +38,7 @@ export default function Sidebar() {
           <HiChevronRight className={isMinimize ? '' : 'rotate-180'} />
         </Button>
       </div>
-      <section className={cn('flex flex-col gap-8', !isMinimize && 'overflow-scroll no-scroll')}>
+      <section className={cn('flex flex-col gap-8 pb-5', !isMinimize && 'overflow-scroll no-scroll')}>
         <div className="flex flex-col gap-4">
           <Label>Main Menu</Label>
           <nav className={cn('flex flex-col gap-3', isMinimize && 'items-center')}>

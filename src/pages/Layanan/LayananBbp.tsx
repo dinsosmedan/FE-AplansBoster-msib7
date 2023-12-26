@@ -23,7 +23,8 @@ import { useTitleHeader } from '@/store/client'
 
 const dataLayanan = [
   { text: 'Data Pengajuan', tab: 'pending' },
-  { text: 'Data Direvisi/Diproses', tab: 'processed' },
+  { text: 'Data Diproses', tab: 'processed' },
+  { text: 'Data Direvisi', tab: 'revision' },
   { text: 'Data Diterima', tab: 'approved' },
   { text: 'Data Ditolak', tab: 'rejected' }
 ]
@@ -66,6 +67,8 @@ export default function LayananBbp() {
   const handleChangeStatusDTKS = async (values: string, id: string) => {
     update({ id, fields: { dtksStatus: values } })
   }
+
+  console.log(data)
 
   return (
     <Container>
@@ -127,9 +130,9 @@ export default function LayananBbp() {
                   <TableCell className="bg-[#F9FAFC]">{item.beneficiary.identityNumber ?? '-'}</TableCell>
                   <TableCell className="bg-[#F9FAFC]">{item.beneficiary.name ?? '-'}</TableCell>
                   <TableCell className="bg-[#F9FAFC]">
-                    {item.applicationStatus ? (
+                    {item?.application_status ? (
                       <Status
-                        label={item.applicationStatus}
+                        label={item?.application_status}
                         isWarning="pending"
                         isDanger="rejected"
                         isSuccess="approved"
@@ -138,7 +141,9 @@ export default function LayananBbp() {
                       '-'
                     )}
                   </TableCell>
-                  <TableCell className="bg-[#F9FAFC]">{item.beneficiary.gender ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">
+                    {item?.beneficiary?.gender ? item.beneficiary.gender : '-'}
+                  </TableCell>
                   <TableCell className="bg-[#F9FAFC] capitalize">
                     {item.beneficiary.address.areaLevel3?.name ?? '-'}
                   </TableCell>

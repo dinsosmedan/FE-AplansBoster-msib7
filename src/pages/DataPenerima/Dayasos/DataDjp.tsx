@@ -1,7 +1,7 @@
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
-import { Action, ExportButton, Loading, Modal, Title, Pagination, Container } from '@/components'
+import { Action, ExportButton, Loading, Modal, Title, Pagination, Container, SearchSelect } from '@/components'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { formatToView } from '@/lib/services/formatDate'
@@ -50,8 +50,17 @@ const DataDjp = () => {
   const [isLoadingExport, setIsLoadingExport] = React.useState(false)
 
   const createParams = useCreateParams()
-  const { q, kecamatan, kelurahan, page, type, budget_year: budgetYear } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'type', 'budget_year'])
-  const forms = useForm<FormValues>({ defaultValues: { q: '', kelurahan: '', kecamatan: '', type: '', budget_year: '' } })
+  const {
+    q,
+    kecamatan,
+    kelurahan,
+    page,
+    type,
+    budget_year: budgetYear
+  } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'type', 'budget_year'])
+  const forms = useForm<FormValues>({
+    defaultValues: { q: '', kelurahan: '', kecamatan: '', type: '', budget_year: '' }
+  })
 
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
@@ -197,35 +206,32 @@ const DataDjp = () => {
               )}
             />
             <FormField
-                name="budget_year"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+              name="budget_year"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
             <FormField
               name="kecamatan"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Kecamatan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {listKecamatan?.map((item, index) => (
-                        <SelectItem key={index} value={item.id}>
-                          {item.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      width="w-[380px]"
+                      placeholder="Pilih Kecamatan"
+                      options={
+                        listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
+                      }
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />
@@ -234,24 +240,18 @@ const DataDjp = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <Select
-                    disabled={areaLevel3 === '' && kecamatan === ''}
-                    onValueChange={field.onChange}
-                    value={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Kelurahan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {listKelurahan?.map((item, index) => (
-                        <SelectItem key={index} value={item.id}>
-                          {item.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      disabled={!areaLevel3 && !kecamatan}
+                      width="w-[380px]"
+                      placeholder="Pilih Kelurahan"
+                      options={
+                        listKelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []
+                      }
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />
@@ -310,7 +310,9 @@ const DataDjp = () => {
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.identityNumber}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.beneficiary.gender}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {item.beneficiary.gender}
+                  </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.beneficiary.birthPlace} / {item.beneficiary.birthDate}
                   </TableCell>
@@ -320,9 +322,15 @@ const DataDjp = () => {
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.beneficiary.address.areaLevel3?.name}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.serviceType.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item?.assistanceAmount ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {item.serviceType.name}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {item?.assistanceAmount ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {formatToView(item.updatedAt) ?? '-'}
+                  </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action
                       onDetail={() => showDetail(item.id)}

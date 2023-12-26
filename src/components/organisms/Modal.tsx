@@ -33,6 +33,7 @@ const Modal = ({ isShow, children, className, isLoading }: ModalProps) => {
       <article
         className={cn(
           'w-full overflow-hidden rounded-lg px-8 pb-8 bg-white shadow-xl transition-all duration-300 md:max-w-xl flex flex-col gap-6',
+          'max-h-[calc(100vh-50px)] overflow-y-auto',
           isShow ? 'opacity-100 scale-100' : 'opacity-0 scale-95',
           className
         )}

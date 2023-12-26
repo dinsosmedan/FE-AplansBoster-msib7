@@ -32,8 +32,7 @@ export default function ModalEditDataSKTM({ isShow, setIsShow, indigencyId }: Mo
       forms.reset({
         applicantPhoneNumber: data?.applicantPhoneNumber,
         certificateDestination: data?.certificateDestination,
-        statusDtks: data?.dtksStatus,
-        categoryApplication: data?.applicationStatus
+        categoryApplication: data?.applicationCategory
       })
     }
   }, [isSuccess])
@@ -83,29 +82,6 @@ export default function ModalEditDataSKTM({ isShow, setIsShow, indigencyId }: Mo
               )}
             />
             <FormField
-              name="statusDtks"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel className="font-semibold dark:text-white">Status DTKS</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Status DTKS" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="prelist">Prelist</SelectItem>
-                        <SelectItem value="dtks">DTKS</SelectItem>
-                        <SelectItem value="non-dtks">Non DTKS</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
               name="categoryApplication"
               control={forms.control}
               render={({ field }) => (
@@ -114,7 +90,7 @@ export default function ModalEditDataSKTM({ isShow, setIsShow, indigencyId }: Mo
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Pilih Tahun Pembuatan" />
+                        <SelectValue placeholder="Pilih kategori layanan" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

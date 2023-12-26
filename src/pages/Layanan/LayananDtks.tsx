@@ -1,10 +1,10 @@
-import { Container, Loading, Modal, Pagination, Search } from '@/components'
+import { Berkas, Container, Loading, Modal, Pagination, Search } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
-import { HiOutlineArrowPath, HiOutlineExclamationCircle, HiOutlineEye } from 'react-icons/hi2'
+import { HiOutlineArrowPath, HiOutlineExclamationCircle } from 'react-icons/hi2'
 import FilterLayanan from './../../components/atoms/FilterLayanan'
 import { useCreateParams, useDeleteParams, useGetParams, useTitle } from '@/hooks'
 import { useTitleHeader } from '@/store/client'
@@ -12,10 +12,9 @@ import { useGetDTKSApplication, useGetDTKSApplicationById, useUpdateDTKSApplicat
 import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Link } from 'react-router-dom'
 
 const dataLayanan = [
-  { text: 'Data Pengajuan', tab: 'pending' },
+  { text: 'Data Pengajuan/Ditolak', tab: 'pending' },
   { text: 'Data Diterima', tab: 'approved' }
 ]
 
@@ -76,6 +75,7 @@ export default function LayananDtks() {
   React.useEffect(() => {
     if (isSuccess) {
       formsUpdate.reset({
+        status: detail.isApproved ? 'true' : 'false',
         name: detail.beneficiary.name,
         identityNumber: detail.beneficiary.identityNumber,
         familyCardNumber: detail.beneficiary.familyCardNumber,
@@ -117,13 +117,8 @@ export default function LayananDtks() {
   }
 
   const onSubmit = async (values: FormValues) => {
-    const newData = { id: dtksId, fields: { status: Boolean(values.status) } }
-
-    update(newData, {
-      onSuccess: () => {
-        setIsShow(false)
-      }
-    })
+    const newData = { id: dtksId, fields: { status: values.status === 'true' } }
+    update(newData, { onSuccess: () => setIsShow(false) })
   }
 
   return (
@@ -193,7 +188,7 @@ export default function LayananDtks() {
                     className={cn('bg-[#F9FAFC]', item.isApproved ? 'text-green-500' : 'text-yellow-500')}
                     position="center"
                   >
-                    {item.isApproved ? 'Pending' : 'Approved'}
+                    {item.isApproved ? 'Approved' : 'Pending/Rejected'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center text-left bg-[#F9FAFC]">
                     <Button
@@ -537,18 +532,6 @@ export default function LayananDtks() {
                     </FormItem>
                   )}
                 />
-                {/* <FormField
-                  name=""
-                  control={formsUpdate.control}
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel className="font-semibold dark:text-white text-base">Status Orang Tua </FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="" disabled />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                /> */}
                 <FormField
                   name="remoteIndigenousStatus"
                   control={formsUpdate.control}
@@ -577,15 +560,15 @@ export default function LayananDtks() {
               <div className="w-full text-center bg-primary py-3">
                 <p className="text-base font-bold text-white">Berkas </p>
               </div>
-              <Berkas title="KTP/KARTU KELUARGA" url="" />
-              <Berkas title="FOTO RUMAH" url="" />
+              <Berkas title="KTP/KARTU KELUARGA" url={detail?.indentityPath?.url as string} />
+              <Berkas title="FOTO RUMAH" url={detail?.housePath?.url as string} />
               <FormField
                 name="status"
                 control={formsUpdate.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Status Pengajuan</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Status" />
@@ -599,18 +582,6 @@ export default function LayananDtks() {
                   </FormItem>
                 )}
               />
-              {/* <FormField
-                name="jumlahPeserta"
-                control={formsUpdate.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Keterangan</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="Masukkan Keterangan" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              /> */}
               <Modal.Footer className="mt-5">
                 <Button
                   variant="cancel"
@@ -629,24 +600,5 @@ export default function LayananDtks() {
         </Modal>
       </section>
     </Container>
-  )
-}
-
-interface BerkasProps {
-  title: string
-  url: string
-}
-
-const Berkas = ({ title, url }: BerkasProps) => {
-  return (
-    <div className="py-[18px] px-3 flex justify-between items-center border-b border-zinc-200">
-      <p className="uppercase w-max">{title}</p>
-      <Link to={url} target="_blank">
-        <Button className="gap-2 rounded-lg ml-24 items-center">
-          <HiOutlineEye />
-          <p className="text-xs">View</p>
-        </Button>
-      </Link>
-    </div>
   )
 }

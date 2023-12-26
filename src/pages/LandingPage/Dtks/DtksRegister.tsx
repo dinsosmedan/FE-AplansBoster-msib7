@@ -68,6 +68,7 @@ export default function DtksRegister() {
                       className="rounded-md"
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -86,6 +87,7 @@ export default function DtksRegister() {
                       placeholder="Cari NIK"
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -104,6 +106,7 @@ export default function DtksRegister() {
                       placeholder="Masukkan No. KK "
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -122,6 +125,7 @@ export default function DtksRegister() {
                       placeholder="Masukkan Tempat Lahir "
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -131,12 +135,14 @@ export default function DtksRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tanggal Lahir</FormLabel>
-                  <DatePicker
-                    className="rounded-md"
-                    selected={field.value as Date}
-                    onChange={field.onChange}
-                    placeholder="dd/mm/yyy"
-                  />
+                  <FormControl>
+                    <DatePicker
+                      className="rounded-md"
+                      selected={field.value as Date}
+                      onChange={field.onChange}
+                      placeholder="dd/mm/yyy"
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -156,6 +162,7 @@ export default function DtksRegister() {
                       placeholder="Masukan Nama Ibu Kandung"
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -166,14 +173,17 @@ export default function DtksRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Jenis Kelamin</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <SelectTrigger className="rounded-md">
-                      <SelectValue placeholder="Pilih Jenis Kelamin" />
-                    </SelectTrigger>
+                    <FormControl>
+                      <SelectTrigger className="rounded-md">
+                        <SelectValue placeholder="Pilih Jenis Kelamin" />
+                      </SelectTrigger>
+                    </FormControl>
                     <SelectContent>
                       <SelectItem value="LAKI-LAKI">Laki-laki</SelectItem>
                       <SelectItem value="PEREMPUAN">Perempuan</SelectItem>
                     </SelectContent>
                   </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -182,21 +192,17 @@ export default function DtksRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Jenis Perkerjaan</FormLabel>
+                  <FormLabel className="font-semibold dark:text-white">Pekerjaan</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="rounded-md">
-                          <SelectValue placeholder="Pilih Jenis Perkerjaan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {/* <SelectItem value="m@example.com">Krisna Asu</SelectItem>
-                        <SelectItem value="m@google.com">Krisna Cuki</SelectItem>
-                        <SelectItem value="m@support.com">The Little Krishna</SelectItem> */}
-                      </SelectContent>
-                    </Select>
+                    <Input
+                      {...field}
+                      value={field.value ?? ''}
+                      className="rounded-md"
+                      type="text"
+                      placeholder="Masukan pekerjaan"
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -206,21 +212,21 @@ export default function DtksRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Status Pernikahan</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="rounded-md">
-                          <SelectValue placeholder="Pilih Status Pernikahan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="BELUM MENIKAH">BELUM MENIKAH</SelectItem>
-                        <SelectItem value="CERAI HIDUP">CERAI HIDUP</SelectItem>
-                        <SelectItem value="CERAI MATI">CERAI MATI</SelectItem>
-                        <SelectItem value="MENIKAH">MENIKAH</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="rounded-md">
+                        <SelectValue placeholder="Pilih Status Pernikahan" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="BELUM MENIKAH">BELUM MENIKAH</SelectItem>
+                      <SelectItem value="CERAI HIDUP">CERAI HIDUP</SelectItem>
+                      <SelectItem value="CERAI MATI">CERAI MATI</SelectItem>
+                      <SelectItem value="MENIKAH">MENIKAH</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -244,6 +250,7 @@ export default function DtksRegister() {
                       }
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -266,6 +273,7 @@ export default function DtksRegister() {
                       }
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -284,6 +292,7 @@ export default function DtksRegister() {
                     placeholder="Masukan Alamat Lengkap Anda"
                   />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -297,19 +306,18 @@ export default function DtksRegister() {
                   <FormLabel className="font-semibold dark:text-white">
                     1. Apakah memiliki tempat berteduh tetap sehari-hari?
                   </FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="rounded-md">
-                          <SelectValue placeholder="Pilih Jawaban" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="1">YA</SelectItem>
-                        <SelectItem value="0">TIDAK</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="rounded-md">
+                        <SelectValue placeholder="Pilih Jawaban" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="1">YA</SelectItem>
+                      <SelectItem value="0">TIDAK</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -321,19 +329,19 @@ export default function DtksRegister() {
                   <FormLabel className="font-semibold dark:text-white">
                     2. Apakah target survey tinggal bersama anggota keluarga?
                   </FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="rounded-md">
-                          <SelectValue placeholder="Pilih Jawaban" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="1">YA</SelectItem>
-                        <SelectItem value="0">TIDAK</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="rounded-md">
+                        <SelectValue placeholder="Pilih Jawaban" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="1">YA</SelectItem>
+                      <SelectItem value="0">TIDAK</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -345,19 +353,19 @@ export default function DtksRegister() {
                   <FormLabel className="font-semibold dark:text-white">
                     3. Apakah kepala keluarga atau pengurus keluarga masih bekerja?
                   </FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="rounded-md">
-                          <SelectValue placeholder="Pilih Jawaban" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="1">YA</SelectItem>
-                        <SelectItem value="0">TIDAK</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="rounded-md">
+                        <SelectValue placeholder="Pilih Jawaban" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="1">YA</SelectItem>
+                      <SelectItem value="0">TIDAK</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -369,19 +377,19 @@ export default function DtksRegister() {
                   <FormLabel className="font-semibold dark:text-white">
                     4. Apakah pernah khawatir atau pernah tidak makan dalam setahun terakhir?
                   </FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="rounded-md">
-                          <SelectValue placeholder="Pilih Jawaban" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="1">YA</SelectItem>
-                        <SelectItem value="0">TIDAK</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="rounded-md">
+                        <SelectValue placeholder="Pilih Jawaban" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="1">YA</SelectItem>
+                      <SelectItem value="0">TIDAK</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -393,19 +401,19 @@ export default function DtksRegister() {
                   <FormLabel className="font-semibold dark:text-white">
                     5. Apakah pengeluaran pangan lebih besar (&gt70%) dari total pengeluaran?
                   </FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="rounded-md">
-                          <SelectValue placeholder="Pilih Jawaban" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="1">YA</SelectItem>
-                        <SelectItem value="0">TIDAK</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="rounded-md">
+                        <SelectValue placeholder="Pilih Jawaban" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="1">YA</SelectItem>
+                      <SelectItem value="0">TIDAK</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -417,19 +425,19 @@ export default function DtksRegister() {
                   <FormLabel className="font-semibold dark:text-white">
                     6. Apakah ada pengeluaran untuk pakaian selama 1 (satu) tahun terakhir?
                   </FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="rounded-md">
-                          <SelectValue placeholder="Pilih Jawaban" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="1">YA</SelectItem>
-                        <SelectItem value="0">TIDAK</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="rounded-md">
+                        <SelectValue placeholder="Pilih Jawaban" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="1">YA</SelectItem>
+                      <SelectItem value="0">TIDAK</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -441,19 +449,19 @@ export default function DtksRegister() {
                   <FormLabel className="font-semibold dark:text-white">
                     7. Apakah tempat tinggal sebagian besar berlantai tanah dan/atau plesteran?{' '}
                   </FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="rounded-md">
-                          <SelectValue placeholder="Pilih Jawaban" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="1">YA</SelectItem>
-                        <SelectItem value="0">TIDAK</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="rounded-md">
+                        <SelectValue placeholder="Pilih Jawaban" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="1">YA</SelectItem>
+                      <SelectItem value="0">TIDAK</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -465,19 +473,19 @@ export default function DtksRegister() {
                   <FormLabel className="font-semibold dark:text-white">
                     8. Apakah tempat tinggal sebagian besar berdinding batu / kawat / kayu?
                   </FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="rounded-md">
-                          <SelectValue placeholder="Pilih Jawaban" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="1">YA</SelectItem>
-                        <SelectItem value="0">TIDAK</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="rounded-md">
+                        <SelectValue placeholder="Pilih Jawaban" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="1">YA</SelectItem>
+                      <SelectItem value="0">TIDAK</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -489,19 +497,19 @@ export default function DtksRegister() {
                   <FormLabel className="font-semibold dark:text-white">
                     9. Apakah tempat tinggal memiliki fasilitas buang air kecil / besar sendiri?{' '}
                   </FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="rounded-md">
-                          <SelectValue placeholder="Pilih Jawaban" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="1">YA</SelectItem>
-                        <SelectItem value="0">TIDAK</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="rounded-md">
+                        <SelectValue placeholder="Pilih Jawaban" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="1">YA</SelectItem>
+                      <SelectItem value="0">TIDAK</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -513,19 +521,19 @@ export default function DtksRegister() {
                   <FormLabel className="font-semibold dark:text-white">
                     10. Apakah sumber penerangan berasal dari listrik PLN 450 watt atau bukan listrik?{' '}
                   </FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="rounded-md">
-                          <SelectValue placeholder="Pilih Jawaban" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="1">YA</SelectItem>
-                        <SelectItem value="0">TIDAK</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="rounded-md">
+                        <SelectValue placeholder="Pilih Jawaban" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="1">YA</SelectItem>
+                      <SelectItem value="0">TIDAK</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -543,20 +551,20 @@ export default function DtksRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Program BANSOS</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="rounded-md">
-                          <SelectValue placeholder="Pilih Program Bansos" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="PKH">PKH</SelectItem>
-                        <SelectItem value="BPNT">BPNT</SelectItem>
-                        <SelectItem value="NON BANSOS">NON BANSOS</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="rounded-md">
+                        <SelectValue placeholder="Pilih Program Bansos" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="PKH">PKH</SelectItem>
+                      <SelectItem value="BPNT">BPNT</SelectItem>
+                      <SelectItem value="NON BANSOS">NON BANSOS</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -566,23 +574,23 @@ export default function DtksRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Status Disabilitas</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="rounded-md">
-                          <SelectValue placeholder="Pilih Status Disabilitas" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Penyandang Disabilitas Fisik">Penyandang Disabilitas Fisik</SelectItem>
-                        <SelectItem value="Penyandang Disabilitas Intelektual">
-                          Penyandang Disabilitas Intelektual
-                        </SelectItem>
-                        <SelectItem value="Penyandang Disabilitas Mental">Penyandang Disabilitas Mental</SelectItem>
-                        <SelectItem value="Penyandang Disabilitas Sensorik">Penyandang Disabilitas Sensorik</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="rounded-md">
+                        <SelectValue placeholder="Pilih Status Disabilitas" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Penyandang Disabilitas Fisik">Penyandang Disabilitas Fisik</SelectItem>
+                      <SelectItem value="Penyandang Disabilitas Intelektual">
+                        Penyandang Disabilitas Intelektual
+                      </SelectItem>
+                      <SelectItem value="Penyandang Disabilitas Mental">Penyandang Disabilitas Mental</SelectItem>
+                      <SelectItem value="Penyandang Disabilitas Sensorik">Penyandang Disabilitas Sensorik</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -592,12 +600,14 @@ export default function DtksRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tanggal Hamil</FormLabel>
-                  <DatePicker
-                    selected={field.value as Date}
-                    onChange={field.onChange}
-                    placeholder="dd/mm/yyy"
-                    className="rounded-md"
-                  />
+                  <FormControl>
+                    <DatePicker
+                      selected={field.value as Date}
+                      onChange={field.onChange}
+                      placeholder="dd/mm/yyy"
+                      className="rounded-md"
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -628,6 +638,7 @@ export default function DtksRegister() {
                       <SelectItem value="PEMBANTU">PEMBANTU</SelectItem>
                     </SelectContent>
                   </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -637,19 +648,19 @@ export default function DtksRegister() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Status Adat Terpencil</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="rounded-md">
-                          <SelectValue placeholder="Status Adat Terpencil" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="1">Ya</SelectItem>
-                        <SelectItem value="0">Tidak</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="rounded-md">
+                        <SelectValue placeholder="Status Adat Terpencil" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="1">Ya</SelectItem>
+                      <SelectItem value="0">Tidak</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -668,6 +679,7 @@ export default function DtksRegister() {
                       placeholder="Masukan Nama Suku"
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -690,6 +702,7 @@ export default function DtksRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -710,6 +723,7 @@ export default function DtksRegister() {
                       Icon={HiDocumentArrowUp}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />

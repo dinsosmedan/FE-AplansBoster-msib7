@@ -36,9 +36,13 @@ export const useGetTuitionAssistanceByEventId = ({
 }
 
 export const useGetIndigencyCertificate = (status: string, search: string, page: number) => {
-  return useQuery(['indigency-centificate-2'], async () => await getIndigencyCertificateFn(status, search, page), {
-    enabled: true
-  })
+  return useQuery(
+    ['indigency-centificate-2', status, search, page],
+    async () => await getIndigencyCertificateFn(status, search, page),
+    {
+      enabled: true
+    }
+  )
 }
 export const useGetTuitionAssistanceEventById = (id: string) => {
   return useQuery(['tuition-assistance', id], async () => await showTuitionAssistanceEventFn(id), { enabled: !!id })
@@ -78,7 +82,7 @@ export const useUpdateIndigencyCertificateStatus = () => {
   return useMutation(updateIndigencyCertificateStatusFn, {
     onSuccess: () => {
       void queryClient.invalidateQueries('indigency-centificate-2')
-      handleMessage({ title: 'Data BBP', variant: 'update' })
+      handleMessage({ title: 'Data Status DTKS Pada SKTM', variant: 'update' })
     },
     onError: (error: AxiosError) => {
       handleOnError(error)
@@ -91,7 +95,7 @@ export const useUpdateApplicationStatus = () => {
 
   return useMutation(updateApplicationStatusFn, {
     onSuccess: () => {
-      void queryClient.invalidateQueries('indigency-centificate-2')
+      void queryClient.invalidateQueries('tuition-assistance')
       handleMessage({ title: 'Data BBP Pengajuan', variant: 'update' })
     },
     onError: (error: AxiosError) => {

@@ -7,22 +7,18 @@ import { useForm } from 'react-hook-form'
 import FilterLayanan from './../../components/atoms/FilterLayanan'
 import { useGetIndigencyCertificate, useUpdateIndigencyCertificateStatus } from '@/store/server/useService'
 import useGetParams from '@/hooks/useGetParams'
-import { useCreateParams, useTitle } from '@/hooks'
+import { useCreateParams, useDeleteParams, useTitle } from '@/hooks'
 import ModalEditDataSKTM from '@/components/organisms/service/sktm/ModalEditData'
+import { Button } from '@/components/ui/button'
+import { HiOutlineArrowPath } from 'react-icons/hi2'
 
 interface FormValues {
-  nik: string
-  tahunAnggaran: string
-  jadwalAwal: string
-  tahunNotifikasi: string
-  jumlahPeserta: string
-  batch: string
-  jadwalAkhir: string
-  jenisEvent: string
+  search?: string
 }
 
 const dataLayanan = [
   { text: 'Data Pengajuan', tab: 'pending' },
+  { text: 'Data Diproses', tab: 'processed' },
   { text: 'Data Diterima', tab: 'approved' },
   { text: 'Data Ditolak', tab: 'rejected' }
 ]
@@ -34,18 +30,18 @@ export default function LayananSktm() {
   React.useEffect(() => {
     setBreadcrumbs([
       { url: '/layanan', label: 'Layanan' },
-      { url: '/layanan/layanan-sktm', label: 'SKTM' }
+      { url: '/layanan/layanan-sktm?tab=pending', label: 'SKTM' }
     ])
   }, [])
 
   const [isShow, setIsShow] = React.useState(false)
+  const [indigencyId, setIndigencyId] = React.useState('')
   const [isShowPengajuan, setIsShowPengajuan] = React.useState(false)
 
-  const [search, setsearch] = React.useState('')
-  const [indigencyId, setIndigencyId] = React.useState('')
-
+  const deleteParams = useDeleteParams()
   const createParams = useCreateParams()
-  const { tab, page } = useGetParams(['tab', 'page'])
+  const { tab, page, search } = useGetParams(['tab', 'page', 'search'])
+
   const { mutate: update, isLoading: isLoadingUpdate } = useUpdateIndigencyCertificateStatus()
   const {
     data: indigencyCertificate,
@@ -64,7 +60,7 @@ export default function LayananSktm() {
   const forms = useForm<FormValues>()
 
   const onSubmit = async (values: FormValues) => {
-    setsearch(values.nik)
+    createParams({ key: 'search', value: values.search as string })
     await refetch()
   }
 
@@ -72,24 +68,38 @@ export default function LayananSktm() {
     update({ id, fields: { statusDtks: values } })
   }
 
+  const handleReset = () => {
+    forms.reset({ search: '' })
+    deleteParams('search')
+  }
+
   return (
     <Container>
       <Form {...forms}>
         {(isFetching || isLoadingUpdate) && <Loading />}
-        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="w-12/12">
-            <FormField
-              name="nik"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Search value={field.value} onChange={field.onChange} placeholder="Masukkan Nama / NIK" />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
+        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex items-center gap-3">
+          <FormField
+            name="search"
+            control={forms.control}
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl className="w-full">
+                  <Search
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="Masukkan Nama / NIK"
+                    className="w-full"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          {search && (
+            <Button type="button" className="gap-3" onClick={handleReset}>
+              <HiOutlineArrowPath className="text-xl" />
+              <span>Reset</span>
+            </Button>
+          )}
         </form>
       </Form>
       <FilterLayanan jenis={'layanan-sktm'} data={dataLayanan} />
