@@ -136,7 +136,6 @@ const ChartRi = () => {
   // return
   const data = WorshipPlace ? WorshipPlace.map((valdata: any) => valdata.count) : []
   const type = WorshipPlace ? WorshipPlace.map((val: any) => val.type) : []
-  console.log(WorshipPlace)
   // const color = ['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']
   // const title = ['KUBE', 'Perkembangan Data KUBE']
 

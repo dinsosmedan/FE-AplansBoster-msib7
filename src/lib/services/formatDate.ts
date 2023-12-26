@@ -78,5 +78,4 @@ export const waktuLalu = (waktuDiberikan: any) => {
 }
 
 // Contoh penggunaan
-// const waktuDiberikan = new Date("2023-12-17T04:45:38+00:00");
-// console.log(waktuLalu(waktuDiberikan));
+// const waktuDiberikan = new Date("2023-12-17T04:45:38+00:00")

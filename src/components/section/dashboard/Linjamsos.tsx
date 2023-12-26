@@ -52,8 +52,6 @@ const ChartSktm = () => {
   const label = data ? data.map((val: any) => val.budgetYear.toString()) : []
   const value = data ? data.map((val: any) => val.count.toString()) : []
 
-  // console.log(data);
-
   return (
     <LongCard props={['SKTM', 'Persentasi Data SKTM Berdasarkan DTKS']}>
       {isLoading ? (
@@ -76,8 +74,6 @@ const ChartBbp = () => {
 
   const label = data ? data.map((val: any) => val.budgetYear.toString()) : []
   const value = data ? data.map((val: any) => val.count.toString()) : []
-
-  console.log(data);
 
   return (
     <LongCard props={['Bantuan Biaya Pendidikan', 'Persentasi Data Biaya Pendidikan']}>
@@ -102,8 +98,6 @@ const ChartPenanganan = () => {
   // if (isLoading) return <Loading />
   const total = data ? data.map((val: any) => val.count) : []
   const label = data ? data.map((val: any) => val.budgetYear.toString()) : []
-  // const values = Object.values(data)
-  // console.log(data);
 
   return (
     <>
@@ -126,8 +120,6 @@ const ChartPenanganan = () => {
 }
 const CardData = () => {
   const { data, isLoading } = useCountBbp()
-
-  console.log(data);
 
   return (
     <>
