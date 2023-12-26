@@ -37,9 +37,6 @@ const TabelDtks = () => {
   const [order, setorder] = useState('Menurun')
   const { data, refetch, isLoading } = useGetAdministrativeArea(order)
 
-  // if (isLoading) return <Loading />
-  // console.log(data.data);
-
   // return
   const onChange = async (values: any) => {
     forms.setValue('filter', values)

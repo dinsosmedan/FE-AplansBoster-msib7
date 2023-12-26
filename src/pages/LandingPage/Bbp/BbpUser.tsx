@@ -36,8 +36,6 @@ export default function BbpUser() {
 
   if (isLoading || isLoadingDetails) return <Loading />
 
-  console.log(data)
-
   return (
     <section className="bg-[#F9F9F9] lg:px-10 py-[38px] pb-[200px]">
       <Tabs defaultValue="open">

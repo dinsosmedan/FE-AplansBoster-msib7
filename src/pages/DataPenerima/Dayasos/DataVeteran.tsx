@@ -7,7 +7,7 @@ import { formatToView } from '@/lib/services/formatDate'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
+import { HiMagnifyingGlass, HiPlus, HiArrowPath } from 'react-icons/hi2'
 
 import { exportVeteranFn } from '@/api/dayasos.api'
 import { useAlert, useTitleHeader } from '@/store/client'
@@ -46,6 +46,11 @@ const DataVeteran = () => {
   const { data: veterans, refetch, isFetching, isLoading } = useGetVeteran({ page: parseInt(page) ?? 1, q })
 
   useDisableBodyScroll(isFetching)
+
+  const handleReset = () => {
+    navigate('/data-penerima/dayasos/veteran')
+    forms.reset()
+  }
 
   const onSubmit = async (values: FormValues) => {
     if (values.q !== '') {
@@ -141,6 +146,10 @@ const DataVeteran = () => {
               ) : null}
             </div>
             <div className="flex items-center gap-3">
+              <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
+                <HiArrowPath className="text-lg" />
+                <span>Reset</span>
+              </Button>
               <Button className="gap-2 border-none rounded-lg" type="submit">
                 <HiMagnifyingGlass className="text-lg" />
                 <span>Cari Data</span>
