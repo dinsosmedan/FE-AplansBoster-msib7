@@ -105,8 +105,8 @@ const CardData = () => {
               </div>
             ))}
           </div>
-          <div className="grid grid-cols-2 gap-5 mt-5">
-            {[...Array(2)].map((_, i) => (
+          <div className="grid grid-cols-3 gap-5 mt-5">
+            {[...Array(3)].map((_, i) => (
               <div className="rounded-xl bg-white p-4" key={i}>
                 <div className="flex flex-col gap-2">
                   <Skeleton className="w-[120px] h-3 rounded-[14px]" />
@@ -124,9 +124,10 @@ const CardData = () => {
             <BasicCard props={['Total Penangan Kelompok Rentan', data.vulnerableGroupHandling, 'Data']} />
             <BasicCard props={['Total SKTM', data.indigencyCertificate, 'Data']} />
           </div>
-          <div className="grid grid-cols-2 gap-5 mt-5">
+          <div className="grid grid-cols-3 gap-5 mt-5">
             <BasicCard props={['Bantuan PBI', data.premiumAssistanceBeneficiary, 'Data']} />
             <BasicCard props={['Total PKH', data.familyHopeProgram, 'Data']} />
+            <BasicCard props={['Total Unregister Terdaftar', data.unregister, 'Data']} />
           </div>
         </>
       )}

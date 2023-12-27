@@ -74,7 +74,9 @@ const DataUnregister = () => {
   const { data: unregister, isLoading: isLoadingUnregister } = useGetDetailUnregister(selectedId)
   const { data: user, isLoading: isLoadingGetme } = useGetMe()
 
-  const isEnableDelete = user?.data.role.permissions.some((permission) => permission.slugName === 'delete-update' && permission.isPermitted)
+  const isEnableDelete = user?.data.role.permissions.some(
+    (permission) => permission.slugName === 'delete-update' && permission.isPermitted
+  )
   const showDetail = (id: string) => {
     setSelectedId(id)
     setIsShow(true)
@@ -184,7 +186,7 @@ const DataUnregister = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Nomor Surat" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Nomor Surat Dinas Sosial" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -195,7 +197,12 @@ const DataUnregister = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Bulan" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="number"
+                        placeholder="Masukkan Bulan e.g. 5 atau 05"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -207,7 +214,12 @@ const DataUnregister = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Tahun" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="number"
+                        placeholder="Masukkan Tahun e.g. 2023"
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -251,6 +263,8 @@ const DataUnregister = () => {
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Diagnosa Penyakit</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Umur</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Masuk Rumah Sakit</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Surat Dinas Sosial</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Surat Dinas Sosial</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
               </TableRow>
@@ -263,28 +277,40 @@ const DataUnregister = () => {
                       {(unregisters.meta.currentPage - 1) * unregisters.meta.perPage + index + 1}
                     </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.name ?? '-'}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.gender ?? '-'}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                      {getYearFromDate(item.hospitalEntryDate)}
+                      {item.gender ?? '-'}
                     </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.deseaseDiagnosis ?? '-'}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.age ?? '-'}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                      {item.hospitalEntryDate ?? '-'}
+                      {getYearFromDate(item.dinsosLetterDate ?? '') ?? '-'}
                     </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item.diseaseDiagnosis ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item.age ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {formatToView(item.hospitalEntryDate) ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item.dinsosLetterNumber ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {formatToView(item.dinsosLetterDate) ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {formatToView(item.updatedAt) ?? '-'}
+                    </TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                      {
-                        isEnableDelete ?
-                          <Action
-                            onDelete={async () => await handleDelete(item.id)}
-                            onDetail={() => showDetail(item.id)}
-                            onEdit={() => navigate(`/data-penerima/linjamsos/unregister/${item.id}`)}
-                          /> :
-                          <Action
-                            onDetail={() => showDetail(item.id)}
-                          />
-                      }
+                      {isEnableDelete ? (
+                        <Action
+                          onDelete={async () => await handleDelete(item.id)}
+                          onDetail={() => showDetail(item.id)}
+                          onEdit={() => navigate(`/data-penerima/linjamsos/unregister/${item.id}`)}
+                        />
+                      ) : (
+                        <Action onDetail={() => showDetail(item.id)} />
+                      )}
                     </TableCell>
                   </TableRow>
                 ))
@@ -336,7 +362,7 @@ const DataUnregister = () => {
           </div>
           <div>
             <p className="text-sm font-bold">Diagnosa Penyakit</p>
-            <p className="text-base capitalize">{unregister?.deseaseDiagnosis ?? '-'}</p>
+            <p className="text-base capitalize">{unregister?.diseaseDiagnosis ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">Tanggal Masuk Rumah Sakit</p>
