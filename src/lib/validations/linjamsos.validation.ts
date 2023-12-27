@@ -31,7 +31,7 @@ export const unregisterValidation = Yup.object({
       (typeof value === 'string' && !isNaN(Date.parse(value))) // Check if it's a parseable string
     )
   }),
-  deseaseDiagnosis: Yup.string().required('Diagnosa penyakit harus diisi').max(255, 'Maksimal 255 karakter'),
+  diseaseDiagnosis: Yup.string().required('Diagnosa penyakit harus diisi').max(255, 'Maksimal 255 karakter'),
   hospitalEntryDate: Yup.mixed().test('hospitalEntryDate', 'Tanggal masuk rumah sakit harus diisi', function (value) {
     return (
       value instanceof Date || // Check if it's a Date object

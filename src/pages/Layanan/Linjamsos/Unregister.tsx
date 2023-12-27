@@ -48,7 +48,7 @@ const Unregister = () => {
         gender: unregister.gender,
         dinsosLetterNumber: unregister.dinsosLetterNumber,
         dinsosLetterDate: formatStringToDate(unregister.dinsosLetterDate),
-        deseaseDiagnosis: unregister.deseaseDiagnosis,
+        diseaseDiagnosis: unregister.diseaseDiagnosis,
         hospitalEntryDate: formatStringToDate(unregister.hospitalEntryDate),
         hospitalLetterNumber: unregister.hospitalLetterNumber,
         hospitalLetterDate: formatStringToDate(unregister.hospitalLetterDate)
@@ -174,7 +174,7 @@ const Unregister = () => {
             </div>
             <div className="w-6/12">
               <FormField
-                name="deseaseDiagnosis"
+                name="diseaseDiagnosis"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
