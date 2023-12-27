@@ -2,23 +2,28 @@ import { Loading, Modal, MultiSelect } from '@/components'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { useCreateRolePermission, useGetPermission, useGetRoleById, useUpdateRole } from '@/store/server/useUserManagement'
+import {
+  useCreateRolePermission,
+  useGetPermission,
+  useGetRoleById,
+  useUpdateRole
+} from '@/store/server/useUserManagement'
 import { useForm } from 'react-hook-form'
 import { type rolePermissionFields } from '@/lib/validations/rolepermission.validation'
 import { useNavigate } from 'react-router-dom'
 import React from 'react'
 
 interface CreateRoleProps {
-    isShow: boolean
-    setIsShow: (value: boolean) => void
-    roleId?: string
-  }
+  isShow: boolean
+  setIsShow: (value: boolean) => void
+  roleId?: string
+}
 
 const CreateManagementRole = ({ isShow, setIsShow, roleId }: CreateRoleProps) => {
   const navigate = useNavigate()
-    const { mutate: RolePermission, isLoading: isLoadingCreate } = useCreateRolePermission()
-    const { data: permission, isLoading: isLoadingPermission } = useGetPermission()
-    const { mutate: updateRole, isLoading: isLoadingUpdate } = useUpdateRole()
+  const { mutate: RolePermission, isLoading: isLoadingCreate } = useCreateRolePermission()
+  const { data: permission, isLoading: isLoadingPermission } = useGetPermission()
+  const { mutate: updateRole, isLoading: isLoadingUpdate } = useUpdateRole()
   const { data: role, isSuccess, isLoading: isLoadingDetail } = useGetRoleById(roleId as string)
   const formsCreate = useForm<rolePermissionFields>({
     mode: 'onTouched',
@@ -28,11 +33,11 @@ const CreateManagementRole = ({ isShow, setIsShow, roleId }: CreateRoleProps) =>
     }
   })
 
-const PERMISSION =
-permission?.data?.map((item: any) => ({
-  value: item.id,
-  label: item.name
-})) || []
+  const PERMISSION =
+    permission?.data?.map((item: any) => ({
+      value: item.id,
+      label: item.name
+    })) || []
 
   const onSubmit = async (values: rolePermissionFields) => {
     const validPermissions: string[] = values.permissions.filter((p: any): p is string => p !== undefined)
@@ -59,21 +64,24 @@ permission?.data?.map((item: any) => ({
   React.useEffect(() => {
     if (roleId && isSuccess) {
       formsCreate.setValue('name', role.name)
-      formsCreate.setValue('permissions', role.permissions.map((permission: any) => {
-        return permission.id
-      }))
+      formsCreate.setValue(
+        'permissions',
+        role.permissions.map((permission: any) => {
+          return permission.id
+        })
+      )
     }
   }, [roleId, isSuccess])
-    if (isLoadingPermission) {
-        return <Loading />
-      }
+  if (isLoadingPermission) {
+    return <Loading />
+  }
   return (
     <Modal isShow={isShow}>
-        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Tambah Role</h3>
-          <p className="text-sm text-[#A1A1A1]">Masukkan Data Role Baru</p>
-        </Modal.Header>
-        {isLoadingDetail ? (
+      <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+        <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Tambah Role</h3>
+        <p className="text-sm text-[#A1A1A1]">Masukkan Data Role Baru</p>
+      </Modal.Header>
+      {isLoadingDetail ? (
         <Loading />
       ) : (
         <Form {...formsCreate}>
@@ -117,13 +125,13 @@ permission?.data?.map((item: any) => ({
                 Cancel
               </Button>
               <Button className="rounded-lg" type="submit" loading={isLoadingCreate || isLoadingUpdate}>
-              {roleId ? 'Update' : 'Submit'}
+                {roleId ? 'Update' : 'Submit'}
               </Button>
             </Modal.Footer>
           </form>
         </Form>
       )}
-      </Modal>
+    </Modal>
   )
 }
 
