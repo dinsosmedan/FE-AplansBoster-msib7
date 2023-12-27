@@ -1,4 +1,3 @@
-// import { useToken } from '@/store/client'
 import { useGetDevices } from '@/hooks'
 import { useAuth } from '@/store/client'
 import * as React from 'react'
