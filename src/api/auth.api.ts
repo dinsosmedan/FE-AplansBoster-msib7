@@ -24,7 +24,6 @@ const apiPublic = axios.create({
 
 apiPublic.defaults.headers.post['Content-Type'] = 'application/json'
 
-// example
 export const loginFn = async (fields: LoginInput): Promise<IAuthResponse> => {
   const response = await apiPublic.post('/auth/login', fields)
   return response.data

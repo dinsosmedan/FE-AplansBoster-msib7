@@ -46,7 +46,9 @@ const DataVeteran = () => {
   const { data: veterans, refetch, isFetching, isLoading } = useGetVeteran({ page: parseInt(page) ?? 1, q })
   const { data: user, isLoading: isLoadingGetme } = useGetMe()
 
-  const isEnableDelete = user?.data.role.permissions.some((permission) => permission.slugName === 'delete-update' && permission.isPermitted)
+  const isEnableDelete = user?.data.role.permissions.some(
+    (permission) => permission.slugName === 'delete-update' && permission.isPermitted
+  )
   useDisableBodyScroll(isFetching)
 
   const handleReset = () => {
@@ -183,24 +185,34 @@ const DataVeteran = () => {
                     {(veterans.meta.currentPage - 1) * veterans.meta.perPage + index + 1}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.beneficiary.identityNumber}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.isActive}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.veteranUnit}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.veteranUnit}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.uniformSize}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.beneficiary.updatedAt) ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {item.beneficiary.identityNumber}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {item.isActive}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {item.veteranUnit}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {item.veteranUnit}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {item.uniformSize}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {formatToView(item.beneficiary.updatedAt) ?? '-'}
+                  </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    {
-                      isEnableDelete ?
-                        <Action
-                          onDelete={() => handleDelete(item.id)}
-                          onDetail={() => showDetail(item.id)}
-                          onEdit={() => navigate(`/data-penerima/dayasos/veteran/create/${item.id}`)}
-                        /> :
-                        <Action
-                          onDetail={() => showDetail(item.id)}
-                        />
-                    }
+                    {isEnableDelete ? (
+                      <Action
+                        onDelete={() => handleDelete(item.id)}
+                        onDetail={() => showDetail(item.id)}
+                        onEdit={() => navigate(`/data-penerima/dayasos/veteran/create/${item.id}`)}
+                      />
+                    ) : (
+                      <Action onDetail={() => showDetail(item.id)} />
+                    )}
                   </TableCell>
                 </TableRow>
               ))

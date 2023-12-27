@@ -37,7 +37,8 @@ import {
   DataPenerima,
   NotFound,
   ResetPassword,
-  ManajemenAdmin
+  ManajemenAdmin,
+  Forbidden
 } from './pages'
 
 import {
@@ -271,6 +272,7 @@ export default function App() {
             </Route>
           </Route>
         </Route>
+        <Route path="/permission-denied" element={<Forbidden />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

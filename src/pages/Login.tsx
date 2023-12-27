@@ -15,9 +15,7 @@ import { type AxiosError } from 'axios'
 import { type IErrorResponse } from '@/lib/types/user.type'
 import { type LoginInput, loginValidation } from '@/lib/validations/auth.validation'
 import { Password } from '@/components'
-import {
-  HiArrowLongLeft
-} from 'react-icons/hi2'
+import { HiArrowLongLeft } from 'react-icons/hi2'
 export default function Login() {
   useTitle('Login')
   const { toast } = useToast()
@@ -101,8 +99,8 @@ export default function Login() {
                   Masuk
                 </Button>
                 <Link to="/" className="text-primary flex items-center">
-                <HiArrowLongLeft /> <span className="ps-2"> Kembali ke Beranda</span>
-                  </Link>
+                  <HiArrowLongLeft /> <span className="ps-2"> Kembali ke Beranda</span>
+                </Link>
               </form>
             </Form>
           </div>

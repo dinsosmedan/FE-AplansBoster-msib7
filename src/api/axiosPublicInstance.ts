@@ -33,6 +33,10 @@ axiosPublic.interceptors.response.use(
       useAuth.getState().removeToken()
       window.location.href = '/user/login'
     }
+
+    if (error.response.status === 403) {
+      window.location.href = '/permission-denied'
+    }
     return await Promise.reject(error)
   }
 )

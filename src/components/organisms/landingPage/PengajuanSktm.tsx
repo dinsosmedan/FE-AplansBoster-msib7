@@ -13,6 +13,19 @@ interface PengajuanSktmProps {
   href: string
 }
 
+const handleApplicationCategoryLabel = (category: string) => {
+  switch (category) {
+    case 'dtks-schools':
+      return 'SKTM Untuk Sekolah/Universitas (Terdaftar DTKS)'
+    case 'non-dtks-schools':
+      return 'SKTM Untuk Sekolah / Universitas (Tidak Terdaftar DTKS)'
+    case 'dtks-courts':
+      return 'SKTM Untuk Pelayanan ke Pengadilan Agama/LBH (Terdaftar DTKS)'
+    case 'non-dtks-courts':
+      return 'SKTM Untuk Pelayanan ke Pengadilan Agama / LBH (TidakTerdaftarDTKS)'
+  }
+}
+
 export default function PengajuanSktm({ href }: PengajuanSktmProps) {
   const [detail, setDetail] = React.useState<IIndigencyCertificate>({} as IIndigencyCertificate)
   const { category } = useGetParams(['category'])
@@ -42,7 +55,7 @@ export default function PengajuanSktm({ href }: PengajuanSktmProps) {
                 btnText={item.applicationStatus}
                 href={`${href}?category=${item.id}`}
                 isHadButtonIcon={false}
-                title={item.applicationCategory}
+                title={handleApplicationCategoryLabel(item.applicationCategory) as string}
                 desc={formatToView(item.updatedAt)}
                 icon={HiAcademicCap}
               />

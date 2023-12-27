@@ -239,8 +239,8 @@ const DataBbp = () => {
                 </FormItem>
               )}
             />
-            </div>
-            <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
+          </div>
+          <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
             <FormField
               name="event"
               control={forms.control}

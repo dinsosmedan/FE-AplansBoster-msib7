@@ -23,5 +23,6 @@ import BgProfile from './images/bg-profile.svg'
 import BgEmpty from './images/bg-empty.svg'
 import Bgsuccessful from './images/bg-successful.svg'
 import BgVerified from './images/bg-verified.svg'
+import ForbidenNumber from './images/forbiden-number.svg'
 
-export { Logo, BgLogin, LogoMini, BgDukcapil, BgBansos, BgDataRehabsos, BgDataDayasos, BgDataLinjmasos, BgLayananRehabsos, BgLayananDayasos, BgLayananLinjmasos, ImageCover, BgCard, DinsosLogo, MedanBerkahLogo, NotFoundBansos, Swafoto, CekBansosIlustration, Substract, NotFoundIllustration, NotFoundNumber, BgProfile, BgEmpty, Bgsuccessful, BgVerified }
+export { Logo, BgLogin, LogoMini, BgDukcapil, BgBansos, BgDataRehabsos, BgDataDayasos, BgDataLinjmasos, BgLayananRehabsos, BgLayananDayasos, BgLayananLinjmasos, ImageCover, BgCard, DinsosLogo, MedanBerkahLogo, NotFoundBansos, Swafoto, CekBansosIlustration, Substract, NotFoundIllustration, NotFoundNumber, BgProfile, BgEmpty, Bgsuccessful, BgVerified, ForbidenNumber }
