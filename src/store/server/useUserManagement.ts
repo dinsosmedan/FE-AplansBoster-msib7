@@ -7,17 +7,21 @@ import {
   getAdminFn,
   getPermissionFn,
   getRoleFn,
+  getRolePermissionDetailFn,
   getUserDetailFn,
   getUsersFn,
   storeAdminFn,
   storeRolePermissionFn,
   storeUserFn,
   updateAdminFn,
+  updateRolePermissionFn,
   updateUserFn
 } from '@/api/user.api'
 import { toast, useToast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
 import { type AxiosError } from 'axios'
+import { handleMessage } from '@/lib/services/handleMessage'
+import { handleOnError } from '@/lib/utils'
 
 export const useGetAdmin = (page?: string, q?: string) => {
   return useQuery(['admin-management', page, q], async () => await getAdminFn(page, q), {
@@ -101,6 +105,11 @@ export const useGetRole = (q?: string) => {
     enabled: true
   })
 }
+export const useGetRoleById = (id?: string) => {
+  return useQuery(['user-access', id], async () => await getRolePermissionDetailFn(id as string), {
+    enabled: !!id
+  })
+}
 
 export const useGetPermission = () => {
   return useQuery('permission', async () => await getPermissionFn(), {
@@ -131,7 +140,17 @@ export const useCreateRolePermission = () => {
     }
   })
 }
+export const useUpdateRole = () => {
+  const queryClient = useQueryClient()
 
+  return useMutation(updateRolePermissionFn, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries('user-access')
+      handleMessage({ title: 'Data Role', variant: 'update' })
+    },
+    onError: (error: AxiosError) => handleOnError(error)
+  })
+}
 export const useDeleteRolePermission = () => {
   const queryClient = useQueryClient()
 
