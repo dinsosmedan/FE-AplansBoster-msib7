@@ -77,9 +77,11 @@ export const useResetPassword = () => {
 }
 export const useLogout = () => {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   return useMutation(logoutFn, {
-    onSuccess: () => {
+    onSuccess: async () => {
       // useToken.getState().removeToken()
+      await queryClient.invalidateQueries('user')
       useAuth.getState().removeToken()
       toast({
         title: 'Berhasil keluar dengan sukses',
