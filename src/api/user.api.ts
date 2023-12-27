@@ -47,7 +47,7 @@ export const storeRolePermissionFn = async (fields: rolePermissionFields) => {
 }
 interface UpdateRoleParams {
   id: string
-  fields: userFields
+  fields: rolePermissionFields
 }
 export const updateRolePermissionFn = async ({ id, fields }: UpdateRoleParams) => {
   await api.put(`/user-access/role/${id}`, fields)
