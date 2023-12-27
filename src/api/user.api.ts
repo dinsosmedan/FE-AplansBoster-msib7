@@ -1,5 +1,5 @@
 import api from './axiosInstance'
-import { type userFields } from '@/lib/validations/user.validation'
+import { type userUpdateFields, type userFields } from '@/lib/validations/user.validation'
 import { type rolePermissionFields } from '@/lib/validations/rolepermission.validation'
 
 export const getAdminFn = async (page?: string, q?: string): Promise<any> => {
@@ -14,7 +14,7 @@ export const deleteAdminFn = async (id: string): Promise<any> => {
 
 interface UpdateAdminParams {
   id: string
-  fields: userFields
+  fields: userUpdateFields
 }
 
 export const updateAdminFn = async ({ id, fields }: UpdateAdminParams) => {
@@ -45,7 +45,17 @@ export const getPermissionFn = async (): Promise<any> => {
 export const storeRolePermissionFn = async (fields: rolePermissionFields) => {
   await api.post('/user-access/role', fields)
 }
-
+interface UpdateRoleParams {
+  id: string
+  fields: userFields
+}
+export const updateRolePermissionFn = async ({ id, fields }: UpdateRoleParams) => {
+  await api.put(`/user-access/role/${id}`, fields)
+}
+export const getRolePermissionDetailFn = async (id: string) => {
+  const response = await api.get(`/user-access/role/${id}`)
+  return response.data?.data
+}
 export const deleteRolePermissionFn = async (id: string): Promise<any> => {
   const response = await api.delete(`/user-access/role/${id}`)
   return response.data
@@ -65,7 +75,7 @@ export const deleteUserFn = async (id: string): Promise<any> => {
 
 interface UpdateUserParams {
   id: string
-  fields: userFields
+  fields: userUpdateFields
 }
 
 export const updateUserFn = async ({ id, fields }: UpdateUserParams) => {

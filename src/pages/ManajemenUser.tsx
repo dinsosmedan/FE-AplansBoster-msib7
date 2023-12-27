@@ -1,27 +1,28 @@
-import { Container, Loading, Modal, Pagination, Password, Search, Status } from '@/components'
+import { Container, Loading, Modal, Pagination, Search, Status } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { useForm } from 'react-hook-form'
 import * as React from 'react'
 import { HiOutlinePencilAlt, HiTrash } from 'react-icons/hi'
 import useTitle from '@/hooks/useTitle'
-import { useDeleteUser, useGetRole, useGetUserById, useGetUsers, useUpdateUser } from '@/store/server/useUserManagement'
-import { userValidation, type userFields } from '@/lib/validations/user.validation'
+import { useDeleteUser, useGetUserById, useGetUsers, useUpdateUser } from '@/store/server/useUserManagement'
+import { type userUpdateFields, userUpdateValidation } from '@/lib/validations/user.validation'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useAlert } from '@/store/client'
 import { useCreateParams, useDeleteParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const ManajemenUser = () => {
   useTitle('Manajemen User ')
+  const navigate = useNavigate()
   const { alert } = useAlert()
 
-  const forms = useForm<userFields>({
+  const forms = useForm<userUpdateFields>({
     mode: 'onTouched',
-    resolver: yupResolver(userValidation)
+    resolver: yupResolver(userUpdateValidation)
   })
 
   const formsSearch = useForm<{ q: string }>()
@@ -33,7 +34,6 @@ const ManajemenUser = () => {
   const [userId, setUserId] = React.useState('')
   const [isShow, setIsShow] = React.useState(false)
 
-  const { data: role } = useGetRole()
   const { data: users, isLoading, isFetching, refetch } = useGetUsers(page, q)
   const { data: user, isSuccess, isLoading: isLoadingUser } = useGetUserById(userId)
 
@@ -42,7 +42,6 @@ const ManajemenUser = () => {
 
   React.useEffect(() => {
     if (!userId) {
-      forms.setValue('password', '')
       forms.setValue('role', '')
       forms.setValue('isActive', '')
       forms.setValue('employeeIdentityNumber', '')
@@ -83,14 +82,16 @@ const ManajemenUser = () => {
     setIsShow(true)
   }
 
-  const onSubmit = async (data: userFields) => {
-    if (!data.password) delete data.password
-    if (!data.role) delete data.role
-
-    const newData = { id: userId, fields: data }
-    updateUser(newData, { onSuccess: () => setIsShow(false) })
-
-    // createUser(data, { onSuccess: () => setIsShow(false) })
+  const onSubmit = async (values: userUpdateFields) => {
+    const newData = {
+      isActive: values.isActive ? '1' : '0'
+    }
+    updateUser({ id: userId, fields: newData }, { onSuccess })
+  }
+  const onSuccess = () => {
+    forms.reset()
+    setIsShow(false)
+    navigate('/manajemen-user')
   }
 
   const handleSearch = async (values: { q: string }) => {
@@ -204,7 +205,6 @@ const ManajemenUser = () => {
               <FormField
                 name="employeeIdentityNumber"
                 control={forms.control}
-                rules={{ required: true }}
                 render={({ field }) => (
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
@@ -224,12 +224,17 @@ const ManajemenUser = () => {
               <FormField
                 name="email"
                 control={forms.control}
-                rules={{ required: true }}
                 render={({ field }) => (
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan Email" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        readOnly={Boolean(userId)}
+                        disabled={Boolean(userId)}
+                        placeholder="Masukkan Email"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -238,50 +243,18 @@ const ManajemenUser = () => {
               <FormField
                 name="name"
                 control={forms.control}
-                rules={{ required: true }}
                 render={({ field }) => (
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan Nama" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        placeholder="Masukkan Nama"
+                        readOnly={Boolean(userId)}
+                        disabled={Boolean(userId)}
+                      />
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                name="password"
-                control={forms.control}
-                rules={{ required: !userId }}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Password</FormLabel>
-                    <FormControl>
-                      <Password value={field.value ?? ''} onChange={field.onChange} placeholder="Masukkan Password" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="role"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Role</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {role?.data.map((item: any, index: any) => (
-                          <SelectItem key={index} value={item?.id}>
-                            {item?.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -317,7 +290,7 @@ const ManajemenUser = () => {
                 Cancel
               </Button>
               <Button className="rounded-lg" type="submit" loading={isLoadingUpdate}>
-                {userId ? 'Ubah' : 'Tambah'}
+                Ubah
               </Button>
             </Modal.Footer>
           </form>

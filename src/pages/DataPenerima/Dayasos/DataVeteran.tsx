@@ -11,7 +11,7 @@ import { HiMagnifyingGlass, HiPlus, HiArrowPath } from 'react-icons/hi2'
 
 import { exportVeteranFn } from '@/api/dayasos.api'
 import { useAlert, useTitleHeader } from '@/store/client'
-import { useDeleteVeteran, useGetVeteran, useGetVeteranById } from '@/store/server'
+import { useDeleteVeteran, useGetMe, useGetVeteran, useGetVeteranById } from '@/store/server'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 
 interface FormValues {
@@ -44,7 +44,9 @@ const DataVeteran = () => {
   const { mutateAsync: deleteVeteran } = useDeleteVeteran()
   const { data: veteran, isLoading: isLoadingVeteran } = useGetVeteranById(selectedId)
   const { data: veterans, refetch, isFetching, isLoading } = useGetVeteran({ page: parseInt(page) ?? 1, q })
+  const { data: user, isLoading: isLoadingGetme } = useGetMe()
 
+  const isEnableDelete = user?.data.role.permissions.some((permission) => permission.slugName === 'delete-update' && permission.isPermitted)
   useDisableBodyScroll(isFetching)
 
   const handleReset = () => {
@@ -110,7 +112,7 @@ const DataVeteran = () => {
     }
   }
 
-  if (isLoading) return <Loading />
+  if (isLoading && isLoadingGetme) return <Loading />
 
   return (
     <Container>
@@ -188,11 +190,17 @@ const DataVeteran = () => {
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.uniformSize}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.beneficiary.updatedAt) ?? '-'}</TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Action
-                      onDelete={() => handleDelete(item.id)}
-                      onDetail={() => showDetail(item.id)}
-                      onEdit={() => navigate(`/data-penerima/dayasos/veteran/create/${item.id}`)}
-                    />
+                    {
+                      isEnableDelete ?
+                        <Action
+                          onDelete={() => handleDelete(item.id)}
+                          onDetail={() => showDetail(item.id)}
+                          onEdit={() => navigate(`/data-penerima/dayasos/veteran/create/${item.id}`)}
+                        /> :
+                        <Action
+                          onDetail={() => showDetail(item.id)}
+                        />
+                    }
                   </TableCell>
                 </TableRow>
               ))

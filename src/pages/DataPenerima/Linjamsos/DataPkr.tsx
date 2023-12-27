@@ -14,6 +14,7 @@ import {
   useGetDetailVulnerableGroupHandling,
   useGetKecamatan,
   useGetKelurahan,
+  useGetMe,
   useVulnerableGroupHandlings
 } from '@/store/server'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
@@ -59,7 +60,9 @@ const DataPkr = () => {
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
   const { data: vulnerable, isLoading: isLoadingVulnerable } = useGetDetailVulnerableGroupHandling(selectedId)
+  const { data: user, isLoading: isLoadingGetme } = useGetMe()
 
+  const isEnableDelete = user?.data.role.permissions.some((permission) => permission.slugName === 'delete-update' && permission.isPermitted)
   const {
     data: vulnerables,
     refetch,
@@ -146,7 +149,7 @@ const DataPkr = () => {
     }
     setIsLoadingExport(false)
   }
-  if (isLoading && isLoadingVulnerable) {
+  if (isLoading && isLoadingVulnerable || isLoadingGetme) {
     return <Loading />
   }
 
@@ -297,11 +300,17 @@ const DataPkr = () => {
                       {formatToView(item.updatedAt) ?? '-'}
                     </TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                      <Action
-                        onDelete={async () => await handleDelete(item.id)}
-                        onDetail={() => showDetail(item.id)}
-                        onEdit={() => navigate(`/data-penerima/linjamsos/pkr/${item.id}`)}
-                      />
+                      {
+                        isEnableDelete ?
+                          <Action
+                            onDelete={async () => await handleDelete(item.id)}
+                            onDetail={() => showDetail(item.id)}
+                            onEdit={() => navigate(`/data-penerima/linjamsos/pkr/${item.id}`)}
+                          /> :
+                          <Action
+                            onDetail={() => showDetail(item.id)}
+                          />
+                      }
                     </TableCell>
                   </TableRow>
                 ))
