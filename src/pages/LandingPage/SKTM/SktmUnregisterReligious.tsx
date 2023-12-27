@@ -7,11 +7,12 @@ import { HiDocumentArrowUp, HiMagnifyingGlass, HiPaperAirplane } from 'react-ico
 import { Textarea } from '@/components/ui/textarea'
 import DropZone, { type FileWithPreview } from '../../../components/atoms/DropZone'
 import { NonDtksCourtsValidation, type NonDtksCourtsFields } from '@/lib/validations/landingPage/public.validation'
-import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from '@/components/ui/select'
+
 import { useCreateNonDTKSCourts, useGetIdentityCheck, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { SearchSelect } from '@/components'
 
 export default function SktmReligious() {
   const navigate = useNavigate()
@@ -105,20 +106,18 @@ export default function SktmReligious() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="rounded-md">
-                        <SelectValue placeholder="Pilih Kecamatan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {kecamatanLists?.map((kecamatan) => (
-                        <SelectItem key={kecamatan.id} value={kecamatan.id}>
-                          {kecamatan.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      width="md:w-[300px] lg:w-[700px]"
+                      className="rounded-md"
+                      placeholder="Pilih Kecamatan"
+                      options={
+                        kecamatanLists?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
+                      }
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -129,20 +128,19 @@ export default function SktmReligious() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value} disabled={!areaLevel3 || !kelurahanLists}>
-                    <FormControl>
-                      <SelectTrigger className="rounded-md">
-                        <SelectValue placeholder="Pilih Kelurahan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {kelurahanLists?.map((kelurahan) => (
-                        <SelectItem key={kelurahan.id} value={kelurahan.id}>
-                          {kelurahan.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      disabled={!areaLevel3 || !kelurahanLists}
+                      width="md:w-[300px] lg:w-[700px]"
+                      className="rounded-md"
+                      placeholder="Pilih Kelurahan"
+                      options={
+                        kelurahanLists?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []
+                      }
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -433,7 +431,11 @@ export default function SktmReligious() {
             >
               <p className="text-base font-semibold">Kembali</p>
             </Button>
-            <Button className="px-8 py-6 rounded-lg items-center gap-3 md:w-[50%] lg:w-[15%] w-full mt-5 md:mt-0" onClick={forms.handleSubmit(onSubmit)} loading={isLoadingCreate}>
+            <Button
+              className="px-8 py-6 rounded-lg items-center gap-3 md:w-[50%] lg:w-[15%] w-full mt-5 md:mt-0"
+              onClick={forms.handleSubmit(onSubmit)}
+              loading={isLoadingCreate}
+            >
               <p className="text-base font-semibold">Kirim Pengajuan</p>
               <HiPaperAirplane className="w-5 h-5" />
             </Button>

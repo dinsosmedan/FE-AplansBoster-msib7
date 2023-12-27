@@ -5,7 +5,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { DatePicker } from '@/components'
+import { DatePicker, SearchSelect } from '@/components'
 import { useCreateBeneficary, useGetBeneficaryByNIK, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import { HiMagnifyingGlass } from 'react-icons/hi2'
 import * as React from 'react'
@@ -156,20 +156,17 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Kecamatan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {listKecamatan?.map((kecamatan) => (
-                        <SelectItem key={kecamatan.id} value={kecamatan.id}>
-                          {kecamatan.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      width="w-[390px]"
+                      placeholder="Pilih Kecamatan"
+                      options={
+                        listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
+                      }
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -181,20 +178,16 @@ export default function CreateDataMaster({ isShow, setIsShow }: CreateDataMaster
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={!areaLevel3}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kelurahan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKelurahan?.map((kelurahan) => (
-                          <SelectItem key={kelurahan.id} value={kelurahan.id}>
-                            {kelurahan.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      disabled={!areaLevel3 || !listKelurahan}
+                      width="w-[390px]"
+                      placeholder="Pilih Kelurahan"
+                      options={
+                        listKelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []
+                      }
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

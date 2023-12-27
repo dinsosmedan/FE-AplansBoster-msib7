@@ -1,7 +1,7 @@
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import Container from '@/components/atoms/Container'
-import { Action, ExportButton, Loading, Modal, Pagination } from '@/components'
+import { Action, ExportButton, Loading, Modal, Pagination, SearchSelect } from '@/components'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -14,7 +14,8 @@ import {
   useGetKecamatan,
   useGetKelurahan,
   useGetTuitionAssistanceFn,
-  useGetTuitionAssistanceID
+  useGetTuitionAssistanceID,
+  useGetUniversities
 } from '@/store/server'
 import React from 'react'
 import { exportTuitionAssistanceFn } from '@/api/linjamsos.api'
@@ -27,6 +28,7 @@ interface FormValues {
   year: string
   status: string
   event: string
+  university: string
 }
 const DataBbp = () => {
   useTitle('Data Penerima')
@@ -46,30 +48,33 @@ const DataBbp = () => {
   const [isLoadingExport, setIsLoadingExport] = React.useState(false)
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
-  const { q, kecamatan, kelurahan, page, year, status, event } = useGetParams([
+  const { q, kecamatan, kelurahan, page, year, status, event, university } = useGetParams([
     'q',
     'kecamatan',
     'kelurahan',
     'page',
     'year',
     'status',
-    'event'
+    'event',
+    'university'
   ])
 
   const forms = useForm<FormValues>({
     defaultValues: {
-      q: '',
-      kecamatan: '',
-      kelurahan: '',
-      year: '',
-      status: '',
-      event: ''
+      q: q ?? '',
+      kecamatan: kecamatan ?? '',
+      kelurahan: kelurahan ?? '',
+      year: year ?? '',
+      status: status ?? '',
+      event: event ?? '',
+      university: university ?? ''
     }
   })
-
   const areaLevel3 = forms.watch('kecamatan')
-  const { data: listKecamatan } = useGetKecamatan()
+
   const { data: listEvent } = useGetEvent()
+  const { data: listKecamatan } = useGetKecamatan()
+  const { data: universities } = useGetUniversities()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
   const { data: tuition, isLoading: isLoadingTuition } = useGetTuitionAssistanceID(selectedId)
 
@@ -85,7 +90,8 @@ const DataBbp = () => {
     year,
     status,
     event,
-    q
+    q,
+    university
   })
   useDisableBodyScroll(isFetching)
 
@@ -110,6 +116,7 @@ const DataBbp = () => {
     updateParam('year', values.year)
     updateParam('status', values.status)
     updateParam('event', values.event)
+    updateParam('university', values.university)
 
     await refetch()
   }
@@ -156,8 +163,18 @@ const DataBbp = () => {
   }
   const handleReset = () => {
     navigate('/data-penerima/linjamsos/bbp')
-    forms.reset()
+    forms.reset({
+      q: '',
+      kecamatan: '',
+      kelurahan: '',
+      year: '',
+      status: '',
+      event: '',
+      university: ''
+    })
   }
+
+  useDisableBodyScroll(isFetching)
 
   if (isLoading && isLoadingTuition) return <Loading />
 
@@ -188,20 +205,17 @@ const DataBbp = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Kecamatan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {listKecamatan?.map((item, index) => (
-                        <SelectItem key={index} value={item.id}>
-                          {item.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      width="w-[380px]"
+                      placeholder="Pilih Kecamatan"
+                      options={
+                        listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
+                      }
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />
@@ -210,24 +224,18 @@ const DataBbp = () => {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    disabled={areaLevel3 === '' && kecamatan === ''}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Kelurahan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {listKelurahan?.map((item, index) => (
-                        <SelectItem key={index} value={item.id}>
-                          {item.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      disabled={!areaLevel3 && !kecamatan}
+                      width="w-[380px]"
+                      placeholder="Pilih Kelurahan"
+                      options={
+                        listKelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []
+                      }
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />
@@ -283,6 +291,25 @@ const DataBbp = () => {
                       <SelectItem value="disbursed">Dicairkan</SelectItem>
                     </SelectContent>
                   </Select>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="university"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <SearchSelect
+                      selected={field.value}
+                      onChange={field.onChange}
+                      width="w-[380px]"
+                      placeholder="Pilih Perguruan Tinggi"
+                      options={
+                        universities?.map((university) => ({ label: university.name, value: university.id })) ?? []
+                      }
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />
@@ -353,7 +380,7 @@ const DataBbp = () => {
                     {item.application?.beneficiary?.birthDate ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application?.beneficiary?.gender ?? '-'}
+                    {item.application?.beneficiary?.gender ? item.application.beneficiary.gender : '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
                     {item.application?.beneficiary?.address.fullAddress ?? '-'}
@@ -364,9 +391,15 @@ const DataBbp = () => {
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.application?.beneficiary?.address.areaLevel4?.name ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.application.phoneNumber ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.budgetYear ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {item.application.phoneNumber ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {item.budgetYear ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {formatToView(item.updatedAt) ?? '-'}
+                  </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action onDetail={() => showDetail(item.id)} />
                   </TableCell>
@@ -396,7 +429,7 @@ const DataBbp = () => {
           <p className="text-sm text-[#A1A1A1]">View Data Detail Data BBP</p>
         </Modal.Header>
         {isLoadingTuition && <Loading />}
-        <div className="grid grid-cols-3 gap-y-5">
+        <div className="grid grid-cols-3 gap-5">
           <div>
             <p className="text-sm font-bold">Nama Mahasiswa</p>
             <p className="text-base capitalize">{tuition?.application?.beneficiary.name ?? '-'}</p>
@@ -449,10 +482,6 @@ const DataBbp = () => {
           <div>
             <p className="text-sm font-bold">Batch</p>
             <p className="text-base capitalize">{tuition?.application.event.batch ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Universitas</p>
-            <p className="text-base capitalize">{tuition?.application.university.id ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">Universitas</p>

@@ -85,7 +85,7 @@ export const useLogout = () => {
         title: 'Berhasil keluar dengan sukses',
         description: 'Anda telah berhasil keluar.'
       })
-      navigate('/')
+      navigate('/login')
     }
   })
 }

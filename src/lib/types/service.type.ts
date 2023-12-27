@@ -12,9 +12,17 @@ export interface ITuitionAssistanceEvent {
   semester: null | number
   gpa: null | number
   tuitionFee: null | number
+  bank: {
+    id: string
+    name: string
+  }
   bankAccNumber: string | null
+  tuitionAssistance: {
+    assistanceAmount: null | number
+    budgetYear: null | number
+  } | null
   bankAccName: null | string
-  applicationStatus: string | null
+  application_status: string | null
   certificateDestination: string | null
   message: null | string
   dtksStatus: null | string
@@ -65,6 +73,18 @@ export interface IIndigencyCertificate {
   kitchenViewHousePath: null | IPath
   isApplicationOnline: boolean
   note: string
+  indigencyCertificate: {
+    id: string
+    issuedCertificate: {
+      storage: string
+      originalName: string
+      originalPath: string
+    } | null
+    issueDate: string
+    issueYear: string
+    createdAt: string
+    updatedAt: string
+  } | null
   createdAt: string
   updatedAt: string
 }
@@ -91,6 +111,8 @@ export interface IDTKSApplication {
   disabilityStatus: string
   pregnantDate: string
   remoteIndigenousStatus: boolean
+  housePath: null | IPath
+  indentityPath: null | IPath
   tribeName: string
   isApproved: boolean
   createdAt: string

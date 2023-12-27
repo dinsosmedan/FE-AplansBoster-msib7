@@ -11,9 +11,14 @@ import { formatToView } from '@/lib/services/formatDate'
 import Pagination from './../../../components/atoms/Pagination'
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useGetFuelCashAssistance, useGetFuelCashAssistanceDetail, useGetKecamatan, useGetKelurahan } from '@/store/server'
+import {
+  useGetFuelCashAssistance,
+  useGetFuelCashAssistanceDetail,
+  useGetKecamatan,
+  useGetKelurahan
+} from '@/store/server'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { Action, ExportButton, Loading, Modal } from '@/components'
+import { Action, ExportButton, Loading, Modal, SearchSelect } from '@/components'
 import { exportFuelCashAssistanceFn } from '@/api/dayasos.api'
 import { useTitleHeader } from '@/store/client'
 
@@ -52,7 +57,8 @@ const DataBltbbm = () => {
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
-  const { data: fuelCashAssistance, isLoading: isLoadingFuelCashAssistance } = useGetFuelCashAssistanceDetail(selectedId)
+  const { data: fuelCashAssistance, isLoading: isLoadingFuelCashAssistance } =
+    useGetFuelCashAssistanceDetail(selectedId)
 
   const {
     data: fuelCashAssistances,
@@ -78,6 +84,9 @@ const DataBltbbm = () => {
     navigate('/data-penerima/dayasos/bltbbm')
     forms.reset()
   }
+
+  useDisableBodyScroll(isLoading || isLoadingFuelCashAssistance)
+
   if (isLoading && isLoadingFuelCashAssistance) {
     return <Loading />
   }
@@ -132,6 +141,8 @@ const DataBltbbm = () => {
     setIsLoadingExport(false)
   }
 
+  useDisableBodyScroll(isLoading || isLoadingFuelCashAssistance || isFetching || isLoadingExport)
+
   if (isLoading && isLoadingFuelCashAssistance) return <Loading />
 
   return (
@@ -155,80 +166,67 @@ const DataBltbbm = () => {
               />
             </div>
             <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
-            <FormField
-              name="type"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Jenis Anggota" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="anggota">Anggota</SelectItem>
-                        <SelectItem value="pengurus">Pengurus</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="kecamatan"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kecamatan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKecamatan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="kelurahan"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      disabled={areaLevel3 === '' && kecamatan === ''}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kelurahan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {listKelurahan?.map((item, index) => (
-                          <SelectItem key={index} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
+              <FormField
+                name="type"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Pilih Jenis Anggota" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="anggota">Anggota</SelectItem>
+                          <SelectItem value="pengurus">Pengurus</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="kecamatan"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        width="w-[380px]"
+                        placeholder="Pilih Kecamatan"
+                        options={
+                          listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
+                        }
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="kelurahan"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        disabled={!areaLevel3 && !kecamatan}
+                        width="w-[380px]"
+                        placeholder="Pilih Kelurahan"
+                        options={
+                          listKelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []
+                        }
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
             <section className="flex items-center justify-between">
               <div>
                 {fuelCashAssistances?.data?.length !== 0 ? (
@@ -236,10 +234,10 @@ const DataBltbbm = () => {
                 ) : null}
               </div>
               <div className="flex items-center gap-3">
-              <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
-                <HiArrowPath className="text-lg" />
-                <span>Reset</span>
-              </Button>
+                <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
+                  <HiArrowPath className="text-lg" />
+                  <span>Reset</span>
+                </Button>
                 <Button className="gap-2 border-none rounded-lg" type="submit">
                   <HiMagnifyingGlass className="text-lg" />
                   <span>Cari Data</span>
@@ -253,7 +251,7 @@ const DataBltbbm = () => {
           <Table>
             <TableHeader className="bg-[#FFFFFF]">
               <TableRow>
-                <TableHead className="text-[#534D59] font-bold text-[15px]" >No.</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]"> Jenis Keanggotaan</TableHead>
@@ -269,11 +267,15 @@ const DataBltbbm = () => {
                       {(fuelCashAssistances.meta.currentPage - 1) * fuelCashAssistances.meta.perPage + index + 1}
                     </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.beneficiary.identityNumber}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item.beneficiary.identityNumber}
+                    </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC] capitalize" position="center">
                       {item.type}
                     </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.beneficiary.updatedAt) ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {formatToView(item.beneficiary.updatedAt) ?? '-'}
+                    </TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       <Action onDetail={() => showDetail(item.id)} />
                     </TableCell>

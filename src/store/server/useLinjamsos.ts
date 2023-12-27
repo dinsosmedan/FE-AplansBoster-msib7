@@ -310,10 +310,11 @@ export const useGetTuitionAssistanceFn = ({
   idKecamatan,
   idKelurahan,
   year,
-  status
+  status,
+  university
 }: TuitionAssistanceQuery) => {
   return useQuery(
-    ['tuition-assistances', page, idKecamatan, idKelurahan, q, event, year, status],
+    ['tuition-assistances', page, idKecamatan, idKelurahan, q, event, year, status, university],
     async () =>
       await getTuitionAssistanceFn({
         page,
@@ -322,7 +323,8 @@ export const useGetTuitionAssistanceFn = ({
         idKecamatan,
         idKelurahan,
         year,
-        status
+        status,
+        university
       }),
     {
       keepPreviousData: true,

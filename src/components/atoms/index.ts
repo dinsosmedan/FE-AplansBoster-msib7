@@ -13,6 +13,7 @@ import TextEditor from './TextEditor'
 import Status from './Status'
 import Markdown from './Markdown'
 import SearchSelect from './SearchSelect'
+import Berkas from './Berkas'
 
 export {
   Loading,
@@ -29,5 +30,6 @@ export {
   TextEditor,
   Status,
   Markdown,
-  SearchSelect
+  SearchSelect,
+  Berkas
 }

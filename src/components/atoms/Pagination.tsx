@@ -1,6 +1,6 @@
 import { HiChevronDoubleLeft } from 'react-icons/hi2'
 import { DOTS } from '@/hooks/usePagination'
-import { usePagination } from '@/hooks'
+import { formatRibuan, usePagination } from '@/hooks'
 import { Button } from '../ui/button'
 import { cn } from '@/lib/utils'
 
@@ -42,7 +42,7 @@ export default function Pagination(props: PaginationProps) {
       <p className="text-zinc-500">
         Showing <span className="font-bold">{(currentPage - 1) * pageSize + 1}</span> to{' '}
         <span className="font-bold">{currentPage * pageSize > totalCount ? totalCount : currentPage * pageSize}</span>{' '}
-        of <span className="font-bold">{totalCount}</span> results.
+        of <span className="font-bold">{formatRibuan(totalCount)}</span> results.
       </p>
       <div className="flex items-center gap-2">
         <Button variant="outline" size="icon" className="rounded-lg" onClick={onPrevious} disabled={currentPage === 1}>

@@ -1,5 +1,5 @@
-import { HiBell } from 'react-icons/hi2'
-import { Button } from '../ui/button'
+// import { HiBell } from 'react-icons/hi2'
+// import { Button } from '../ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,6 +11,8 @@ import { useGetMe, useLogout } from '@/store/server'
 import { useAlert, useTitleHeader } from '@/store/client'
 import { Breadcrumbs, Loading } from '..'
 import { Skeleton } from '../ui/skeleton'
+import { HiOutlineArrowLeftOnRectangle } from 'react-icons/hi2'
+import { useDisableBodyScroll } from '@/hooks'
 
 export default function Header() {
   const { alert } = useAlert()
@@ -32,6 +34,8 @@ export default function Header() {
     }).then(() => logout())
   }
 
+  useDisableBodyScroll(isLoadingLogout)
+
   return (
     <>
       {isLoadingLogout && <Loading />}
@@ -42,9 +46,9 @@ export default function Header() {
             {isHadBreadcrumbs ? <Breadcrumbs breadcrumbs={breadcrumbs} /> : null}
           </div>
           <div className="flex items-center gap-6">
-            <Button size="icon" variant="ghost" className="rounded-full">
+            {/* <Button size="icon" variant="ghost" className="rounded-full">
               <HiBell className="text-2xl text-primary" />
-            </Button>
+            </Button> */}
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <div className="flex items-center gap-4">
@@ -72,11 +76,15 @@ export default function Header() {
                   )}
                 </div>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="mr-5">
-                <DropdownMenuItem>
-                  <button onClick={handleLogout} className="flex-1 w-full text-left">
-                    <DropdownMenuLabel className="text-primary">Keluar</DropdownMenuLabel>
-                  </button>
+              <DropdownMenuContent className="mt-6 min-w-[200px]">
+                <DropdownMenuItem className="hover:bg-zinc-100">
+                  <DropdownMenuLabel
+                    className="text-primary cursor-pointer flex-1 w-full flex items-center gap-3"
+                    onClick={handleLogout}
+                  >
+                    <HiOutlineArrowLeftOnRectangle className="text-xl" />
+                    <span>Keluar</span>
+                  </DropdownMenuLabel>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
