@@ -31,6 +31,7 @@ function MultiSelect({ options, selected, onChange, className, placeholder, widt
       <Popover open={open} onOpenChange={setOpen} {...props}>
         <PopoverTrigger asChild>
           <Button
+            type="button"
             variant="outline"
             role="combobox"
             aria-expanded={open}
@@ -76,6 +77,7 @@ function MultiSelect({ options, selected, onChange, className, placeholder, widt
               <div className="flex justify-between items-center px-5 py-2.5 bg-[#F9FAFC]" key={index}>
                 <p className="text-sm font-medium">{options.find((option) => option.value === item)?.label}</p>
                 <Button
+                  type="button"
                   variant="ghost"
                   size="icon"
                   className="text-sm hover:text-black"
