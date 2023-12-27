@@ -17,7 +17,7 @@ import {
   useGetAdminById,
   useUpdateAdmin
 } from '@/store/server/useUserManagement'
-import { userValidation, type userFields } from '@/lib/validations/user.validation'
+import { userValidation, type userFields, type userUpdateFields, userUpdateValidation } from '@/lib/validations/user.validation'
 // import { toast } from '@/components/ui/use-toast'
 import { useAlert } from '@/store/client'
 import { useNavigate } from 'react-router-dom'
@@ -43,6 +43,19 @@ const ManajemenAdmin = () => {
     }
   })
 
+  const formsUpdate = useForm<userUpdateFields>({
+    mode: 'onTouched',
+    resolver: yupResolver(userUpdateValidation),
+    defaultValues: {
+      employeeIdentityNumber: '',
+      email: '',
+      name: '',
+      phoneNumber: '',
+      role: '',
+      isActive: ''
+    }
+  })
+
   const formsSearch = useForm<{ q: string }>()
 
   const [userId, setUserId] = React.useState('')
@@ -57,18 +70,17 @@ const ManajemenAdmin = () => {
   const { mutate: updateUser, isLoading: isLoadingUpdate } = useUpdateAdmin()
   const { mutateAsync: deleteUser, isLoading: isLoadingDelete } = useDeleteAdmin()
 
-  const { data: role } = useGetRole()
+  const { data: role } = useGetRole('')
   const { data: admins, isLoading, isFetching, refetch } = useGetAdmin(page, q)
   const { data: user, isSuccess, isLoading: isLoadingUser } = useGetAdminById(userId)
 
   React.useEffect(() => {
     if (isSuccess && user) {
-      forms.reset({
+      formsUpdate.reset({
         employeeIdentityNumber: user?.employeeIdentityNumber,
         email: user?.email,
         name: user?.name,
         phoneNumber: user?.phoneNumber,
-        password: '',
         role: user?.role?.id,
         isActive: user?.isActive
       })
@@ -94,8 +106,13 @@ const ManajemenAdmin = () => {
       ...values,
       isActive: values.isActive ? '1' : '0'
     }
-    if (!userId) {
-      return Register(newData, { onSuccess })
+    Register(newData, { onSuccess })
+  }
+
+  const onSubmitUpdate = async (values: userUpdateFields) => {
+    const newData = {
+      ...values,
+      isActive: values.isActive ? '1' : '0'
     }
     updateUser({ id: userId, fields: newData }, { onSuccess })
   }
@@ -349,12 +366,12 @@ const ManajemenAdmin = () => {
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Perbaharui</h3>
           <p className="text-sm text-[#A1A1A1]">Perbaharui data Admin.</p>
         </Modal.Header>
-        <Form {...forms}>
-          <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-3">
+        <Form {...formsUpdate}>
+          <form onSubmit={formsUpdate.handleSubmit(onSubmitUpdate)} className="flex flex-col gap-3">
             <div className="grid grid-cols-2 gap-3">
               <FormField
                 name="employeeIdentityNumber"
-                control={forms.control}
+                control={formsUpdate.control}
                 render={({ field }) => (
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">NIP</FormLabel>
@@ -366,7 +383,7 @@ const ManajemenAdmin = () => {
               />
               <FormField
                 name="email"
-                control={forms.control}
+                control={formsUpdate.control}
                 render={({ field }) => (
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
@@ -378,7 +395,7 @@ const ManajemenAdmin = () => {
               />
               <FormField
                 name="name"
-                control={forms.control}
+                control={formsUpdate.control}
                 render={({ field }) => (
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
@@ -390,7 +407,7 @@ const ManajemenAdmin = () => {
               />
               <FormField
                 name="phoneNumber"
-                control={forms.control}
+                control={formsUpdate.control}
                 render={({ field }) => (
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">No. HP</FormLabel>
@@ -401,20 +418,8 @@ const ManajemenAdmin = () => {
                 )}
               />
               <FormField
-                name="password"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="font-semibold dark:text-white">Password</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan Password (default)" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
                 name="role"
-                control={forms.control}
+                control={formsUpdate.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Role</FormLabel>
@@ -435,7 +440,7 @@ const ManajemenAdmin = () => {
               />
               <FormField
                 name="isActive"
-                control={forms.control}
+                control={formsUpdate.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Status</FormLabel>
