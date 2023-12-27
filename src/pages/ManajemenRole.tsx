@@ -1,36 +1,40 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Form, FormField } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 
-import { HiBadgeCheck, HiTrash, HiUserAdd, HiX } from 'react-icons/hi'
+import { HiBadgeCheck, HiUserAdd, HiX } from 'react-icons/hi'
 import { useForm } from 'react-hook-form'
 import * as React from 'react'
 
-import { Container, Loading, Modal, MultiSelect, Search } from '@/components'
+import { Action, Container, Loading, Search } from '@/components'
 import useTitle from '@/hooks/useTitle'
 import {
-  useCreateRolePermission,
   useDeleteRolePermission,
   useGetPermission,
   useGetRole
 } from '@/store/server/useUserManagement'
-import { useNavigate } from 'react-router-dom'
-import { type rolePermissionFields } from '@/lib/validations/rolepermission.validation'
 import { useAlert } from '@/store/client'
-import { useCreateParams, useDeleteParams, useDisableBodyScroll, useGetParams } from '@/hooks'
+import { useCreateParams, useDeleteParams, useGetParams } from '@/hooks'
+import CreateManagementRole from '@/components/organisms/managementRole/CreateManagementRole'
 
 const ManajemenRole = () => {
   useTitle('Manajemen Role ')
-  const navigate = useNavigate()
   const { alert } = useAlert()
+  const [roleId, setRoleId] = React.useState('')
 
   const deleteParams = useDeleteParams()
   const createParams = useCreateParams()
   const { q } = useGetParams(['q'])
+  const handleEdit = (id: string) => {
+    setRoleId(id)
+    setIsShow(true)
+  }
 
+  const handleCreate = () => {
+    setRoleId('')
+    setIsShow(true)
+  }
   const [isShow, setIsShow] = React.useState(false)
-  const { mutate: RolePermission, isLoading: isLoadingCreate } = useCreateRolePermission()
   const { data: role, isLoading: isLoadingRole, refetch } = useGetRole(q)
   const { data: permission, isLoading: isLoadingPermission } = useGetPermission()
   const { mutateAsync: deleteRolePermission, isLoading: isLoadingDelete } = useDeleteRolePermission()
@@ -39,14 +43,6 @@ const ManajemenRole = () => {
       value: item.id,
       label: item.name
     })) || []
-
-  const formsCreate = useForm<rolePermissionFields>({
-    mode: 'onTouched',
-    defaultValues: {
-      name: 'Admin',
-      permissions: []
-    }
-  })
 
   const formsSearch = useForm<{ q: string }>()
 
@@ -75,23 +71,7 @@ const ManajemenRole = () => {
     })
   }
 
-  const onSubmit = async (values: rolePermissionFields) => {
-    const validPermissions: string[] = values.permissions.filter((p: any): p is string => p !== undefined)
-    const newData = {
-      ...values,
-      permissions: validPermissions
-    }
-    RolePermission(newData, { onSuccess })
-  }
-
-  const onSuccess = () => {
-    setIsShow(false)
-    navigate('/manajemen-role')
-  }
-
-  useDisableBodyScroll(isLoadingDelete || isLoadingCreate || isLoadingRole || isLoadingPermission)
-
-  if (isLoadingDelete || isLoadingCreate || isLoadingRole || isLoadingPermission) {
+  if (isLoadingDelete || isLoadingRole || isLoadingPermission) {
     return <Loading />
   }
 
@@ -114,7 +94,7 @@ const ManajemenRole = () => {
             />
           </form>
         </Form>
-        <Button className="w-fit py-6 px-4 ml-auto bg-primary" onClick={() => setIsShow(true)}>
+        <Button className="w-fit py-6 px-4 ml-auto bg-primary" onClick={() => handleCreate()}>
           <HiUserAdd className="w-6 h-6 text-white" />
           <p className="text-white font-semibold text-sm pl-2 w-max">Tambah Role</p>
         </Button>
@@ -151,72 +131,14 @@ const ManajemenRole = () => {
                   </TableCell>
                 )
               })}
-              <TableCell className="flex justify-center items-center">
-                <Button
-                  size="icon"
-                  variant="base"
-                  className="bg-red-500 text-white hover:bg-red-300 hover:text-white ms-2"
-                  onClick={() => handleDeleteRolePermission(item.id)}
-                >
-                  <HiTrash className="text-lg" />
-                </Button>
-              </TableCell>
+              <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                  <Action onDelete={() => handleDeleteRolePermission(item.id)} onEdit={() => handleEdit(item.id)}/>
+                </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      <Modal isShow={isShow}>
-        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Tambah Role</h3>
-          <p className="text-sm text-[#A1A1A1]">Masukkan Data Role Baru</p>
-        </Modal.Header>
-        <Form {...formsCreate}>
-          <form onSubmit={formsCreate.handleSubmit(onSubmit)} className="mt-2 flex-1 gap-3 flex flex-col">
-            <FormField
-              name="name"
-              control={formsCreate.control}
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel className="font-semibold dark:text-white">Role</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={formsCreate.control}
-              name="permissions"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel className="font-semibold dark:text-white">Permission</FormLabel>
-                  <MultiSelect
-                    onChange={field.onChange}
-                    selected={(field.value ?? []).filter((v): v is string => v !== undefined)}
-                    options={PERMISSION}
-                    placeholder="Pilih Akses"
-                    className="flex-1"
-                    width="min-w-[580px]"
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Modal.Footer>
-              <Button
-                variant="outline"
-                className="rounded-lg text-primary border-primary"
-                onClick={() => setIsShow(false)}
-              >
-                Cancel
-              </Button>
-              <Button className="rounded-lg" type="submit" loading={isLoadingCreate}>
-                Tambah Data
-              </Button>
-            </Modal.Footer>
-          </form>
-        </Form>
-      </Modal>
+      <CreateManagementRole isShow={isShow} setIsShow={setIsShow} roleId={roleId} />
     </Container>
   )
 }
