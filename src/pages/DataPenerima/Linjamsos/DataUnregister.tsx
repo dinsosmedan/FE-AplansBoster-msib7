@@ -74,7 +74,9 @@ const DataUnregister = () => {
   const { data: unregister, isLoading: isLoadingUnregister } = useGetDetailUnregister(selectedId)
   const { data: user, isLoading: isLoadingGetme } = useGetMe()
 
-  const isEnableDelete = user?.data.role.permissions.some((permission) => permission.slugName === 'delete-update' && permission.isPermitted)
+  const isEnableDelete = user?.data.role.permissions.some(
+    (permission) => permission.slugName === 'delete-update' && permission.isPermitted
+  )
   const showDetail = (id: string) => {
     setSelectedId(id)
     setIsShow(true)
@@ -263,28 +265,34 @@ const DataUnregister = () => {
                       {(unregisters.meta.currentPage - 1) * unregisters.meta.perPage + index + 1}
                     </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.name ?? '-'}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.gender ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item.gender ?? '-'}
+                    </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]" position="center">
                       {getYearFromDate(item.hospitalEntryDate)}
                     </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.deseaseDiagnosis ?? '-'}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{item.age ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item.deseaseDiagnosis ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item.age ?? '-'}
+                    </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]" position="center">
                       {item.hospitalEntryDate ?? '-'}
                     </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {formatToView(item.updatedAt) ?? '-'}
+                    </TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                      {
-                        isEnableDelete ?
-                          <Action
-                            onDelete={async () => await handleDelete(item.id)}
-                            onDetail={() => showDetail(item.id)}
-                            onEdit={() => navigate(`/data-penerima/linjamsos/unregister/${item.id}`)}
-                          /> :
-                          <Action
-                            onDetail={() => showDetail(item.id)}
-                          />
-                      }
+                      {isEnableDelete ? (
+                        <Action
+                          onDelete={async () => await handleDelete(item.id)}
+                          onDetail={() => showDetail(item.id)}
+                          onEdit={() => navigate(`/data-penerima/linjamsos/unregister/${item.id}`)}
+                        />
+                      ) : (
+                        <Action onDetail={() => showDetail(item.id)} />
+                      )}
                     </TableCell>
                   </TableRow>
                 ))

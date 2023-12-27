@@ -192,7 +192,14 @@ export const useGetServiceTypes = () => {
   return useQuery('service-types', async () => await getServiceTypesFn())
 }
 
-export const useGetServiceFunds = ({ page, idKecamatan, idKelurahan, name, assistance, budgetYear }: ServiceFundQuery) => {
+export const useGetServiceFunds = ({
+  page,
+  idKecamatan,
+  idKelurahan,
+  name,
+  assistance,
+  budgetYear
+}: ServiceFundQuery) => {
   return useQuery(
     ['service-funds', page, idKecamatan, idKelurahan, name, assistance, budgetYear],
     async () => await getServiceFundsFn({ page, idKecamatan, idKelurahan, name, assistance, budgetYear }),
@@ -653,10 +660,14 @@ export const useGetVeteranById = (id?: string) => {
 
 /* BANSOS BANTUAN BBM */
 export const useGetFuelCashAssistance = ({ page, member, idKecamatan, idKelurahan, q }: FuelCashQuery) => {
-  return useQuery(['fuel-cash-assistances', page, idKecamatan, idKelurahan, q, member], async () => await getFuelCashAssistanceFn({ page, idKecamatan, idKelurahan, q, member }), {
-    keepPreviousData: true,
-    staleTime: 10 * 60 * 1000
-  })
+  return useQuery(
+    ['fuel-cash-assistances', page, idKecamatan, idKelurahan, q, member],
+    async () => await getFuelCashAssistanceFn({ page, idKecamatan, idKelurahan, q, member }),
+    {
+      keepPreviousData: true,
+      staleTime: 10 * 60 * 1000
+    }
+  )
 }
 export const useDeleteFuelCashAssistance = () => {
   const queryClient = useQueryClient()
@@ -679,11 +690,21 @@ export const useGetFuelCashAssistanceDetail = (id?: string) => {
   })
 }
 /* BANSOS BANTUAN NON TUNAI */
-export const useGetNonCashFoodAssistanceBeneficiary = ({ page, member, idKecamatan, idKelurahan, q }: NonCashFoodAssistanceBeneficiaryQuery) => {
-  return useQuery(['non-cash', page, member, idKecamatan, idKelurahan, q], async () => await getNonCashFoodAssistanceBeneficiary({ page, member, idKecamatan, idKelurahan, q }), {
-    keepPreviousData: true,
-    staleTime: 10 * 60 * 1000
-  })
+export const useGetNonCashFoodAssistanceBeneficiary = ({
+  page,
+  member,
+  idKecamatan,
+  idKelurahan,
+  q
+}: NonCashFoodAssistanceBeneficiaryQuery) => {
+  return useQuery(
+    ['non-cash', page, member, idKecamatan, idKelurahan, q],
+    async () => await getNonCashFoodAssistanceBeneficiary({ page, member, idKecamatan, idKelurahan, q }),
+    {
+      keepPreviousData: true,
+      staleTime: 10 * 60 * 1000
+    }
+  )
 }
 export const useGetNonCashFoodAssistanceDetail = (id?: string) => {
   return useQuery(['non-cash', id], async () => await showNonCashFoodAssitanceFn(id as string), {

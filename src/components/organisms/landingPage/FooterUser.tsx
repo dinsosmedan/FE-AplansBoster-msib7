@@ -49,9 +49,9 @@ export default function FooterUser() {
                   </a>
                 </li>
                 <li>
-                <Link to={'/login'} className="text-white/70 text-sm">
-                  Admin Aplans-Boster
-                </Link>
+                  <Link to={'/login'} className="text-white/70 text-sm">
+                    Admin Aplans-Boster
+                  </Link>
                 </li>
               </ul>
             </div>

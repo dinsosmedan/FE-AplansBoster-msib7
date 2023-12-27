@@ -66,7 +66,9 @@ const DataRumahIbadah = () => {
   })
   const { data: user, isLoading: isLoadingGetme } = useGetMe()
 
-  const isEnableDelete = user?.data.role.permissions.some((permission) => permission.slugName === 'delete-update' && permission.isPermitted)
+  const isEnableDelete = user?.data.role.permissions.some(
+    (permission) => permission.slugName === 'delete-update' && permission.isPermitted
+  )
   useDisableBodyScroll(isFetching)
 
   const showDetail = (id: string) => {
@@ -307,17 +309,15 @@ const DataRumahIbadah = () => {
                     {item?.updatedAt ? formatToView(item?.updatedAt) : '-'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    {
-                      isEnableDelete ?
-                        <Action
-                          onDelete={() => handleDelete(item?.id)}
-                          onDetail={() => showDetail(item?.id)}
-                          onEdit={() => navigate(`/data-penerima/dayasos/rumah-ibadah/create/${item?.id}`)}
-                        /> :
-                        <Action
-                          onDetail={() => showDetail(item?.id)}
-                        />
-                    }
+                    {isEnableDelete ? (
+                      <Action
+                        onDelete={() => handleDelete(item?.id)}
+                        onDetail={() => showDetail(item?.id)}
+                        onEdit={() => navigate(`/data-penerima/dayasos/rumah-ibadah/create/${item?.id}`)}
+                      />
+                    ) : (
+                      <Action onDetail={() => showDetail(item?.id)} />
+                    )}
                   </TableCell>
                 </TableRow>
               ))

@@ -10,8 +10,6 @@ import { useGetIndigencyCertificateEventById, useUpdateIndigencyStatus } from '@
 import { Berkas, DatePicker } from '@/components'
 import DropZone, { type FileWithPreview } from '@/components/atoms/DropZone'
 import * as React from 'react'
-import { formatStringToDate } from '@/lib/services/formatDate'
-// import { formatStringToDate } from '@/lib/services/formatDate'
 
 interface ModalEditPengajuanBBPProps {
   isShow: boolean

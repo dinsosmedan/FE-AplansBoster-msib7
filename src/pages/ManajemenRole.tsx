@@ -8,11 +8,7 @@ import * as React from 'react'
 
 import { Action, Container, Loading, Search } from '@/components'
 import useTitle from '@/hooks/useTitle'
-import {
-  useDeleteRolePermission,
-  useGetPermission,
-  useGetRole
-} from '@/store/server/useUserManagement'
+import { useDeleteRolePermission, useGetPermission, useGetRole } from '@/store/server/useUserManagement'
 import { useAlert } from '@/store/client'
 import { useCreateParams, useDeleteParams, useGetParams } from '@/hooks'
 import CreateManagementRole from '@/components/organisms/managementRole/CreateManagementRole'
@@ -132,8 +128,8 @@ const ManajemenRole = () => {
                 )
               })}
               <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                  <Action onDelete={() => handleDeleteRolePermission(item.id)} onEdit={() => handleEdit(item.id)}/>
-                </TableCell>
+                <Action onDelete={() => handleDeleteRolePermission(item.id)} onEdit={() => handleEdit(item.id)} />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

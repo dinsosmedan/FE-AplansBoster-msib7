@@ -44,7 +44,11 @@ const DataPenerimaLinjamsos = () => {
           subTitle={'Indigency Certificate'}
           href={'/data-penerima/linjamsos/sktm'}
         />
-        <CardSub title={'Unregister'} subTitle={'Unregister Certificate'} href={'/data-penerima/linjamsos/unregister'} />
+        <CardSub
+          title={'Unregister'}
+          subTitle={'Unregister Certificate'}
+          href={'/data-penerima/linjamsos/unregister'}
+        />
       </div>
     </Container>
   )

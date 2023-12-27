@@ -51,7 +51,9 @@ const DataDjp = () => {
   const [isLoadingExport, setIsLoadingExport] = React.useState(false)
   const { data: user, isLoading: isLoadingGetme } = useGetMe()
 
-  const isEnableDelete = user?.data.role.permissions.some((permission) => permission.slugName === 'delete-update' && permission.isPermitted)
+  const isEnableDelete = user?.data.role.permissions.some(
+    (permission) => permission.slugName === 'delete-update' && permission.isPermitted
+  )
 
   const createParams = useCreateParams()
   const {
@@ -340,17 +342,15 @@ const DataDjp = () => {
                     {formatToView(item.updatedAt) ?? '-'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    {
-                      isEnableDelete ?
-                        <Action
-                          onDetail={() => showDetail(item.id)}
-                          onDelete={() => handleDelete(item.id)}
-                          onEdit={() => navigate(`/data-penerima/dayasos/djpm/create/${item.id}`)}
-                        /> :
-                        <Action
-                          onDetail={() => showDetail(item.id)}
-                        />
-                    }
+                    {isEnableDelete ? (
+                      <Action
+                        onDetail={() => showDetail(item.id)}
+                        onDelete={() => handleDelete(item.id)}
+                        onEdit={() => navigate(`/data-penerima/dayasos/djpm/create/${item.id}`)}
+                      />
+                    ) : (
+                      <Action onDetail={() => showDetail(item.id)} />
+                    )}
                   </TableCell>
                 </TableRow>
               ))

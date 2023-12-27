@@ -1,16 +1,8 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { HiAcademicCap, HiBuildingLibrary } from 'react-icons/hi2'
-import CardLandingPage from '../../../components/organisms/landingPage/CardLandingPage'
-import { Loading, PengajuanSktm } from '@/components'
-import { useGetIndigencyCertificateApplicationPublic } from '@/store/server'
+import { PengajuanSktm, CardLandingPage } from '@/components'
 
 export default function UserSktm() {
-  const { data, isLoading } = useGetIndigencyCertificateApplicationPublic()
-
-  if (isLoading) return <Loading />
-
-  console.log(data)
-
   return (
     <section className="bg-[#F9F9F9] lg:px-10 py-[38px] pb-[200px]">
       <Tabs defaultValue="open">

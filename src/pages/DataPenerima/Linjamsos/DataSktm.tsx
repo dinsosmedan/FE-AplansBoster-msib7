@@ -89,7 +89,9 @@ const DataSktm = () => {
   })
   const { data: user, isLoading: isLoadingGetme } = useGetMe()
 
-  const isEnableDelete = user?.data.role.permissions.some((permission) => permission.slugName === 'delete-update' && permission.isPermitted)
+  const isEnableDelete = user?.data.role.permissions.some(
+    (permission) => permission.slugName === 'delete-update' && permission.isPermitted
+  )
   const { mutateAsync: deleteSktm } = useDeleteSktm()
   const handleDelete = async (id: string) => {
     await alert({
@@ -165,7 +167,7 @@ const DataSktm = () => {
     }
     setIsLoadingExport(false)
   }
-  if (isLoading && isLoadingIndigencyCertificate || isLoadingGetme) {
+  if ((isLoading && isLoadingIndigencyCertificate) || isLoadingGetme) {
     return <Loading />
   }
   function ubahFormatDateTime(dateTimeString: string): string {
@@ -347,11 +349,11 @@ const DataSktm = () => {
                     {formatToView(item.updatedAt) ?? '-'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    {
-                      isEnableDelete ?
-                        <Action onDelete={async () => await handleDelete(item.id)} onDetail={() => showDetail(item.id)} /> :
-                        <Action onDetail={() => showDetail(item.id)} />
-                    }
+                    {isEnableDelete ? (
+                      <Action onDelete={async () => await handleDelete(item.id)} onDetail={() => showDetail(item.id)} />
+                    ) : (
+                      <Action onDetail={() => showDetail(item.id)} />
+                    )}
                   </TableCell>
                 </TableRow>
               ))

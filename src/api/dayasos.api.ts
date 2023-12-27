@@ -185,13 +185,29 @@ export const getBusinessGroupFn = async ({
   )
   return response.data
 }
-export const getFuelCashAssistanceFn = async ({ page, q, member, idKecamatan, idKelurahan }: FuelCashQuery): Promise<IFuelCashAssistances> => {
-  const response = await api.get(`/fuel-cash-assistance?q=${q}&type=${member}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&page=${page}&limit=30`)
+export const getFuelCashAssistanceFn = async ({
+  page,
+  q,
+  member,
+  idKecamatan,
+  idKelurahan
+}: FuelCashQuery): Promise<IFuelCashAssistances> => {
+  const response = await api.get(
+    `/fuel-cash-assistance?q=${q}&type=${member}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&page=${page}&limit=30`
+  )
   return response.data
 }
 
-export const getNonCashFoodAssistanceBeneficiary = async ({ page, q, member, idKecamatan, idKelurahan }: NonCashFoodAssistanceBeneficiaryQuery): Promise<INonCashFoodAssistanceBeneficiarys> => {
-  const response = await api.get(`/non-cash-food-assistance?q=${q}&type=${member}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&page=${page}&limit=30`)
+export const getNonCashFoodAssistanceBeneficiary = async ({
+  page,
+  q,
+  member,
+  idKecamatan,
+  idKelurahan
+}: NonCashFoodAssistanceBeneficiaryQuery): Promise<INonCashFoodAssistanceBeneficiarys> => {
+  const response = await api.get(
+    `/non-cash-food-assistance?q=${q}&type=${member}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&page=${page}&limit=30`
+  )
   return response.data
 }
 
