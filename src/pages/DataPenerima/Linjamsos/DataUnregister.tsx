@@ -9,7 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Pagination from './../../../components/atoms/Pagination'
 import { useNavigate } from 'react-router-dom'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
-import { useDeleteUnregister, useGetDetailUnregister, useUnregisters } from '@/store/server'
+import { useDeleteUnregister, useGetDetailUnregister, useGetMe, useUnregisters } from '@/store/server'
 import { Action, ExportButton, Loading, Modal } from '@/components'
 import { exportUnregisterFn } from '@/api/linjamsos.api'
 import { useAlert, useTitleHeader } from '@/store/client'
@@ -72,7 +72,9 @@ const DataUnregister = () => {
     q
   })
   const { data: unregister, isLoading: isLoadingUnregister } = useGetDetailUnregister(selectedId)
+  const { data: user, isLoading: isLoadingGetme } = useGetMe()
 
+  const isEnableDelete = user?.data.role.permissions.some((permission) => permission.slugName === 'delete-update' && permission.isPermitted)
   const showDetail = (id: string) => {
     setSelectedId(id)
     setIsShow(true)
@@ -147,7 +149,7 @@ const DataUnregister = () => {
     }
     setIsLoadingExport(false)
   }
-  if (isLoading) {
+  if (isLoading || isLoadingGetme) {
     return <Loading />
   }
   return (
@@ -272,11 +274,17 @@ const DataUnregister = () => {
                     </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                      <Action
-                        onDelete={async () => await handleDelete(item.id)}
-                        onDetail={() => showDetail(item.id)}
-                        onEdit={() => navigate(`/data-penerima/linjamsos/unregister/${item.id}`)}
-                      />
+                      {
+                        isEnableDelete ?
+                          <Action
+                            onDelete={async () => await handleDelete(item.id)}
+                            onDetail={() => showDetail(item.id)}
+                            onEdit={() => navigate(`/data-penerima/linjamsos/unregister/${item.id}`)}
+                          /> :
+                          <Action
+                            onDetail={() => showDetail(item.id)}
+                          />
+                      }
                     </TableCell>
                   </TableRow>
                 ))

@@ -15,7 +15,8 @@ import {
   useGetCommunityGroup,
   useGetCommunityGroups,
   useGetKecamatan,
-  useGetKelurahan
+  useGetKelurahan,
+  useGetMe
 } from '@/store/server'
 import { useAlert, useTitleHeader } from '@/store/client'
 import { exportCommunityGroupFn } from '@/api/dayasos.api'
@@ -89,7 +90,9 @@ const DataPokmas = () => {
     status,
     applicationYear
   })
+  const { data: user, isLoading: isLoadingGetme } = useGetMe()
 
+  const isEnableDelete = user?.data.role.permissions.some((permission) => permission.slugName === 'delete-update' && permission.isPermitted)
   useDisableBodyScroll(isFetching)
 
   const showDetail = (id: string) => {
@@ -175,7 +178,7 @@ const DataPokmas = () => {
     }
   }
 
-  if (isLoading) return <Loading />
+  if (isLoading || isLoadingGetme) return <Loading />
   return (
     <div>
       <Container>
@@ -359,11 +362,16 @@ const DataPokmas = () => {
                       {formatToView(item?.updatedAt) ?? '-'}
                     </TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                      <Action
-                        onDelete={() => handleDelete(item?.id)}
-                        onDetail={() => showDetail(item?.id)}
-                        onEdit={() => navigate(`/data-penerima/dayasos/pokmas/create/${item?.id}`)}
-                      />
+                      {
+                        isEnableDelete ?
+                          <Action
+                            onDelete={() => handleDelete(item?.id)}
+                            onDetail={() => showDetail(item?.id)}
+                            onEdit={() => navigate(`/data-penerima/dayasos/pokmas/create/${item?.id}`)}
+                          /> : <Action
+                            onDetail={() => showDetail(item?.id)}
+                          />
+                      }
                     </TableCell>
                   </TableRow>
                 ))
