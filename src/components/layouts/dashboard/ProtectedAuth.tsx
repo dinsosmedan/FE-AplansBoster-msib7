@@ -9,7 +9,6 @@ interface ProtectedAuthProps {
 
 export default function ProtectedAuth({ children }: ProtectedAuthProps) {
   const location = useLocation()
-  // const token = useToken((state) => state.token)
   const auth = useAuth((state) => ({
     token: state.token,
     user: state.user
