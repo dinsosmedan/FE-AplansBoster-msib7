@@ -186,7 +186,7 @@ const DataUnregister = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Nomor Surat" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Nomor Surat Dinas Sosial" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -197,7 +197,12 @@ const DataUnregister = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Bulan" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="number"
+                        placeholder="Masukkan Bulan e.g. 5 atau 05"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -209,7 +214,12 @@ const DataUnregister = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Tahun" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="number"
+                        placeholder="Masukkan Tahun e.g. 2023"
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -253,6 +263,8 @@ const DataUnregister = () => {
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Diagnosa Penyakit</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Umur</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Masuk Rumah Sakit</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Surat Dinas Sosial</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Surat Dinas Sosial</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
               </TableRow>
@@ -269,16 +281,22 @@ const DataUnregister = () => {
                       {item.gender ?? '-'}
                     </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                      {getYearFromDate(item.hospitalEntryDate)}
+                      {getYearFromDate(item.dinsosLetterDate ?? '') ?? '-'}
                     </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                      {item.deseaseDiagnosis ?? '-'}
+                      {item.diseaseDiagnosis ?? '-'}
                     </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]" position="center">
                       {item.age ?? '-'}
                     </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                      {item.hospitalEntryDate ?? '-'}
+                      {formatToView(item.hospitalEntryDate) ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item.dinsosLetterNumber ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {formatToView(item.dinsosLetterDate) ?? '-'}
                     </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]" position="center">
                       {formatToView(item.updatedAt) ?? '-'}
@@ -344,7 +362,7 @@ const DataUnregister = () => {
           </div>
           <div>
             <p className="text-sm font-bold">Diagnosa Penyakit</p>
-            <p className="text-base capitalize">{unregister?.deseaseDiagnosis ?? '-'}</p>
+            <p className="text-base capitalize">{unregister?.diseaseDiagnosis ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">Tanggal Masuk Rumah Sakit</p>

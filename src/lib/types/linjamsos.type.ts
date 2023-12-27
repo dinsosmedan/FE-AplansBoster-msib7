@@ -29,7 +29,7 @@ export interface IUnregisterDetail {
   gender: string
   dinsosLetterNumber: string
   dinsosLetterDate: string
-  deseaseDiagnosis: string
+  diseaseDiagnosis: string
   hospitalEntryDate: string
   hospitalLetterNumber: string
   hospitalLetterDate: string
