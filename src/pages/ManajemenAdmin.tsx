@@ -22,7 +22,7 @@ import { userValidation, type userFields } from '@/lib/validations/user.validati
 import { useAlert } from '@/store/client'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useCreateParams, useDeleteParams, useGetParams } from '@/hooks'
+import { useCreateParams, useDeleteParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 
 const ManajemenAdmin = () => {
   useTitle('Manajemen Admin')
@@ -124,6 +124,8 @@ const ManajemenAdmin = () => {
       await refetch()
     }
   }
+
+  useDisableBodyScroll(isFetching || isLoading || isLoadingDelete)
 
   return (
     <Container>

@@ -31,7 +31,8 @@ export default function ModalEditPengajuanBBP({ isShow, setIsShow, tuitionAssist
     if (data) {
       forms.setValue('applicationStatus', data?.application_status as string)
       forms.setValue('message', data?.message ?? '')
-      // forms.setValue('assistanceAmount', data.)
+      forms.setValue('assistanceAmount', data.tuitionAssistance?.assistanceAmount as number)
+      forms.setValue('budgetYear', data.tuitionAssistance?.budgetYear as number)
     }
   }, [data])
 
@@ -48,8 +49,6 @@ export default function ModalEditPengajuanBBP({ isShow, setIsShow, tuitionAssist
       }
     })
   }
-
-  console.log(data)
 
   return (
     <Modal isShow={isShow} className="md:max-w-3xl max-h-[calc(100vh-50px)] overflow-y-auto" isLoading={isLoading}>
@@ -144,6 +143,7 @@ export default function ModalEditPengajuanBBP({ isShow, setIsShow, tuitionAssist
 
           <Modal.Footer className="mt-4">
             <Button
+              type="button"
               variant="cancel"
               className="rounded-lg text-[#898989] bg-[#E4E4E4]"
               onClick={() => setIsShow(false)}

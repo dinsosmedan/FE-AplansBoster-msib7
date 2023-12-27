@@ -107,9 +107,6 @@ const ChartPokmas = () => {
 const ChartKube = () => {
   const { data: BusinessGroup, isLoading } = useBusinessGroupAssistance()
 
-  // if (isLoading) return <Loading />
-
-  // return
   const data = BusinessGroup ? BusinessGroup.map((valdata: any) => valdata.count) : []
   const label = BusinessGroup ? BusinessGroup.map((val: any) => val.budgetYear) : []
   const color = ['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']
@@ -136,13 +133,8 @@ const ChartKube = () => {
 const ChartRi = () => {
   const { data: WorshipPlace, isLoading } = useDataWorshipPlace()
 
-  // if (isLoading) return <Loading />
-
-  // return
   const data = WorshipPlace ? WorshipPlace.map((valdata: any) => valdata.count) : []
   const type = WorshipPlace ? WorshipPlace.map((val: any) => val.type) : []
-  // const color = ['#F94144', '#F3722C', '#F9C74F', '#90BE6D', '#F8961E']
-  // const title = ['KUBE', 'Perkembangan Data KUBE']
 
   return (
     <>

@@ -227,10 +227,18 @@ const DataHibah = () => {
                   <TableCell className="bg-[#F9FAFC]">{item.chairmanName ?? '-'}</TableCell>
                   <TableCell className="bg-[#F9FAFC]">{item.chairmanIdentityNumber ?? '-'}</TableCell>
                   <TableCell className="bg-[#F9FAFC]">{item.address.fullAddress ?? '-'}</TableCell>
-                  <TableCell className="bg-[#F9FAFC]" position="center">{item.contactNumber ?? '-'}</TableCell>
-                  <TableCell className="bg-[#F9FAFC]" position="center">{item.aprrovedAmount ?? '-'}</TableCell>
-                  <TableCell className="bg-[#F9FAFC]" position="center">{item.budgetYear ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]" position="center">
+                    {item.contactNumber ?? '-'}
+                  </TableCell>
+                  <TableCell className="bg-[#F9FAFC]" position="center">
+                    {item.aprrovedAmount ?? '-'}
+                  </TableCell>
+                  <TableCell className="bg-[#F9FAFC]" position="center">
+                    {item.budgetYear ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {formatToView(item.updatedAt) ?? '-'}
+                  </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action
                       onDelete={() => handleDelete(item.id)}

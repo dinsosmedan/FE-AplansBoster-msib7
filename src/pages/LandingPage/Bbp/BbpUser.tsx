@@ -4,13 +4,13 @@ import CardLandingPage from '../../../components/organisms/landingPage/CardLandi
 import { Button } from '@/components/ui/button'
 import { Link, useParams } from 'react-router-dom'
 import { useGetPublicEventTuition, useGetTuitionApplicationPublic } from '@/store/server'
-import { Loading, Markdown, NoData } from '@/components'
+import { Loading, Markdown } from '@/components'
 import { useDisableBodyScroll } from '@/hooks'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { type IPublicEventTuition } from '@/lib/types/public.type'
 import { type IApplication } from '@/lib/types/linjamsos.type'
-import { BgEmpty } from '@/assets'
+import { formatToView } from '@/lib/services/formatDate'
 
 export default function BbpUser() {
   const { id } = useParams<{ id: string }>()
@@ -24,13 +24,13 @@ export default function BbpUser() {
 
   React.useEffect(() => {
     if (id) {
-      setDetails(data?.find((item) => item.id === id) as IPublicEventTuition)
+      setDetails((data?.find((item) => item.id === id) as IPublicEventTuition) ?? ({} as IPublicEventTuition))
     }
   }, [isSuccess, id])
 
   React.useEffect(() => {
     if (id) {
-      setSubmissionProcessDetail(submissionProcess?.find((item) => item.event.id === id) ?? ({} as IApplication))
+      setSubmissionProcessDetail(submissionProcess?.find((item) => item.id === id) ?? ({} as IApplication))
     }
   }, [isSuccess, id])
 
@@ -78,7 +78,7 @@ export default function BbpUser() {
               />
             ))}
           </div>
-          {Object.keys(details).length !== 0 ? (
+          {Object.keys(details)?.length !== 0 ? (
             <section className="flex flex-col gap-8 w-[95%] mt-5 lg:mt-0 lg:justify-start justify-center">
               <div className="bg-white rounded-lg md:px-10 px-7 md:py-14 py-9 h-fit shadow">
                 <p className="font-semibold text-xl">Informasi Tentang Beasiswa</p>
@@ -95,11 +95,6 @@ export default function BbpUser() {
                     url={details?.requiredDocuments?.biodata?.url as string}
                     fileName={details?.requiredDocuments?.biodata?.originalName as string}
                   />
-                  {/* <FileDownload
-                  title="Template Surat Permohonan Ditujukan Kepada Bapak Wali Kota Medan Cq. Kepala Dinas Sosial Kota Medan"
-                  url={details?.requiredDocuments?.biodata?.url as string}
-                  fileName={details?.requiredDocuments?.biodata?.originalName as string}
-                /> */}
                   <FileDownload
                     title="Template Surat Pernyataan Tidak Menerima Beasiswa/Bantuan Biaya Pendidikan Dari Sumber Lain"
                     url={details?.requiredDocuments?.nonReceiptOfScholarshipLetter?.url as string}
@@ -120,20 +115,32 @@ export default function BbpUser() {
             </section>
           ) : null}
         </TabsContent>
-        <TabsContent value="request" className="flex flex-row gap-10">
-          {Object.keys(submissionProcessDetail).length !== 0 ? (
-            <>
-              <div className="w-[40%] h-[349px] bg-white rounded-lg bg-[url('@/assets/images/line-curve.svg')] bg-no-repeat">
-                <div className="py-14 px-7">
-                  <HiAcademicCap className="w-[70px] h-[70px] text-primary" />
-                  <p className="text-xl  font-semibold py-[26px]">{submissionProcessDetail?.event?.batch}</p>
-                  <Button className="disabled:bg-black w-full h-[60px]" disabled>
-                    <p className="text-xl text-white capitalize">{submissionProcessDetail?.application_status}</p>
-                  </Button>
-                </div>
-              </div>
-              <div className="bg-white w-[925px]">
-                <div className="pt-24 px-[90px] flex flex-row">
+        <TabsContent
+          value="request"
+          className="lg:flex lg:flex-row lg:justify-between grid place-items-center lg:place-items-start bg-[#F9F9F9] gap-10"
+        >
+          <div className="flex gap-8 lg:flex-col lg:justify-start justify-center">
+            {submissionProcess?.map((item, index) => (
+              <CardLandingPage
+                key={index}
+                className={cn(
+                  'lg:w-[400px] w-[90%] shadow-sm',
+                  item.id === id && 'border-2 border-primary bg-[#F9F4F5]'
+                )}
+                title={item?.event.batch}
+                desc={`${formatToView(item?.updatedAt)}`}
+                btnText={item?.application_status}
+                icon={HiAcademicCap}
+                isHadButtonIcon={false}
+                href={`/user/bbp/${item.id}`}
+                disabled={item.application_status !== 'revision'}
+              />
+            ))}
+          </div>
+          {Object.keys(submissionProcessDetail).length !== 0 && (
+            <section className="flex flex-col gap-8 w-[95%] mt-5 lg:mt-0 lg:justify-start justify-center">
+              <div className="bg-white py-24">
+                <div className="px-[90px] flex flex-row justify-center">
                   <div
                     className={cn(
                       'border-2 border-primary rounded-full w-[70px] h-[70px] flex items-center justify-center',
@@ -203,14 +210,7 @@ export default function BbpUser() {
                   </div>
                 </div>
               </div>
-            </>
-          ) : (
-            <NoData
-              title="Tidak Ada Proses Pengajuan"
-              desc="Mohon Maaf, Anda Belum Melakukan Pengajuan"
-              image={BgEmpty}
-              className="w-full"
-            />
+            </section>
           )}
         </TabsContent>
       </Tabs>

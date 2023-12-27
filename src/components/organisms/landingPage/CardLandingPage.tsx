@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { type IconType } from 'react-icons'
 import { Button } from '../../ui/button'
 
-interface CardLandingPageProps {
+interface CardLandingPageProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   curvePosition?: 'left' | 'right'
   title: string
   desc?: string
@@ -27,7 +27,8 @@ export default function CardLandingPage({
   className,
   isHadButtonIcon = true,
   quota,
-  filledQuota
+  filledQuota,
+  ...rest
 }: CardLandingPageProps) {
   const navigate = useNavigate()
   return (
@@ -56,8 +57,8 @@ export default function CardLandingPage({
           className="font-medium text-sm text-[#666666] prose max-w-none truncate-2 text-base"
         />
       )}
-      <Button className="gap-3 text-white md:py-7 py-6">
-        <span className="md:text-[17px]">{btnText}</span>
+      <Button className="gap-3 text-white md:py-7 py-6" {...rest}>
+        <span className="md:text-[17px] capitalize">{btnText}</span>
         {isHadButtonIcon && <HiArrowRightCircle className="md:text-[28px]" />}
       </Button>
     </article>

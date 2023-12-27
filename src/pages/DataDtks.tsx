@@ -100,9 +100,7 @@ export default function DataDtks() {
     navigate('/data-dtks')
   }
 
-  if (isLoading) {
-    return <Loading />
-  }
+  if (isLoading) return <Loading />
 
   return (
     <Container className="px-8">

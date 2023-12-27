@@ -83,7 +83,7 @@ const DataDjp = () => {
     budgetYear
   })
 
-  useDisableBodyScroll(isFetching)
+  useDisableBodyScroll(isFetching || isLoadingExport || isLoadingServiceFund || isLoading)
 
   const handleReset = () => {
     navigate('/data-penerima/dayasos/djpm')

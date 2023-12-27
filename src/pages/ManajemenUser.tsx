@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { useForm } from 'react-hook-form'
 import * as React from 'react'
-import { HiOutlinePencilAlt, HiTrash, HiUserAdd } from 'react-icons/hi'
+import { HiOutlinePencilAlt, HiTrash } from 'react-icons/hi'
 import useTitle from '@/hooks/useTitle'
 import {
   useCreateUser,
@@ -16,7 +16,7 @@ import {
 import { userValidation, type userFields } from '@/lib/validations/user.validation'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useAlert } from '@/store/client'
-import { useCreateParams, useDeleteParams, useGetParams } from '@/hooks'
+import { useCreateParams, useDeleteParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -91,11 +91,6 @@ const ManajemenUser = () => {
     setIsShow(true)
   }
 
-  const handleCreate = () => {
-    setUserId('')
-    setIsShow(true)
-  }
-
   const onSubmit = async (data: userFields) => {
     if (!data.password) delete data.password
     if (!data.role) delete data.role
@@ -119,12 +114,14 @@ const ManajemenUser = () => {
     }
   }
 
+  useDisableBodyScroll(isFetching || isLoading || isLoadingDelete)
+
   return (
     <Container>
       {(isFetching || isLoading || isLoadingDelete) && <Loading />}
       <div className="flex items-center mb-[18px]">
         <Form {...formsSearch}>
-          <form onSubmit={formsSearch.handleSubmit(handleSearch)} className="mb-5">
+          <form onSubmit={formsSearch.handleSubmit(handleSearch)}>
             <FormField
               control={formsSearch.control}
               name="q"
@@ -139,10 +136,6 @@ const ManajemenUser = () => {
             />
           </form>
         </Form>
-        <Button className="w-fit py-6 px-4 ml-auto bg-primary" onClick={handleCreate}>
-          <HiUserAdd className="w-6 h-6 text-white" />
-          <p className="text-white font-semibold text-sm pl-2 w-max">Tambah User</p>
-        </Button>
       </div>
       <Table>
         <TableHeader className="bg-primary">

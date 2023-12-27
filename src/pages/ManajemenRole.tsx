@@ -18,7 +18,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { type rolePermissionFields } from '@/lib/validations/rolepermission.validation'
 import { useAlert } from '@/store/client'
-import { useCreateParams, useDeleteParams, useGetParams } from '@/hooks'
+import { useCreateParams, useDeleteParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 
 const ManajemenRole = () => {
   useTitle('Manajemen Role ')
@@ -88,6 +88,8 @@ const ManajemenRole = () => {
     setIsShow(false)
     navigate('/manajemen-role')
   }
+
+  useDisableBodyScroll(isLoadingDelete || isLoadingCreate || isLoadingRole || isLoadingPermission)
 
   if (isLoadingDelete || isLoadingCreate || isLoadingRole || isLoadingPermission) {
     return <Loading />
