@@ -57,7 +57,7 @@ const ManajemenAdmin = () => {
   const { mutate: updateUser, isLoading: isLoadingUpdate } = useUpdateAdmin()
   const { mutateAsync: deleteUser, isLoading: isLoadingDelete } = useDeleteAdmin()
 
-  const { data: role } = useGetRole()
+  const { data: role } = useGetRole('')
   const { data: admins, isLoading, isFetching, refetch } = useGetAdmin(page, q)
   const { data: user, isSuccess, isLoading: isLoadingUser } = useGetAdminById(userId)
 
