@@ -66,6 +66,7 @@ import SktmUnregister from './LandingPage/Sktm/SktmUnregister'
 import SktmRegister from './LandingPage/Sktm/SktmRegister'
 import SktmReligious from './LandingPage/Sktm/SktmUnregisterReligious'
 import SktmUnregisterReligious from './LandingPage/Sktm/SktmRegisterReligious'
+import Forbidden from './Forbidden'
 
 export {
   Home,
@@ -135,5 +136,6 @@ export {
   DtksSchool,
   NonDtksSchool,
   DtksCourts,
-  NonDtksCourts
+  NonDtksCourts,
+  Forbidden
 }

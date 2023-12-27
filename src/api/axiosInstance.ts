@@ -32,6 +32,11 @@ api.interceptors.response.use(
       useAuth.getState().removeToken()
       window.location.href = '/login'
     }
+
+    if (error.response.status === 403) {
+      window.location.href = '/permission-denied'
+    }
+
     return await Promise.reject(error)
   }
 )
