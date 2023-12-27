@@ -10,6 +10,7 @@ import { useGetIndigencyCertificateEventById, useUpdateIndigencyStatus } from '@
 import { Berkas, DatePicker } from '@/components'
 import DropZone, { type FileWithPreview } from '@/components/atoms/DropZone'
 import * as React from 'react'
+import { formatStringToDate } from '@/lib/services/formatDate'
 // import { formatStringToDate } from '@/lib/services/formatDate'
 
 interface ModalEditPengajuanBBPProps {
@@ -20,7 +21,7 @@ interface ModalEditPengajuanBBPProps {
 
 interface FormValues extends updateTuitionAssistanceServiceFields {
   issueDate?: Date
-  issuedCertificate?: File[]
+  issuedCertificate?: File[] | string[]
 }
 
 export default function ModalEditPengajuanSKTM({ isShow, setIsShow, indigencyId }: ModalEditPengajuanBBPProps) {
@@ -33,17 +34,21 @@ export default function ModalEditPengajuanSKTM({ isShow, setIsShow, indigencyId 
   React.useEffect(() => {
     if (isSuccess) {
       forms.setValue('applicationStatus', data?.applicationStatus)
-      // forms.setValue('issuedCertificate', data?.)
-      // forms.setValue('issueDate', formatStringToDate(data as string))
+      forms.setValue('message', data?.note ?? '')
+      if (data.indigencyCertificate?.issueDate) {
+        forms.setValue('issueDate', new Date(data?.indigencyCertificate?.issueDate))
+      }
+
+      if (data.indigencyCertificate?.issuedCertificate?.originalName) {
+        forms.setValue('issuedCertificate', [data.indigencyCertificate?.issuedCertificate?.originalName])
+      }
     }
   }, [isSuccess])
-
-  console.log(data)
 
   const onSubmit = async (values: FormValues) => {
     const newData = {
       id: indigencyId as string,
-      fields: values
+      fields: { ...values, issuedCertificate: values.issuedCertificate as File[] }
     }
 
     update(newData, {

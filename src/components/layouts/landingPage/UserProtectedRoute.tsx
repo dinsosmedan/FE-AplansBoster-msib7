@@ -4,7 +4,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
 export default function UserProtectedRoute() {
   const location = useLocation()
-  // const token = useUserPublicToken((state) => state.token)
+
   const auth = useAuth((state) => ({
     token: state.token,
     user: state.user

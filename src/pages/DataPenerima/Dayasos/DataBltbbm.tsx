@@ -84,6 +84,9 @@ const DataBltbbm = () => {
     navigate('/data-penerima/dayasos/bltbbm')
     forms.reset()
   }
+
+  useDisableBodyScroll(isLoading || isLoadingFuelCashAssistance)
+
   if (isLoading && isLoadingFuelCashAssistance) {
     return <Loading />
   }
@@ -137,6 +140,8 @@ const DataBltbbm = () => {
     }
     setIsLoadingExport(false)
   }
+
+  useDisableBodyScroll(isLoading || isLoadingFuelCashAssistance || isFetching || isLoadingExport)
 
   if (isLoading && isLoadingFuelCashAssistance) return <Loading />
 

@@ -17,6 +17,10 @@ export interface ITuitionAssistanceEvent {
     name: string
   }
   bankAccNumber: string | null
+  tuitionAssistance: {
+    assistanceAmount: null | number
+    budgetYear: null | number
+  } | null
   bankAccName: null | string
   application_status: string | null
   certificateDestination: string | null
@@ -69,6 +73,18 @@ export interface IIndigencyCertificate {
   kitchenViewHousePath: null | IPath
   isApplicationOnline: boolean
   note: string
+  indigencyCertificate: {
+    id: string
+    issuedCertificate: {
+      storage: string
+      originalName: string
+      originalPath: string
+    } | null
+    issueDate: string
+    issueYear: string
+    createdAt: string
+    updatedAt: string
+  } | null
   createdAt: string
   updatedAt: string
 }

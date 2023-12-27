@@ -7,6 +7,7 @@ import { useGetAssistanceHistory, useGetBeneficaryByNIK } from '@/store/server'
 import { type IAssistanceHistory } from '@/lib/types/beneficary.type'
 import { HiOutlineInformationCircle } from 'react-icons/hi2'
 import { useToast } from '@/components/ui/use-toast'
+import { useDisableBodyScroll } from '@/hooks'
 
 const CekRiwayatBansos = () => {
   useTitle('Cek Riwayat Bansos ')
@@ -44,6 +45,10 @@ const CekRiwayatBansos = () => {
     await refetchBeneficary()
     await refetchAssistanceHistories()
   }
+
+  useDisableBodyScroll(
+    isFetchingBeneficary || isFetchingAssistanceHistories || isLoadingBeneficary || isLoadingAssistanceHistories
+  )
 
   return (
     <>
