@@ -12,7 +12,9 @@ import {
   storeNonDtksCourtsFn,
   storePublicEventTuitionFn,
   storeIndigencyCertificateApplicationNoDTKS,
-  getDTKSApplicationPublicFn
+  getDTKSApplicationPublicFn,
+  showTuitionApplicationPublicFn,
+  updatePublicEventTuitionFn
 } from '@/api/public.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -85,6 +87,21 @@ export const useCreatePublicEventTuition = () => {
   })
 }
 
+export const useUpdatePublicEventTuition = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(updatePublicEventTuitionFn, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries('public-event-tuition')
+      void queryClient.invalidateQueries('tuition-application-public')
+      handleMessage({ title: 'Pengajuan BBP', variant: 'update' })
+    },
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    }
+  })
+}
+
 export const useGetTuitionApplicationPublic = () => {
   return useQuery('tuition-application-public', async () => await getTuitionApplicationPublicFn())
 }
@@ -137,13 +154,8 @@ export const useCreateNonDTKSCourts = () => {
   })
 }
 
-export const useGetIndigencyCertificateApplicationPublic = (applicationCategory: string) => {
-  return useQuery('indigency-centificate-2', async () => await getIndigencyCertificateApplicationPublicFn(), {
-    select: (data) => {
-      const transformedData = data.filter((item) => item.applicationCategory === applicationCategory)
-      return transformedData
-    }
-  })
+export const useGetIndigencyCertificateApplicationPublic = () => {
+  return useQuery('indigency-centificate-2', async () => await getIndigencyCertificateApplicationPublicFn())
 }
 
 export const useCreateIndigencyCertificateApplicationNoDTKS = () => {
@@ -165,4 +177,14 @@ export const useCreateIndigencyCertificateApplicationNoDTKS = () => {
 
 export const useGetDTKSApplicationPublic = () => {
   return useQuery('dtks-application-public', async () => await getDTKSApplicationPublicFn())
+}
+
+export const useGetTuitionApplicationPublicDetail = (id?: string) => {
+  return useQuery(
+    ['tuition-application-public-detail', id],
+    async () => await showTuitionApplicationPublicFn(id as string),
+    {
+      enabled: !!id
+    }
+  )
 }

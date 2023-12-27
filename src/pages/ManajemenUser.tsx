@@ -5,12 +5,7 @@ import { useForm } from 'react-hook-form'
 import * as React from 'react'
 import { HiOutlinePencilAlt, HiTrash } from 'react-icons/hi'
 import useTitle from '@/hooks/useTitle'
-import {
-  useDeleteUser,
-  useGetUserById,
-  useGetUsers,
-  useUpdateUser
-} from '@/store/server/useUserManagement'
+import { useDeleteUser, useGetUserById, useGetUsers, useUpdateUser } from '@/store/server/useUserManagement'
 import { type userUpdateFields, userUpdateValidation } from '@/lib/validations/user.validation'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useAlert } from '@/store/client'

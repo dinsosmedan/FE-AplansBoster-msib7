@@ -255,6 +255,7 @@ export default function App() {
                   <Route index element={<BbpUser />} />
                   <Route path=":id" element={<BbpUser />} />
                   <Route path="form/:id" element={<BbpRegister />} />
+                  <Route path="form/edit/:bbpId" element={<BbpRegister />} />
                 </Route>
 
                 <Route path="dtks">

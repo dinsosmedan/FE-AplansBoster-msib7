@@ -1,7 +1,6 @@
 import ContainerUser from '@/components/organisms/landingPage/ContainerUser'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { HiDocumentArrowUp, HiMagnifyingGlass, HiPaperAirplane } from 'react-icons/hi2'
@@ -17,7 +16,9 @@ import {
   useGetKelurahan,
   useGetPublicEventTuition,
   useGetStudyPrograms,
-  useGetUniversities
+  useGetTuitionApplicationPublicDetail,
+  useGetUniversities,
+  useUpdatePublicEventTuition
 } from '@/store/server'
 import { Loading, SearchSelect } from '@/components'
 import * as React from 'react'
@@ -29,9 +30,16 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup'
 import { formatDateToString, formatStringToDate } from '@/lib/services/formatDate'
 
+interface BbpParams {
+  id?: string
+  bbpId?: string
+  [key: string]: string | undefined
+}
+
 export default function BbpRegister() {
   const navigate = useNavigate()
-  const { id } = useParams<{ id: string }>()
+
+  const { id, bbpId } = useParams<BbpParams>()
   const [details, setDetails] = React.useState('')
 
   const forms = useForm<publicEventTuitionFields>({
@@ -46,8 +54,16 @@ export default function BbpRegister() {
   const identityNumber = forms.watch('identityNumber')
 
   const { data, isLoading, isSuccess } = useGetPublicEventTuition()
-  const { mutate: create, isLoading: isLoadingCreate } = useCreatePublicEventTuition()
   const { data: assistance, isLoading: isLoadingAssistance, refetch } = useGetIdentityCheck(identityNumber, false)
+
+  const { mutate: create, isLoading: isLoadingCreate } = useCreatePublicEventTuition()
+  const { mutate: update, isLoading: isLoadingUpdate } = useUpdatePublicEventTuition()
+
+  const {
+    data: detailShow,
+    isLoading: isLoadingDetail,
+    isSuccess: isSuccessDetail
+  } = useGetTuitionApplicationPublicDetail(bbpId)
 
   const { data: kecamatanLists } = useGetKecamatan()
   const { data: kelurahanLists } = useGetKelurahan(areaLevel3)
@@ -55,6 +71,86 @@ export default function BbpRegister() {
   const { data: bankLists } = useGetBank()
   const { data: universities } = useGetUniversities()
   const { data: studyPrograms } = useGetStudyPrograms(university)
+
+  React.useEffect(() => {
+    if (isSuccessDetail) {
+      forms.setValue('identityNumber', detailShow.beneficiary?.identityNumber)
+      forms.setValue('name', detailShow.beneficiary?.name)
+      forms.setValue('birthPlace', detailShow.beneficiary?.birthPlace)
+      if (detailShow.beneficiary?.birthDate) {
+        forms.setValue('birthDate', formatStringToDate(detailShow.beneficiary?.birthDate))
+      }
+      forms.setValue('address', detailShow.beneficiary?.address?.fullAddress)
+      forms.setValue('areaLevel3', detailShow.beneficiary?.address?.areaLevel3?.id as string)
+      forms.setValue('areaLevel4', detailShow.beneficiary?.address?.areaLevel4?.id as string)
+      forms.setValue('gender', detailShow.beneficiary?.gender)
+      forms.setValue('email', detailShow.email)
+      forms.setValue('phoneNumber', detailShow.phoneNumber)
+      forms.setValue('universityId', detailShow.university.id)
+      forms.setValue('universityName', detailShow.university.name)
+      forms.setValue('studyProgramId', detailShow.studyProgram.id)
+      forms.setValue('studyProgramName', detailShow.studyProgram.name)
+      forms.setValue('gpa', detailShow.gpa)
+      forms.setValue('semester', detailShow.semester)
+      forms.setValue('tuitionFee', detailShow.tuitionFee)
+      forms.setValue('bank', detailShow.bank.id)
+      forms.setValue('bankAccountName', detailShow.bank.name)
+      forms.setValue('bankAccountNumber', detailShow.bankAccNumber)
+      if (detailShow.documents.applicationLetter?.originalName) {
+        forms.setValue('applicationLetter', [detailShow.documents.applicationLetter.originalName])
+      }
+
+      if (detailShow.documents.photo?.originalName) {
+        forms.setValue('photo', [detailShow.documents.photo.originalName])
+      }
+
+      if (detailShow.documents.familyCard?.originalName) {
+        forms.setValue('familyCard', [detailShow.documents.familyCard.originalName])
+      }
+
+      if (detailShow.documents.identityCard?.originalName) {
+        forms.setValue('identityCard', [detailShow.documents.identityCard.originalName])
+      }
+
+      if (detailShow.documents.studentCard?.originalName) {
+        forms.setValue('studentCard', [detailShow.documents.studentCard.originalName])
+      }
+
+      if (detailShow.documents.activeStudentCertificate?.originalName) {
+        forms.setValue('activeStudentCertificate', [detailShow.documents.activeStudentCertificate.originalName])
+      }
+
+      if (detailShow.documents.dtksPrintout?.originalName) {
+        forms.setValue('dtksPrintout', [detailShow.documents.dtksPrintout.originalName])
+      }
+
+      if (detailShow.documents.noScholarshipStatement?.originalName) {
+        forms.setValue('noScholarshipStatement', [detailShow.documents.noScholarshipStatement.originalName])
+      }
+
+      if (detailShow.documents.noGovernmentEmployeeStatement?.originalName) {
+        forms.setValue('noGovernmentEmployeeStatement', [
+          detailShow.documents.noGovernmentEmployeeStatement.originalName
+        ])
+      }
+
+      if (detailShow.documents.gradeTranscript?.originalName) {
+        forms.setValue('gradeTranscript', [detailShow.documents.gradeTranscript.originalName])
+      }
+
+      if (detailShow.documents.passBook?.originalName) {
+        forms.setValue('passBook', [detailShow.documents.passBook.originalName])
+      }
+
+      if (detailShow.documents.tuitionReceipt?.originalName) {
+        forms.setValue('tuitionReceipt', [detailShow.documents.tuitionReceipt.originalName])
+      }
+
+      if (detailShow.documents.biodata?.originalName) {
+        forms.setValue('biodata', [detailShow.documents.biodata.originalName])
+      }
+    }
+  }, [isSuccessDetail, forms])
 
   React.useEffect(() => {
     if (assistance) {
@@ -66,7 +162,19 @@ export default function BbpRegister() {
       forms.setValue('birthDate', formatStringToDate(assistance?.birthDate))
       forms.setValue('gender', assistance.gender)
     }
-  }, [assistance])
+  }, [assistance, forms])
+
+  React.useEffect(() => {
+    if (bank && !isSuccessDetail) {
+      forms.setValue('bankAccountName', bankLists?.find((item) => item.id === bank)?.name as string)
+    }
+    if (university && !isSuccessDetail) {
+      forms.setValue('universityName', universities?.find((item) => item.id === university)?.name as string)
+    }
+    if (studyProgram && !isSuccessDetail) {
+      forms.setValue('studyProgramName', studyPrograms?.find((item) => item.id === studyProgram)?.name as string)
+    }
+  }, [bank, studyProgram, university, forms, isSuccessDetail])
 
   React.useEffect(() => {
     if (id) {
@@ -76,34 +184,41 @@ export default function BbpRegister() {
     }
   }, [isSuccess, id])
 
-  React.useEffect(() => {
-    if (bank) {
-      forms.setValue('bankAccountName', bankLists?.find((item) => item.id === bank)?.name as string)
-    }
-    if (studyProgram) {
-      forms.setValue('studyProgramName', studyPrograms?.find((item) => item.id === studyProgram)?.name as string)
-    }
-    if (university) {
-      forms.setValue('universityName', universities?.find((item) => item.id === university)?.name as string)
-    }
-  }, [bank, studyProgram, university])
-
   const onSubmit = async (values: publicEventTuitionFields) => {
+    if (!bbpId) {
+      const newData = {
+        ...values,
+        birthDate: formatDateToString(values.birthDate as Date),
+        event: id as string
+      }
+
+      create(newData, {
+        onSuccess: () => {
+          forms.reset()
+          navigate(`/user/bbp/${id}`)
+        }
+      })
+      return
+    }
+
     const newData = {
       ...values,
       birthDate: formatDateToString(values.birthDate as Date),
-      event: id as string
+      event: bbpId
     }
 
-    create(newData, {
-      onSuccess: () => {
-        forms.reset()
-        navigate(`/user/bbp/${id}`)
+    update(
+      { id: bbpId, fields: newData },
+      {
+        onSuccess: () => {
+          forms.reset()
+          navigate('/user/bbp')
+        }
       }
-    })
+    )
   }
 
-  if (isLoading) return <Loading />
+  if (isLoading || isLoadingDetail) return <Loading />
 
   return (
     <ContainerUser title={`Form Pengajuan Bantuan Biaya Pendidikan ${details}`}>
@@ -744,18 +859,18 @@ export default function BbpRegister() {
           <div className="md:flex justify-end gap-7 items-center pt-10">
             <Button
               variant="outline"
-              className="border-primary text-primary px-8 py-6 rounded-lg md:w-[50%] lg:w-[15%] w-full"
+              className="border-primary text-primary px-8 py-6 rounded-lg w-fit"
               type="button"
               onClick={() => navigate(-1)}
             >
               <p className="text-base font-semibold">Kembali</p>
             </Button>
             <Button
-              className="px-8 py-6 rounded-lg items-center gap-3 md:w-[50%] lg:w-[15%] w-full mt-5 md:mt-0"
-              loading={isLoadingCreate}
+              className="px-8 py-6 rounded-lg items-center gap-3 w-fit mt-5 md:mt-0"
+              loading={isLoadingCreate || isLoadingUpdate}
               type="submit"
             >
-              <p className="text-base font-semibold">Kirim Pengajuan</p>
+              <p className="text-base font-semibold w-max">Kirim Pengajuan</p>
               <HiPaperAirplane className="w-5 h-5" />
             </Button>
           </div>

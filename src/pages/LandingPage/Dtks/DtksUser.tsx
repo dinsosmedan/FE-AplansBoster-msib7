@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 import { useGetDTKSApplicationPublic } from '@/store/server'
 import { Loading } from '@/components'
 import { useDisableBodyScroll } from '@/hooks'
+import { formatToView } from '@/lib/services/formatDate'
 
 export default function DtksUser() {
   const { isLoading, data } = useGetDTKSApplicationPublic()
@@ -71,7 +72,8 @@ export default function DtksUser() {
           <div className="lg:w-[550px] w-[90%] shadow-sm border-2 border-primary bg-[#F9F4F5] h-[349px] rounded-lg bg-[url('@/assets/images/line-curve.svg')] bg-no-repeat">
             <div className="pt-14 px-7">
               <HiAcademicCap className="w-[70px] h-[70px] text-primary" />
-              <p className="text-xl font-semibold py-[26px]">DTKS (Data Terpadu Kesejahteraan Sosial)</p>
+              <p className="text-xl font-semibold pt-[26px]">DTKS (Data Terpadu Kesejahteraan Sosial)</p>
+              <p className="pb-[26px] pt-3">{formatToView(data?.updatedAt as string)}</p>
               <Button className="disabled:bg-black w-full h-[60px]" disabled>
                 <p className="text-xl text-white">{data?.isApproved ? 'Diterima' : 'Diproses'}</p>
               </Button>

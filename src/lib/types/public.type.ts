@@ -1,5 +1,6 @@
-import { type IAssistanceHistory } from './beneficary.type'
+import { type IBeneficary, type IAssistanceHistory } from './beneficary.type'
 import { type IAddress } from './dayasos.type'
+import { type IEvent } from './event.type'
 import { type IPath } from './service.type'
 
 export interface IAssistanceCheck {
@@ -47,4 +48,48 @@ export interface IPublicEventTuition {
     nonReceiptOfScholarshipLetter: IPath | null
     scholarshipAnnouncementLetter: IPath | null
   } | null
+}
+
+export interface ITuitionApplicationPublic {
+  id: string
+  beneficiary: IBeneficary
+  event: IEvent
+  email: string
+  phoneNumber: string
+  university: {
+    id: string
+    name: string
+  }
+  studyProgram: {
+    id: string
+    name: string
+  }
+  semester: number
+  gpa: string
+  tuitionFee: number
+  bank: IBank
+  bankAccNumber: string
+  bankAccName: string
+  application_status: string
+  message: string
+  dtksStatus: string
+  documents: {
+    applicationLetter: null | IPath
+    photo: null | IPath
+    familyCard: null | IPath
+    identityCard: null | IPath
+    studentCard: null | IPath
+    activeStudentCertificate: null | IPath
+    noScholarshipStatement: null | IPath
+    noGovernmentEmployeeStatement: null | IPath
+    biodata: null | IPath
+    dtksPrintout: null | IPath
+    passBook: null | IPath
+    tuitionReceipt: null | IPath
+    gradeTranscript: null | IPath
+    createdAt: string
+    updatedAt: string
+  }
+  createdAt: string
+  updatedAt: string
 }

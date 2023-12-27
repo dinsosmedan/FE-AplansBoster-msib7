@@ -1,4 +1,3 @@
-// import { useToken } from '@/store/client'
 import { useGetDevices } from '@/hooks'
 import { useAuth } from '@/store/client'
 import * as React from 'react'
@@ -10,7 +9,6 @@ interface ProtectedAuthProps {
 
 export default function ProtectedAuth({ children }: ProtectedAuthProps) {
   const location = useLocation()
-  // const token = useToken((state) => state.token)
   const auth = useAuth((state) => ({
     token: state.token,
     user: state.user
