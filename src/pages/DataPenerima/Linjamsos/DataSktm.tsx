@@ -16,7 +16,8 @@ import {
   useGetIndigencyCertificateFn,
   useGetKecamatan,
   useGetKelurahan,
-  useDeleteSktm
+  useDeleteSktm,
+  useGetMe
 } from '@/store/server'
 import { Action, ExportButton, Loading, Modal, SearchSelect } from '@/components'
 import React from 'react'
@@ -86,6 +87,9 @@ const DataSktm = () => {
     statusDtks,
     q
   })
+  const { data: user, isLoading: isLoadingGetme } = useGetMe()
+
+  const isEnableDelete = user?.data.role.permissions.some((permission) => permission.slugName === 'delete-update' && permission.isPermitted)
   const { mutateAsync: deleteSktm } = useDeleteSktm()
   const handleDelete = async (id: string) => {
     await alert({
@@ -161,7 +165,7 @@ const DataSktm = () => {
     }
     setIsLoadingExport(false)
   }
-  if (isLoading && isLoadingIndigencyCertificate) {
+  if (isLoading && isLoadingIndigencyCertificate || isLoadingGetme) {
     return <Loading />
   }
   function ubahFormatDateTime(dateTimeString: string): string {
@@ -258,7 +262,7 @@ const DataSktm = () => {
                 </FormItem>
               )}
             />
-             <FormField
+            <FormField
               name="year"
               control={forms.control}
               render={({ field }) => (
@@ -343,7 +347,11 @@ const DataSktm = () => {
                     {formatToView(item.updatedAt) ?? '-'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Action onDelete={async () => await handleDelete(item.id)} onDetail={() => showDetail(item.id)} />
+                    {
+                      isEnableDelete ?
+                        <Action onDelete={async () => await handleDelete(item.id)} onDetail={() => showDetail(item.id)} /> :
+                        <Action onDetail={() => showDetail(item.id)} />
+                    }
                   </TableCell>
                 </TableRow>
               ))

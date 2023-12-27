@@ -12,6 +12,7 @@ import { useAlert, useTitleHeader } from '@/store/client'
 import { Breadcrumbs, Loading } from '..'
 import { Skeleton } from '../ui/skeleton'
 import { HiOutlineArrowLeftOnRectangle } from 'react-icons/hi2'
+import { useDisableBodyScroll } from '@/hooks'
 
 export default function Header() {
   const { alert } = useAlert()
@@ -32,6 +33,8 @@ export default function Header() {
       variant: 'danger'
     }).then(() => logout())
   }
+
+  useDisableBodyScroll(isLoadingLogout)
 
   return (
     <>

@@ -1,21 +1,30 @@
 import { CardSub, Container } from '@/components'
 import useTitle from '@/hooks/useTitle'
-// import { Link } from 'react-router-dom'
+import * as React from 'react'
+import { useTitleHeader } from '@/store/client'
 
 const DataPenerimaRehabsos = () => {
-  useTitle('Data Penerima / Rehabsos ')
+  useTitle('Data Penerima')
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima', label: 'Data Penerima' },
+      { url: '/data-penerima/rehabsos', label: 'Rehabsos' }
+    ])
+  }, [])
 
   return (
-    <Container className="px-[120px]">
+    <Container className="px-10 pt-10">
       <h1 className="font-bold text-2xl ">REHABSOS</h1>
-      <div className="grid grid-cols-2 gap-x-[85px] gap-y-[40px] mt-10">
-        <CardSub title={'Anak Anak'} subTitle={'Children'} href={'/layanan/rehabsos'} />
-        <CardSub title={'Disabilitas'} subTitle={'Disability'} href={'/layanan/rehabsos'} />
-        <CardSub title={'Korban Perdagangan Orang'} subTitle={'People Trade'} href={'/layanan/rehabsos'} />
-        <CardSub title={'Orang Lanjut Usia'} subTitle={'The Elderly'} href={'/layanan/rehabsos'} />
-        <CardSub title={'Rehabilitasi Sosial'} subTitle={'Social Rehabilitation'} href={'/layanan/rehabsos'} />
+      <p className="text-sm text-[#8F8F8F]">Rehabilitasi Sosial</p>
+      <div className="grid grid-cols-2 gap-x-10 gap-y-10 mt-10">
+        <CardSub title={'BST Lansia'} subTitle={''} href={'/layanan/rehabsos'} />
+        <CardSub title={'BST Disabilitas'} subTitle={''} href={'/layanan/rehabsos'} />
+        <CardSub title={'BST Anak Diluar Panti'} subTitle={''} href={'/layanan/rehabsos'} />
+        <CardSub title={'Bansos Permakanan Lansia'} subTitle={''} href={'/layanan/rehabsos'} />
+        <CardSub title={'Bansos Permakanan Disabilitas'} subTitle={''} href={'/layanan/rehabsos'} />
         <CardSub title={'Tanda Daftar/Izin Operasional LKS'} subTitle={''} href={'/layanan/rehabsos'} />
-        <CardSub title={'Tuna Sosial'} subTitle={'Socially Impaired'} href={'/layanan/rehabsos'} />
+        <CardSub title={'Pemerlu Pelayanan Kesejahteraan Sosial'} subTitle={''} href={'/layanan/rehabsos'} />
       </div>
     </Container>
   )

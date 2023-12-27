@@ -15,7 +15,8 @@ import {
   useGetBusinessGroup,
   useGetBusinessGroupById,
   useGetKecamatan,
-  useGetKelurahan
+  useGetKelurahan,
+  useGetMe
 } from '@/store/server'
 import { useAlert, useTitleHeader } from '@/store/client'
 import { exportJointBussinessFn } from '@/api/dayasos.api'
@@ -54,7 +55,9 @@ const DataKube = () => {
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
   const { mutateAsync: deleteBusinessGroup } = useDeleteBusinessGroup()
   const { data: businessGroup, isLoading: isLoadingBusinessGroup } = useGetBusinessGroupById(selectedId)
+  const { data: user, isLoading: isLoadingGetme } = useGetMe()
 
+  const isEnableDelete = user?.data.role.permissions.some((permission) => permission.slugName === 'delete-update' && permission.isPermitted)
   const {
     data: businessGroups,
     refetch,
@@ -159,7 +162,7 @@ const DataKube = () => {
     }
   }
 
-  if (isLoading && isLoadingBusinessGroup) return <Loading />
+  if (isLoading && isLoadingBusinessGroup || isLoadingGetme) return <Loading />
 
   return (
     <React.Fragment>
@@ -303,11 +306,17 @@ const DataKube = () => {
                       {formatToView(item.updatedAt) ?? '-'}
                     </TableCell>
                     <TableCell className="bg-[#F9FAFC]">
-                      <Action
-                        onDelete={() => handleDelete(item.id)}
-                        onDetail={() => showDetail(item.id)}
-                        onEdit={() => navigate(`/data-penerima/dayasos/kube/create/${item.id}`)}
-                      />
+                      {
+                        isEnableDelete ?
+                          <Action
+                            onDelete={() => handleDelete(item.id)}
+                            onDetail={() => showDetail(item.id)}
+                            onEdit={() => navigate(`/data-penerima/dayasos/kube/create/${item.id}`)}
+                          /> :
+                          <Action
+                            onDetail={() => showDetail(item.id)}
+                          />
+                      }
                     </TableCell>
                   </TableRow>
                 ))

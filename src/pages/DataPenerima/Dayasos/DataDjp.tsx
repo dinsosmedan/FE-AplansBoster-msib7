@@ -14,6 +14,7 @@ import {
   useDeleteServiceFund,
   useGetKecamatan,
   useGetKelurahan,
+  useGetMe,
   useGetServiceFund,
   useGetServiceFunds,
   useGetServiceTypes
@@ -48,6 +49,9 @@ const DataDjp = () => {
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
   const [isLoadingExport, setIsLoadingExport] = React.useState(false)
+  const { data: user, isLoading: isLoadingGetme } = useGetMe()
+
+  const isEnableDelete = user?.data.role.permissions.some((permission) => permission.slugName === 'delete-update' && permission.isPermitted)
 
   const createParams = useCreateParams()
   const {
@@ -83,7 +87,7 @@ const DataDjp = () => {
     budgetYear
   })
 
-  useDisableBodyScroll(isFetching)
+  useDisableBodyScroll(isFetching || isLoadingExport || isLoadingServiceFund || isLoading)
 
   const handleReset = () => {
     navigate('/data-penerima/dayasos/djpm')
@@ -163,7 +167,7 @@ const DataDjp = () => {
     }
   }
 
-  if (isLoading && isLoadingServiceFund) return <Loading />
+  if (isLoading && isLoadingServiceFund && isLoadingGetme) return <Loading />
 
   return (
     <Container>
@@ -336,11 +340,17 @@ const DataDjp = () => {
                     {formatToView(item.updatedAt) ?? '-'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Action
-                      onDetail={() => showDetail(item.id)}
-                      onDelete={() => handleDelete(item.id)}
-                      onEdit={() => navigate(`/data-penerima/dayasos/djpm/create/${item.id}`)}
-                    />
+                    {
+                      isEnableDelete ?
+                        <Action
+                          onDetail={() => showDetail(item.id)}
+                          onDelete={() => handleDelete(item.id)}
+                          onEdit={() => navigate(`/data-penerima/dayasos/djpm/create/${item.id}`)}
+                        /> :
+                        <Action
+                          onDetail={() => showDetail(item.id)}
+                        />
+                    }
                   </TableCell>
                 </TableRow>
               ))

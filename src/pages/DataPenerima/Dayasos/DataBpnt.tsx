@@ -75,7 +75,7 @@ const DataBpnt = () => {
     q
   })
 
-  useDisableBodyScroll(isFetching)
+  useDisableBodyScroll(isFetching || isLoading || isLoadingNonCash || isLoadingExport)
 
   const showDetail = (id: string) => {
     setSelectedId(id)

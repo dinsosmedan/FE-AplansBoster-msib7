@@ -1,5 +1,5 @@
 import api from './axiosInstance'
-import { type userFields } from '@/lib/validations/user.validation'
+import { type userUpdateFields, type userFields } from '@/lib/validations/user.validation'
 import { type rolePermissionFields } from '@/lib/validations/rolepermission.validation'
 
 export const getAdminFn = async (page?: string, q?: string): Promise<any> => {
@@ -14,7 +14,7 @@ export const deleteAdminFn = async (id: string): Promise<any> => {
 
 interface UpdateAdminParams {
   id: string
-  fields: userFields
+  fields: userUpdateFields
 }
 
 export const updateAdminFn = async ({ id, fields }: UpdateAdminParams) => {
@@ -75,7 +75,7 @@ export const deleteUserFn = async (id: string): Promise<any> => {
 
 interface UpdateUserParams {
   id: string
-  fields: userFields
+  fields: userUpdateFields
 }
 
 export const updateUserFn = async ({ id, fields }: UpdateUserParams) => {

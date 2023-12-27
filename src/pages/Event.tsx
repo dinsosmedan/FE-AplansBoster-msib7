@@ -1,7 +1,7 @@
 import { Action, Container, CreateEvent, Loading, Pagination, Status } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { useCreateParams, useDeleteParams, useGetParams, useTitle } from '@/hooks'
+import { useCreateParams, useDeleteParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 import { HiMagnifyingGlass, HiNewspaper } from 'react-icons/hi2'
 import * as React from 'react'
 import { useDeleteEvent, useGetEvent, useGetEventType } from '@/store/server'
@@ -75,6 +75,8 @@ const Event = () => {
     deleteParams('page')
     await refetch()
   }
+
+  useDisableBodyScroll(isFetching)
 
   return (
     <Container>

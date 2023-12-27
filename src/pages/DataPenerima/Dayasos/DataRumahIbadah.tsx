@@ -13,7 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { JENIS_RUMAH_IBADAH } from '@/lib/data'
 import { exportWorshipPlaceFn } from '@/api/dayasos.api'
 import { useAlert, useTitleHeader } from '@/store/client'
-import { useGetKecamatan, useGetKelurahan } from '@/store/server'
+import { useGetKecamatan, useGetKelurahan, useGetMe } from '@/store/server'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 import { useDeleteWorshipPlace, useGetWorshipPlace, useGetWorshipPlaces } from '@/store/server/useDayasos'
 
@@ -64,7 +64,9 @@ const DataRumahIbadah = () => {
     place: type,
     q
   })
+  const { data: user, isLoading: isLoadingGetme } = useGetMe()
 
+  const isEnableDelete = user?.data.role.permissions.some((permission) => permission.slugName === 'delete-update' && permission.isPermitted)
   useDisableBodyScroll(isFetching)
 
   const showDetail = (id: string) => {
@@ -146,7 +148,7 @@ const DataRumahIbadah = () => {
     }
   }
 
-  if (isLoading && isLoadingWorshipPlace) return <Loading />
+  if (isLoading && isLoadingWorshipPlace && isLoadingGetme) return <Loading />
 
   return (
     <Container>
@@ -305,11 +307,17 @@ const DataRumahIbadah = () => {
                     {item?.updatedAt ? formatToView(item?.updatedAt) : '-'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Action
-                      onDelete={() => handleDelete(item?.id)}
-                      onDetail={() => showDetail(item?.id)}
-                      onEdit={() => navigate(`/data-penerima/dayasos/rumah-ibadah/create/${item?.id}`)}
-                    />
+                    {
+                      isEnableDelete ?
+                        <Action
+                          onDelete={() => handleDelete(item?.id)}
+                          onDetail={() => showDetail(item?.id)}
+                          onEdit={() => navigate(`/data-penerima/dayasos/rumah-ibadah/create/${item?.id}`)}
+                        /> :
+                        <Action
+                          onDetail={() => showDetail(item?.id)}
+                        />
+                    }
                   </TableCell>
                 </TableRow>
               ))

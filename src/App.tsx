@@ -59,6 +59,7 @@ import CekRiwayatBansos from './pages/CekRiwayatBansos'
 import CekDataDukcapil from './pages/CekDataDukcapil'
 import DataPenerimaLinjamsos from './pages/DataPenerima/DataPenerimaLinjamsos'
 import DataPenerimaDayasos from './pages/DataPenerima/DataPenerimaDayasos'
+import DataPenerimaRehabsos from './pages/DataPenerima/DataPenerimaRehabsos'
 import { useAlert } from './store/client'
 import { type AlertOptions } from './components/organisms/Alert'
 import DataPokmas from './pages/DataPenerima/Dayasos/DataPokmas'
@@ -132,6 +133,10 @@ export default function App() {
 
               <Route path="/data-penerima">
                 <Route index element={<DataPenerima />} />
+
+                <Route path="Rehabsos">
+                  <Route index element={<DataPenerimaRehabsos />} />
+                </Route>
 
                 <Route path="dayasos">
                   <Route index element={<DataPenerimaDayasos />} />

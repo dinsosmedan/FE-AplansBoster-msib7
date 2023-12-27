@@ -1,13 +1,15 @@
 import { Loading } from '@/components'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { useDisableBodyScroll } from '@/hooks'
 import { useGetBeneficaryById } from '@/store/server'
 import { useParams } from 'react-router-dom'
 const InfoDataMaster = () => {
   const { id } = useParams<{ id: string }>()
   const { data: beneficiary, isLoading } = useGetBeneficaryById(id)
-  if (isLoading) {
-    return <Loading />
-  }
+
+  useDisableBodyScroll(isLoading)
+
+  if (isLoading) return <Loading />
 
   const TableDataMaster = () => {
     return (
@@ -25,10 +27,18 @@ const InfoDataMaster = () => {
             {beneficiary?.familyMembers?.length !== 0 ? (
               beneficiary?.familyMembers.map((item, index) => (
                 <TableRow key={index} className="text-center">
-                  <TableCell className="" position="center">{item.identityNumber}</TableCell>
-                  <TableCell className="" position="center">{item.name}</TableCell>
-                  <TableCell className="" position="center">{item.familyRelationship}</TableCell>
-                  <TableCell className="" position="center">{item.isDtks ? 'DTKS' : 'Non DTKS'}</TableCell>
+                  <TableCell className="" position="center">
+                    {item.identityNumber}
+                  </TableCell>
+                  <TableCell className="" position="center">
+                    {item.name}
+                  </TableCell>
+                  <TableCell className="" position="center">
+                    {item.familyRelationship}
+                  </TableCell>
+                  <TableCell className="" position="center">
+                    {item.isDtks ? 'DTKS' : 'Non DTKS'}
+                  </TableCell>
                 </TableRow>
               ))
             ) : (

@@ -17,6 +17,7 @@ import {
 import { useAlert, useTitleHeader } from '@/store/client'
 import { exportOrganizationGrantAssistance } from '@/api/dayasos.api'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
+import { useGetMe } from '@/store/server'
 
 interface FormValues {
   q: string
@@ -59,7 +60,9 @@ const DataHibah = () => {
     name: q,
     budgetYear
   })
+  const { data: user, isLoading: isLoadingGetme } = useGetMe()
 
+  const isEnableDelete = user?.data.role.permissions.some((permission) => permission.slugName === 'delete-update' && permission.isPermitted)
   useDisableBodyScroll(isFetching)
 
   const handleReset = () => {
@@ -135,7 +138,7 @@ const DataHibah = () => {
     }
   }
 
-  if (isLoading && isLoadingOrganization) return <Loading />
+  if (isLoading && isLoadingOrganization || isLoadingGetme) return <Loading />
 
   return (
     <Container>
@@ -227,16 +230,30 @@ const DataHibah = () => {
                   <TableCell className="bg-[#F9FAFC]">{item.chairmanName ?? '-'}</TableCell>
                   <TableCell className="bg-[#F9FAFC]">{item.chairmanIdentityNumber ?? '-'}</TableCell>
                   <TableCell className="bg-[#F9FAFC]">{item.address.fullAddress ?? '-'}</TableCell>
-                  <TableCell className="bg-[#F9FAFC]" position="center">{item.contactNumber ?? '-'}</TableCell>
-                  <TableCell className="bg-[#F9FAFC]" position="center">{item.aprrovedAmount ?? '-'}</TableCell>
-                  <TableCell className="bg-[#F9FAFC]" position="center">{item.budgetYear ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">{formatToView(item.updatedAt) ?? '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]" position="center">
+                    {item.contactNumber ?? '-'}
+                  </TableCell>
+                  <TableCell className="bg-[#F9FAFC]" position="center">
+                    {item.aprrovedAmount ?? '-'}
+                  </TableCell>
+                  <TableCell className="bg-[#F9FAFC]" position="center">
+                    {item.budgetYear ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {formatToView(item.updatedAt) ?? '-'}
+                  </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Action
-                      onDelete={() => handleDelete(item.id)}
-                      onDetail={() => showDetail(item.id)}
-                      onEdit={() => navigate(`/data-penerima/dayasos/bho/create/${item.id}`)}
-                    />
+                    {
+                      isEnableDelete ?
+                        <Action
+                          onDelete={() => handleDelete(item.id)}
+                          onDetail={() => showDetail(item.id)}
+                          onEdit={() => navigate(`/data-penerima/dayasos/bho/create/${item.id}`)}
+                        /> :
+                        <Action
+                          onDetail={() => showDetail(item.id)}
+                        />
+                    }
                   </TableCell>
                 </TableRow>
               ))
