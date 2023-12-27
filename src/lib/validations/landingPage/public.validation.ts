@@ -29,7 +29,7 @@ export const publicEventTuitionValidation = yup.object({
   studyProgramId: yup.string().required('Nama program studi harus diisi'),
   studyProgramName: yup.string().required('Nama program studi harus diisi'),
   semester: yup.number().required('Semester harus diisi'),
-  gpa: yup.number().required('IPK harus diisi'),
+  gpa: yup.string().required('IPK harus diisi'),
   tuitionFee: yup.number().required('Biaya kuliah harus diisi'),
   bankAccountNumber: yup.string().required('Nomor rekening harus diisi'),
   bankAccountName: yup.string().required('Nama pemilik rekening harus diisi'),
@@ -80,10 +80,9 @@ export const publicEventDTKS = yup.object({
   question10: yup.string().required('Pertanyaan 10 harus diisi'),
   assistanceProgram: yup.string().required('Program bantuan harus diisi'),
   disabilityStatus: yup.string().required('Status disabilitas harus diisi'),
-  pregnantDate: yup.mixed().test('pregnantDate', 'Tanggal hamil harus diisi', function (value) {
+  pregnantDate: yup.mixed().test('pregnantDate', function (value) {
     return (
-      value instanceof Date || // Check if it's a Date object
-      (typeof value === 'string' && !isNaN(Date.parse(value))) // Check if it's a parseable string
+      value instanceof Date || (typeof value === 'string' && !isNaN(Date.parse(value))) || typeof value === 'undefined'
     )
   }),
   familyRelationship: yup.string().required('Hubungan keluarga harus diisi'),

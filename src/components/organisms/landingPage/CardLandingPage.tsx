@@ -1,10 +1,10 @@
 import { cn } from '@/lib/utils'
 import { HiArrowRightCircle } from 'react-icons/hi2'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { type IconType } from 'react-icons'
 import { Button } from '../../ui/button'
 
-interface CardLandingPageProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface CardLandingPageProps {
   curvePosition?: 'left' | 'right'
   title: string
   desc?: string
@@ -15,6 +15,8 @@ interface CardLandingPageProps extends React.ButtonHTMLAttributes<HTMLButtonElem
   isHadButtonIcon?: boolean
   quota?: number
   filledQuota?: number
+  disabled?: boolean
+  btnUrl?: string
 }
 
 export default function CardLandingPage({
@@ -28,12 +30,12 @@ export default function CardLandingPage({
   isHadButtonIcon = true,
   quota,
   filledQuota,
-  ...rest
+  disabled,
+  btnUrl
 }: CardLandingPageProps) {
   const navigate = useNavigate()
   return (
     <article
-      onClick={() => navigate(href)}
       className={cn(
         'p-7 flex flex-col gap-[18px] justify-between rounded-xl bg-white bg-no-repeat hover:shadow-2xl shadow-zinc-500/30 transition-shadow cursor-pointer duration-300 relative z-10',
         curvePosition === 'left'
@@ -57,10 +59,19 @@ export default function CardLandingPage({
           className="font-medium text-sm text-[#666666] prose max-w-none truncate-2 text-base"
         />
       )}
-      <Button className="gap-3 text-white md:py-7 py-6" {...rest}>
+
+      <Button className="gap-3 text-white md:py-7 py-6" onClick={() => navigate(href)}>
         <span className="md:text-[17px] capitalize">{btnText}</span>
         {isHadButtonIcon && <HiArrowRightCircle className="md:text-[28px]" />}
       </Button>
+      {btnUrl && !disabled && (
+        <Link to={btnUrl} className="w-full">
+          <Button className="gap-3 text-primary md:py-7 py-6 w-full border-primary" variant="outline">
+            <span className="md:text-[17px] capitalize">Revisi form</span>
+            <HiArrowRightCircle className="md:text-[28px]" />
+          </Button>
+        </Link>
+      )}
     </article>
   )
 }

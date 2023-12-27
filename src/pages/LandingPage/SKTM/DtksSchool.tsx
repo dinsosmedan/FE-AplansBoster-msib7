@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 import { BgEmpty } from '@/assets'
 
 export default function DtksSchool() {
-  const { data, isLoading } = useGetIndigencyCertificateApplicationPublic('dtks-schools')
+  const { data, isLoading } = useGetIndigencyCertificateApplicationPublic()
 
   if (isLoading) return <Loading />
 
@@ -32,7 +32,10 @@ export default function DtksSchool() {
             </TabsTrigger>
           </TabsList>
         </div>
-        <TabsContent value="open" className="mt-11 lg:flex lg:flex-row lg:justify-between grid place-items-center lg:place-items-start bg-[#F9F9F9] gap-10">
+        <TabsContent
+          value="open"
+          className="mt-11 lg:flex lg:flex-row lg:justify-between grid place-items-center lg:place-items-start bg-[#F9F9F9] gap-10"
+        >
           <div className="flex flex-col place-items-center gap-8 grid grid-cols-1 lg:px-10">
             <CardLandingPage
               className="lg:w-[400px] w-[90%] shadow-sm border-2 border-primary bg-[#F9F4F5] "
@@ -86,7 +89,10 @@ export default function DtksSchool() {
               </ol>
               <div className="md:flex gap-4 items-center pt-6 justify-between">
                 <p className="text-lg text-primary font-medium">Download Template Surat Permohonan</p>
-                <Button variant="outline" className="border-primary border-2 rounded-lg md:w-[25%] lg:w-[15%] w-[100%] mt-5 md:mt-0">
+                <Button
+                  variant="outline"
+                  className="border-primary border-2 rounded-lg md:w-[25%] lg:w-[15%] w-[100%] mt-5 md:mt-0"
+                >
                   <p className="text-base text-primary">Unduh</p>
                   <HiArrowDownTray className="text-2xl ml-2 text-primary" />
                 </Button>

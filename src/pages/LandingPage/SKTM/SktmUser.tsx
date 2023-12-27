@@ -1,10 +1,16 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { HiAcademicCap, HiBuildingLibrary } from 'react-icons/hi2'
 import CardLandingPage from '../../../components/organisms/landingPage/CardLandingPage'
-import { BgEmpty } from '@/assets'
-import { NoData } from '@/components'
+import { Loading, PengajuanSktm } from '@/components'
+import { useGetIndigencyCertificateApplicationPublic } from '@/store/server'
 
 export default function UserSktm() {
+  const { data, isLoading } = useGetIndigencyCertificateApplicationPublic()
+
+  if (isLoading) return <Loading />
+
+  console.log(data)
+
   return (
     <section className="bg-[#F9F9F9] lg:px-10 py-[38px] pb-[200px]">
       <Tabs defaultValue="open">
@@ -25,7 +31,10 @@ export default function UserSktm() {
             </TabsTrigger>
           </TabsList>
         </div>
-        <TabsContent value="open" className="mt-11 lg:flex lg:flex-row lg:justify-between lg:place-items-start bg-[#F9F9F9] gap-10">
+        <TabsContent
+          value="open"
+          className="mt-11 lg:flex lg:flex-row lg:justify-between lg:place-items-start bg-[#F9F9F9] gap-10"
+        >
           <div className="lg:flex lg:flex-col place-items-center gap-8 grid grid-cols-1">
             <CardLandingPage
               className="lg:w-[400px] w-[90%] shadow-sm "
@@ -62,12 +71,7 @@ export default function UserSktm() {
           </div>
         </TabsContent>
         <TabsContent value="request" className="flex flex-row gap-10 mb-[100px] ">
-          <NoData
-            title="Tidak Ada Proses Pengajuan"
-            desc="Mohon Maaf, Anda Belum Melakukan Pengajuan"
-            image={BgEmpty}
-            className="w-full"
-          />
+          <PengajuanSktm href="/user/sktm" />
         </TabsContent>
       </Tabs>
     </section>

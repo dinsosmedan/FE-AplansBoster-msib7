@@ -17,6 +17,7 @@ import ModalEditDataBBP from './service/bbp/ModalEditData'
 import ModalEditPengajuanBBP from './service/bbp/ModalEditPengajuan'
 import ModalEditPengajuanSKTM from './service/sktm/ModalEditPengajuan'
 import StatusDropdown from './event/StatusDropdown'
+import PengajuanSktm from './landingPage/PengajuanSktm'
 
 export {
   Header,
@@ -37,5 +38,6 @@ export {
   ModalEditDataBBP,
   ModalEditPengajuanBBP,
   StatusDropdown,
-  ModalEditPengajuanSKTM
+  ModalEditPengajuanSKTM,
+  PengajuanSktm
 }

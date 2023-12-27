@@ -6,13 +6,7 @@ import { useDisableBodyScroll } from '@/hooks'
 import { useAlert, useAuth } from '@/store/client'
 import { useLogoutPublic } from '@/store/server'
 import { DropdownMenu, DropdownMenuItem } from '@radix-ui/react-dropdown-menu'
-import {
-  HiChevronDown,
-  HiChevronRight,
-  HiCog6Tooth,
-  HiOutlineArrowRightOnRectangle,
-  HiOutlineBell
-} from 'react-icons/hi2'
+import { HiChevronDown, HiChevronRight, HiCog6Tooth, HiOutlineArrowRightOnRectangle } from 'react-icons/hi2'
 import { Link, useNavigate } from 'react-router-dom'
 
 export default function HeaderUser() {
@@ -107,12 +101,6 @@ export default function HeaderUser() {
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
-                    <Button variant="base" size="icon" className="rounded-full">
-                      <div className="relative">
-                        <HiOutlineBell className="text-primary text-2xl" />
-                        <div className="bg-[#FF0000] w-2 h-2 rounded-full absolute top-0 right-1" />
-                      </div>
-                    </Button>
                   </section>
                 )}
               </div>

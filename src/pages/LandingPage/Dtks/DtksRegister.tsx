@@ -543,9 +543,9 @@ export default function DtksRegister() {
           </div>
           <p className="font-semibold text-[18px] mt-5">
             Pengusulan BANSOS
-            <p className="text-[12px] text-primary font-medium">
+            <span className="text-[12px] text-primary font-medium">
               *Catatan: File yang diizinkan berupa jpg atau pdf. Dengan maksimal 2MB
-            </p>
+            </span>
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             <FormField

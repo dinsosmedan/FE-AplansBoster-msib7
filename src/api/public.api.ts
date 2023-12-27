@@ -1,6 +1,11 @@
 import ENV from '@/lib/environment'
 import { type IApplication, type IUniversity } from '@/lib/types/linjamsos.type'
-import { type IBank, type IAssistanceCheck, type IPublicEventTuition } from '@/lib/types/public.type'
+import {
+  type IBank,
+  type IAssistanceCheck,
+  type IPublicEventTuition,
+  type ITuitionApplicationPublic
+} from '@/lib/types/public.type'
 import {
   type DtksSchoolFields,
   type DtksCourtsFields,
@@ -352,4 +357,110 @@ export const storeIndigencyCertificateApplicationNoDTKS = async (data: NonDtksSc
 export const getDTKSApplicationPublicFn = async (): Promise<IDTKSApplication> => {
   const response = await axiosPublic.get('/public/application/dtks')
   return response.data?.data?.[0]
+}
+
+export const showTuitionApplicationPublicFn = async (id: string): Promise<ITuitionApplicationPublic> => {
+  const response = await axiosPublic.get(`/public/application/tuition-assistance/${id}`)
+  return response.data?.data
+}
+
+interface updatePublicEventTuitionParams {
+  id: string
+  fields: IStorePublicEventTuition
+}
+
+export const updatePublicEventTuitionFn = async ({ id, fields }: updatePublicEventTuitionParams) => {
+  const formdata = new FormData()
+  formdata.append('identityNumber', fields.identityNumber)
+  formdata.append('event', fields.event)
+  formdata.append('name', fields.name)
+  formdata.append('birthPlace', fields.birthPlace)
+  formdata.append('birthDate', fields.birthDate as string)
+  formdata.append('address', fields.address)
+  formdata.append('areaLevel3', fields.areaLevel3)
+  formdata.append('areaLevel4', fields.areaLevel4)
+  formdata.append('gender', fields.gender)
+  formdata.append('phoneNumber', fields.phoneNumber)
+  formdata.append('email', fields.email)
+  formdata.append('universityId', fields.universityId)
+  formdata.append('universityName', fields.universityName)
+  formdata.append('studyProgramId', fields.studyProgramId)
+  formdata.append('studyProgramName', fields.studyProgramName)
+  formdata.append('semester', fields.semester as unknown as string)
+  formdata.append('gpa', fields.gpa as unknown as string)
+  formdata.append('tuitionFee', fields.tuitionFee as unknown as string)
+  formdata.append('bankAccountNumber', fields.bankAccountNumber)
+  formdata.append('bankAccountName', fields.bankAccountName)
+  formdata.append('bank', fields.bank)
+  formdata.append('_method', 'PUT')
+
+  if (Array.isArray(fields.photo) && fields.photo.length > 0 && fields.photo[0] instanceof File) {
+    formdata.append('photo', fields.photo[0])
+  }
+  if (
+    Array.isArray(fields.applicationLetter) &&
+    fields.applicationLetter.length > 0 &&
+    fields.applicationLetter[0] instanceof File
+  ) {
+    formdata.append('applicationLetter', fields.applicationLetter[0])
+  }
+  if (Array.isArray(fields.familyCard) && fields.familyCard.length > 0 && fields.familyCard[0] instanceof File) {
+    formdata.append('familyCard', fields.familyCard[0])
+  }
+  if (Array.isArray(fields.identityCard) && fields.identityCard.length > 0 && fields.identityCard[0] instanceof File) {
+    formdata.append('identityCard', fields.identityCard[0])
+  }
+  if (Array.isArray(fields.studentCard) && fields.studentCard.length > 0 && fields.studentCard[0] instanceof File) {
+    formdata.append('studentCard', fields.studentCard[0])
+  }
+  if (
+    Array.isArray(fields.tuitionReceipt) &&
+    fields.tuitionReceipt.length > 0 &&
+    fields.tuitionReceipt[0] instanceof File
+  ) {
+    formdata.append('tuitionReceipt', fields.tuitionReceipt[0])
+  }
+  if (
+    Array.isArray(fields.activeStudentCertificate) &&
+    fields.activeStudentCertificate.length > 0 &&
+    fields.activeStudentCertificate[0] instanceof File
+  ) {
+    formdata.append('activeStudentCertificate', fields.activeStudentCertificate[0])
+  }
+  if (
+    Array.isArray(fields.noScholarshipStatement) &&
+    fields.noScholarshipStatement.length > 0 &&
+    fields.noScholarshipStatement[0] instanceof File
+  ) {
+    formdata.append('noScholarshipStatement', fields.noScholarshipStatement[0])
+  }
+  if (
+    Array.isArray(fields.noGovernmentEmployeeStatement) &&
+    fields.noGovernmentEmployeeStatement.length > 0 &&
+    fields.noGovernmentEmployeeStatement[0] instanceof File
+  ) {
+    formdata.append('noGovernmentEmployeeStatement', fields.noGovernmentEmployeeStatement[0])
+  }
+  if (Array.isArray(fields.dtksPrintout) && fields.dtksPrintout.length > 0 && fields.dtksPrintout[0] instanceof File) {
+    formdata.append('dtksPrintout', fields.dtksPrintout[0])
+  }
+  if (Array.isArray(fields.passBook) && fields.passBook.length > 0 && fields.passBook[0] instanceof File) {
+    formdata.append('passBook', fields.passBook[0])
+  }
+  if (
+    Array.isArray(fields.gradeTranscript) &&
+    fields.gradeTranscript.length > 0 &&
+    fields.gradeTranscript[0] instanceof File
+  ) {
+    formdata.append('gradeTranscript', fields.gradeTranscript[0])
+  }
+  if (Array.isArray(fields.biodata) && fields.biodata.length > 0 && fields.biodata[0] instanceof File) {
+    formdata.append('biodata', fields.biodata[0])
+  }
+
+  await axiosPublic.post(`/public/application/tuition-assistance/${id}`, formdata, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
 }

@@ -133,6 +133,7 @@ export default function BbpUser() {
                 icon={HiAcademicCap}
                 isHadButtonIcon={false}
                 href={`/user/bbp/${item.id}`}
+                btnUrl={`/user/bbp/form/edit/${item.id}`}
                 disabled={item.application_status !== 'revision'}
               />
             ))}

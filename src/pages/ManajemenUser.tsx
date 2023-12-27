@@ -5,14 +5,7 @@ import { useForm } from 'react-hook-form'
 import * as React from 'react'
 import { HiOutlinePencilAlt, HiTrash } from 'react-icons/hi'
 import useTitle from '@/hooks/useTitle'
-import {
-  useCreateUser,
-  useDeleteUser,
-  useGetRole,
-  useGetUserById,
-  useGetUsers,
-  useUpdateUser
-} from '@/store/server/useUserManagement'
+import { useDeleteUser, useGetRole, useGetUserById, useGetUsers, useUpdateUser } from '@/store/server/useUserManagement'
 import { userValidation, type userFields } from '@/lib/validations/user.validation'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useAlert } from '@/store/client'
@@ -46,7 +39,6 @@ const ManajemenUser = () => {
 
   const { mutateAsync: deleteUser, isLoading: isLoadingDelete } = useDeleteUser()
   const { mutate: updateUser, isLoading: isLoadingUpdate } = useUpdateUser()
-  const { mutate: createUser, isLoading: isLoadingCreate } = useCreateUser()
 
   React.useEffect(() => {
     if (!userId) {
@@ -95,13 +87,10 @@ const ManajemenUser = () => {
     if (!data.password) delete data.password
     if (!data.role) delete data.role
 
-    if (userId) {
-      const newData = { id: userId, fields: data }
-      updateUser(newData, { onSuccess: () => setIsShow(false) })
-      return
-    }
+    const newData = { id: userId, fields: data }
+    updateUser(newData, { onSuccess: () => setIsShow(false) })
 
-    createUser(data, { onSuccess: () => setIsShow(false) })
+    // createUser(data, { onSuccess: () => setIsShow(false) })
   }
 
   const handleSearch = async (values: { q: string }) => {
@@ -327,7 +316,7 @@ const ManajemenUser = () => {
               >
                 Cancel
               </Button>
-              <Button className="rounded-lg" type="submit" loading={isLoadingUpdate || isLoadingCreate}>
+              <Button className="rounded-lg" type="submit" loading={isLoadingUpdate}>
                 {userId ? 'Ubah' : 'Tambah'}
               </Button>
             </Modal.Footer>
