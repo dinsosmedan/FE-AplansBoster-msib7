@@ -18,7 +18,7 @@ const DataPenerimaRehabsos = () => {
       <h1 className="font-bold text-2xl ">REHABSOS</h1>
       <p className="text-sm text-[#8F8F8F]">Rehabilitasi Sosial</p>
       <div className="grid grid-cols-2 gap-x-10 gap-y-10 mt-10">
-        <CardSub title={'BST Lansia'} subTitle={''} href={'/layanan/rehabsos'} />
+        <CardSub title={'BST Lansia'} subTitle={''} href={'/data-penerima/rehabsos/bstlansia'} />
         <CardSub title={'BST Disabilitas'} subTitle={''} href={'/layanan/rehabsos'} />
         <CardSub title={'BST Anak Diluar Panti'} subTitle={''} href={'/layanan/rehabsos'} />
         <CardSub title={'Bansos Permakanan Lansia'} subTitle={''} href={'/layanan/rehabsos'} />

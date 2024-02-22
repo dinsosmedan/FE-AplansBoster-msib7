@@ -95,6 +95,7 @@ import DtksSchool from './pages/LandingPage/Sktm/DtksSchool'
 import NonDtksSchool from './pages/LandingPage/Sktm/NonDtksSchool'
 import DtksCourts from './pages/LandingPage/Sktm/DtksCourts'
 import NonDtksCourts from './pages/LandingPage/Sktm/NonDtksCourts'
+import BSTLansia from './pages/DataPenerima/Rehabsos/BSTLansia'
 
 export default function App() {
   useScrollToTop()
@@ -137,6 +138,11 @@ export default function App() {
 
                 <Route path="Rehabsos">
                   <Route index element={<DataPenerimaRehabsos />} />
+                  <Route path="bstlansia">
+                    <Route index element={<BSTLansia/>} />
+                    <Route path="create" element={<Djp />} />
+                    <Route path="create/:id" element={<Djp />} />
+                  </Route>
                 </Route>
 
                 <Route path="dayasos">
