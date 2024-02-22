@@ -35,8 +35,8 @@ const lansia = () => {
   React.useEffect(() => {
     setBreadcrumbs([
       { url: '/data-penerima', label: 'Data Penerima' },
-      { url: '/data-penerima/linjamsos', label: 'Linjamsos' },
-      { url: '/data-penerima/dayasos/bbp', label: 'BBP' }
+      { url: '/data-penerima/rehabsos', label: 'Linjamsos' },
+      { url: '/data-penerima/rehabsos/lansia', label: 'Lansia' }
     ])
   }, [])
   const [NIK, setNIK] = React.useState('')

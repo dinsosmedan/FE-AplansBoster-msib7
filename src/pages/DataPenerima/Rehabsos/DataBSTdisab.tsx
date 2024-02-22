@@ -30,7 +30,7 @@ interface FormValues {
   event: string
   university: string
 }
-const BSTLansia = () => {
+const DataBSTdisab = () => {
   useTitle('Data Penerima')
   const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
 
@@ -38,7 +38,7 @@ const BSTLansia = () => {
     setBreadcrumbs([
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
-      { url: '/data-penerima/rehabsos/bstlansia', label: 'BSTLansia' }
+      { url: '/data-penerima/rehabsos/bstdisab', label: 'BSTDisab' }
     ])
   }, [])
 
@@ -532,4 +532,4 @@ const BSTLansia = () => {
     </Container>
   )
 }
-export default BSTLansia
+export default DataBSTdisab
