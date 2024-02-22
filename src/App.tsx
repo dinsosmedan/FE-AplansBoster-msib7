@@ -96,6 +96,9 @@ import NonDtksSchool from './pages/LandingPage/Sktm/NonDtksSchool'
 import DtksCourts from './pages/LandingPage/Sktm/DtksCourts'
 import NonDtksCourts from './pages/LandingPage/Sktm/NonDtksCourts'
 import BSTLansia from './pages/DataPenerima/Rehabsos/BSTLansia'
+import DataBpd from './pages/DataPenerima/Rehabsos/DataBpd'
+import DataPppks from './pages/DataPenerima/Rehabsos/DataPppks'
+import DataLks from './pages/DataPenerima/Rehabsos/DataLks'
 
 export default function App() {
   useScrollToTop()
@@ -139,7 +142,22 @@ export default function App() {
                 <Route path="Rehabsos">
                   <Route index element={<DataPenerimaRehabsos />} />
                   <Route path="bstlansia">
-                    <Route index element={<BSTLansia/>} />
+                    <Route index element={<BSTLansia />} />
+                    <Route path="create" element={<Djp />} />
+                    <Route path="create/:id" element={<Djp />} />
+                  </Route>
+                  <Route path="bpd">
+                    <Route index element={<DataBpd />} />
+                    <Route path="create" element={<Djp />} />
+                    <Route path="create/:id" element={<Djp />} />
+                  </Route>
+                  <Route path="pppks">
+                    <Route index element={<DataPppks />} />
+                    <Route path="create" element={<Djp />} />
+                    <Route path="create/:id" element={<Djp />} />
+                  </Route>
+                  <Route path="lks">
+                    <Route index element={<DataLks />} />
                     <Route path="create" element={<Djp />} />
                     <Route path="create/:id" element={<Djp />} />
                   </Route>

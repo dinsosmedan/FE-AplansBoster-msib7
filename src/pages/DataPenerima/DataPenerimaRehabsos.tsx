@@ -22,9 +22,13 @@ const DataPenerimaRehabsos = () => {
         <CardSub title={'BST Disabilitas'} subTitle={''} href={'/layanan/rehabsos'} />
         <CardSub title={'BST Anak Diluar Panti'} subTitle={''} href={'/layanan/rehabsos'} />
         <CardSub title={'Bansos Permakanan Lansia'} subTitle={''} href={'/layanan/rehabsos'} />
-        <CardSub title={'Bansos Permakanan Disabilitas'} subTitle={''} href={'/layanan/rehabsos'} />
-        <CardSub title={'Tanda Daftar/Izin Operasional LKS'} subTitle={''} href={'/layanan/rehabsos'} />
-        <CardSub title={'Pemerlu Pelayanan Kesejahteraan Sosial'} subTitle={''} href={'/layanan/rehabsos'} />
+        <CardSub title={'Bansos Permakanan Disabilitas'} subTitle={''} href={'/data-penerima/rehabsos/bpd'} />
+        <CardSub
+          title={'Penanganan Pemerlu Pelayanan Kesejahteraan Sosial'}
+          subTitle={''}
+          href={'/data-penerima/rehabsos/pppks'}
+        />
+        <CardSub title={'Tanda Daftar/Izin Operasional LKS'} subTitle={''} href={'/data-penerima/rehabsos/lks'} />
       </div>
     </Container>
   )
