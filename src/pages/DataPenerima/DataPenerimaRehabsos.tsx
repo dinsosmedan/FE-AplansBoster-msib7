@@ -19,14 +19,9 @@ const DataPenerimaRehabsos = () => {
       <p className="text-sm text-[#8F8F8F]">Rehabilitasi Sosial</p>
       <div className="grid grid-cols-2 gap-x-10 gap-y-10 mt-10">
         <CardSub title={'Bantuan Sosial Tunai (BST) Lansia'} subTitle={''} href={'/data-penerima/rehabsos/bstlansia'} />
-        <CardSub
-          title={'Bantuan Sosial Tunai (BST) Disabilitas'}
-          subTitle={''}
-          href={'/data-penerima/rehabsos/bstdisab'}
-        />
+        <CardSub title={'Bantuan Sosial Tunai (BST) Disabilitas'} subTitle={''} href={'/data-penerima/rehabsos/bstdisab'} />
         <CardSub title={'Bantuan Sosial Tunai Anak Diluar Panti'} subTitle={''} href={'/data-penerima/rehabsos/anak'} />
         <CardSub title={'Bansos Permakanan Lansia'} subTitle={''} href={'/data-penerima/rehabsos/pl'} />
-
         <CardSub title={'Bansos Permakanan Disabilitas'} subTitle={''} href={'/data-penerima/rehabsos/bpd'} />
         <CardSub
           title={'Penanganan Pemerlu Pelayanan Kesejahteraan Sosial'}

@@ -95,17 +95,10 @@ import DtksSchool from './pages/LandingPage/Sktm/DtksSchool'
 import NonDtksSchool from './pages/LandingPage/Sktm/NonDtksSchool'
 import DtksCourts from './pages/LandingPage/Sktm/DtksCourts'
 import NonDtksCourts from './pages/LandingPage/Sktm/NonDtksCourts'
-<<<<<<< HEAD
 import DataBSTLansia from './pages/DataPenerima/Rehabsos/DataBSTLansia'
 import DataBSTdisab from './pages/DataPenerima/Rehabsos/DataBSTdisab'
 import DataBSTanak from './pages/DataPenerima/Rehabsos/DataBSTanak'
 import DataPL from './pages/DataPenerima/Rehabsos/DataPL'
-=======
-import BSTLansia from './pages/DataPenerima/Rehabsos/BSTLansia'
-import DataBpd from './pages/DataPenerima/Rehabsos/DataBpd'
-import DataPppks from './pages/DataPenerima/Rehabsos/DataPppks'
-import DataLks from './pages/DataPenerima/Rehabsos/DataLks'
->>>>>>> 4c5fd38eac98ea35029cd5ae6785bf542c69406b
 
 export default function App() {
   useScrollToTop()
@@ -149,7 +142,6 @@ export default function App() {
                 <Route path="Rehabsos">
                   <Route index element={<DataPenerimaRehabsos />} />
                   <Route path="bstlansia">
-<<<<<<< HEAD
                     <Route index element={<DataBSTLansia/>} />
                     <Route path="create" element={<Djp />} />
                     <Route path="create/:id" element={<Djp />} />
@@ -166,24 +158,6 @@ export default function App() {
                   </Route>
                   <Route path="pl">
                     <Route index element={<DataPL/>} />
-=======
-                    <Route index element={<BSTLansia />} />
-                    <Route path="create" element={<Djp />} />
-                    <Route path="create/:id" element={<Djp />} />
-                  </Route>
-                  <Route path="bpd">
-                    <Route index element={<DataBpd />} />
-                    <Route path="create" element={<Djp />} />
-                    <Route path="create/:id" element={<Djp />} />
-                  </Route>
-                  <Route path="pppks">
-                    <Route index element={<DataPppks />} />
-                    <Route path="create" element={<Djp />} />
-                    <Route path="create/:id" element={<Djp />} />
-                  </Route>
-                  <Route path="lks">
-                    <Route index element={<DataLks />} />
->>>>>>> 4c5fd38eac98ea35029cd5ae6785bf542c69406b
                     <Route path="create" element={<Djp />} />
                     <Route path="create/:id" element={<Djp />} />
                   </Route>
