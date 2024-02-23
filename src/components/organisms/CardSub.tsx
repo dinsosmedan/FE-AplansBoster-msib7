@@ -17,7 +17,7 @@ export default function Card({ title, subTitle, href }: CardSubProps) {
     >
       <div className="ml-10 group-hover:text-primary relative z-10 ">
         <p className="font-extrabold text-lg text-white group-hover:text-primary transition-colors">{title}</p>
-        <p className="text-base text-white group-hover:text-primary transition-colors">{subTitle}</p>
+        <p className="text-base text-white group-hover:text-primary transition-colors italic">{subTitle}</p>
       </div>
       <Button variant="link" className="relative z-10">
         <div className="m-3 flex h-6 w-6 items-center justify-center rounded-full bg-white group-hover:bg-primary">
