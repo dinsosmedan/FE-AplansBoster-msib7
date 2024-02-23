@@ -145,7 +145,7 @@ export default function App() {
                 <Route path="Rehabsos">
                   <Route index element={<DataPenerimaRehabsos />} />
                   <Route path="bstlansia">
-                    <Route index element={<DataBSTLansia />} />
+                    <Route index element={<DataBSTLansia/>} />
                     <Route path="create" element={<Djp />} />
                     <Route path="create/:id" element={<Djp />} />
                   </Route>
@@ -160,6 +160,7 @@ export default function App() {
                     <Route path="create/:id" element={<Djp />} />
                   </Route>
                   <Route path="pl">
+                    <Route index element={<DataPL/>} />
                     <Route index element={<DataPL />} />
                     <Route path="create" element={<Djp />} />
                     <Route path="create/:id" element={<Djp />} />

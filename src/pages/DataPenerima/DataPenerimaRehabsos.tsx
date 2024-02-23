@@ -18,15 +18,26 @@ const DataPenerimaRehabsos = () => {
       <h1 className="font-bold text-2xl ">REHABSOS</h1>
       <p className="text-sm text-[#8F8F8F]">Rehabilitasi Sosial</p>
       <div className="grid grid-cols-2 gap-x-10 gap-y-10 mt-10">
-        <CardSub title={'Bantuan Sosial Tunai (BST) Lansia'} subTitle={''} href={'/data-penerima/rehabsos/bstlansia'} />
+        <CardSub
+          title={'Bantuan Sosial Tunai (BST) Lansia'}
+          subTitle={'Financial Assistance for the Elderly'}
+          href={'/data-penerima/rehabsos/bstlansia'}
+        />
         <CardSub
           title={'Bantuan Sosial Tunai (BST) Disabilitas'}
-          subTitle={''}
+          subTitle={'Financial Assistance for Disability Support'}
           href={'/data-penerima/rehabsos/bstdisab'}
         />
-        <CardSub title={'Bantuan Sosial Tunai Anak Diluar Panti'} subTitle={''} href={'/data-penerima/rehabsos/anak'} />
-        <CardSub title={'Bansos Permakanan Lansia'} subTitle={''} href={'/data-penerima/rehabsos/pl'} />
-
+        <CardSub
+          title={'Bantuan Sosial Tunai Anak Diluar Panti'}
+          subTitle={'Financial Assistance fo Non-Orpahanges'}
+          href={'/data-penerima/rehabsos/anak'}
+        />
+        <CardSub
+          title={'Bansos Permakanan Lansia'}
+          subTitle={'Social Support Elderly Dining'}
+          href={'/data-penerima/rehabsos/pl'}
+        />
         <CardSub
           title={'Bansos Permakanan Disabilitas'}
           subTitle={'Social Support Disability Dining'}
