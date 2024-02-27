@@ -29,8 +29,7 @@ const DataPenerimaDayasos = () => {
           href={'/data-penerima/dayasos/bltbbm'}
         />
         <CardSub
-          title={'Bantuan Pangan Non Tunai (BPNT)'}
-          subTitle={'Joint Business Group'}
+          title={'Bantuan Pangan Non Tunai (BPNT)'}subTitle={'Non Cash Food Assistance'}
           href={'/data-penerima/dayasos/bpnt'}
         />
         <CardSub
