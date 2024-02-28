@@ -170,12 +170,7 @@ const DataBSTanak = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input
-                          {...field}
-                          value={field.value ?? ''}
-                          type="text"
-                          placeholder="Masukkan Nama/ NIK/ Nomor Kartu Keluarga"
-                        />
+                        <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama/ NIK/ Nomor Kartu Keluarga" />
                       </FormControl>
                     </FormItem>
                   )}
@@ -269,12 +264,17 @@ const DataBSTanak = () => {
             <TableHeader className="bg-white">
               <TableRow>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">No. </TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Pemohon</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Kartu Keluarga</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat Kartu Keluarga</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan </TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Kartu Keluraga</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Tempat Lahir</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Lahir</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Ayah Kandung </TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Ibu Kandung</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Status DKS</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">kecamatan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
               </TableRow>
             </TableHeader>
