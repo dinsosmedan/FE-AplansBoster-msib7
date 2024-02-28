@@ -38,7 +38,7 @@ const DataBSTLansia = () => {
     setBreadcrumbs([
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
-      { url: '/data-penerima/rehabsos/bstlansia', label: 'BSTLansia' }
+      { url: '/data-penerima/rehabsos/bstlansia', label: 'BST Lansia' }
     ])
   }, [])
 
@@ -181,7 +181,7 @@ const DataBSTLansia = () => {
   return (
     <Container>
       {(isFetching || isLoadingExport) && <Loading />}
-      <h1 className="font-bold text-xl ">Bantuan Biaya Pendidikan (BBP)</h1>
+      <h1 className="font-bold text-xl ">Bantuan Sosial Tunai Lansia</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="flex flex-row justify-between items-center gap-5 mt-5">
@@ -192,14 +192,14 @@ const DataBSTLansia = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama/ NIK" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama / NIK / Nomor Kartu Keluarga " />
                     </FormControl>
                   </FormItem>
                 )}
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-x-5 gap-y-5 ">
+          <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
             <FormField
               name="kecamatan"
               control={forms.control}
@@ -239,30 +239,6 @@ const DataBSTLansia = () => {
                 </FormItem>
               )}
             />
-          </div>
-          <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
-            <FormField
-              name="event"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Jenis Event" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {listEvent?.data.map((item, index) => (
-                        <SelectItem key={index} value={item.id}>
-                          {item.type.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormItem>
-              )}
-            />
             <FormField
               name="year"
               control={forms.control}
@@ -270,45 +246,6 @@ const DataBSTLansia = () => {
                 <FormItem>
                   <FormControl>
                     <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Pengajuan" />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="status"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Status Pencairan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="pending">Ditunda</SelectItem>
-                      <SelectItem value="processed">Diproses</SelectItem>
-                      <SelectItem value="disbursed">Dicairkan</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="university"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <SearchSelect
-                      selected={field.value}
-                      onChange={field.onChange}
-                      width="w-[380px]"
-                      placeholder="Pilih Perguruan Tinggi"
-                      options={
-                        universities?.map((university) => ({ label: university.name, value: university.id })) ?? []
-                      }
-                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -345,18 +282,13 @@ const DataBSTLansia = () => {
         <Table>
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">No .</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Mahasiswa</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Kartu Keluarga</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tempat Lahir</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Lahir</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kelamin</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat Lengkap</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">No.HP</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Status</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>

@@ -1,5 +1,5 @@
 import { type IArea } from '@/api/area.api'
-import { type IMeta } from './dayasos.type'
+import { type IMeta } from './rehabsos.type'
 
 interface IAddress {
   fullAddress: string

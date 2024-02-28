@@ -34,19 +34,9 @@ const DataPenerimaRehabsos = () => {
           href={'/data-penerima/rehabsos/anak'}
         />
         <CardSub
-          title={'Bansos Permakanan Lansia'}
-          subTitle={'Social Support Elderly Dining'}
-          href={'/data-penerima/rehabsos/pl'}
-        />
-        <CardSub
-          title={'Bansos Permakanan Disabilitas'}
-          subTitle={'Social Support Disability Dining'}
-          href={'/data-penerima/rehabsos/bpd'}
-        />
-        <CardSub
           title={'Tanda Daftar/Izin Operasional LKS'}
           subTitle={'Operation License of Social Institution'}
-          href={'/data-penerima/rehabsos/lks'}
+          href={'/data-penerima/rehabsos/izin-operasi-lks'}
         />
         <CardSub
           title={'Penanganan Pemerlu Pelayanan Kesejahteraan Sosial'}
