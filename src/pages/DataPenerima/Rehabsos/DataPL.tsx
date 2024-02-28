@@ -8,14 +8,15 @@ import {
   useGetNonCashFoodAssistanceBeneficiary,
   useGetNonCashFoodAssistanceDetail,
   useGetKecamatan,
-  useGetKelurahan
+  useGetKelurahan,
+  useVulnerableGroupHandlings
 } from '@/store/server'
 import { useCreateParams, useDisableBodyScroll, useGetParams } from '@/hooks'
 import { Action, ExportButton, Loading, Modal, Pagination, SearchSelect } from '@/components'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { formatToView } from '@/lib/services/formatDate'
 import { Button } from '@/components/ui/button'
-import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
+import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { exportNonCashFoodAssistanceFn } from '@/api/dayasos.api'
@@ -146,7 +147,7 @@ const DataPL = () => {
     <div>
       <Container>
         {(isFetching || isLoadingExport) && <Loading />}
-        <h1 className="font-bold text-xl "> Bantuan Pangan Non Tunai (BPNT) </h1>
+        <h1 className="font-bold text-xl ">Bantuan Sosial Permakanan Lansia</h1>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
             <div className="grid gap-x-10 gap-y-5 mt-5">
@@ -162,7 +163,7 @@ const DataPL = () => {
                 )}
               />
             </div>
-            <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
+            {/* <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
               <FormField
                 name="type"
                 control={forms.control}
@@ -223,10 +224,18 @@ const DataPL = () => {
                   </FormItem>
                 )}
               />
-            </div>
+            </div> */}
             <section className="flex items-center justify-between">
-              <div>
-                {NonCashFoodAssistanceBeneficiarys?.data?.length !== 0 ? (
+            <div className="flex items-center gap-3">
+              <Button
+                type="button"
+                className="gap-2 border-none rounded-lg"
+                onClick={() => navigate('/data-penerima/linjamsos/bbp/create')}
+              >
+                <HiPlus className="text-lg" />
+                <span>Tambah Data</span>
+              </Button>
+              {NonCashFoodAssistanceBeneficiarys?.data?.length !== 1 ? (
                   <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
                 ) : null}
               </div>
@@ -250,9 +259,9 @@ const DataPL = () => {
               <TableRow>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">No.</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">No. Kartu Keluarga</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Keanggotaan</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Umur</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
               </TableRow>
             </TableHeader>

@@ -181,7 +181,7 @@ const DataBSTLansia = () => {
   return (
     <Container>
       {(isFetching || isLoadingExport) && <Loading />}
-      <h1 className="font-bold text-xl ">Bantuan Biaya Pendidikan (BBP)</h1>
+      <h1 className="font-bold text-xl ">Bantuan Sosial Tunai Lansia</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="flex flex-row justify-between items-center gap-5 mt-5">
@@ -192,7 +192,7 @@ const DataBSTLansia = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama/ NIK" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama/ NIK/Nomor Kartu Keluarga" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -210,7 +210,7 @@ const DataBSTLansia = () => {
                       selected={field.value}
                       onChange={field.onChange}
                       width="w-[380px]"
-                      placeholder="Pilih Kecamatan"
+                      placeholder="Jenis Keanggotaan"
                       options={
                         listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
                       }

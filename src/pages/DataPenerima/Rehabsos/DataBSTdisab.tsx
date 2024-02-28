@@ -162,7 +162,7 @@ const DataBSTdisab = () => {
     setIsLoadingExport(false)
   }
   const handleReset = () => {
-    navigate('/data-penerima/rehabsos/bstlansia')
+    navigate('/data-penerima/rehabsos/BSTdisab')
     forms.reset({
       q: '',
       kecamatan: '',
@@ -181,7 +181,7 @@ const DataBSTdisab = () => {
   return (
     <Container>
       {(isFetching || isLoadingExport) && <Loading />}
-      <h1 className="font-bold text-xl ">Bantuan Biaya Pendidikan (BBP)</h1>
+      <h1 className="font-bold text-xl ">Bantuan Sosial Tunai Disabilitas</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="flex flex-row justify-between items-center gap-5 mt-5">
@@ -192,7 +192,7 @@ const DataBSTdisab = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama/ NIK" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama/ NIK/ Nomor Kartu Keluarga" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -240,7 +240,7 @@ const DataBSTdisab = () => {
               )}
             />
           </div>
-          <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
+          {/* <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
             <FormField
               name="event"
               control={forms.control}
@@ -313,7 +313,7 @@ const DataBSTdisab = () => {
                 </FormItem>
               )}
             />
-          </div>
+          </div> */}
           <section className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Button
@@ -346,17 +346,16 @@ const DataBSTdisab = () => {
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
               <TableHead className="text-[#534D59] font-bold text-[15px]">No .</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Mahasiswa</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">No. Kartu Keluarga</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tempat Lahir</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Lahir</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kelamin</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat Lengkap</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">No.HP</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Status</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -368,10 +367,13 @@ const DataBSTdisab = () => {
                     {(tuitions.meta.currentPage - 1) * tuitions.meta.perPage + index + 1}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.name ?? '-'}
+                    {item.application?.beneficiary?.identityNumber ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
                     {item.application?.beneficiary?.identityNumber ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {item.application?.beneficiary?.name ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
                     {item.application?.beneficiary?.birthPlace ?? '-'}
@@ -379,9 +381,7 @@ const DataBSTdisab = () => {
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.application?.beneficiary?.birthDate ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application?.beneficiary?.gender ? item.application.beneficiary.gender : '-'}
-                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]"></TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
                     {item.application?.beneficiary?.address.fullAddress ?? '-'}
                   </TableCell>
@@ -392,13 +392,6 @@ const DataBSTdisab = () => {
                     {item.application?.beneficiary?.address.areaLevel4?.name ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application.phoneNumber ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.budgetYear ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {formatToView(item.updatedAt) ?? '-'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action onDetail={() => showDetail(item.id)} />
