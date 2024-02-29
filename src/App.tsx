@@ -98,8 +98,6 @@ import NonDtksCourts from './pages/LandingPage/Sktm/NonDtksCourts'
 import DataBSTLansia from './pages/DataPenerima/Rehabsos/DataBSTLansia'
 import DataBSTdisab from './pages/DataPenerima/Rehabsos/DataBSTdisab'
 import DataBSTanak from './pages/DataPenerima/Rehabsos/DataBSTanak'
-import DataPL from './pages/DataPenerima/Rehabsos/DataPL'
-import DataBpd from './pages/DataPenerima/Rehabsos/DataBpd'
 import DataPppks from './pages/DataPenerima/Rehabsos/DataPppks'
 import DataLks from './pages/DataPenerima/Rehabsos/DataLks'
 
@@ -159,23 +157,12 @@ export default function App() {
                     <Route path="create" element={<Djp />} />
                     <Route path="create/:id" element={<Djp />} />
                   </Route>
-                  <Route path="pl">
-                    <Route index element={<DataPL/>} />
-                    <Route index element={<DataPL />} />
-                    <Route path="create" element={<Djp />} />
-                    <Route path="create/:id" element={<Djp />} />
-                  </Route>
-                  <Route path="bpd">
-                    <Route index element={<DataBpd />} />
-                    <Route path="create" element={<Djp />} />
-                    <Route path="create/:id" element={<Djp />} />
-                  </Route>
                   <Route path="pppks">
                     <Route index element={<DataPppks />} />
                     <Route path="create" element={<Djp />} />
                     <Route path="create/:id" element={<Djp />} />
                   </Route>
-                  <Route path="lks">
+                  <Route path="izin-operasi-lks">
                     <Route index element={<DataLks />} />
                     <Route path="create" element={<Djp />} />
                     <Route path="create/:id" element={<Djp />} />

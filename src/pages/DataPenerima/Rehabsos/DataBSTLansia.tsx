@@ -181,7 +181,7 @@ const DataBSTLansia = () => {
   return (
     <Container>
       {(isFetching || isLoadingExport) && <Loading />}
-      <h1 className="font-bold text-xl ">Bantuan Sosial Tunai Lansia</h1>
+      <h1 className="font-bold text-xl ">Bantuan Biaya Pendidikan (BBP)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="flex flex-row justify-between items-center gap-5 mt-5">
@@ -192,7 +192,7 @@ const DataBSTLansia = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama/ NIK/Nomor Kartu Keluarga" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama/ NIK" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -210,7 +210,7 @@ const DataBSTLansia = () => {
                       selected={field.value}
                       onChange={field.onChange}
                       width="w-[380px]"
-                      placeholder="Jenis Keanggotaan"
+                      placeholder="Pilih Kecamatan"
                       options={
                         listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
                       }
@@ -346,17 +346,12 @@ const DataBSTLansia = () => {
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
               <TableHead className="text-[#534D59] font-bold text-[15px]">No .</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Mahasiswa</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tempat Lahir</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Lahir</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kelamin</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat Lengkap</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Kartu Keluarga</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Status DTKS</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">No.HP</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>

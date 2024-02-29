@@ -1,4 +1,4 @@
-import { type IMeta } from './dayasos.type'
+import { type IMeta } from './rehabsos.type'
 import { type IPath } from './service.type'
 
 export interface IType {

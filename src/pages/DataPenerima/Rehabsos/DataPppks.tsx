@@ -1,35 +1,36 @@
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import Container from '@/components/atoms/Container'
-import { Action, ExportButton, Loading, Modal, Pagination, SearchSelect } from '@/components'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
+import { Action, ExportButton, Loading, Modal, Title, Pagination, Container, SearchSelect } from '@/components'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { formatToView } from '@/lib/services/formatDate'
+import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
-import { formatToView } from '@/lib/services/formatDate'
+
 import {
-  useGetEvent,
+  useDeleteServiceFund,
   useGetKecamatan,
   useGetKelurahan,
-  useGetTuitionAssistanceFn,
-  useGetTuitionAssistanceID,
-  useGetUniversities
+  useGetMe,
+  useGetServiceFund,
+  useGetServiceFunds,
+  useGetServiceTypes
 } from '@/store/server'
-import React from 'react'
-import { exportTuitionAssistanceFn } from '@/api/linjamsos.api'
+import { exportServiceFundFn } from '@/api/dayasos.api'
 import { useAlert, useTitleHeader } from '@/store/client'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
+
 interface FormValues {
   q: string
   kelurahan: string
   kecamatan: string
-  year: string
-  status: string
-  event: string
-  university: string
+  type: string
+  budget_year: string
 }
+
 const DataPppks = () => {
   useTitle('Data Penerima')
   const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
@@ -39,65 +40,60 @@ const DataPppks = () => {
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
       { url: '/data-penerima/rehabsos/pppks', label: 'Penanganan Pemerlu Pelayanan Kesejahteraan Sosial' }
-    ])
-  }, [])
+    ])
+  }, [])
 
   const navigate = useNavigate()
-  const createParams = useCreateParams()
   const { alert } = useAlert()
-  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
+
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
-  const { q, kecamatan, kelurahan, page, year, status, event, university } = useGetParams([
-    'q',
-    'kecamatan',
-    'kelurahan',
-    'page',
-    'year',
-    'status',
-    'event',
-    'university'
-  ])
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
+  const { data: user, isLoading: isLoadingGetme } = useGetMe()
 
+  const isEnableDelete = user?.data.role.permissions.some(
+    (permission) => permission.slugName === 'delete-update' && permission.isPermitted
+  )
+
+  const createParams = useCreateParams()
+  const {
+    q,
+    kecamatan,
+    kelurahan,
+    page,
+    type,
+    budget_year: budgetYear
+  } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'type', 'budget_year'])
   const forms = useForm<FormValues>({
-    defaultValues: {
-      q: q ?? '',
-      kecamatan: kecamatan ?? '',
-      kelurahan: kelurahan ?? '',
-      year: year ?? '',
-      status: status ?? '',
-      event: event ?? '',
-      university: university ?? ''
-    }
+    defaultValues: { q: '', kelurahan: '', kecamatan: '', type: '', budget_year: '' }
   })
-  const areaLevel3 = forms.watch('kecamatan')
 
-  const { data: listEvent } = useGetEvent()
+  const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
-  const { data: universities } = useGetUniversities()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
-  const { data: tuition, isLoading: isLoadingTuition } = useGetTuitionAssistanceID(selectedId)
+  const { data: serviceTypes } = useGetServiceTypes()
+  const { data: serviceFund, isLoading: isLoadingServiceFund } = useGetServiceFund(selectedId)
+  const { mutateAsync: deleteServiceFund } = useDeleteServiceFund()
 
   const {
-    data: tuitions,
+    data: serviceFunds,
     refetch,
     isFetching,
     isLoading
-  } = useGetTuitionAssistanceFn({
+  } = useGetServiceFunds({
     page: parseInt(page) ?? 1,
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
-    year,
-    status,
-    event,
-    q,
-    university
+    name: q,
+    assistance: type,
+    budgetYear
   })
-  useDisableBodyScroll(isFetching)
 
-  const showDetail = (id: string) => {
-    setSelectedId(id)
-    setIsShow(true)
+  useDisableBodyScroll(isFetching || isLoadingExport || isLoadingServiceFund || isLoading)
+
+  const handleReset = () => {
+    navigate('/data-penerima/rehabsos/izin-operasi-lks')
+    forms.reset()
   }
 
   const updateParam = (key: any, value: any) => {
@@ -111,24 +107,37 @@ const DataPppks = () => {
 
   const onSubmit = async (values: FormValues) => {
     updateParam('q', values.q)
+    updateParam('budget_year', values.budget_year)
     updateParam('kecamatan', values.kecamatan)
     updateParam('kelurahan', values.kelurahan)
-    updateParam('year', values.year)
-    updateParam('status', values.status)
-    updateParam('event', values.event)
-    updateParam('university', values.university)
+    updateParam('type', values.type)
 
     await refetch()
   }
+
+  const handleDelete = (id: string) => {
+    void alert({
+      title: 'Hapus Data Penanganan Pemerlu Pelayanan Kesejahteraan Sosial',
+      description: 'Apakah kamu yakin ingin menghapus data ini?',
+      variant: 'danger',
+      submitText: 'Delete'
+    }).then(async () => {
+      await deleteServiceFund(id)
+    })
+  }
+
+  const showDetail = (id: string) => {
+    setSelectedId(id)
+    setIsShow(true)
+  }
+
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    const response = await exportTuitionAssistanceFn('csv', {
+    const response = await exportServiceFundFn('csv', {
       idKecamatan: kecamatan,
       idKelurahan: kelurahan,
-      year,
-      status,
-      event,
-      q
+      name: q,
+      assistance: type
     })
     if (response.success) {
       void alert({
@@ -137,19 +146,17 @@ const DataPppks = () => {
         submitText: 'Oke',
         variant: 'success'
       })
+      setIsLoadingExport(false)
     }
-    setIsLoadingExport(false)
   }
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    const response = await exportTuitionAssistanceFn('xlsx', {
+    const response = await exportServiceFundFn('xlsx', {
       idKecamatan: kecamatan,
       idKelurahan: kelurahan,
-      year,
-      status,
-      event,
-      q
+      name: q,
+      assistance: type
     })
     if (response.success) {
       void alert({
@@ -158,184 +165,98 @@ const DataPppks = () => {
         submitText: 'Oke',
         variant: 'success'
       })
+      setIsLoadingExport(false)
     }
-    setIsLoadingExport(false)
-  }
-  const handleReset = () => {
-    navigate('/data-penerima/rehabsos/pppks')
-    forms.reset({
-      q: '',
-      kecamatan: '',
-      kelurahan: '',
-      year: '',
-      status: '',
-      event: '',
-      university: ''
-    })
   }
 
-  useDisableBodyScroll(isFetching)
-
-  if (isLoading && isLoadingTuition) return <Loading />
+  if (isLoading && isLoadingServiceFund && isLoadingGetme) return <Loading />
 
   return (
     <Container>
       {(isFetching || isLoadingExport) && <Loading />}
-      <h1 className="font-bold text-xl ">Penanganan Pemerlu Pelayanan Kesejahteraan Sosial (PPPKS)</h1>
+      <Title>Penanganan Pemerlu Pelayanan Kesejahteraan Sosial</Title>
       <Form {...forms}>
-        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="flex flex-row justify-between items-center gap-5 mt-5">
-            <div className="flex-1 ">
+        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-[18px]">
+          <section>
+            <div className="grid grid-cols-2  gap-y-5  gap-x-5 mt-5">
               <FormField
                 name="q"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama/ NIK" />
+                      <Input {...field} value={field.value ?? ''} placeholder="Cari berdasarkan NIK atau Nama" />
                     </FormControl>
                   </FormItem>
                 )}
               />
             </div>
-          </div>
-          <div className="grid grid-cols-2 gap-x-5 gap-y-5 ">
-            <FormField
-              name="kecamatan"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <SearchSelect
-                      selected={field.value}
-                      onChange={field.onChange}
-                      width="w-[380px]"
-                      placeholder="Pilih Kecamatan"
-                      options={
-                        listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
-                      }
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="kelurahan"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <SearchSelect
-                      selected={field.value}
-                      onChange={field.onChange}
-                      disabled={!areaLevel3 && !kecamatan}
-                      width="w-[380px]"
-                      placeholder="Pilih Kelurahan"
-                      options={
-                        listKelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []
-                      }
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
-            <FormField
-              name="event"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <Select onValueChange={field.onChange} value={field.value}>
+            <div className="grid grid-cols-3 gap-y-5  gap-x-5 mt-5">
+              <FormField
+                name="kecamatan"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Jenis Event" />
-                      </SelectTrigger>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        width="w-[380px]"
+                        placeholder="Pilih Kecamatan"
+                        options={
+                          listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
+                        }
+                      />
                     </FormControl>
-                    <SelectContent>
-                      {listEvent?.data.map((item, index) => (
-                        <SelectItem key={index} value={item.id}>
-                          {item.type.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="year"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Pengajuan" />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="status"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <Select onValueChange={field.onChange} value={field.value}>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="kelurahan"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Status Pencairan" />
-                      </SelectTrigger>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        disabled={!areaLevel3 && !kecamatan}
+                        width="w-[380px]"
+                        placeholder="Pilih Kelurahan"
+                        options={
+                          listKelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []
+                        }
+                      />
                     </FormControl>
-                    <SelectContent>
-                      <SelectItem value="pending">Ditunda</SelectItem>
-                      <SelectItem value="processed">Diproses</SelectItem>
-                      <SelectItem value="disbursed">Dicairkan</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="university"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <SearchSelect
-                      selected={field.value}
-                      onChange={field.onChange}
-                      width="w-[380px]"
-                      placeholder="Pilih Perguruan Tinggi"
-                      options={
-                        universities?.map((university) => ({ label: university.name, value: university.id })) ?? []
-                      }
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
+                  </FormItem>
+                )}
+              />
+             
+            </div>
+          </section>
+
           <section className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Button
                 type="button"
                 className="gap-2 border-none rounded-lg"
-                onClick={() => navigate('/data-penerima/linjamsos/bbp/create')}
+                onClick={() => navigate('/data-penerima/rehabsos/izin-operasi-lks/create')}
               >
                 <HiPlus className="text-lg" />
                 <span>Tambah Data</span>
               </Button>
-              {tuitions?.data?.length !== 0 ? (
+              {serviceFunds?.data?.length !== 0 && (
                 <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
-              ) : null}
+              )}
             </div>
-            <div className="flex gap-3">
+            <div className="flex items-center gap-3">
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
                 <HiArrowPath className="text-lg" />
                 <span>Reset</span>
               </Button>
-              <Button>
-                <HiMagnifyingGlass className="w-4 h-4 py" />
-                <p className="font-bold text-sm text-white ml-3 w-max">Cari Data</p>
+              <Button className="gap-2 border-none rounded-lg" type="submit">
+                <HiMagnifyingGlass className="text-lg" />
+                <span>Cari Data</span>
               </Button>
             </div>
           </section>
@@ -343,56 +264,51 @@ const DataPppks = () => {
       </Form>
       <section className="border rounded-xl mt-5 overflow-hidden">
         <Table>
-          <TableHeader className="bg-[#FFFFFF]">
-            <TableRow>
+          <TableHeader className="bg-white">
+          <TableRow>
               <TableHead className="text-[#534D59] font-bold text-[15px]">No .</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">No.KK</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kelamin</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">TTL</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Foto</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat KK</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat Domisili</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">No.HP</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Keterangan</TableHead>
-            </TableRow>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Diupdate</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
+            </TableRow>
           </TableHeader>
           <TableBody>
-            {tuitions?.data?.length !== 0 ? (
-              tuitions?.data.map((item, index) => (
+            {serviceFunds?.data?.length !== 0 ? (
+              serviceFunds?.data.map((item, index) => (
                 <TableRow key={item.id}>
-                  <TableCell className="text-left bg-[#F9FAFC]">
-                    {(tuitions.meta.currentPage - 1) * tuitions.meta.perPage + index + 1}
-                  </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.name ?? '-'}
+                    {(serviceFunds.meta.currentPage - 1) * serviceFunds.meta.perPage + index + 1}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.identityNumber ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.identityNumber ?? '-'}
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.beneficiary.name}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {item.beneficiary.address.fullAddress}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application?.beneficiary?.gender ? item.application.beneficiary.gender : '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.birthPlace ?? '-'},{' '}
-                    {item.application?.beneficiary?.birthDate ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center"></TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.address.areaLevel4?.name ?? '-'},{' '}
-                    {item.application?.beneficiary?.address.areaLevel3?.name ?? '-'}
+                    {item.beneficiary.address.areaLevel4?.name}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application?.beneficiary?.address.fullAddress ?? '-'},{' '}
-                    {item.application?.beneficiary?.address.areaLevel4?.name ?? '-'},{' '}
-                    {item.application?.beneficiary?.address.areaLevel3?.name ?? '-'}
+                    {item.beneficiary.address.areaLevel3?.name}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application.phoneNumber ?? '-'}
+                    {item?.assistanceAmount ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {formatToView(item.updatedAt) ?? '-'}
+                  </TableCell>
+                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                    {isEnableDelete ? (
+                      <Action
+                        onDetail={() => showDetail(item.id)}
+                        onDelete={() => handleDelete(item.id)}
+                        onEdit={() => navigate(`/data-penerima/rehabos/izin-operasi-lks/create/${item.id}`)}
+                      />
+                    ) : (
+                      <Action onDetail={() => showDetail(item.id)} />
+                    )}
                   </TableCell>
                 </TableRow>
               ))
@@ -406,117 +322,82 @@ const DataPppks = () => {
           </TableBody>
         </Table>
       </section>
-      {(tuitions?.meta?.total as number) > 30 ? (
+      {(serviceFunds?.meta?.total as number) > 30 ? (
         <Pagination
           currentPage={page !== '' ? parseInt(page) : 1}
-          totalCount={tuitions?.meta.total as number}
+          totalCount={serviceFunds?.meta.total as number}
           pageSize={30}
           onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
         />
       ) : null}
       <Modal isShow={isShow} className="md:max-w-4xl">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data BBP</h3>
-          <p className="text-sm text-[#A1A1A1]">View Data Detail Data BBP</p>
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data DJPM</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data DJPM</p>
         </Modal.Header>
-        {isLoadingTuition && <Loading />}
-        <div className="grid grid-cols-3 gap-5">
+        {isLoadingServiceFund && <Loading />}
+        <div className="grid grid-cols-3 gap-y-5">
           <div>
-            <p className="text-sm font-bold">Nama Mahasiswa</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.name ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Email</p>
-            <p className="text-base capitalize">{tuition?.application.email ?? '-'}</p>
+            <p className="text-sm font-bold">Nama</p>
+            <p className="text-base capitalize">{serviceFund?.beneficiary.name ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">NIK</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.identityNumber ?? '-'}</p>
+            <p className="text-base capitalize">{serviceFund?.beneficiary.identityNumber ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">No. KK</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.familyCardNumber ?? '-'}</p>
+            <p className="text-base capitalize">{serviceFund?.beneficiary.familyCardNumber ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Jenis Bantuan DJPM</p>
+            <p className="text-base capitalize">{serviceFund?.serviceType.name ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">Kecamatan</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.address.areaLevel3?.name ?? '-'}</p>
+            <p className="text-base capitalize">{serviceFund?.beneficiary.address.areaLevel3?.name ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">Kelurahan</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.address.areaLevel4?.name ?? '-'}</p>
+            <p className="text-base capitalize">{serviceFund?.beneficiary.address.areaLevel4?.name ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">Alamat Lengkap</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.address.fullAddress ?? '-'}</p>
+            <p className="text-base capitalize">{serviceFund?.beneficiary.address.fullAddress ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Pekerjaan</p>
+            <p className="text-base capitalize">{serviceFund?.beneficiary.occupation ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
             <p className="text-base capitalize">
-              {tuition?.application?.beneficiary.birthPlace ?? '-'} /{' '}
-              {tuition?.application?.beneficiary.birthDate ?? '-'}
+              {serviceFund?.beneficiary.birthPlace} / {serviceFund?.beneficiary.birthDate ?? '-'}
             </p>
           </div>
           <div>
-            <p className="text-sm font-bold">Usia</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.age ?? '-'}</p>
+            <p className="text-sm font-bold">No.Telepon</p>
+            <p className="text-base capitalize">{serviceFund?.phoneNumber ?? '-'}</p>
           </div>
           <div>
-            <p className="text-sm font-bold">Jenis Bantuan</p>
-            <p className="text-base capitalize">{tuition?.application.event.type.name ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Estimasi</p>
-            <p className="text-base capitalize">
-              {tuition?.application.event.startDate ?? '-'}-{tuition?.application.event.endDate ?? '-'}
-            </p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Batch</p>
-            <p className="text-base capitalize">{tuition?.application.event.batch ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Universitas</p>
-            <p className="text-base capitalize">{tuition?.application.university?.name ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Program Studi</p>
-            <p className="text-base capitalize">{tuition?.application.studyProgram.name ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Semester</p>
-            <p className="text-base capitalize">{tuition?.application.semester ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">IPK</p>
-            <p className="text-base capitalize">{tuition?.application.gpa ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Uang Kuliah</p>
-            <p className="text-base capitalize">{tuition?.application.tuitionFee ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Nomor Rekening</p>
-            <p className="text-base capitalize">{tuition?.application.bankAccNumber ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Nama Rekening</p>
-            <p className="text-base capitalize">{tuition?.application.bankAccName ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Status Pengajuan</p>
-            <p className="text-base capitalize">{tuition?.application.application_status ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Jumlah Bantuan</p>
-            <p className="text-base capitalize">{tuition?.assistanceAmount ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Status Pencairan</p>
-            <p className="text-base capitalize">{tuition?.disbursementStatus ?? '-'}</p>
+            <p className="text-sm font-bold">Status DTKS</p>
+            <p className="text-base capitalize">{serviceFund?.beneficiary.isDtks ? 'DTKS' : 'Tidak DTKS'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">Tahun Anggaran</p>
-            <p className="text-base capitalize">{tuition?.budgetYear ?? '-'}</p>
+            <p className="text-base capitalize">{serviceFund?.budgetYear ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Nama Rekening</p>
+            <p className="text-base capitalize">{serviceFund?.bankAccountName ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">No.Rekening</p>
+            <p className="text-base capitalize">{serviceFund?.bankAccountNumber ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Nama Bank</p>
+            <p className="text-base capitalize">{serviceFund?.bankBranchName ?? '-'}</p>
           </div>
         </div>
       </Modal>

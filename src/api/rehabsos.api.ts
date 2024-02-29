@@ -5,7 +5,7 @@ import {
   type worshipPlaceFields,
   type kubeFields,
   type pokmasFields
-} from '@/lib/validations/dayasos.validation'
+} from '@/lib/validations/rehabosos.validation'
 import api from './axiosInstance'
 import {
   type IOrganizationGrantAssistance,

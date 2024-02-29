@@ -38,7 +38,7 @@ const DataBSTdisab = () => {
     setBreadcrumbs([
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
-      { url: '/data-penerima/rehabsos/bstdisab', label: 'BSTDisab' }
+      { url: '/data-penerima/rehabsos/bstdisab', label: 'BST Disabilitas' }
     ])
   }, [])
 
