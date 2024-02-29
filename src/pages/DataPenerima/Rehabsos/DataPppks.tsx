@@ -40,8 +40,8 @@ const DataPppks = () => {
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
       { url: '/data-penerima/rehabsos/pppks', label: 'Penanganan Pemerlu Pelayanan Kesejahteraan Sosial' }
-    ])
-  }, [])
+    ])
+}, [])
 
   const navigate = useNavigate()
   const { alert } = useAlert()
@@ -231,7 +231,6 @@ const DataPppks = () => {
                   </FormItem>
                 )}
               />
-             
             </div>
           </section>
 
@@ -274,7 +273,7 @@ const DataPppks = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Diupdate</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
-            </TableRow>
+              </TableRow>
           </TableHeader>
           <TableBody>
             {serviceFunds?.data?.length !== 0 ? (

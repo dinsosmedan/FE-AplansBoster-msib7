@@ -352,6 +352,7 @@ const DataBSTLansia = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Status DTKS</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Update</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -363,35 +364,38 @@ const DataBSTLansia = () => {
                     {(tuitions.meta.currentPage - 1) * tuitions.meta.perPage + index + 1}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.name ?? '-'}
+                    {item.application?.beneficiary?.identityNumber ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
                     {item.application?.beneficiary?.identityNumber ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
+                    {item.application?.beneficiary?.name ?? '-'}
+                  </TableCell>
+                  {/* <TableCell className="text-center bg-[#F9FAFC]">
                     {item.application?.beneficiary?.birthPlace ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                  </TableCell> */}
+                  {/* <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.application?.beneficiary?.birthDate ?? '-'}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application?.beneficiary?.gender ? item.application.beneficiary.gender : '-'}
+                    {/* {item.application?.beneficiary?.gender ? item.application.beneficiary.gender : '-'} */}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
+                  {/* <TableCell className="text-center bg-[#F9FAFC]">
                     {item.application?.beneficiary?.address.fullAddress ?? '-'}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.application?.beneficiary?.address.areaLevel3?.name ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.application?.beneficiary?.address.areaLevel4?.name ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                  {/* <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.application.phoneNumber ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                  </TableCell> */}
+                  {/* <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.budgetYear ?? '-'}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {formatToView(item.updatedAt) ?? '-'}
                   </TableCell>
