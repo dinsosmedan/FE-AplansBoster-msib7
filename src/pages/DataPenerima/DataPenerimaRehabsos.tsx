@@ -41,7 +41,7 @@ const DataPenerimaRehabsos = () => {
         <CardSub
           title={'Penanganan Pemerlu Pelayanan Kesejahteraan Sosial'}
           subTitle={'Handling of Social Welfare Service Need'}
-          href={'/data-penerima/rehabsos/pppks'}
+          href={'/data-penerima/rehabsos/ppks'}
         />
       </div>
     </Container>

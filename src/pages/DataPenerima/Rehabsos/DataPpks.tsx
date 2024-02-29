@@ -31,7 +31,7 @@ interface FormValues {
   budget_year: string
 }
 
-const DataPppks = () => {
+const DataPpks = () => {
   useTitle('Data Penerima')
   const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
 
@@ -39,7 +39,7 @@ const DataPppks = () => {
     setBreadcrumbs([
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
-      { url: '/data-penerima/rehabsos/pppks', label: 'Penanganan Pemerlu Pelayanan Kesejahteraan Sosial' }
+      { url: '/data-penerima/rehabsos/ppks', label: 'PPKS' }
     ])
   }, [])
 
@@ -92,7 +92,7 @@ const DataPppks = () => {
   useDisableBodyScroll(isFetching || isLoadingExport || isLoadingServiceFund || isLoading)
 
   const handleReset = () => {
-    navigate('/data-penerima/rehabsos/izin-operasi-lks')
+    navigate('/data-penerima/rehabsos/ppks')
     forms.reset()
   }
 
@@ -404,4 +404,4 @@ const DataPppks = () => {
     </Container>
   )
 }
-export default DataPppks
+export default DataPpks
