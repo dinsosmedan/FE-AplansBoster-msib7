@@ -356,6 +356,7 @@ const DataBSTdisab = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Status</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Update</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -392,6 +393,9 @@ const DataBSTdisab = () => {
                     {item.application?.beneficiary?.address.areaLevel4?.name ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {formatToView(item.updatedAt) ?? '-'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action onDetail={() => showDetail(item.id)} />

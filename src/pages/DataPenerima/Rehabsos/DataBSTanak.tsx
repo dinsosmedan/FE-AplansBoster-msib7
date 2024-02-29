@@ -275,6 +275,7 @@ const DataBSTanak = () => {
                 <TableHead className="text-[#534D59] font-bold text-[15px]">kecamatan</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Update</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
               </TableRow>
             </TableHeader>
@@ -307,6 +308,9 @@ const DataBSTanak = () => {
                     <TableCell className="text-center bg-[#F9FAFC]" position="center">
                       {formatToView(item.updatedAt) ?? '-'}
                     </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {formatToView(item.updatedAt) ?? '-'}
+                  </TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       {isEnableDelete ? (
                         <Action

@@ -42,7 +42,6 @@ const DataPpks = () => {
       { url: '/data-penerima/rehabsos/ppks', label: 'PPKS' }
     ])
   }, [])
-
   const navigate = useNavigate()
   const { alert } = useAlert()
 
@@ -231,7 +230,6 @@ const DataPpks = () => {
                   </FormItem>
                 )}
               />
-             
             </div>
           </section>
 
@@ -274,7 +272,7 @@ const DataPpks = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Diupdate</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
-            </TableRow>
+              </TableRow>
           </TableHeader>
           <TableBody>
             {serviceFunds?.data?.length !== 0 ? (
