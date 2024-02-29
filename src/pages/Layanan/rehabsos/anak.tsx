@@ -1,430 +1,421 @@
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import useTitle from '@/hooks/useTitle'
-import { hibahValidation, type hibahFields } from '@/lib/validations/dayasos.validation'
-import {
-  useCreateOrganizationGrantAssistance,
-  useGetKecamatan,
-  useGetKelurahan,
-  useGetOrganizationGrantAssistanceById,
-  useUpdateOrganizationGrantAssistance
-} from '@/store/server'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { Container, Loading, SearchSelect } from '@/components'
+import Container from '@/components/atoms/Container'
 import { useNavigate, useParams } from 'react-router-dom'
-import * as React from 'react'
 import { useTitleHeader } from '@/store/client'
-import { useNotFound } from '@/hooks'
 
-const anak = () => {
+import * as React from 'react'
+import { tuitionAssistanceValidation, type tuitionAssistanceFields } from '@/lib/validations/linjamsos.validation'
+import { HiMagnifyingGlass } from 'react-icons/hi2'
+import {
+  useCreateTuitionAssistance,
+  useGetBank,
+  useGetBeneficaryByNIK,
+  useGetEvent,
+  useGetStudyPrograms,
+  useGetTuitionAssistanceID,
+  useGetUniversities,
+  useUpdateTuitionAssistance
+} from '@/store/server'
+import { useNotFound, useToastNik } from '@/hooks'
+import { Loading, SearchSelect } from '@/components'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+const Anak = () => {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
 
-  useTitle(`${id ? 'Ubah' : 'Tambah'} Data`)
-  const setBreadcrumb = useTitleHeader((state) => state.setBreadcrumbs)
+  useTitle(`${id ? ' Ubah' : 'Tambah'} Data`)
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
 
   React.useEffect(() => {
-    setBreadcrumb([
+    setBreadcrumbs([
       { url: '/data-penerima', label: 'Data Penerima' },
-      { label: 'rehabsos', url: '/data-penerima/dayasos' },
-      { label: 'BHO', url: '/data-penerima/dayasos/bho' }
+      { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
+      { url: '/data-penerima/rehabsos/anak', label: 'BST Anak Di Luar Panti' }
     ])
   }, [])
+  const [NIK, setNIK] = React.useState('')
 
-  const forms = useForm<hibahFields>({
+  const forms = useForm<tuitionAssistanceFields>({
     mode: 'onTouched',
-    resolver: yupResolver(hibahValidation),
-    defaultValues: {
-      name: '',
-      contactNumber: '',
-      areaLevel3: '',
-      areaLevel4: '',
-      address: '',
-      chairmanIdentityNumber: '',
-      chairmanName: '',
-      secretaryIdentityNumber: '',
-      secretaryName: '',
-      treasurerIdentityNumber: '',
-      treasurerName: '',
-      bankAccountNumber: '',
-      bankName: '',
-      bankAccountAddress: '',
-      budgetYear: '',
-      note: ''
-    }
+    resolver: yupResolver(tuitionAssistanceValidation)
   })
 
-  const areaLevel3 = forms.watch('areaLevel3')
-  const { data: kecamatan } = useGetKecamatan()
-  const { data: kelurahan } = useGetKelurahan(areaLevel3 ?? '')
-  const { mutate: createHibah, isLoading } = useCreateOrganizationGrantAssistance()
+  const university = forms.watch('universityId')
+  const studyProgram = forms.watch('studyProgramId')
+  const bank = forms.watch('bank')
 
-  const { data: hibah, isSuccess, isLoading: isLoadingHibah, isError } = useGetOrganizationGrantAssistanceById(id)
-  const { mutate: updateHibah, isLoading: isLoadingUpdate } = useUpdateOrganizationGrantAssistance()
+  const { data: beneficiary, refetch, isLoading, isError } = useGetBeneficaryByNIK(NIK, false)
+  const { data: events } = useGetEvent()
+  const { data: universities } = useGetUniversities()
+  const { data: studyPrograms } = useGetStudyPrograms(university)
+  const { data: bankLists } = useGetBank()
 
-  useNotFound(isError)
+  const { mutate: updateTuitionAssistance, isLoading: isLoadingUpdate } = useUpdateTuitionAssistance()
+  const { mutate: createTuitionAssistance, isLoading: isLoadingCreate } = useCreateTuitionAssistance()
+  const {
+    data: tuitionAssistance,
+    isLoading: isLoadingGet,
+    isError: isErrorGet,
+    isSuccess: isSuccessGet
+  } = useGetTuitionAssistanceID(id as string)
+
+  useNotFound(isErrorGet)
+
+  useToastNik({
+    successCondition: !isLoading && beneficiary != null,
+    onSuccess: () => forms.setValue('beneficiary', beneficiary?.id as string),
+    notFoundCondition: isError,
+    notRegisteredCondition: forms.getValues('beneficiary') === '' && NIK !== '' && forms.formState.isSubmitted
+  })
 
   React.useEffect(() => {
-    if (isSuccess) {
+    if (bank) {
+      forms.setValue('bankAccountName', bankLists?.find((item) => item.id === bank)?.name as string)
+    }
+    if (studyProgram) {
+      forms.setValue('studyProgramName', studyPrograms?.find((item) => item.id === studyProgram)?.name as string)
+    }
+    if (university) {
+      forms.setValue('universityName', universities?.find((item) => item.id === university)?.name as string)
+    }
+  }, [bank, studyProgram, university])
+
+  React.useEffect(() => {
+    if (isSuccessGet) {
       forms.reset({
-        name: hibah.name,
-        address: hibah.address.fullAddress,
-        areaLevel3: hibah.address.areaLevel3?.id,
-        areaLevel4: hibah.address.areaLevel4?.id,
-        chairmanName: hibah.chairmanName,
-        chairmanIdentityNumber: hibah.chairmanIdentityNumber,
-        secretaryName: hibah.secretaryName,
-        secretaryIdentityNumber: hibah.secretaryIdentityNumber,
-        treasurerName: hibah.treasurerName,
-        treasurerIdentityNumber: hibah.treasurerIdentityNumber,
-        contactNumber: hibah.contactNumber,
-        bankAccountNumber: hibah.bankAccountNumber,
-        bankName: hibah.bankName,
-        bankAccountName: hibah.bankAccountName,
-        bankAccountAddress: hibah.bankAccountAddress,
-        requestedAmount: hibah.requestedAmount,
-        approvedAmount: hibah.aprrovedAmount,
-        firstDisbursementAmount: hibah.firstDisbursementAmount,
-        secondDisbursementAmount: hibah.secondDisbursementAmount,
-        note: hibah.note,
-        budgetYear: hibah.budgetYear
+        beneficiary: tuitionAssistance.application.beneficiary.id,
+        event: tuitionAssistance.application.event.id,
+        phoneNumber: tuitionAssistance.application.phoneNumber,
+        email: tuitionAssistance.application.email,
+        universityId: tuitionAssistance.application.university.id,
+        universityName: tuitionAssistance.application.university.name,
+        studyProgramId: tuitionAssistance.application.studyProgram.id,
+        studyProgramName: tuitionAssistance.application.studyProgram.name,
+        semester: tuitionAssistance.application.semester,
+        gpa: tuitionAssistance.application.gpa,
+        tuitionFee: tuitionAssistance.application.tuitionFee as number,
+        bankAccountNumber: tuitionAssistance.application.bankAccNumber,
+        bankAccountName: tuitionAssistance.application.bankAccName,
+        bank: tuitionAssistance.application.id
       })
     }
-  }, [isSuccess])
+  }, [isSuccessGet])
 
   const onSuccess = () => {
     forms.reset()
-    navigate('/data-penerima/dayasos/bho')
+    setNIK('')
+    navigate('/data-penerima/rehabsos/anak')
   }
 
-  const onSubmit = async (values: hibahFields) => {
-    if (!id) return createHibah(values, { onSuccess })
-    updateHibah({ id, fields: values }, { onSuccess })
+  const onSubmit = async (values: tuitionAssistanceFields) => {
+    if (!id) return createTuitionAssistance(values, { onSuccess })
+    updateTuitionAssistance({ id, fields: values }, { onSuccess })
   }
 
-  if (isLoadingHibah) return <Loading />
-
-  console.log(kecamatan, kelurahan)
+  if (isLoadingGet) return <Loading />
 
   return (
     <Container className="px-[47px]">
       <div className="w-full text-center">
-        <p className="text-2xl font-bold">Data Organisasi/Lembaga</p>
+        <p className="text-3xl font-bold">Data Personal</p>
       </div>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="flex flex-row gap-4 pt-5">
-            <div className="w-6/12">
-              <FormField
-                name="name"
+          {!id && (
+            <div className="flex flex-row gap-x-2 gap-y-2">
+              <div className="w-11/12">
+                <FormItem>
+                  <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      value={NIK}
+                      onChange={(e) => setNIK(e.target.value)}
+                      placeholder="Masukkan NIK Masyarakat"
+                    />
+                  </FormControl>
+                </FormItem>
+              </div>
+              <div className="wgrid grid-cols-3 gap-5">
+                <Button
+                  className="w-full gap-3"
+                  type="button"
+                  loading={isLoading}
+                  onClick={async () => await refetch()}
+                >
+                  <HiMagnifyingGlass className="text-lg" />
+                  <span>Cari</span>
+                </Button>
+              </div>
+            </div>
+          )}
+          <div className="flex flex-row gap-4">
+          <div className=" w-6/12">
+          <FormField
+                name="email"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nama Lembaga/Organisasi</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">No. Kartu Keluarga</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Pemohon" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="No. Kartu Keluarga" />
                     </FormControl>
-                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              </div>
+              <div className=" w-6/12"><FormField
+                name="beneficiary"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} hidden className="hidden" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="gpa"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Nama" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              /></div>
+              <div className=" w-6/12">
+              <FormField
+                name="beneficiary"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} hidden className="hidden" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="gpa"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Tempat Lahir</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Tempat Lahir" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              </div>
+          </div>
+          <div className="flex flex-row gap-4">
+          <div className=" w-6/12">
+          <FormField
+                name="email"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Tanggal Lahir</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Tanggal Lahir" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              </div>
+              <div className=" w-6/12"><FormField
+                name="beneficiary"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} hidden className="hidden" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="gpa"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Nama Ayah Kandung</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Nama Ayah Kandung" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              /></div>
+              <div className=" w-6/12">
+              <FormField
+                name="beneficiary"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} hidden className="hidden" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="gpa"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Nama Ibu Kandung</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder=" Nama Ibu Kandung" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              </div>
+          </div>
+          {/* <div className="flex flex-row gap-4">
+            <div className="w-6/12">
+              <FormField
+                name="universityId"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Tanggal Lahir</FormLabel>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        width="w-[560px]"
+                        placeholder="Pilih Perguruan Tinggi"
+                        options={
+                          universities?.map((university) => ({ label: university.name, value: university.id })) ?? []
+                        }
+                      />
+                    </FormControl>
                   </FormItem>
                 )}
               />
             </div>
             <div className="w-6/12">
               <FormField
-                name="contactNumber"
+                name="studyProgramId"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">No. Telepon Lembaga/Organisasi</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">Program Studi</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        type="number"
-                        placeholder="Masukkan No. Telepon Pemohon "
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        width="w-[560px]"
+                        disabled={!university || !studyPrograms}
+                        placeholder="Pilih Prodi"
+                        options={
+                          studyPrograms?.map((studyProgram) => ({
+                            label: studyProgram.name,
+                            value: studyProgram.id
+                          })) ?? []
+                        }
                       />
                     </FormControl>
-                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div> */}
+          <div className="flex flex-row gap-4">
+            <div className="w-full">
+              <FormField
+                name="semester"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Status DKS</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Status DKS" />
+                    </FormControl>
                   </FormItem>
                 )}
               />
             </div>
           </div>
+
           <div className="w-full text-center">
             <p className="text-2xl font-bold">Alamat</p>
           </div>
           <div className="flex flex-row gap-4">
             <div className="w-6/12">
               <FormField
-                name="areaLevel3"
+                name="bank"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
-                    <FormControl>
-                      <SearchSelect
-                        selected={field.value as string}
-                        onChange={field.onChange}
-                        width="w-[560px]"
-                        placeholder="Pilih Kecamatan"
-                        options={kecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []}
-                      />
-                    </FormControl>
-                    <FormMessage />
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Kecamatan" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {bankLists?.map((bank) => (
+                          <SelectItem key={bank.id} value={bank.id}>
+                            {bank.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />
             </div>
-            <div className="w-6/12">
-              <FormField
-                name="areaLevel4"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
-                    <FormControl>
-                      <SearchSelect
-                        selected={field.value as string}
-                        onChange={field.onChange}
-                        disabled={!areaLevel3 || !kelurahan}
-                        width="w-[560px]"
-                        placeholder="Pilih Kelurahan"
-                        options={kelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div>
-            <FormField
-              name="address"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
-                  <FormControl>
-                    <Textarea {...field} value={field.value ?? ''} placeholder="Masukkan Alamat Lengkap Masyarakat." />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="w-full text-center">
-            <p className="text-2xl font-bold">Data Anggota</p>
-          </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-6/12">
-              <FormField
-                name="chairmanIdentityNumber"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">NIK Ketua</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan NIK Ketua" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-6/12">
-              <FormField
-                name="chairmanName"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nama Ketua</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Ketua " />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-6/12">
-              <FormField
-                name="secretaryIdentityNumber"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">NIK Sekretaris</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan NIK Sekretaris" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-6/12">
-              <FormField
-                name="secretaryName"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nama Sekretaris</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Sekretaris " />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-6/12">
-              <FormField
-                name="treasurerIdentityNumber"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">NIK Bendahara</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan NIK Bendahara" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-6/12">
-              <FormField
-                name="treasurerName"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nama Bendahara</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Bendahara " />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="w-full text-center">
-            <p className="text-2xl font-bold">Lainnya</p>
-          </div>
-          <div className="flex flex-row gap-4">
             <div className="w-6/12">
               <FormField
                 name="bankAccountNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">No. Rekening</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan No. Rekening " />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Kelurahan" />
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-6/12">
-              <FormField
-                name="bankName"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nama Bank</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Bank" />
-                    </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
           </div>
           <div className="flex flex-row gap-4">
-            <div className="w-6/12">
+            <div className="w-full">
               <FormField
-                name="bankAccountAddress"
+                name="semester"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Alamat Rekening</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Alamat Rekening" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Alamat Lengkap " />
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-6/12">
-              <FormField
-                name="approvedAmount"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Jumlah Bantuan</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        type="number"
-                        placeholder="Masukkan Jumlah Bantuan "
-                      />
-                    </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
           </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-6/12">
-              <FormField
-                name="budgetYear"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Tahun Anggaran</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Tahun Anggaran" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-6/12">
-              <FormField
-                name="note"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Keterangan</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Keterangan " />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex justify-end gap-4 mt-8">
+          <div className="flex justify-end gap-4">
             <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
               Cancel
             </Button>
-            <Button className="font-bold" loading={isLoading || isLoadingUpdate} type="submit">
-              {id ? 'Update' : 'Submit'}
+            <Button className="font-bold" type="submit" loading={isLoadingCreate || isLoadingUpdate}>
+              {id ? 'Ubah Data' : 'Submit'}
             </Button>
           </div>
         </form>
@@ -433,4 +424,4 @@ const anak = () => {
   )
 }
 
-export default anak
+export default Anak

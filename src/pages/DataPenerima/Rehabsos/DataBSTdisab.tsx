@@ -391,7 +391,7 @@ const DataBSTdisab = () => {
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.application?.beneficiary?.address.areaLevel4?.name ?? '-'}
-                  </TableCell>
+                  </TableCell> 
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">

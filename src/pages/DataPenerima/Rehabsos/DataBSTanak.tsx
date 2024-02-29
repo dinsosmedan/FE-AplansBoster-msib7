@@ -111,7 +111,7 @@ const DataBSTanak = () => {
     await refetch()
   }
   const handleReset = () => {
-    navigate('/data-penerima/linjamsos/pkr')
+    navigate('/data-penerima/rehabsos/anak')
     forms.reset()
   }
   const exportAsCsv = async () => {
@@ -234,7 +234,7 @@ const DataBSTanak = () => {
                 <Button
                   type="button"
                   className="gap-2 border-none rounded-lg"
-                  onClick={() => navigate('/data-penerima/linjamsos/pkr/create')}
+                  onClick={() => navigate('/data-penerima/rehabsos/anak/create')}
                 >
                   <HiPlus className="text-lg" />
                   <p className="w-max">Tambah Data</p>
@@ -316,7 +316,7 @@ const DataBSTanak = () => {
                         <Action
                           onDelete={async () => await handleDelete(item.id)}
                           onDetail={() => showDetail(item.id)}
-                          onEdit={() => navigate(`/data-penerima/linjamsos/pkr/${item.id}`)}
+                          onEdit={() => navigate(`/data-penerima/rehabsos/anak/${item.id}`)}
                         />
                       ) : (
                         <Action onDetail={() => showDetail(item.id)} />

@@ -100,6 +100,7 @@ import DataBSTdisab from './pages/DataPenerima/Rehabsos/DataBSTdisab'
 import DataBSTanak from './pages/DataPenerima/Rehabsos/DataBSTanak'
 import DataPppks from './pages/DataPenerima/Rehabsos/DataPppks'
 import DataLks from './pages/DataPenerima/Rehabsos/DataLks'
+import Anak from './pages/Layanan/rehabsos/Anak'
 
 export default function App() {
   useScrollToTop()
@@ -154,8 +155,8 @@ export default function App() {
                   </Route>
                   <Route path="anak">
                     <Route index element={<DataBSTanak />} />
-                    <Route path="create" element={<Djp />} />
-                    <Route path="create/:id" element={<Djp />} />
+                    <Route path="create" element={<Anak />} />
+                    <Route path="create/:id" element={<Anak />} />
                   </Route>
                   <Route path="pppks">
                     <Route index element={<DataPppks />} />
