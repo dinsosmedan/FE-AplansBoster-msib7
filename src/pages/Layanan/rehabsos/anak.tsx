@@ -158,13 +158,13 @@ const Anak = () => {
           <div className="flex flex-row gap-4">
           <div className=" w-6/12">
           <FormField
-                name="email"
+                name="bankAccountNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">No. Kartu Keluarga</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="No. Kartu Keluarga" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="No. Kartu Keluarga" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -188,7 +188,7 @@ const Anak = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Nama" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Nama" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -212,7 +212,7 @@ const Anak = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Tempat Lahir</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Tempat Lahir" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Tempat Lahir" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -228,13 +228,14 @@ const Anak = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Tanggal Lahir</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Tanggal Lahir" />
+                      <Input {...field} value={field.value ?? ''} type="date" placeholder="Tanggal Lahir" />
                     </FormControl>
                   </FormItem>
                 )}
               />
               </div>
-              <div className=" w-6/12"><FormField
+              <div className=" w-6/12">
+                <FormField
                 name="beneficiary"
                 control={forms.control}
                 render={({ field }) => (
@@ -252,7 +253,7 @@ const Anak = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nama Ayah Kandung</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Nama Ayah Kandung" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Nama Ayah Kandung" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -276,7 +277,7 @@ const Anak = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Nama Ibu Kandung</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder=" Nama Ibu Kandung" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder=" Nama Ibu Kandung" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -396,14 +397,14 @@ const Anak = () => {
           </div>
           <div className="flex flex-row gap-4">
             <div className="w-full">
-              <FormField
-                name="semester"
+            <FormField
+                name="bankAccountNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Alamat Lengkap " />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Alamat Lengkap" />
                     </FormControl>
                   </FormItem>
                 )}

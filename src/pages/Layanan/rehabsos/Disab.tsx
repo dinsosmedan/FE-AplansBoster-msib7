@@ -20,8 +20,9 @@ import { useTitleHeader } from '@/store/client'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNotFound, useToastNik, useTitle } from '@/hooks'
 import { djpmValidation, type djpmFields } from '@/lib/validations/dayasos.validation'
+import DataBSTdisab from '@/pages/DataPenerima/Rehabsos/DataBSTdisab'
 
-const Lansia = () => {
+const BSTdisab = () => {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
 
@@ -32,7 +33,7 @@ const Lansia = () => {
     setBreadcrumbs([
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/rehabos', label: 'Rehabsos' },
-      { url: '/data-penerima/rehabsos/bstlansia', label: 'BST Lansia' }
+      { url: '/data-penerima/rehabsos/bstdisab', label: 'BST Disabilitas' }
     ])
   }, [])
 
@@ -93,9 +94,8 @@ const Lansia = () => {
 
   const onSuccess = () => {
     forms.reset()
-    navigate('/data-penerima/rehabsos/bstlansia')
+    navigate('/data-penerima/rehabsos/bstdisab')
   }
-
   const onSubmit = async (values: djpmFields) => {
     if (!id) return createServiceFund(values, { onSuccess })
     await updateServiceFund({ id, fields: values }, { onSuccess })
@@ -107,6 +107,10 @@ const Lansia = () => {
     <Container className="py-10 px-[47px]">
       <section className="w-full mx-auto">
         <p className="text-2xl font-bold text-center mb-3">Data Personal</p>
+        <div className="flex flex-row gap-4">
+            <div className="w-6/12">
+            </div>
+            </div>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col">
             {!id && (
@@ -128,73 +132,85 @@ const Lansia = () => {
                 </div>
               </div>
             )}
-            <FormField
-              name="phoneNumber"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem className="mt-5 mb-8">
-                  <FormLabel className="font-semibold dark:text-white">No. Telepon</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan No. Telepon" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <p className="text-2xl font-bold text-center mb-6">Data Bank</p>
-            <FormField
-              name="beneficiary"
-              control={forms.control}
-              render={({ field }) => (
-                <Input {...field} value={field.value ?? ''} type="text" hidden className="hidden" />
-              )}
-            />
-            <div className="grid grid-cols-3 gap-5">
+            <div className="grid grid-cols-2 gap-6">
               <FormField
-                name="bankAccountNumber"
+                name="phoneNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">No. Rekening Bank Sumut</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">No. Kartu Keluarga</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan No. Rekening" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan No. KK Masyarakat" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+                />
               <FormField
                 name="bankAccountName"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nama Rekening Bank Sumut</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Rekening" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Masyarakat" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+            </div>
+               <div className="grid grid-cols-2 gap-5">
               <FormField
-                name="bankBranchName"
+                name="dutyAddress"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Kantor Cabang Bank Sumut</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">Tempat Lahir</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        type="text"
-                        placeholder="Masukkan Kantor Cabang Rekening"
-                      />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tempat Lahir" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+                />
+              <FormField
+                name="budgetYear"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Tanggal Lahir</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} type="date" placeholder="Masukkan Tanggal Lahir" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
+            </div>
+            <div className="grid grid-cols-2 gap-5">
+            <FormField
+                name="status"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Jenis Kelamin</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Jenis Kelamin" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="aktif">Perempuan</SelectItem>
+                        <SelectItem value="non_aktif">Laki-laki</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+                 <FormField
                 name="status"
                 control={forms.control}
                 render={({ field }) => (
@@ -215,96 +231,57 @@ const Lansia = () => {
                   </FormItem>
                 )}
               />
-              <FormField
-                name="assistanceAmount"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nominal Bantuan</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        type="number"
-                        placeholder="Masukkan Nominal Bantuan"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="budgetYear"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Tahun anggaran</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Tahun Anggaran" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <p className="text-2xl font-bold text-center mb-5 mt-12">Data Tugas</p>
-            <div className="grid grid-cols-3 gap-5">
+                   </div>
+            <p className="text-2xl font-bold text-center mb-5 mt-12">Alamat</p>
+            <div className="grid grid-cols-2 gap-5">
               <FormField
                 name="dutyPlace"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Tempat Tugas</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Rekening" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="kecamatan" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <FormField
-                name="dutyAddress"
+                name="beneficiary"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Alamat Tugas</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         value={field.value ?? ''}
                         type="text"
-                        placeholder="Masukkan Alamat Lengkap Tugas"
+                        placeholder="Kelurahan"
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
-                name="serviceType"
+              </div>
+              <div className="flex flex-row gap-4">
+            <div className="w-full">
+            <FormField
+                name="bankAccountNumber"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Jenis Layanan</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pliih Jenis Layanan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {serviceTypes?.map((serviceType) => (
-                          <SelectItem value={serviceType.id} key={serviceType.id}>
-                            {serviceType.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
+                    <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Alamat Lengkap" />
+                    </FormControl>
                   </FormItem>
                 )}
               />
             </div>
+          </div>
 
             <div className="flex justify-end gap-4 mt-8">
               <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
@@ -321,4 +298,4 @@ const Lansia = () => {
   )
 }
 
-export default Lansia
+export default BSTdisab
