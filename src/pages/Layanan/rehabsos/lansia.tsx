@@ -1,117 +1,144 @@
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Container, Loading } from '@/components'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { useFieldArray, useForm } from 'react-hook-form'
+import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-
-import * as React from 'react'
-import { useForm } from 'react-hook-form'
-import { HiMagnifyingGlass } from 'react-icons/hi2'
-import { useNavigate, useParams } from 'react-router-dom'
-
+import { Textarea } from '@/components/ui/textarea'
+import useTitle from '@/hooks/useTitle'
+import { HiPlus } from 'react-icons/hi'
+import { Container, Loading, SearchSelect } from '@/components'
+import { kubeValidation, type kubeFields } from '@/lib/validations/dayasos.validation'
 import {
-  useCreateServiceFund,
+  useCreateBusinessGroup,
   useGetBeneficaryByNIK,
-  useGetServiceFund,
-  useGetServiceTypes,
-  useUpdateServiceFund
+  useGetBusinessGroupById,
+  useGetKecamatan,
+  useGetKelurahan,
+  useUpdateJointBusiness
 } from '@/store/server'
-import { useTitleHeader } from '@/store/client'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useNotFound, useToastNik, useTitle } from '@/hooks'
-import { djpmValidation, type djpmFields } from '@/lib/validations/dayasos.validation'
+import { HiTrash } from 'react-icons/hi2'
+import { cn } from '@/lib/utils'
+import * as React from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useTitleHeader } from '@/store/client'
+import { useNotFound, useToastNik } from '@/hooks'
 
 const Lansia = () => {
   const navigate = useNavigate()
-  const { id } = useParams<{ id: string }>()
 
-  useTitle(`${id ? ' Ubah' : 'Tambah'} Data`)
-  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+  const { id } = useParams<{ id: string }>()
+  useTitle(`${id ? 'Ubah' : 'Tambah'} Data`)
+  const setBreadcrumb = useTitleHeader((state) => state.setBreadcrumbs)
 
   React.useEffect(() => {
-    setBreadcrumbs([
+    setBreadcrumb([
       { url: '/data-penerima', label: 'Data Penerima' },
-      { url: '/data-penerima/rehabos', label: 'Rehabsos' },
+      { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
       { url: '/data-penerima/rehabsos/bstlansia', label: 'BST Lansia' }
     ])
   }, [])
 
   const [NIK, setNIK] = React.useState('')
+  const [index, setIndex] = React.useState(0)
 
-  const forms = useForm<djpmFields>({
+  const forms = useForm<kubeFields>({
     mode: 'onTouched',
-    resolver: yupResolver(djpmValidation),
+    resolver: yupResolver(kubeValidation),
     defaultValues: {
-      bankAccountNumber: '',
-      bankAccountName: '',
-      bankBranchName: '',
-      status: '',
+      businessName: '',
+      businessType: '',
+      businessAddress: '',
+      areaLevel3: '',
+      areaLevel4: '',
+      assistanceAmount: 0,
       budgetYear: '',
-      dutyAddress: '',
-      serviceType: '',
-      beneficiary: '',
-      phoneNumber: '',
-      dutyPlace: ''
+      status: '',
+      note: '',
+      members: [{ beneficiary: '', position: '', nik: '' }]
     }
   })
 
-  const { mutate: createServiceFund, isLoading: isLoadingCreate } = useCreateServiceFund()
-  const { data: beneficiary, refetch, isLoading, isError } = useGetBeneficaryByNIK(NIK, false)
-  const { mutateAsync: updateServiceFund, isLoading: isLoadingUpdate } = useUpdateServiceFund()
-  const { data: serviceTypes } = useGetServiceTypes()
-  const {
-    data: serviceFund,
-    isSuccess,
-    isLoading: isLoadingServiceFund,
-    isError: isErrorServiceFund
-  } = useGetServiceFund(id)
+  const areaLevel3 = forms.watch('areaLevel3')
+  const { data: kecamatan } = useGetKecamatan()
+  const { data: kelurahan } = useGetKelurahan(areaLevel3 ?? '')
+  const { data: beneficiary, refetch, isLoading, isError: isErrorBeneficary } = useGetBeneficaryByNIK(NIK, false)
+  const { mutate: createKube, isLoading: isLoadingCreate } = useCreateBusinessGroup()
+  const { mutate: UpdateJointBusiness, isLoading: isLoadingUpdate } = useUpdateJointBusiness()
+  const { data: BusinessGroup, isSuccess, isLoading: isLoadingBusinessGroupById, isError } = useGetBusinessGroupById(id)
 
-  useNotFound(isErrorServiceFund)
+  useNotFound(isError)
 
   useToastNik({
     successCondition: !isLoading && beneficiary != null,
-    onSuccess: () => forms.setValue('beneficiary', beneficiary?.id as string),
-    notFoundCondition: isError,
-    notRegisteredCondition: forms.getValues('beneficiary') === '' && NIK !== '' && forms.formState.isSubmitted
+    onSuccess: () => forms.setValue(`members.${index}.beneficiary`, beneficiary?.id as string),
+    notFoundCondition: isErrorBeneficary,
+    notRegisteredCondition:
+      forms.getValues(`members.${index}.beneficiary`) === '' && NIK !== '' && forms.formState.isSubmitted
   })
 
   React.useEffect(() => {
+    if (NIK !== '') void refetch()
+  }, [NIK])
+
+  React.useEffect(() => {
     if (isSuccess) {
-      forms.setValue('beneficiary', serviceFund?.beneficiary?.id)
-      forms.setValue('phoneNumber', serviceFund?.phoneNumber)
-      forms.setValue('serviceType', serviceFund?.serviceType?.id)
-      forms.setValue('dutyPlace', serviceFund?.dutyPlace)
-      forms.setValue('dutyAddress', serviceFund?.dutyAddress)
-      forms.setValue('bankAccountNumber', serviceFund?.bankAccountNumber)
-      forms.setValue('bankAccountName', serviceFund?.bankAccountName)
-      forms.setValue('bankBranchName', serviceFund?.bankBranchName)
-      forms.setValue('status', serviceFund?.status as string)
-      forms.setValue('budgetYear', serviceFund?.budgetYear)
-      forms.setValue('assistanceAmount', serviceFund?.assistanceAmount as number)
+      forms.reset({
+        businessName: BusinessGroup?.businessName,
+        businessType: BusinessGroup?.businessType,
+        areaLevel3: BusinessGroup?.businessAddress?.areaLevel3?.id as string,
+        areaLevel4: BusinessGroup?.businessAddress?.areaLevel4?.id as string,
+        budgetYear: BusinessGroup?.budgetYear,
+        note: BusinessGroup?.note,
+        status: BusinessGroup?.status,
+        businessAddress: BusinessGroup?.businessAddress.fullAddress,
+        members: BusinessGroup?.members?.map((member: any) => {
+          return { beneficiary: member.id, nik: member.identityNumber, position: member.position }
+        })
+      })
     }
-  }, [isSuccess, serviceFund])
+  }, [isSuccess, BusinessGroup])
 
   const onSuccess = () => {
     forms.reset()
-    navigate('/data-penerima/rehabsos/bstlansia')
+    navigate('/data-penerima/dayasos/kube')
   }
 
-  const onSubmit = async (values: djpmFields) => {
-    if (!id) return createServiceFund(values, { onSuccess })
-    await updateServiceFund({ id, fields: values }, { onSuccess })
+  const onSubmit = async (values: kubeFields) => {
+    const newData = {
+      ...values,
+      members: values?.members?.map((member) => {
+        const { nik, ...newMember } = member
+        return newMember
+      })
+    }
+
+    if (!id) return createKube(newData, { onSuccess })
+    UpdateJointBusiness({ id, fields: newData }, { onSuccess })
   }
 
-  if (isLoadingServiceFund) return <Loading />
+  const handleFetchNik = async (index: number) => {
+    const nik = forms.getValues(`members.${index}.nik`)
+    if (nik != null) {
+      setNIK(nik)
+      setIndex(index)
+    }
+  }
+
+  if (isLoadingBusinessGroupById) return <Loading />
 
   return (
     <Container className="py-10 px-[47px]">
-      <section className="w-full mx-auto">
-        <p className="text-2xl font-bold text-center mb-3">Data Personal</p>
-        <Form {...forms}>
-          <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col">
-            {!id && (
-              <div className="flex flex-row justify-between gap-3">
-                <FormItem className="w-full">
+      <div className="w-full text-center">
+        <p className="text-2xl font-bold">Data Personal</p>
+      </div>
+      <Form {...forms}>
+        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
+              <FormField
+                name="businessName"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="w-full">
                   <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
                   <Input
                     type="number"
@@ -120,125 +147,169 @@ const Lansia = () => {
                     onChange={(e) => setNIK(e.target.value)}
                   />
                 </FormItem>
-                <div className="w-fit flex items-end justify-end" onClick={async () => await refetch()}>
-                  <Button className="w-full gap-2" loading={isLoading} type="button">
-                    <HiMagnifyingGlass className="text-lg" />
-                    <span>Cari</span>
-                  </Button>
-                </div>
-              </div>
-            )}
-            <FormField
-              name="phoneNumber"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem className="mt-5 mb-8">
-                  <FormLabel className="font-semibold dark:text-white">No. Telepon</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan No. Telepon" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <p className="text-2xl font-bold text-center mb-6">Data Bank</p>
-            <FormField
-              name="beneficiary"
-              control={forms.control}
-              render={({ field }) => (
-                <Input {...field} value={field.value ?? ''} type="text" hidden className="hidden" />
-              )}
-            />
-            <div className="grid grid-cols-3 gap-5">
-              <FormField
-                name="bankAccountNumber"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">No. Rekening Bank Sumut</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan No. Rekening" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
                 )}
               />
+            <div className="flex flex-row gap-5">
+            <div className="w-6/12">
               <FormField
-                name="bankAccountName"
+                name="businessName"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nama Rekening Bank Sumut</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Rekening" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="bankBranchName"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Kantor Cabang Bank Sumut</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        type="text"
-                        placeholder="Masukkan Kantor Cabang Rekening"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="status"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Status Pencairan</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Status Pencairan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="aktif">Aktif</SelectItem>
-                        <SelectItem value="non_aktif">Non Aktif</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="assistanceAmount"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nominal Bantuan</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">No KK</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         value={field.value ?? ''}
                         type="number"
-                        placeholder="Masukkan Nominal Bantuan"
+                        placeholder="Masukkan No KK Masyarakat"
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+            </div>
+            <div className="w-6/12">
+              <FormField
+                name="businessType"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Masyarakat" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-row gap-4">
+          <div className="w-6/12">
+                <FormField
+                  name={`members.${index}.position`}
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold dark:text-white">Status DTKS</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Pilih Status DTKS" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="aktif">Aktif</SelectItem>
+                          <SelectItem value="tidak-aktif">Tidak Aktif</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="w-6/12">
+                <FormField
+                  name={`members.${index}.position`}
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold dark:text-white">Jenis Kelamin</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Pilih Jenis Kelamin" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="perempuan">Perempuan</SelectItem>
+                          <SelectItem value="laki-laki">Laki-laki</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+          </div>
+
+          <div className="w-full text-center">
+            <p className="text-2xl font-bold">Alamat</p>
+          </div>
+          <div className="flex flex-row gap-4">
+            <div className="w-6/12">
+              <FormField
+                name="areaLevel3"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        width="w-[560px]"
+                        placeholder="Pilih Kecamatan"
+                        options={kecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="w-6/12">
+              <FormField
+                name="areaLevel4"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        disabled={!areaLevel3 || !kelurahan}
+                        width="w-[560px]"
+                        placeholder="Pilih Kelurahan"
+                        options={kelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          <div>
+            <FormField
+              name="businessAddress"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
+                  <FormControl>
+                    <Textarea {...field} value={field.value ?? ''} placeholder="Masukkan Alamat Lengkap Masyarakat." />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="w-full text-center">
+            <p className="text-2xl font-bold">Bantuan</p>
+          </div>
+          <div className="flex flex-row gap-4">
+            <div className="w-4/12">
               <FormField
                 name="budgetYear"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Tahun anggaran</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">Tahun Anggaran</FormLabel>
                     <FormControl>
                       <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Tahun Anggaran" />
                     </FormControl>
@@ -247,57 +318,22 @@ const Lansia = () => {
                 )}
               />
             </div>
-            <p className="text-2xl font-bold text-center mb-5 mt-12">Data Tugas</p>
-            <div className="grid grid-cols-3 gap-5">
+            <div className="w-4/12">
               <FormField
-                name="dutyPlace"
+                name="status"
                 control={forms.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Tempat Tugas</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Rekening" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="dutyAddress"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Alamat Tugas</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        type="text"
-                        placeholder="Masukkan Alamat Lengkap Tugas"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="serviceType"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Jenis Layanan</FormLabel>
+                    <FormLabel className="font-semibold dark:text-white">Jenis Bantuan</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Pliih Jenis Layanan" />
+                          <SelectValue placeholder="Pilih Jenis Bantuan" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {serviceTypes?.map((serviceType) => (
-                          <SelectItem value={serviceType.id} key={serviceType.id}>
-                            {serviceType.name}
-                          </SelectItem>
-                        ))}
+                        <SelectItem value="aktif">Aktif</SelectItem>
+                        <SelectItem value="tidak aktif">Tidak Aktif</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -305,18 +341,32 @@ const Lansia = () => {
                 )}
               />
             </div>
-
-            <div className="flex justify-end gap-4 mt-8">
-              <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
-                Cancel
-              </Button>
-              <Button className="font-bold" type="submit" loading={isLoadingCreate || isLoadingUpdate}>
-                {id ? 'Ubah Data' : 'Submit'}
-              </Button>
+            <div className="w-4/12">
+              <FormField
+                name="note"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Keterangan</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Keterangan" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-          </form>
-        </Form>
-      </section>
+          </div>
+          <div className="flex justify-end gap-4 mt-8">
+            <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
+              Cancel
+            </Button>
+            <Button className="font-bold" type="submit" loading={isLoadingCreate || isLoadingUpdate}>
+              Submit
+            </Button>
+          </div>
+        </form>
+      </Form>
     </Container>
   )
 }
