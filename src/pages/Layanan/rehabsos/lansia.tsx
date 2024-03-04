@@ -17,7 +17,7 @@ import {
   useUpdateJointBusiness
 } from '@/store/server'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { HiTrash } from 'react-icons/hi2'
+import { HiMagnifyingGlass, HiTrash } from 'react-icons/hi2'
 import { cn } from '@/lib/utils'
 import * as React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -101,7 +101,7 @@ const Lansia = () => {
 
   const onSuccess = () => {
     forms.reset()
-    navigate('/data-penerima/dayasos/kube')
+    navigate('/data-penerima/rehabsos/lansia')
   }
 
   const onSubmit = async (values: kubeFields) => {
@@ -133,12 +133,10 @@ const Lansia = () => {
         <p className="text-2xl font-bold">Data Personal</p>
       </div>
       <Form {...forms}>
-        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-              <FormField
-                name="businessName"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="w-full">
+      <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col">
+            {!id && (
+              <div className="flex flex-row justify-between gap-3">
+                <FormItem className="w-full">
                   <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
                   <Input
                     type="number"
@@ -147,10 +145,16 @@ const Lansia = () => {
                     onChange={(e) => setNIK(e.target.value)}
                   />
                 </FormItem>
-                )}
-              />
-            <div className="flex flex-row gap-5">
-            <div className="w-6/12">
+                <div className="w-fit flex items-end justify-end" onClick={async () => await refetch()}>
+                  <Button className="w-full gap-2" loading={isLoading} type="button">
+                    <HiMagnifyingGlass className="text-lg" />
+                    <span>Cari</span>
+                  </Button>
+                </div>
+              </div>
+            )}
+            <div className="flex flex-row gap-5 mt-2">
+            <div className="w-6/12 ">
               <FormField
                 name="businessName"
                 control={forms.control}
@@ -187,7 +191,7 @@ const Lansia = () => {
             </div>
           </div>
 
-          <div className="flex flex-row gap-4">
+          <div className="flex flex-row gap-4 mt-2">
           <div className="w-6/12">
                 <FormField
                   name={`members.${index}.position`}
@@ -236,10 +240,10 @@ const Lansia = () => {
               </div>
           </div>
 
-          <div className="w-full text-center">
-            <p className="text-2xl font-bold">Alamat</p>
+          <div className="w-full text-center mt-2">
+            <p className="text-2xl font-bold mt-8">Alamat</p>
           </div>
-          <div className="flex flex-row gap-4">
+          <div className="flex flex-row gap-4 mt-2">
             <div className="w-6/12">
               <FormField
                 name="areaLevel3"
@@ -300,9 +304,9 @@ const Lansia = () => {
             />
           </div>
           <div className="w-full text-center">
-            <p className="text-2xl font-bold">Bantuan</p>
+            <p className="text-2xl font-bold mt-8">Bantuan</p>
           </div>
-          <div className="flex flex-row gap-4">
+          <div className="flex flex-row gap-4 mt-2">
             <div className="w-4/12">
               <FormField
                 name="budgetYear"
