@@ -1,7 +1,7 @@
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import Container from '@/components/atoms/Container'
-import { Action, ExportButton, Loading, Modal, Pagination, SearchSelect, StatusDropdown } from '@/components'
+import { Action, ExportButton, Loading, Modal, Pagination, SearchSelect } from '@/components'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -21,7 +21,6 @@ import React from 'react'
 import { exportTuitionAssistanceFn } from '@/api/linjamsos.api'
 import { useAlert, useTitleHeader } from '@/store/client'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
-import StatusDTKS from '@/components/organisms/StatusDTKS'
 interface FormValues {
   q: string
   kelurahan: string
@@ -240,17 +239,17 @@ const DataBSTLansia = () => {
                 </FormItem>
               )}
             />
-            <FormField
+             <FormField
               name="year"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Pengajuan" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Anggaran" />
                   </FormControl>
                 </FormItem>
               )}
-            />
+            />
           </div>
   
           <section className="flex items-center justify-between">
@@ -311,9 +310,9 @@ const DataBSTLansia = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">
                     {item.application?.beneficiary?.name ?? '-'}
                   </TableCell>
-                  <TableCell className="text-left bg-[#F9FAFC]" position="center">
-                    <StatusDTKS/>
-                    </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                  
+                  </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.application?.beneficiary?.address.areaLevel3?.name ?? '-'}
                   </TableCell>
