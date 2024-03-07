@@ -1,5 +1,5 @@
 import { type IBeneficary } from './beneficary.type'
-import { type IAddress, type IMeta } from './rehabsos.type'
+import { type IAddress, type IMeta } from './dayasos.type'
 import { type IPath } from './service.type'
 
 export interface IVulnerableGroupHandlingDetail {

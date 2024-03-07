@@ -24,7 +24,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useTitleHeader } from '@/store/client'
 import { useNotFound, useToastNik } from '@/hooks'
 
-const BSTdisab = () => {
+const Disabilitas = () => {
   const navigate = useNavigate()
 
   const { id } = useParams<{ id: string }>()
@@ -334,4 +334,4 @@ const BSTdisab = () => {
   )
 }
 
-export default BSTdisab
+export default Disabilitas

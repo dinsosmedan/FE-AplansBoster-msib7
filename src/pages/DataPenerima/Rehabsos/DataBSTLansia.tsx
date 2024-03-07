@@ -1,7 +1,7 @@
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import Container from '@/components/atoms/Container'
-import { Action, ExportButton, Loading, Modal, Pagination, SearchSelect } from '@/components'
+import { Action, ExportButton, Loading, Modal, Pagination, SearchSelect, StatusDropdown } from '@/components'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -21,6 +21,7 @@ import React from 'react'
 import { exportTuitionAssistanceFn } from '@/api/linjamsos.api'
 import { useAlert, useTitleHeader } from '@/store/client'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
+import StatusDTKS from '@/components/organisms/StatusDTKS'
 interface FormValues {
   q: string
   kelurahan: string
@@ -199,7 +200,7 @@ const DataBSTLansia = () => {
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-x-5 gap-y-5 ">
+          <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
             <FormField
               name="kecamatan"
               control={forms.control}
@@ -239,6 +240,17 @@ const DataBSTLansia = () => {
                 </FormItem>
               )}
             />
+            <FormField
+              name="year"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Pengajuan" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
           </div>
   
           <section className="flex items-center justify-between">
@@ -279,7 +291,7 @@ const DataBSTLansia = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Status DTKS</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Update</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -299,32 +311,17 @@ const DataBSTLansia = () => {
                   <TableCell className="text-center bg-[#F9FAFC]">
                     {item.application?.beneficiary?.name ?? '-'}
                   </TableCell>
-                  {/* <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.birthPlace ?? '-'}
-                  </TableCell> */}
-                  {/* <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application?.beneficiary?.birthDate ?? '-'}
-                  </TableCell> */}
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {/* {item.application?.beneficiary?.gender ? item.application.beneficiary.gender : '-'} */}
-                  </TableCell>
-                  {/* <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.address.fullAddress ?? '-'}
-                  </TableCell> */}
+                  <TableCell className="text-left bg-[#F9FAFC]" position="center">
+                    <StatusDTKS/>
+                    </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.application?.beneficiary?.address.areaLevel3?.name ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.application?.beneficiary?.address.areaLevel4?.name ?? '-'}
                   </TableCell>
-                  {/* <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application.phoneNumber ?? '-'}
-                  </TableCell> */}
-                  {/* <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.budgetYear ?? '-'}
-                  </TableCell> */}
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {formatToView(item.updatedAt) ?? '-'}
+                  {item.budgetYear ?? '-'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action onDetail={() => showDetail(item.id)} />
