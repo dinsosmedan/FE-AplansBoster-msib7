@@ -1,5 +1,5 @@
 import { type IBeneficary, type IAssistanceHistory } from './beneficary.type'
-import { type IAddress } from './dayasos.type'
+import { type IAddress } from './rehabsos.type'
 import { type IEvent } from './event.type'
 import { type IPath } from './service.type'
 

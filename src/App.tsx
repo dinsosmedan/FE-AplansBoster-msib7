@@ -98,10 +98,11 @@ import NonDtksCourts from './pages/LandingPage/Sktm/NonDtksCourts'
 import DataBSTLansia from './pages/DataPenerima/Rehabsos/DataBSTLansia'
 import DataBSTdisab from './pages/DataPenerima/Rehabsos/DataBSTdisab'
 import DataBSTanak from './pages/DataPenerima/Rehabsos/DataBSTanak'
-import DataPL from './pages/DataPenerima/Rehabsos/DataPL'
-import DataBpd from './pages/DataPenerima/Rehabsos/DataBpd'
-import DataPppks from './pages/DataPenerima/Rehabsos/DataPppks'
+import DataPppks from './pages/DataPenerima/Rehabsos/DataPpks'
 import DataLks from './pages/DataPenerima/Rehabsos/DataLks'
+import Lansia from './pages/Layanan/Rehabsos/Lansia'
+import Anak from  './pages/Layanan/Rehabsos/Anak'
+import Disabilitas from './pages/Layanan/Rehabsos/Disabilitas'
 
 export default function App() {
   useScrollToTop()
@@ -146,36 +147,25 @@ export default function App() {
                   <Route index element={<DataPenerimaRehabsos />} />
                   <Route path="bstlansia">
                     <Route index element={<DataBSTLansia/>} />
-                    <Route path="create" element={<Djp />} />
-                    <Route path="create/:id" element={<Djp />} />
+                    <Route path="create" element={<Lansia />} />
+                    <Route path="create/:id" element={<Lansia />} />
                   </Route>
                   <Route path="bstdisab">
                     <Route index element={<DataBSTdisab />} />
-                    <Route path="create" element={<Djp />} />
-                    <Route path="create/:id" element={<Djp />} />
+                    <Route path="create" element={<Disabilitas />} />
+                    <Route path="create/:id" element={<Disabilitas />} />
                   </Route>
                   <Route path="anak">
                     <Route index element={<DataBSTanak />} />
-                    <Route path="create" element={<Djp />} />
-                    <Route path="create/:id" element={<Djp />} />
+                    <Route path="create" element={<Anak />} />
+                    <Route path="create/:id" element={<Anak />} />
                   </Route>
-                  <Route path="pl">
-                    <Route index element={<DataPL/>} />
-                    <Route index element={<DataPL />} />
-                    <Route path="create" element={<Djp />} />
-                    <Route path="create/:id" element={<Djp />} />
-                  </Route>
-                  <Route path="bpd">
-                    <Route index element={<DataBpd />} />
-                    <Route path="create" element={<Djp />} />
-                    <Route path="create/:id" element={<Djp />} />
-                  </Route>
-                  <Route path="pppks">
+                  <Route path="ppks">
                     <Route index element={<DataPppks />} />
                     <Route path="create" element={<Djp />} />
                     <Route path="create/:id" element={<Djp />} />
                   </Route>
-                  <Route path="lks">
+                  <Route path="izin-operasi-lks">
                     <Route index element={<DataLks />} />
                     <Route path="create" element={<Djp />} />
                     <Route path="create/:id" element={<Djp />} />

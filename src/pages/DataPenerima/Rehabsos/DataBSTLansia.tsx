@@ -38,7 +38,7 @@ const DataBSTLansia = () => {
     setBreadcrumbs([
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
-      { url: '/data-penerima/rehabsos/bstlansia', label: 'BSTLansia' }
+      { url: '/data-penerima/rehabsos/bstlansia', label: 'BST Lansia' }
     ])
   }, [])
 
@@ -192,14 +192,14 @@ const DataBSTLansia = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama/ NIK/Nomor Kartu Keluarga" />
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama/ NIK" />
                     </FormControl>
                   </FormItem>
                 )}
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-x-5 gap-y-5 ">
+          <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
             <FormField
               name="kecamatan"
               control={forms.control}
@@ -210,7 +210,7 @@ const DataBSTLansia = () => {
                       selected={field.value}
                       onChange={field.onChange}
                       width="w-[380px]"
-                      placeholder="Jenis Keanggotaan"
+                      placeholder="Pilih Kecamatan"
                       options={
                         listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
                       }
@@ -239,87 +239,25 @@ const DataBSTLansia = () => {
                 </FormItem>
               )}
             />
-          </div>
-          <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
-            <FormField
-              name="event"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Jenis Event" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {listEvent?.data.map((item, index) => (
-                        <SelectItem key={index} value={item.id}>
-                          {item.type.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormItem>
-              )}
-            />
-            <FormField
+             <FormField
               name="year"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Pengajuan" />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="status"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Status Pencairan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="pending">Ditunda</SelectItem>
-                      <SelectItem value="processed">Diproses</SelectItem>
-                      <SelectItem value="disbursed">Dicairkan</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="university"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <SearchSelect
-                      selected={field.value}
-                      onChange={field.onChange}
-                      width="w-[380px]"
-                      placeholder="Pilih Perguruan Tinggi"
-                      options={
-                        universities?.map((university) => ({ label: university.name, value: university.id })) ?? []
-                      }
-                    />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Anggaran" />
                   </FormControl>
                 </FormItem>
               )}
             />
           </div>
+  
           <section className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Button
                 type="button"
                 className="gap-2 border-none rounded-lg"
-                onClick={() => navigate('/data-penerima/linjamsos/bbp/create')}
+                onClick={() => navigate('/data-penerima/rehabsos/bstlansia/create')}
               >
                 <HiPlus className="text-lg" />
                 <span>Tambah Data</span>
@@ -346,17 +284,13 @@ const DataBSTLansia = () => {
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
               <TableHead className="text-[#534D59] font-bold text-[15px]">No .</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Mahasiswa</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tempat Lahir</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Lahir</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kelamin</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat Lengkap</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Kartu Keluarga</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Status DTKS</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">No.HP</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -368,22 +302,16 @@ const DataBSTLansia = () => {
                     {(tuitions.meta.currentPage - 1) * tuitions.meta.perPage + index + 1}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.name ?? '-'}
+                    {item.application?.beneficiary?.identityNumber ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
                     {item.application?.beneficiary?.identityNumber ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.birthPlace ?? '-'}
+                    {item.application?.beneficiary?.name ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application?.beneficiary?.birthDate ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application?.beneficiary?.gender ? item.application.beneficiary.gender : '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.address.fullAddress ?? '-'}
+                  
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.application?.beneficiary?.address.areaLevel3?.name ?? '-'}
@@ -392,13 +320,7 @@ const DataBSTLansia = () => {
                     {item.application?.beneficiary?.address.areaLevel4?.name ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application.phoneNumber ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.budgetYear ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {formatToView(item.updatedAt) ?? '-'}
+                  {item.budgetYear ?? '-'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action onDetail={() => showDetail(item.id)} />

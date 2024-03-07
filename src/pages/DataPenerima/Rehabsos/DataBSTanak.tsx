@@ -111,7 +111,7 @@ const DataBSTanak = () => {
     await refetch()
   }
   const handleReset = () => {
-    navigate('/data-penerima/linjamsos/pkr')
+    navigate('/data-penerima/rehabsos/anak')
     forms.reset()
   }
   const exportAsCsv = async () => {
@@ -170,12 +170,7 @@ const DataBSTanak = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input
-                          {...field}
-                          value={field.value ?? ''}
-                          type="text"
-                          placeholder="Masukkan Nama/ NIK/ Nomor Kartu Keluarga"
-                        />
+                        <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama/ NIK/ Nomor Kartu Keluarga" />
                       </FormControl>
                     </FormItem>
                   )}
@@ -239,7 +234,7 @@ const DataBSTanak = () => {
                 <Button
                   type="button"
                   className="gap-2 border-none rounded-lg"
-                  onClick={() => navigate('/data-penerima/linjamsos/pkr/create')}
+                  onClick={() => navigate('/data-penerima/rehabsos/anak/create')}
                 >
                   <HiPlus className="text-lg" />
                   <p className="w-max">Tambah Data</p>
@@ -269,12 +264,18 @@ const DataBSTanak = () => {
             <TableHeader className="bg-white">
               <TableRow>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">No. </TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Pemohon</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Kartu Keluarga</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat Kartu Keluarga</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan </TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Kartu Keluraga</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Tempat Lahir</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Lahir</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Ayah Kandung </TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Nama Ibu Kandung</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Status DKS</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">kecamatan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Update</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
               </TableRow>
             </TableHeader>
@@ -307,12 +308,15 @@ const DataBSTanak = () => {
                     <TableCell className="text-center bg-[#F9FAFC]" position="center">
                       {formatToView(item.updatedAt) ?? '-'}
                     </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {formatToView(item.updatedAt) ?? '-'}
+                  </TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       {isEnableDelete ? (
                         <Action
                           onDelete={async () => await handleDelete(item.id)}
                           onDetail={() => showDetail(item.id)}
-                          onEdit={() => navigate(`/data-penerima/linjamsos/pkr/${item.id}`)}
+                          onEdit={() => navigate(`/data-penerima/rehabsos/anak/${item.id}`)}
                         />
                       ) : (
                         <Action onDetail={() => showDetail(item.id)} />

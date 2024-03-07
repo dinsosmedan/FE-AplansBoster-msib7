@@ -31,7 +31,7 @@ interface FormValues {
   budget_year: string
 }
 
-const DataLks = () => {
+const DataPpks = () => {
   useTitle('Data Penerima')
   const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
 
@@ -39,10 +39,9 @@ const DataLks = () => {
     setBreadcrumbs([
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
-      { url: '/data-penerima/rehabsos/izin-operasi-lks', label: 'Tanda Daftar/Izin Operasional LKS' }
+      { url: '/data-penerima/rehabsos/ppks', label: 'PPKS' }
     ])
   }, [])
-
   const navigate = useNavigate()
   const { alert } = useAlert()
 
@@ -92,7 +91,7 @@ const DataLks = () => {
   useDisableBodyScroll(isFetching || isLoadingExport || isLoadingServiceFund || isLoading)
 
   const handleReset = () => {
-    navigate('/data-penerima/rehabsos/izin-operasi-lks')
+    navigate('/data-penerima/rehabsos/ppks')
     forms.reset()
   }
 
@@ -117,7 +116,7 @@ const DataLks = () => {
 
   const handleDelete = (id: string) => {
     void alert({
-      title: 'Hapus Data Tanda Daftar/Izin Operasional LKS',
+      title: 'Hapus Data Penanganan Pemerlu Pelayanan Kesejahteraan Sosial',
       description: 'Apakah kamu yakin ingin menghapus data ini?',
       variant: 'danger',
       submitText: 'Delete'
@@ -174,7 +173,7 @@ const DataLks = () => {
   return (
     <Container>
       {(isFetching || isLoadingExport) && <Loading />}
-      <Title>Tanda Daftar/Izin Operasional LKS</Title>
+      <Title>Penanganan Pemerlu Pelayanan Kesejahteraan Sosial</Title>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-[18px]">
           <section>
@@ -231,7 +230,6 @@ const DataLks = () => {
                   </FormItem>
                 )}
               />
-             
             </div>
           </section>
 
@@ -274,7 +272,7 @@ const DataLks = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Diupdate</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
-            </TableRow>
+              </TableRow>
           </TableHeader>
           <TableBody>
             {serviceFunds?.data?.length !== 0 ? (
@@ -404,4 +402,4 @@ const DataLks = () => {
     </Container>
   )
 }
-export default DataLks
+export default DataPpks
