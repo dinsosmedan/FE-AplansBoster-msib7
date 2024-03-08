@@ -295,11 +295,14 @@ const DataSktm = () => {
                 onClick={() => navigate('/data-penerima/linjamsos/sktm/create')}
               >
                 <HiPlus className="text-lg" />
-                <span>Tambah Data</span>
+                <p className="w-max">Tambah Data</p>
               </Button>
-              {indigencys?.data?.length !== 0 ? (
+              {indigencys?.data?.length !== 1 ? (
                 <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
               ) : null}
+              {/* {vulnerables?.data?.length !== 0 ? (
+                <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+              ) : null} */}
             </div>
             <div className="flex gap-3">
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
