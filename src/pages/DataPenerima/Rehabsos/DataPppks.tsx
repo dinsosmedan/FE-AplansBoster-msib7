@@ -30,7 +30,7 @@ interface FormValues {
   event: string
   university: string
 }
-const DataBSTLansia = () => {
+const DataPppks = () => {
   useTitle('Data Penerima')
   const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
 
@@ -38,7 +38,7 @@ const DataBSTLansia = () => {
     setBreadcrumbs([
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
-      { url: '/data-penerima/rehabsos/bstlansia', label: 'BST Lansia' }
+      { url: '/data-penerima/rehabsos/pppks', label: 'Penanganan Pemerlu Pelayanan Kesejahteraan Sosial' }
     ])
   }, [])
 
@@ -162,7 +162,7 @@ const DataBSTLansia = () => {
     setIsLoadingExport(false)
   }
   const handleReset = () => {
-    navigate('/data-penerima/rehabsos/bstlansia')
+    navigate('/data-penerima/rehabsos/pppks')
     forms.reset({
       q: '',
       kecamatan: '',
@@ -181,7 +181,7 @@ const DataBSTLansia = () => {
   return (
     <Container>
       {(isFetching || isLoadingExport) && <Loading />}
-      <h1 className="font-bold text-xl ">Bantuan Sosial Tunai Lansia</h1>
+      <h1 className="font-bold text-xl ">Penanganan Pemerlu Pelayanan Kesejahteraan Sosial (PPPKS)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="flex flex-row justify-between items-center gap-5 mt-5">
@@ -199,7 +199,7 @@ const DataBSTLansia = () => {
               />
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
+          <div className="grid grid-cols-2 gap-x-5 gap-y-5 ">
             <FormField
               name="kecamatan"
               control={forms.control}
@@ -210,7 +210,7 @@ const DataBSTLansia = () => {
                       selected={field.value}
                       onChange={field.onChange}
                       width="w-[380px]"
-                      placeholder="Pilih Kecamatan"
+                      placeholder="Jenis PPKS"
                       options={
                         listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
                       }
@@ -220,7 +220,7 @@ const DataBSTLansia = () => {
               )}
             />
             <FormField
-              name="kelurahan"
+              name="kecamatan"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
@@ -228,36 +228,24 @@ const DataBSTLansia = () => {
                     <SearchSelect
                       selected={field.value}
                       onChange={field.onChange}
-                      disabled={!areaLevel3 && !kecamatan}
                       width="w-[380px]"
-                      placeholder="Pilih Kelurahan"
+                      placeholder="Terminasi"
                       options={
-                        listKelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []
+                        listKecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []
                       }
                     />
                   </FormControl>
                 </FormItem>
               )}
             />
-             <FormField
-              name="year"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Anggaran" />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
           </div>
-  
+
           <section className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Button
                 type="button"
                 className="gap-2 border-none rounded-lg"
-                onClick={() => navigate('/data-penerima/rehabsos/bstlansia/create')}
+                onClick={() => navigate('/data-penerima/linjamsos/bbp/create')}
               >
                 <HiPlus className="text-lg" />
                 <span>Tambah Data</span>
@@ -283,14 +271,13 @@ const DataBSTLansia = () => {
         <Table>
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">No .</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Kartu Keluarga</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Status DTKS</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Tempat Lahir</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Lahir</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Usia</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kelamin</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -302,25 +289,23 @@ const DataBSTLansia = () => {
                     {(tuitions.meta.currentPage - 1) * tuitions.meta.perPage + index + 1}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.identityNumber ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.identityNumber ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
                     {item.application?.beneficiary?.name ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                  
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {item.application?.beneficiary?.identityNumber ?? '-'}
+                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">
+                    {item.application?.beneficiary?.birthPlace ?? '-'},{' '}
+                    {item.application?.beneficiary?.birthDate ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application?.beneficiary?.address.areaLevel3?.name ?? '-'}
+                    {item.application?.beneficiary?.birthDate ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application?.beneficiary?.address.areaLevel4?.name ?? '-'}
+                    {item.application?.beneficiary?.age ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                  {item.budgetYear ?? '-'}
+                    {item.application?.beneficiary?.gender ? item.application.beneficiary.gender : '-'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action onDetail={() => showDetail(item.id)} />
@@ -347,38 +332,18 @@ const DataBSTLansia = () => {
       ) : null}
       <Modal isShow={isShow} className="md:max-w-4xl">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data BBP</h3>
-          <p className="text-sm text-[#A1A1A1]">View Data Detail Data BBP</p>
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data PPKS</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data PPKS</p>
         </Modal.Header>
         {isLoadingTuition && <Loading />}
         <div className="grid grid-cols-3 gap-5">
           <div>
-            <p className="text-sm font-bold">Nama Mahasiswa</p>
+            <p className="text-sm font-bold">Nama</p>
             <p className="text-base capitalize">{tuition?.application?.beneficiary.name ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Email</p>
-            <p className="text-base capitalize">{tuition?.application.email ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">NIK</p>
             <p className="text-base capitalize">{tuition?.application?.beneficiary.identityNumber ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">No. KK</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.familyCardNumber ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Kecamatan</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.address.areaLevel3?.name ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Kelurahan</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.address.areaLevel4?.name ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Alamat Lengkap</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.address.fullAddress ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
@@ -392,66 +357,12 @@ const DataBSTLansia = () => {
             <p className="text-base capitalize">{tuition?.application?.beneficiary.age ?? '-'}</p>
           </div>
           <div>
-            <p className="text-sm font-bold">Jenis Bantuan</p>
-            <p className="text-base capitalize">{tuition?.application.event.type.name ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Estimasi</p>
-            <p className="text-base capitalize">
-              {tuition?.application.event.startDate ?? '-'}-{tuition?.application.event.endDate ?? '-'}
-            </p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Batch</p>
-            <p className="text-base capitalize">{tuition?.application.event.batch ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Universitas</p>
-            <p className="text-base capitalize">{tuition?.application.university?.name ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Program Studi</p>
-            <p className="text-base capitalize">{tuition?.application.studyProgram.name ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Semester</p>
-            <p className="text-base capitalize">{tuition?.application.semester ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">IPK</p>
-            <p className="text-base capitalize">{tuition?.application.gpa ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Uang Kuliah</p>
-            <p className="text-base capitalize">{tuition?.application.tuitionFee ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Nomor Rekening</p>
-            <p className="text-base capitalize">{tuition?.application.bankAccNumber ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Nama Rekening</p>
-            <p className="text-base capitalize">{tuition?.application.bankAccName ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Status Pengajuan</p>
-            <p className="text-base capitalize">{tuition?.application.application_status ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Jumlah Bantuan</p>
-            <p className="text-base capitalize">{tuition?.assistanceAmount ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Status Pencairan</p>
-            <p className="text-base capitalize">{tuition?.disbursementStatus ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Tahun Anggaran</p>
-            <p className="text-base capitalize">{tuition?.budgetYear ?? '-'}</p>
+            <p className="text-sm font-bold">Jenis Kelamin</p>
+            <p className="text-base capitalize">{tuition?.application?.beneficiary.gender ?? '-'}</p>
           </div>
         </div>
       </Modal>
     </Container>
   )
 }
-export default DataBSTLansia
+export default DataPppks

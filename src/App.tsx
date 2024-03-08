@@ -98,11 +98,11 @@ import NonDtksCourts from './pages/LandingPage/Sktm/NonDtksCourts'
 import DataBSTLansia from './pages/DataPenerima/Rehabsos/DataBSTLansia'
 import DataBSTdisab from './pages/DataPenerima/Rehabsos/DataBSTdisab'
 import DataBSTanak from './pages/DataPenerima/Rehabsos/DataBSTanak'
-import DataPppks from './pages/DataPenerima/Rehabsos/DataPpks'
 import DataLks from './pages/DataPenerima/Rehabsos/DataLks'
-import Lansia from './pages/Layanan/rehabsos/lansia'
 import Anak from './pages/Layanan/rehabsos/Anak'
-import BSTdisab from './pages/Layanan/rehabsos/Disab'
+import Disabilitas from './pages/Layanan/rehabsos/Disabilitas'
+import Lansia from './pages/Layanan/rehabsos/Lansia'
+import DataPppks from './pages/DataPenerima/Rehabsos/DataPppks'
 import Ppks from './pages/Layanan/rehabsos/Ppks'
 
 export default function App() {
@@ -153,8 +153,8 @@ export default function App() {
                   </Route>
                   <Route path="bstdisab">
                     <Route index element={<DataBSTdisab />} />
-                    <Route path="create" element={<BSTdisab />} />
-                    <Route path="create/:id" element={<BSTdisab />} />
+                    <Route path="create" element={<Disabilitas />} />
+                    <Route path="create/:id" element={<Disabilitas />} />
                   </Route>
                   <Route path="anak">
                     <Route index element={<DataBSTanak />} />
