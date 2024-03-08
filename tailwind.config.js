@@ -31,11 +31,11 @@ module.exports = {
         'accordion-up': 'accordion-up 0.2s ease-out'
       },
       colors: {
-        primary: '#1f72aa',
+        primary: '#DD2153',
         font: '#0C1421'
       },
       transitionDuration: {
-        700: '700ms'
+        700: '500ms'
       }
     }
   },

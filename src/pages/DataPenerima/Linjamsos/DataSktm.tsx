@@ -191,7 +191,7 @@ const DataSktm = () => {
       <h1 className="font-bold text-xl ">Surat Keterangan Tidak Mampu (SKTM)</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="grid grid-cols-2 gap-x-5 gap-y-5 mt-5 ">
+          <div className="grid grid-cols-3 gap-x-5 gap-y-5 mt-5 ">
             <FormField
               name="q"
               control={forms.control}
@@ -199,6 +199,17 @@ const DataSktm = () => {
                 <FormItem>
                   <FormControl>
                     <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama / NIK" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="q"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Pembuatan" />
                   </FormControl>
                 </FormItem>
               )}
@@ -270,7 +281,7 @@ const DataSktm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Tahun Pembuatan" />
+                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Jenis Pengajuan" />
                   </FormControl>
                 </FormItem>
               )}
@@ -284,11 +295,14 @@ const DataSktm = () => {
                 onClick={() => navigate('/data-penerima/linjamsos/sktm/create')}
               >
                 <HiPlus className="text-lg" />
-                <span>Tambah Data</span>
+                <p className="w-max">Tambah Data</p>
               </Button>
-              {indigencys?.data?.length !== 0 ? (
+              {indigencys?.data?.length !== 1 ? (
                 <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
               ) : null}
+              {/* {vulnerables?.data?.length !== 0 ? (
+                <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+              ) : null} */}
             </div>
             <div className="flex gap-3">
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>

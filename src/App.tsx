@@ -98,11 +98,12 @@ import NonDtksCourts from './pages/LandingPage/Sktm/NonDtksCourts'
 import DataBSTLansia from './pages/DataPenerima/Rehabsos/DataBSTLansia'
 import DataBSTdisab from './pages/DataPenerima/Rehabsos/DataBSTdisab'
 import DataBSTanak from './pages/DataPenerima/Rehabsos/DataBSTanak'
-import DataPppks from './pages/DataPenerima/Rehabsos/DataPpks'
 import DataLks from './pages/DataPenerima/Rehabsos/DataLks'
-import Lansia from './pages/Layanan/Rehabsos/Lansia'
-import Anak from  './pages/Layanan/Rehabsos/Anak'
-import Disabilitas from './pages/Layanan/Rehabsos/Disabilitas'
+import Anak from './pages/Layanan/rehabsos/Anak'
+import Disabilitas from './pages/Layanan/rehabsos/Disabilitas'
+import Lansia from './pages/Layanan/rehabsos/Lansia'
+import DataPppks from './pages/DataPenerima/Rehabsos/DataPppks'
+import Ppks from './pages/Layanan/rehabsos/Ppks'
 
 export default function App() {
   useScrollToTop()
@@ -162,8 +163,8 @@ export default function App() {
                   </Route>
                   <Route path="ppks">
                     <Route index element={<DataPppks />} />
-                    <Route path="create" element={<Djp />} />
-                    <Route path="create/:id" element={<Djp />} />
+                    <Route path="create" element={<Ppks />} />
+                    <Route path="create/:id" element={<Ppks />} />
                   </Route>
                   <Route path="izin-operasi-lks">
                     <Route index element={<DataLks />} />

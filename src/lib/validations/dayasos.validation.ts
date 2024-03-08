@@ -58,8 +58,8 @@ export const djpmValidation = Yup.object({
 export type djpmFields = Yup.InferType<typeof djpmValidation>
 
 export const kubeValidation = Yup.object({
-  businessName: Yup.string().required('Nama Usaha wajib diisi').max(255, 'Nama Usaha maksimal 255 karakter'),
-  businessType: Yup.string().required('Jenis Usaha wajib diisi').max(255, 'Jenis Usaha maksimal 255 karakter'),
+  businessName: Yup.string().required('Wajib diisi').max(255, 'Nama Usaha maksimal 255 karakter'),
+  businessType: Yup.string().required('Wajib diisi').max(255, 'Jenis Usaha maksimal 255 karakter'),
   businessAddress: Yup.string().required('Alamat Usaha wajib diisi').max(255, 'Alamat Usaha maksimal 255 karakter'),
   areaLevel3: Yup.string().required('Kecamatan wajib diisi'),
   areaLevel4: Yup.string().required('Kelurahan wajib diisi'),
@@ -74,7 +74,7 @@ export const kubeValidation = Yup.object({
     Yup.object().shape({
       nik: Yup.string(),
       beneficiary: Yup.string().required('Penerima manfaat wajib diisi'),
-      position: Yup.string().required('Jabatan wajib diisi')
+      position: Yup.string().required('Wajib diisi')
     })
   )
 })

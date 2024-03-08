@@ -262,7 +262,7 @@ const DataPL = () => {
                 <TableHead className="text-[#534D59] font-bold text-[15px]">No. Kartu Keluarga</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Umur</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Update</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
               </TableRow>
             </TableHeader>

@@ -269,14 +269,14 @@ const DataDjp = () => {
 
           <section className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Button
+              {/* <Button
                 type="button"
                 className="gap-2 border-none rounded-lg"
                 onClick={() => navigate('/data-penerima/dayasos/djpm/create')}
               >
                 <HiPlus className="text-lg" />
                 <span>Tambah Data</span>
-              </Button>
+              </Button> */}
               {serviceFunds?.data?.length !== 0 && (
                 <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
               )}
