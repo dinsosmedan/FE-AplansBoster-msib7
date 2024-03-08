@@ -1,234 +1,282 @@
-import { type IArea } from '@/api/area.api'
 import { type IBeneficary } from './beneficary.type'
+import { type IAddress, type IMeta } from './dayasos.type'
+import { type IPath } from './service.type'
 
-export interface IWorshipPlaceDetail {
+export interface IVulnerableGroupHandlingDetail {
   id: string
-  name: string
-  type: string
-  address: string
-  areaLevel3: IArea | null
-  areaLevel4: IArea | null
-  picName: string
-  picPhone: string
-  status: string
-  note: string
-  year: string
+  beneficiary: IBeneficary
+  incidentDate: string
+  incidentAddress: string
+  bankAccountNumber: string
+  bankName: string
+  assistanceAmount: number
+  budgetYear: string
   createdAt: string
   updatedAt: string
 }
-export interface IWorshipPlace {
+
+export interface IVulnerableGroupHandling {
   success: boolean
   message: string
-  data: IWorshipPlaceDetail[]
+  data: IVulnerableGroupHandlingDetail[]
   meta: IMeta
 }
 
-export interface IServiceType {
+export interface IUnregisterDetail {
+  id: string
+  name: string
+  age: string
+  gender: string
+  dinsosLetterNumber: string
+  dinsosLetterDate: string
+  diseaseDiagnosis: string
+  hospitalEntryDate: string
+  hospitalLetterNumber: string
+  hospitalLetterDate: string
+  createdAt: string
+  updatedAt: string
+}
+export interface IUnregister {
+  success: boolean
+  message: string
+  data: IUnregisterDetail[]
+  meta: IMeta
+}
+export interface IApplicant {
+  id: string
+  identityNumber: string
+  familyCardNumber: string
+  name: string
+  address: IAddress
+  birthDate: string
+  age: string
+  birthPlace: string
+  gender: string
+  lastEducation: string
+  occupation: string
+  maritalStatus: string
+  citizenship: string
+  familyRelationship: string
+  bloodType: string
+  fatherName: string
+  motherName: string
+  isDtks: boolean
+  createdAt: string
+  updatedAt: string
+}
+export interface IPeopleConcerned {
+  id: string
+  identityNumber: string
+  familyCardNumber: string
+  name: string
+  address: IAddress
+  birthDate: string
+  age: string
+  birthPlace: string
+  gender: string
+  lastEducation: string
+  occupation: string
+  maritalStatus: string
+  citizenship: string
+  familyRelationship: string
+  bloodType: string
+  fatherName: string
+  motherName: string
+  isDtks: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+export interface IIndigencyCertificateDetail {
+  id: string
+  application: {
+    id: string
+    applicant: {
+      id: string
+      name: string
+    }
+    applicantPhoneNumber: null | string
+    peopleConcerned: IPeopleConcerned
+    certificateDestination: string
+    applicationCategory: null | string
+    dtksStatus: string
+    applicationStatus: string
+    petitionLetterPath: null | IPath
+    domicileLetterPath: null | IPath
+    familyCardPath: null | IPath
+    idCardPath: null | IPath
+    educationLevel: null | string
+    schoolLetterPath: null | IPath
+    salarySlipPath: null | IPath
+    localsApprovalLetterPath: null | IPath
+    lowIncomeLetterPath: null | IPath
+    frontViewHousePath: null | IPath
+    sittingViewPath: null | IPath
+    chamberViewHousePath: null | IPath
+    kitchenViewHousePath: null | IPath
+    isApplicationOnline: boolean
+    note: null | string
+    createdAt: string
+    updatedAt: string
+  }
+  issuedCertificate: null
+  issueDate: string
+  issueYear: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface IIndigencyCertificate {
+  success: boolean
+  message: string
+  data: IIndigencyCertificateDetail[]
+  meta: IMeta
+}
+export interface IIndigencyCertificateByID {
+  success: boolean
+  message: string
+  id: string
+  applicant: IApplicant
+  peopleConcerned: IPeopleConcerned
+  application: string
+  certificateDestination: string
+  issueDate: string
+  issueYear: string
+  statusDtks: string
+  isApplicationOnline: string
+  createdAt: string
+  updatedAt: string
+  meta: IMeta
+}
+export interface IPremiumAssistanceBenefit {
+  success: boolean
+  message: string
+  data: Array<{
+    id: string
+    beneficiary: IBeneficary
+    type: string
+    createdAt: string
+    updatedAt: string
+  }>
+  meta: IMeta
+}
+export interface IPremiumAssistanceBenefitById {
+  success: boolean
+  message: string
+  id: string
+  beneficiary: IBeneficary
+  type: string
+  createdAt: string
+  updatedAt: string
+  meta: IMeta
+}
+export interface IFamilyHope {
+  success: boolean
+  message: string
+  data: Array<{
+    id: string
+    beneficiary: IBeneficary
+    type: string
+    createdAt: string
+    updatedAt: string
+  }>
+  meta: IMeta
+}
+export interface IFamilyHopeId {
+  success: boolean
+  message: string
+  id: string
+  beneficiary: IBeneficary
+  type: string
+  createdAt: string
+  updatedAt: string
+  meta: IMeta
+}
+interface IType {
   id: string
   name: string
   code: string
-}
-
-export interface IAddress {
-  fullAddress: string
-  areaLevel3: IArea | null
-  areaLevel4: IArea | null
-}
-
-export interface IServiceFund {
-  id: string
-  beneficiary: IBeneficary
-  serviceType: IServiceType
-  dutyPlace: string
-  dutyAddress: string
-  bankName: string
-  bankAccountNumber: string
-  bankAccountName: string
-  bankBranchName: string
-  status: null | string
-  phoneNumber: string
-  budgetYear: string
-  assistanceAmount: null | number
   createdAt: string
   updatedAt: string
 }
-
-export interface IServiceFunds {
-  success: boolean
-  message: string
-  data: IServiceFund[]
-  meta: IMeta
+interface IEvent {
+  id: string
+  type: IType
+  eventDescription: string
+  startDate: string
+  endDate: string
+  isActive: boolean
+  batch: string
+  quota: string
+  createdAt: string
+  updatedAt: string
 }
-
-export interface IMeta {
-  total: number
-  perPage: number
-  currentPage: number
-  lastPage: number
-  hasNext: boolean
-  hasPrevious: boolean
+export interface IUniversity {
+  id: string
+  code: string
+  name: string
 }
-
-export interface IOrganizationGrantAssistances {
+export interface IStudyProgram {
   id: string
   name: string
-  address: IAddress
-  chairmanName: string
-  chairmanIdentityNumber: string
-  secretaryName: string
-  secretaryIdentityNumber: string
-  treasurerName: string
-  treasurerIdentityNumber: string
-  contactNumber: string
-  bankAccountNumber: string
-  bankName: string
-  bankAccountName: string
-  bankAccountAddress: string
-  requestedAmount: number
-  aprrovedAmount: number
-  firstDisbursementAmount: number
-  secondDisbursementAmount: number
-  budgetYear: string
-  note: string
+}
+export interface IDocument {
+  applicationLetter: IPath | null
+  photo: IPath | null
+  familyCard: IPath | null
+  identityCard: IPath | null
+  studentCard: IPath | null
+  activeStudentCertificate: IPath | null
+  noScholarshipStatement: IPath | null
+  noGovernmentEmployeeStatement: IPath | null
+  biodata: IPath | null
+  dtksPrintout: IPath | null
+  passBook: IPath | null
+  tuitionReceipt: IPath | null
   createdAt: string
+  gradeTranscript: IPath | null
   updatedAt: string
 }
-
-export interface IOrganizationGrantAssistance {
-  success: boolean
-  message: string
-  data: IOrganizationGrantAssistances[]
-  meta: IMeta
-}
-
-export interface IVeteranDetail {
+export interface IApplication {
   id: string
   beneficiary: IBeneficary
-  veteranIdentityNumber: string
-  veteranUnit: string
-  uniformSize: null | string
-  isActive: string
-  createdAt: string
-  updatedAt: string
-}
-
-export interface IVeteran {
-  success: boolean
-  message: string
-  data: IVeteranDetail[]
-  meta: IMeta
-}
-export interface IBusinessAddress {
-  fullAddress: string
-  areaLevel3: IArea | null
-  areaLevel4: IArea | null
-}
-
-export interface ICommunityGroup {
-  id: string
-  productId: string
-  address: IAddress
-  communityName: string
-  communityActivityCode: string
-  communityAddress: string | null
-  communityActivityTypeDescription: string
-  communityAssistanceType: string
-  applicantPhoneNumber: string | null
-  requestedRabAmount: number
-  requestedBansosAmount: number
-  approvedFundAmount: number
-  executionDate: string | null
-  executionPlace: string | null
-  applicationYear: string
-  membersCount: number
-  bankName: string
+  event: IEvent
+  email: string
+  phoneNumber: string
+  university: IUniversity
+  studyProgram: IStudyProgram
+  semester: number
+  gpa: number
+  tuitionFee: number | null
   bankAccNumber: string
-  bankAccName: null | string
-  bankAccAddress: string | null
-  members: Array<{
-    id: string
-    beneficiary: IBeneficary
-    position: string
-  }>
-  statusDisimbursement: string | null
-  note: string
+  bankAccName: string
+  application_status: string
+  message: string
+  dtksStatus: string
+  documents: IDocument
   createdAt: string
   updatedAt: string
 }
-
-export interface ICommunityGroups {
+export interface ITuitionAssistance {
   success: boolean
   message: string
-  data: ICommunityGroup[]
+  data: Array<{
+    id: string
+    application: IApplication
+    assistanceAmount: number
+    disbursementStatus: string
+    budgetYear: string
+    createdAt: string
+    updatedAt: string
+  }>
   meta: IMeta
 }
-
-export interface IBusinessGroupDetail {
+export interface ITuitionAssistanceID {
   id: string
-  businessName: string
-  businessType: string
-  businessAddress: IBusinessAddress
-  membersCount: number
+  application: IApplication
   assistanceAmount: number
+  disbursementStatus: string
   budgetYear: string
-  status: string
-  note: string
   createdAt: string
   updatedAt: string
-  members: Array<{
-    id: string
-    identityNumber: string
-    position: string
-  }> | null
-}
-export interface IBusinessGroup {
-  success: boolean
-  message: string
-  data: IBusinessGroupDetail[]
-  meta: IMeta
-}
-
-export interface IFuelCashAssistances {
-  success: boolean
-  message: string
-  data: Array<{
-    id: string
-    beneficiary: IBeneficary
-    type: string
-    createdAt: string
-    updatedAt: string
-  }>
-  meta: IMeta
-}
-export interface IFuelCashAssistance {
-  success: boolean
-  message: string
-  id: string
-  beneficiary: IBeneficary
-  type: string
-  createdAt: string
-  updatedAt: string
-  meta: IMeta
-}
-export interface INonCashFoodAssistanceBeneficiarys {
-  success: boolean
-  message: string
-  data: Array<{
-    id: string
-    beneficiary: IBeneficary
-    type: string
-    createdAt: string
-    updatedAt: string
-  }>
-  meta: IMeta
-}
-export interface INonCashFoodAssistanceBeneficiary {
-  success: boolean
-  message: string
-  id: string
-  beneficiary: IBeneficary
-  type: string
-  createdAt: string
-  updatedAt: string
-  meta: IMeta
 }

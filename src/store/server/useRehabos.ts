@@ -28,7 +28,7 @@ import {
   getCountIndigencyCertificateFn,
   getCountTuitionAssistanceFn,
   updateTuitionsAssistanceFn
-} from '@/api/linjamsos.api'
+} from '@/api/rehabsos.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
 import { type AxiosError } from 'axios'

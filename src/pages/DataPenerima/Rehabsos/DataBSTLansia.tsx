@@ -15,10 +15,11 @@ import {
   useGetKelurahan,
   useGetTuitionAssistanceFn,
   useGetTuitionAssistanceID,
-  useGetUniversities
+  useGetUniversities,
+  useGetBeneficiary
 } from '@/store/server'
 import React from 'react'
-import { exportTuitionAssistanceFn } from '@/api/linjamsos.api'
+import { exportTuitionAssistanceFn } from '@/api/rehabsos.api'
 import { useAlert, useTitleHeader } from '@/store/client'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 interface FormValues {
@@ -48,7 +49,7 @@ const DataBSTLansia = () => {
   const [isLoadingExport, setIsLoadingExport] = React.useState(false)
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
-  const { q, kecamatan, kelurahan, page, year, status, event, university } = useGetParams([
+  const { q, kecamatan, kelurahan, page, year, status, isDtks, event, university } = useGetParams([
     'q',
     'kecamatan',
     'kelurahan',
@@ -56,6 +57,7 @@ const DataBSTLansia = () => {
     'year',
     'status',
     'event',
+    'isDtks',
     'university'
   ])
 
@@ -80,8 +82,8 @@ const DataBSTLansia = () => {
 
   const {
     data: tuitions,
-    refetch,
-    isFetching,
+    refetch: refetchTuitions,
+  isFetching: isFetchingTuitions,
     isLoading
   } = useGetTuitionAssistanceFn({
     page: parseInt(page) ?? 1,
@@ -93,7 +95,20 @@ const DataBSTLansia = () => {
     q,
     university
   })
-  useDisableBodyScroll(isFetching)
+  useDisableBodyScroll(isFetchingTuitions)
+
+  const {
+    data: beneficiary,
+    refetch: refetchBeneficiary,
+    isFetching: isFetchingBeneficiary,
+  } = useGetBeneficiary({
+    page: parseInt(page) ?? 1,
+    idKecamatan: kecamatan,
+    idKelurahan: kelurahan,
+    q,
+    isDtks,
+  });
+  useDisableBodyScroll(isFetchingBeneficiary || isShow);
 
   const showDetail = (id: string) => {
     setSelectedId(id)
@@ -118,7 +133,7 @@ const DataBSTLansia = () => {
     updateParam('event', values.event)
     updateParam('university', values.university)
 
-    await refetch()
+    await  refetchTuitions()
   }
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
@@ -174,13 +189,14 @@ const DataBSTLansia = () => {
     })
   }
 
-  useDisableBodyScroll(isFetching)
+  useDisableBodyScroll(isFetchingTuitions)
 
   if (isLoading && isLoadingTuition) return <Loading />
+  
 
   return (
     <Container>
-      {(isFetching || isLoadingExport) && <Loading />}
+      {(isFetchingTuitions || isLoadingExport) && <Loading />}
       <h1 className="font-bold text-xl ">Bantuan Sosial Tunai Lansia</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -295,45 +311,52 @@ const DataBSTLansia = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {tuitions?.data?.length !== 0 ? (
-              tuitions?.data.map((item, index) => (
-                <TableRow key={item.id}>
-                  <TableCell className="text-left bg-[#F9FAFC]">
-                    {(tuitions.meta.currentPage - 1) * tuitions.meta.perPage + index + 1}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.identityNumber ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.identityNumber ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.name ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                  
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application?.beneficiary?.address.areaLevel3?.name ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application?.beneficiary?.address.areaLevel4?.name ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                  {item.budgetYear ?? '-'}
-                  </TableCell>
-                  <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Action onDetail={() => showDetail(item.id)} />
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={9} className="text-center">
-                  Tidak ada data
-                </TableCell>
-              </TableRow>
-            )}
+          {tuitions?.data?.length !== 0 ? (
+            tuitions?.data.map((tuitionItem, index) => {
+              const beneficiaryItem = beneficiary?.data.find(
+              (item) => item.identityNumber == tuitionItem.application?.beneficiary?.identityNumber
+              );
+          const dtksStatus = beneficiaryItem ? (beneficiaryItem.isDtks ? 'DTKS' : '') : 'Non DTKS';
+    return (
+      <TableRow key={tuitionItem.id}>
+        <TableCell className="text-left bg-[#F9FAFC]">
+          {(tuitions.meta.currentPage - 1) * tuitions.meta.perPage + index + 1}
+        </TableCell>
+        <TableCell className="text-center bg-[#F9FAFC]">
+          {tuitionItem.application?.beneficiary?.identityNumber ?? '-'}
+        </TableCell>
+        <TableCell className="text-center bg-[#F9FAFC]">
+          {tuitionItem.application?.beneficiary?.identityNumber ?? '-'}
+        </TableCell>
+        <TableCell className="text-center bg-[#F9FAFC]">
+          {tuitionItem.application?.beneficiary?.name ?? '-'}
+        </TableCell>
+        <TableCell className="text-center bg-[#F9FAFC]">
+          {dtksStatus}
+        </TableCell>
+        <TableCell className="text-center bg-[#F9FAFC]">
+          {tuitionItem.application?.beneficiary?.address.areaLevel3?.name ?? '-'}
+        </TableCell>
+        <TableCell className="text-center bg-[#F9FAFC]">
+          {tuitionItem.application?.beneficiary?.address.areaLevel4?.name ?? '-'}
+        </TableCell>
+        <TableCell className="text-center bg-[#F9FAFC]">
+          {tuitionItem.budgetYear ?? '-'}
+        </TableCell>
+        <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+          <Action onDetail={() => showDetail(tuitionItem.id)} />
+        </TableCell>
+      </TableRow>
+    );
+  })
+) : (
+  <TableRow>
+    <TableCell colSpan={9} className="text-center">
+      Tidak ada data
+    </TableCell>
+  </TableRow>
+)}
+
           </TableBody>
         </Table>
       </section>
