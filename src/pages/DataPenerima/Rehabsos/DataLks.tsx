@@ -272,7 +272,7 @@ const DataLks = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Diupdate</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>

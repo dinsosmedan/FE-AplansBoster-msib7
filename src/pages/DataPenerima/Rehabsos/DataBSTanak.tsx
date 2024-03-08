@@ -275,7 +275,7 @@ const DataBSTanak = () => {
                 <TableHead className="text-[#534D59] font-bold text-[15px]">kecamatan</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat</TableHead>
-                <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Update</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
               </TableRow>
             </TableHeader>

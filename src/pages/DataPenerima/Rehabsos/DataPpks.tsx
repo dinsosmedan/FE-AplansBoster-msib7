@@ -31,7 +31,7 @@ interface FormValues {
   budget_year: string
 }
 
-const DataPpks = () => {
+const Ppks = () => {
   useTitle('Data Penerima')
   const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
 
@@ -40,8 +40,8 @@ const DataPpks = () => {
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
       { url: '/data-penerima/rehabsos/ppks', label: 'PPKS' }
-    ])
-  }, [])
+])
+}, [])
   const navigate = useNavigate()
   const { alert } = useAlert()
 
@@ -238,7 +238,7 @@ const DataPpks = () => {
               <Button
                 type="button"
                 className="gap-2 border-none rounded-lg"
-                onClick={() => navigate('/data-penerima/rehabsos/izin-operasi-lks/create')}
+                onClick={() => navigate('/data-penerima/rehabsos/ppks/create')}
               >
                 <HiPlus className="text-lg" />
                 <span>Tambah Data</span>
@@ -270,7 +270,7 @@ const DataPpks = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Diupdate</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
               </TableRow>
           </TableHeader>
@@ -302,7 +302,7 @@ const DataPpks = () => {
                       <Action
                         onDetail={() => showDetail(item.id)}
                         onDelete={() => handleDelete(item.id)}
-                        onEdit={() => navigate(`/data-penerima/rehabos/izin-operasi-lks/create/${item.id}`)}
+                        onEdit={() => navigate(`/data-penerima/rehabsos/ppks/create/${item.id}`)}
                       />
                     ) : (
                       <Action onDetail={() => showDetail(item.id)} />
@@ -402,4 +402,4 @@ const DataPpks = () => {
     </Container>
   )
 }
-export default DataPpks
+export default Ppks

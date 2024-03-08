@@ -127,7 +127,7 @@ export default function DropZone({
                 className="flex h-7 w-7 cursor-pointer rounded-full hover:bg-slate-200"
                 onClick={(e) => deleteFile(e, file)}
               >
-                <HiTrash className="m-auto text-xl text-red-500" />
+                <HiTrash className="m-auto text-xl text-Blue-500" />
               </button>
             </div>
           ))}
