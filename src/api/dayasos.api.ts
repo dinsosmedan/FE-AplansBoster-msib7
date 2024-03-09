@@ -25,7 +25,7 @@ import {
   type IBusinessGroupDetail,
   type IFuelCashAssistances,
   type INonCashFoodAssistanceBeneficiarys
-} from '@/lib/types/rehabsos.type'
+} from '@/lib/types/dayasos.type'
 
 export const storeWorshipPlaceFn = async (fields: worshipPlaceFields) => {
   const response = await api.post('/worship-place', fields)

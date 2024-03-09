@@ -199,7 +199,7 @@ const DataPppks = () => {
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-x-5 gap-y-5 ">
+          <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
             <FormField
               name="kecamatan"
               control={forms.control}
@@ -238,6 +238,17 @@ const DataPppks = () => {
                 </FormItem>
               )}
             />
+            <FormField
+              name="year"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
           </div>
 
           <section className="flex items-center justify-between">
@@ -278,6 +289,7 @@ const DataPppks = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Lahir</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Usia</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kelamin</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -306,6 +318,9 @@ const DataPppks = () => {
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.application?.beneficiary?.gender ? item.application.beneficiary.gender : '-'}
+                  </TableCell>
+                  <TableCell>
+                    {item.budgetYear}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action onDetail={() => showDetail(item.id)} />

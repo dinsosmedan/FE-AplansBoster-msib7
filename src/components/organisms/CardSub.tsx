@@ -26,7 +26,7 @@ export default function Card({ title, subTitle, href }: CardSubProps) {
       </Button>
       <div
         className={cn(
-          'group w-[196px] h-[196px] rounded-full bg-[#D71F50] absolute left-[-52px] top-[80px] transition-transform duration-700 ease-in-out transform group-hover:translate-x-[310px] group-hover:translate-y-[-235px] group-hover:bg-primary/60'
+          'group w-[196px] h-[196px] rounded-full bg-secondary absolute left-[-52px] top-[80px] transition-transform duration-700 ease-in-out transform group-hover:translate-x-[310px] group-hover:translate-y-[-235px] group-hover:bg-primary/60'
         )}
       />
     </Link>

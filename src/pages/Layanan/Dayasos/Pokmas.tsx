@@ -63,12 +63,19 @@ const Pokmas = () => {
   const { data: beneficiary, refetch, isFetching, isError, isLoading } = useGetBeneficaryByNIK(NIK, false)
   const { mutate: createPokmas, isLoading: isLoadingCreate } = useCreateCommunityGroups()
 
-  const { data: communityGroup, isSuccess, isLoading: isLoadingGet, isError: isErrorGet } = useGetCommunityGroup(id)
+  const { data: communityGroup, isSuccess, isLoading: isLoadingGet, isError: isErrorGet} = useGetCommunityGroup(id)
   const { mutate: updateCommunityGroup, isLoading: isLoadingUpdate } = useUpdateCommunityGroups()
 
   useNotFound(isErrorGet)
 
   useToastNik({
+    successCondition: !isLoading && beneficiary != null,
+    notFoundCondition: isError,
+    notRegisteredCondition: Object.keys(forms.formState.errors).length > 0 && forms.formState.isSubmitted,
+    onSuccess: () => forms.setValue(`members.${index}.beneficiary`, beneficiary?.id as string)
+  })
+
+    useToastNik({
     successCondition: !isLoading && beneficiary != null,
     notFoundCondition: isError,
     notRegisteredCondition: Object.keys(forms.formState.errors).length > 0 && forms.formState.isSubmitted,
@@ -538,85 +545,16 @@ const Pokmas = () => {
               )}
             />
           </section>
-          {/* <p className="text-2xl font-bold text-center">Data Anggota</p>
-          {fields.map((field, index) => (
-            <div className="flex flex-row gap-4" key={field.id}>
-              <FormField
-                name={`members.${index}.beneficiary`}
-                control={forms.control}
-                render={({ field }) => (
-                  <Input {...field} value={field.value ?? ''} type="text" hidden className="hidden" />
-                )}
-              />
-              <FormField
-                name={`members.${index}.nik`}
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>NIK</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan NIK" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name={`members.${index}.position`}
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Jabatan</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Jabatan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="ketua">Ketua</SelectItem>
-                        <SelectItem value="sekretaris">Sekretaris</SelectItem>
-                        <SelectItem value="bendahara">Bendahara</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className={cn('flex items-end justify-end gap-2', index > 0 ? 'w-auto' : 'w-[11%]')}>
-                <Button
-                  className="w-full"
-                  type="button"
-                  onClick={async () => await handleFetchNik(index)}
-                  loading={isFetching}
-                >
-                  Cari
-                </Button>
-                {index > 0 && (
-                  <Button
-                    className="w-full bg-white border border-zinc-500 hover:bg-zinc-200"
-                    type="button"
-                    onClick={() => remove(index)}
-                  >
-                    <HiTrash className="text-lg text-zinc-800" />
-                  </Button>
-                )}
-              </div>
-            </div>
-          ))} */}
-          {/* <Button
-            className="bg-primary flex w-fit mx-auto rounded-xl py-6 gap-2"
-            type="button"
-            onClick={() => append({ beneficiary: '', position: '', nik: '' })}
-          >
-            <HiPlus className="w-6 h-6 text-white" />
-            <p className="font-bold text-sm text-white">Tambah Anggota</p>
-          </Button> */}
           <div className="flex justify-end gap-4 mt-8">
             <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
               Cancel
             </Button>
-            <Button className="font-bold" type="submit" loading={isLoadingCreate || isLoadingUpdate}>
+            <Button 
+            className="font-bold" 
+            type="submit" 
+            loading={isLoadingCreate || isLoadingUpdate}
+            onClick={async () => await handleFetchNik(index)}
+            >
               {id ? 'Update' : 'Submit'}
             </Button>
           </div>
