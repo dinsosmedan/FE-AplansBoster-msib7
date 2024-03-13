@@ -17,7 +17,8 @@ import {
   useGetCommunityGroup,
   useGetKecamatan,
   useGetKelurahan,
-  useUpdateCommunityGroups
+  useUpdateCommunityGroups,
+  useGetCommunityGroups
 } from '@/store/server'
 
 import { cn } from '@/lib/utils'
@@ -26,7 +27,7 @@ import { COMMUNITY_ACTIVITY_CODE, COMMUNITY_ASSISTANCE_TYPE } from '@/lib/data'
 import { formatDateToString, formatStringToDate } from '@/lib/services/formatDate'
 import { type pokmasFields, pokmasValidation } from '@/lib/validations/dayasos.validation'
 
-import { useToastNik, useTitle, useNotFound } from '@/hooks'
+import { useToastNikPokmas, useTitle, useNotFound } from '@/hooks'
 import { useTitleHeader } from '@/store/client'
 
 const Pokmas = () => {
@@ -63,20 +64,23 @@ const Pokmas = () => {
   const { data: beneficiary, refetch, isFetching, isError, isLoading } = useGetBeneficaryByNIK(NIK, false)
   const { mutate: createPokmas, isLoading: isLoadingCreate } = useCreateCommunityGroups()
 
-  const { data: communityGroup, isSuccess, isLoading: isLoadingGet, isError: isErrorGet} = useGetCommunityGroup(id)
+  const { data: communityGroup, isSuccess, isLoading: isLoadingGet, isError: isErrorGet } = useGetCommunityGroup(id)
   const { mutate: updateCommunityGroup, isLoading: isLoadingUpdate } = useUpdateCommunityGroups()
+  const { data: communityGroups } = useGetCommunityGroups({})
 
   useNotFound(isErrorGet)
 
-  useToastNik({
-    successCondition: !isLoading && beneficiary != null,
-    notFoundCondition: isError,
-    notRegisteredCondition: Object.keys(forms.formState.errors).length > 0 && forms.formState.isSubmitted,
-    onSuccess: () => forms.setValue(`members.${index}.beneficiary`, beneficiary?.id as string)
-  })
+  console.log('nik', communityGroup?.members?.length)
+  console.log('pokmas', forms.getValues(`members.${index}.nik`)?.toString)
 
-    useToastNik({
-    successCondition: !isLoading && beneficiary != null,
+  useToastNikPokmas({
+    successCondition:
+      !isLoading &&
+      beneficiary != null &&
+      communityGroup?.members.every(
+        (member) => member?.beneficiary?.identityNumber !== forms.getValues(`members.${index}.nik`)
+      ),
+    failedCondition: !isLoading && beneficiary != null,
     notFoundCondition: isError,
     notRegisteredCondition: Object.keys(forms.formState.errors).length > 0 && forms.formState.isSubmitted,
     onSuccess: () => forms.setValue(`members.${index}.beneficiary`, beneficiary?.id as string)
@@ -153,7 +157,7 @@ const Pokmas = () => {
     <Container className="py-10 px-16">
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-7">
-        <p className="text-2xl font-bold text-center">Data Pengurus</p>
+          <p className="text-2xl font-bold text-center">Data Pengurus</p>
           {fields.map((field, index) => (
             <div className="flex flex-row gap-4" key={field.id}>
               <FormField
@@ -549,11 +553,11 @@ const Pokmas = () => {
             <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
               Cancel
             </Button>
-            <Button 
-            className="font-bold" 
-            type="submit" 
-            loading={isLoadingCreate || isLoadingUpdate}
-            onClick={async () => await handleFetchNik(index)}
+            <Button
+              className="font-bold"
+              type="submit"
+              loading={isLoadingCreate || isLoadingUpdate}
+              onClick={async () => await handleFetchNik(index)}
             >
               {id ? 'Update' : 'Submit'}
             </Button>

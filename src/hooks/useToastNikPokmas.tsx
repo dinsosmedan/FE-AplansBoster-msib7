@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 interface IUseToastNikPokmas {
   onSuccess?: () => void
+  failedCondition?: boolean
   successCondition?: boolean
   notFoundCondition?: boolean
   notRegisteredCondition?: boolean
@@ -12,6 +13,7 @@ interface IUseToastNikPokmas {
 
 export default function useToastNikPokmas({
   onSuccess,
+  failedCondition,
   successCondition,
   notFoundCondition,
   notRegisteredCondition
@@ -29,6 +31,16 @@ export default function useToastNikPokmas({
       })
     }
   }, [successCondition])
+
+  React.useEffect(() => {
+    if (failedCondition) {
+      toast({
+        title: 'NIK terdaftar di POKMAS',
+        description: 'Maaf NIK belum dapat mendaftar',
+        variant: 'destructive'
+      })
+    }
+  }, [failedCondition])
 
   React.useEffect(() => {
     if (notFoundCondition) {
