@@ -199,7 +199,7 @@ const DataBSTdisab = () => {
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-x-5 gap-y-5 ">
+          <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
             <FormField
               name="kecamatan"
               control={forms.control}
@@ -239,81 +239,19 @@ const DataBSTdisab = () => {
                 </FormItem>
               )}
             />
-          </div>
-          {/* <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
-            <FormField
-              name="event"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Jenis Event" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {listEvent?.data.map((item, index) => (
-                        <SelectItem key={index} value={item.id}>
-                          {item.type.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormItem>
-              )}
-            />
             <FormField
               name="year"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Pengajuan" />
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Anggaran" />
                   </FormControl>
                 </FormItem>
               )}
-            />
-            <FormField
-              name="status"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Status Pencairan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="pending">Ditunda</SelectItem>
-                      <SelectItem value="processed">Diproses</SelectItem>
-                      <SelectItem value="disbursed">Dicairkan</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="university"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <SearchSelect
-                      selected={field.value}
-                      onChange={field.onChange}
-                      width="w-[380px]"
-                      placeholder="Pilih Perguruan Tinggi"
-                      options={
-                        universities?.map((university) => ({ label: university.name, value: university.id })) ?? []
-                      }
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div> */}
+            />
+          </div>
+          
           <section className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Button
@@ -395,7 +333,7 @@ const DataBSTdisab = () => {
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {formatToView(item.updatedAt) ?? '-'}
+                    {item.budgetYear ?? '-'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action onDetail={() => showDetail(item.id)} />

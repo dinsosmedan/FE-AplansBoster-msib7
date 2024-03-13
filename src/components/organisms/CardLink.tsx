@@ -31,7 +31,7 @@ const Header = ({ title, className, children, circlePosition }: CardLinkHeaderPr
       <div className="relative z-10">{children}</div>
       <div
         className={cn(
-          'w-[196px] h-[196px] rounded-full bg-[#D71F50] absolute z-0',
+          'w-[196px] h-[196px] rounded-full bg-secondary absolute z-0',
           circlePosition === 'top'
             ? '-translate-y-1/2 top-[-50%-48px] right-[24px] translate-x-1/2'
             : 'translate-y-1/2 bottom-[-50%-48px] left-[24px] -translate-x-1/2'

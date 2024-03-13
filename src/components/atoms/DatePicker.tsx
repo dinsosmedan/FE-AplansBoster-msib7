@@ -19,7 +19,7 @@ export default function DatePicker({ selected, onChange, placeholder, className 
         <Button
           variant="outline"
           className={cn(
-            'hover:text-black w-full justify-start text-left font-normal bg-[#000032] border-[#D4D7E3]',
+            'hover:text-black w-full justify-start text-left font-normal bg-[#F7FBFF] border-[#D4D7E3]',
             selected && 'text-muted-foreground',
             className
           )}

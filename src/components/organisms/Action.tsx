@@ -18,7 +18,7 @@ interface BaseActionProps {
 const Action = ({ onDelete, onEdit, onDetail, editText, deleteText, detailText }: BaseActionProps) => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="gap-2 border-none rounded-lg inline-flex relative items-center justify-center text-sm font-medium transition-colors outline-none ring-0 disabled:pointer-events-none disabled:opacity-50 overflow-hidden bg-primary text-zinc-50 hover:bg-[#C21D49] disabled:bg-primary/80 h-10 px-4 py-2">
+      <DropdownMenuTrigger className="gap-2 border-none rounded-lg inline-flex relative items-center justify-center text-sm font-medium transition-colors outline-none ring-0 disabled:pointer-events-none disabled:opacity-50 overflow-hidden bg-primary text-zinc-50 hover:bg-secondary disabled:bg-primary/80 h-10 px-4 py-2">
         <span>Action</span>
         <HiOutlineExclamationCircle className="text-lg" />
       </DropdownMenuTrigger>

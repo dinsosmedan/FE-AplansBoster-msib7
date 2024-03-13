@@ -83,7 +83,7 @@ const DataBSTLansia = () => {
   const {
     data: tuitions,
     refetch: refetchTuitions,
-  isFetching: isFetchingTuitions,
+    isFetching: isFetchingTuitions,
     isLoading
   } = useGetTuitionAssistanceFn({
     page: parseInt(page) ?? 1,
@@ -100,15 +100,15 @@ const DataBSTLansia = () => {
   const {
     data: beneficiary,
     refetch: refetchBeneficiary,
-    isFetching: isFetchingBeneficiary,
+    isFetching: isFetchingBeneficiary
   } = useGetBeneficiary({
     page: parseInt(page) ?? 1,
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
     q,
-    isDtks,
-  });
-  useDisableBodyScroll(isFetchingBeneficiary || isShow);
+    isDtks
+  })
+  useDisableBodyScroll(isFetchingBeneficiary || isShow)
 
   const showDetail = (id: string) => {
     setSelectedId(id)
@@ -133,7 +133,7 @@ const DataBSTLansia = () => {
     updateParam('event', values.event)
     updateParam('university', values.university)
 
-    await  refetchTuitions()
+    await refetchTuitions()
   }
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
@@ -192,7 +192,6 @@ const DataBSTLansia = () => {
   useDisableBodyScroll(isFetchingTuitions)
 
   if (isLoading && isLoadingTuition) return <Loading />
-  
 
   return (
     <Container>
@@ -255,7 +254,7 @@ const DataBSTLansia = () => {
                 </FormItem>
               )}
             />
-             <FormField
+            <FormField
               name="year"
               control={forms.control}
               render={({ field }) => (
@@ -267,7 +266,7 @@ const DataBSTLansia = () => {
               )}
             />
           </div>
-  
+
           <section className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Button
@@ -303,7 +302,7 @@ const DataBSTLansia = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Kartu Keluarga</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Status DTKS</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Status</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
@@ -311,52 +310,47 @@ const DataBSTLansia = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-          {tuitions?.data?.length !== 0 ? (
-            tuitions?.data.map((tuitionItem, index) => {
-              const beneficiaryItem = beneficiary?.data.find(
-              (item) => item.identityNumber == tuitionItem.application?.beneficiary?.identityNumber
-              );
-          const dtksStatus = beneficiaryItem ? (beneficiaryItem.isDtks ? 'DTKS' : '') : 'Non DTKS';
-    return (
-      <TableRow key={tuitionItem.id}>
-        <TableCell className="text-left bg-[#F9FAFC]">
-          {(tuitions.meta.currentPage - 1) * tuitions.meta.perPage + index + 1}
-        </TableCell>
-        <TableCell className="text-center bg-[#F9FAFC]">
-          {tuitionItem.application?.beneficiary?.identityNumber ?? '-'}
-        </TableCell>
-        <TableCell className="text-center bg-[#F9FAFC]">
-          {tuitionItem.application?.beneficiary?.identityNumber ?? '-'}
-        </TableCell>
-        <TableCell className="text-center bg-[#F9FAFC]">
-          {tuitionItem.application?.beneficiary?.name ?? '-'}
-        </TableCell>
-        <TableCell className="text-center bg-[#F9FAFC]">
-          {dtksStatus}
-        </TableCell>
-        <TableCell className="text-center bg-[#F9FAFC]">
-          {tuitionItem.application?.beneficiary?.address.areaLevel3?.name ?? '-'}
-        </TableCell>
-        <TableCell className="text-center bg-[#F9FAFC]">
-          {tuitionItem.application?.beneficiary?.address.areaLevel4?.name ?? '-'}
-        </TableCell>
-        <TableCell className="text-center bg-[#F9FAFC]">
-          {tuitionItem.budgetYear ?? '-'}
-        </TableCell>
-        <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-          <Action onDetail={() => showDetail(tuitionItem.id)} />
-        </TableCell>
-      </TableRow>
-    );
-  })
-) : (
-  <TableRow>
-    <TableCell colSpan={9} className="text-center">
-      Tidak ada data
-    </TableCell>
-  </TableRow>
-)}
-
+            {tuitions?.data?.length !== 0 ? (
+              tuitions?.data.map((tuitionItem, index) => {
+                const beneficiaryItem = beneficiary?.data.find(
+                  (item) => item.identityNumber == tuitionItem.application?.beneficiary?.identityNumber
+                )
+                const dtksStatus = beneficiaryItem ? (beneficiaryItem.isDtks ? 'DTKS' : '') : 'Non DTKS'
+                return (
+                  <TableRow key={tuitionItem.id}>
+                    <TableCell className="text-left bg-[#F9FAFC]">
+                      {(tuitions.meta.currentPage - 1) * tuitions.meta.perPage + index + 1}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">
+                      {tuitionItem.application?.beneficiary?.identityNumber ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">
+                      {tuitionItem.application?.beneficiary?.identityNumber ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">
+                      {tuitionItem.application?.beneficiary?.name ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{dtksStatus}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">
+                      {tuitionItem.application?.beneficiary?.address.areaLevel3?.name ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">
+                      {tuitionItem.application?.beneficiary?.address.areaLevel4?.name ?? '-'}
+                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{tuitionItem.budgetYear ?? '-'}</TableCell>
+                    <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
+                      <Action onDetail={() => showDetail(tuitionItem.id)} />
+                    </TableCell>
+                  </TableRow>
+                )
+              })
+            ) : (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center">
+                  Tidak ada data
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </section>

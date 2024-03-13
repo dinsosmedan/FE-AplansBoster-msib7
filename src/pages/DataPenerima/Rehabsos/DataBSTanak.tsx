@@ -177,7 +177,7 @@ const DataBSTanak = () => {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-x-5 gap-y-5 ">
+            <div className="grid grid-cols-3 gap-x-5 gap-y-5 ">
               <FormField
                 name="kecamatan"
                 control={forms.control}
@@ -217,7 +217,7 @@ const DataBSTanak = () => {
                   </FormItem>
                 )}
               />
-              {/* <FormField
+              <FormField
                 name="year"
                 control={forms.control}
                 render={({ field }) => (
@@ -227,7 +227,7 @@ const DataBSTanak = () => {
                     </FormControl>
                   </FormItem>
                 )}
-              /> */}
+              />
             </div>
             <div className="mb-6 flex justify-between">
               <div className="flex items-center gap-3">
@@ -239,12 +239,9 @@ const DataBSTanak = () => {
                   <HiPlus className="text-lg" />
                   <p className="w-max">Tambah Data</p>
                 </Button>
-                {vulnerables?.data?.length !== 1 ? (
-                  <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
-                ) : null}
-                {/* {vulnerables?.data?.length !== 0 ? (
+                {vulnerables?.data?.length !== 0 ? (
                 <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
-              ) : null} */}
+              ) : null}
               </div>
               <div className="flex gap-3">
                 <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
@@ -304,9 +301,6 @@ const DataBSTanak = () => {
                     </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]" position="center">
                       {item.budgetYear ?? '-'}
-                    </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                      {formatToView(item.updatedAt) ?? '-'}
                     </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {formatToView(item.updatedAt) ?? '-'}

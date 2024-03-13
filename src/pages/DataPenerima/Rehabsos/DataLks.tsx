@@ -28,7 +28,7 @@ interface FormValues {
   kelurahan: string
   kecamatan: string
   type: string
-  budget_year: string
+  year: string
 }
 
 const DataLks = () => {
@@ -62,10 +62,23 @@ const DataLks = () => {
     kelurahan,
     page,
     type,
-    budget_year: budgetYear
-  } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'type', 'budget_year'])
+    year: budgetYear
+  } = useGetParams([
+    'q', 
+    'kecamatan', 
+    'kelurahan', 
+    'page', 
+    'type', 
+    'year'
+  ])
   const forms = useForm<FormValues>({
-    defaultValues: { q: '', kelurahan: '', kecamatan: '', type: '', budget_year: '' }
+    defaultValues: { 
+      q: q ?? '', 
+      kelurahan: kelurahan ?? '', 
+      kecamatan: kecamatan ?? '', 
+      type: '', 
+      year: ''
+    }
   })
 
   const areaLevel3 = forms.watch('kecamatan')
@@ -107,7 +120,7 @@ const DataLks = () => {
 
   const onSubmit = async (values: FormValues) => {
     updateParam('q', values.q)
-    updateParam('budget_year', values.budget_year)
+    updateParam('year', values.year)
     updateParam('kecamatan', values.kecamatan)
     updateParam('kelurahan', values.kelurahan)
     updateParam('type', values.type)
@@ -231,7 +244,17 @@ const DataLks = () => {
                   </FormItem>
                 )}
               />
-             
+             <FormField
+              name="year"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
             </div>
           </section>
 
@@ -297,7 +320,7 @@ const DataLks = () => {
                     {item?.assistanceAmount ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {formatToView(item.updatedAt) ?? '-'}
+                    {item.budgetYear ?? '-'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     {isEnableDelete ? (
