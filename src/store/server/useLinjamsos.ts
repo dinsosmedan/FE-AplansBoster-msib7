@@ -250,6 +250,11 @@ export const useDeleteSktm = () => {
     }
   })
 }
+export const useGetIndigencyCertificate = (id: string) => {
+  return useQuery(['indigency', id], async () => await showDetailIndigencyCertificateFn(id), {
+    enabled: !!id
+  })
+}
 // PBI //
 export const useGetPremiumAssistanceBenefitFn = ({
   page,

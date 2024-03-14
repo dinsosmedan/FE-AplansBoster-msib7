@@ -2,46 +2,31 @@ import { type IBeneficary } from './beneficary.type'
 import { type IAddress, type IMeta } from './dayasos.type'
 import { type IPath } from './service.type'
 
-export interface IVulnerableGroupHandlingDetail {
-  id: string
-  beneficiary: IBeneficary
-  incidentDate: string
-  incidentAddress: string
-  bankAccountNumber: string
-  bankName: string
-  assistanceAmount: number
-  budgetYear: string
-  createdAt: string
-  updatedAt: string
+export interface IElderlyCashSocialAssistanceDetail {
+  no: string
+  nokk: string
+  nik: string
+  nama: string
+  tmpt_lahir: string
+  ttgl_lahir: string
+  umur: string
+  jennkel: string
+  alamatpadan: string
+  alamat: string
+  kelurahan: string
+  kecamatan: string
+  programbansos: string
+  created_at: string
+  updated_at: string
 }
 
-export interface IVulnerableGroupHandling {
+export interface IElderlyCashSocialAssistance {
   success: boolean
   message: string
-  data: IVulnerableGroupHandlingDetail[]
+  data: IElderlyCashSocialAssistanceDetail[]
   meta: IMeta
 }
 
-export interface IUnregisterDetail {
-  id: string
-  name: string
-  age: string
-  gender: string
-  dinsosLetterNumber: string
-  dinsosLetterDate: string
-  diseaseDiagnosis: string
-  hospitalEntryDate: string
-  hospitalLetterNumber: string
-  hospitalLetterDate: string
-  createdAt: string
-  updatedAt: string
-}
-export interface IUnregister {
-  success: boolean
-  message: string
-  data: IUnregisterDetail[]
-  meta: IMeta
-}
 export interface IApplicant {
   id: string
   identityNumber: string
