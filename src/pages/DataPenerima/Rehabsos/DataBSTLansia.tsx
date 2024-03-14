@@ -13,13 +13,13 @@ import {
   useGetEvent,
   useGetKecamatan,
   useGetKelurahan,
-  useGetTuitionAssistanceFn,
+  useGetDetailElderlyCashSocialAssistance,
+  useElderlyCashSocialAssistance,
   useGetTuitionAssistanceID,
-  useGetUniversities,
   useGetBeneficiary
 } from '@/store/server'
 import React from 'react'
-import { exportTuitionAssistanceFn } from '@/api/rehabsos.api'
+import { exportElderlyCashSocialAssistanceFn, getElderlyCashSocialAssistanceFn } from '@/api/rehabsos.api'
 import { useAlert, useTitleHeader } from '@/store/client'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 interface FormValues {
@@ -29,7 +29,6 @@ interface FormValues {
   year: string
   status: string
   event: string
-  university: string
 }
 const DataBSTLansia = () => {
   useTitle('Data Penerima')
@@ -49,7 +48,7 @@ const DataBSTLansia = () => {
   const [isLoadingExport, setIsLoadingExport] = React.useState(false)
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
-  const { q, kecamatan, kelurahan, page, year, status, isDtks, event, university } = useGetParams([
+  const { q, kecamatan, kelurahan, page, year, status, isDtks } = useGetParams([
     'q',
     'kecamatan',
     'kelurahan',
@@ -57,8 +56,7 @@ const DataBSTLansia = () => {
     'year',
     'status',
     'event',
-    'isDtks',
-    'university'
+    'isDtks'
   ])
 
   const forms = useForm<FormValues>({
@@ -67,41 +65,31 @@ const DataBSTLansia = () => {
       kecamatan: kecamatan ?? '',
       kelurahan: kelurahan ?? '',
       year: year ?? '',
-      status: status ?? '',
-      event: event ?? '',
-      university: university ?? ''
+      status: status ?? ''
     }
   })
   const areaLevel3 = forms.watch('kecamatan')
 
   const { data: listEvent } = useGetEvent()
   const { data: listKecamatan } = useGetKecamatan()
-  const { data: universities } = useGetUniversities()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
   const { data: tuition, isLoading: isLoadingTuition } = useGetTuitionAssistanceID(selectedId)
 
   const {
-    data: tuitions,
+    data: elderlys,
     refetch: refetchTuitions,
     isFetching: isFetchingTuitions,
     isLoading
-  } = useGetTuitionAssistanceFn({
+  } = useElderlyCashSocialAssistance({
     page: parseInt(page) ?? 1,
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
     year,
-    status,
-    event,
-    q,
-    university
+    q
   })
   useDisableBodyScroll(isFetchingTuitions)
 
-  const {
-    data: beneficiary,
-    refetch: refetchBeneficiary,
-    isFetching: isFetchingBeneficiary
-  } = useGetBeneficiary({
+  const { data: beneficiary, isFetching: isFetchingBeneficiary } = useGetBeneficiary({
     page: parseInt(page) ?? 1,
     idKecamatan: kecamatan,
     idKelurahan: kelurahan,
@@ -129,20 +117,15 @@ const DataBSTLansia = () => {
     updateParam('kecamatan', values.kecamatan)
     updateParam('kelurahan', values.kelurahan)
     updateParam('year', values.year)
-    updateParam('status', values.status)
-    updateParam('event', values.event)
-    updateParam('university', values.university)
 
     await refetchTuitions()
   }
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    const response = await exportTuitionAssistanceFn('csv', {
+    const response = await exportElderlyCashSocialAssistanceFn('csv', {
       idKecamatan: kecamatan,
       idKelurahan: kelurahan,
       year,
-      status,
-      event,
       q
     })
     if (response.success) {
@@ -158,12 +141,10 @@ const DataBSTLansia = () => {
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    const response = await exportTuitionAssistanceFn('xlsx', {
+    const response = await exportElderlyCashSocialAssistanceFn('xlsx', {
       idKecamatan: kecamatan,
       idKelurahan: kelurahan,
       year,
-      status,
-      event,
       q
     })
     if (response.success) {
@@ -182,10 +163,7 @@ const DataBSTLansia = () => {
       q: '',
       kecamatan: '',
       kelurahan: '',
-      year: '',
-      status: '',
-      event: '',
-      university: ''
+      year: ''
     })
   }
 
@@ -277,7 +255,7 @@ const DataBSTLansia = () => {
                 <HiPlus className="text-lg" />
                 <span>Tambah Data</span>
               </Button>
-              {tuitions?.data?.length !== 0 ? (
+              {elderlys?.data?.length !== 0 ? (
                 <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
               ) : null}
             </div>
@@ -310,36 +288,24 @@ const DataBSTLansia = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {tuitions?.data?.length !== 0 ? (
-              tuitions?.data.map((tuitionItem, index) => {
-                const beneficiaryItem = beneficiary?.data.find(
-                  (item) => item.identityNumber == tuitionItem.application?.beneficiary?.identityNumber
-                )
+            {elderlys?.data?.length !== 0 ? (
+              elderlys?.data.map((elderlyItem, index) => {
+                const beneficiaryItem = beneficiary?.data.find((item) => item.identityNumber == elderlyItem.nokk)
                 const dtksStatus = beneficiaryItem ? (beneficiaryItem.isDtks ? 'DTKS' : '') : 'Non DTKS'
                 return (
-                  <TableRow key={tuitionItem.id}>
+                  <TableRow key={elderlyItem.no}>
                     <TableCell className="text-left bg-[#F9FAFC]">
-                      {(tuitions.meta.currentPage - 1) * tuitions.meta.perPage + index + 1}
+                      {(elderlys.meta.currentPage - 1) * elderlys.meta.perPage + index + 1}
                     </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">
-                      {tuitionItem.application?.beneficiary?.identityNumber ?? '-'}
-                    </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">
-                      {tuitionItem.application?.beneficiary?.identityNumber ?? '-'}
-                    </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">
-                      {tuitionItem.application?.beneficiary?.name ?? '-'}
-                    </TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.nik ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.nokk ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.nama ?? '-'}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{dtksStatus}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">
-                      {tuitionItem.application?.beneficiary?.address.areaLevel3?.name ?? '-'}
-                    </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">
-                      {tuitionItem.application?.beneficiary?.address.areaLevel4?.name ?? '-'}
-                    </TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{tuitionItem.budgetYear ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.kecamatan ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.kelurahan ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]"></TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                      <Action onDetail={() => showDetail(tuitionItem.id)} />
+                      <Action onDetail={() => showDetail(elderlyItem.no)} />
                     </TableCell>
                   </TableRow>
                 )
@@ -354,10 +320,10 @@ const DataBSTLansia = () => {
           </TableBody>
         </Table>
       </section>
-      {(tuitions?.meta?.total as number) > 30 ? (
+      {(elderlys?.meta?.total as number) > 30 ? (
         <Pagination
           currentPage={page !== '' ? parseInt(page) : 1}
-          totalCount={tuitions?.meta.total as number}
+          totalCount={elderlys?.meta.total as number}
           pageSize={30}
           onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
         />
@@ -368,105 +334,6 @@ const DataBSTLansia = () => {
           <p className="text-sm text-[#A1A1A1]">View Data Detail Data BBP</p>
         </Modal.Header>
         {isLoadingTuition && <Loading />}
-        <div className="grid grid-cols-3 gap-5">
-          <div>
-            <p className="text-sm font-bold">Nama Mahasiswa</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.name ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Email</p>
-            <p className="text-base capitalize">{tuition?.application.email ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">NIK</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.identityNumber ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">No. KK</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.familyCardNumber ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Kecamatan</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.address.areaLevel3?.name ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Kelurahan</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.address.areaLevel4?.name ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Alamat Lengkap</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.address.fullAddress ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
-            <p className="text-base capitalize">
-              {tuition?.application?.beneficiary.birthPlace ?? '-'} /{' '}
-              {tuition?.application?.beneficiary.birthDate ?? '-'}
-            </p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Usia</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.age ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Jenis Bantuan</p>
-            <p className="text-base capitalize">{tuition?.application.event.type.name ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Estimasi</p>
-            <p className="text-base capitalize">
-              {tuition?.application.event.startDate ?? '-'}-{tuition?.application.event.endDate ?? '-'}
-            </p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Batch</p>
-            <p className="text-base capitalize">{tuition?.application.event.batch ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Universitas</p>
-            <p className="text-base capitalize">{tuition?.application.university?.name ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Program Studi</p>
-            <p className="text-base capitalize">{tuition?.application.studyProgram.name ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Semester</p>
-            <p className="text-base capitalize">{tuition?.application.semester ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">IPK</p>
-            <p className="text-base capitalize">{tuition?.application.gpa ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Uang Kuliah</p>
-            <p className="text-base capitalize">{tuition?.application.tuitionFee ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Nomor Rekening</p>
-            <p className="text-base capitalize">{tuition?.application.bankAccNumber ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Nama Rekening</p>
-            <p className="text-base capitalize">{tuition?.application.bankAccName ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Status Pengajuan</p>
-            <p className="text-base capitalize">{tuition?.application.application_status ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Jumlah Bantuan</p>
-            <p className="text-base capitalize">{tuition?.assistanceAmount ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Status Pencairan</p>
-            <p className="text-base capitalize">{tuition?.disbursementStatus ?? '-'}</p>
-          </div>
-          <div>
-            <p className="text-sm font-bold">Tahun Anggaran</p>
-            <p className="text-base capitalize">{tuition?.budgetYear ?? '-'}</p>
-          </div>
-        </div>
       </Modal>
     </Container>
   )
