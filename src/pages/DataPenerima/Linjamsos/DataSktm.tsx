@@ -392,14 +392,14 @@ const DataSktm = () => {
           <p className="text-sm text-[#A1A1A1]">View Data Detail Data SKTM</p>
         </Modal.Header>
         {isLoadingIndigencyCertificate && <Loading />}
-        <div className="grid grid-cols-3 gap-y-5">
+        {/* <div className="grid grid-cols-3 gap-y-5">
           <div>
             <p className="text-sm font-bold">Nama Pemohon</p>
-            <p className="text-base capitalize">{indigency?.application.name ?? '-'}</p>
+            <p className="text-base capitalize">{indigency?.application.applicant.name ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">NIK Pemohon</p>
-            <p className="text-base capitalize">{indigency?.application.identityNumber ?? '-'}</p>
+            <p className="text-base capitalize">{indigency?.application.applicant.benifictiary ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">No. KK Pemohon</p>
@@ -501,7 +501,7 @@ const DataSktm = () => {
             <p className="text-sm font-bold">Pengajuan Online</p>
             <p className="text-base capitalize">{indigency?.isApplicationOnline ? 'Ya' : 'Tida'}</p>
           </div>
-        </div>
+        </div> */}
       </Modal>
     </Container>
   )
