@@ -240,7 +240,7 @@ export default function DataDtks() {
               <Button
                 type="button"
                 className="gap-2 border-none rounded-lg"
-                onClick={() => navigate('/data-penerima/rehabsos/anakpanti/create')}
+                onClick={() => navigate('/data-penerima/rehabsos/anak/create')}
               >
                 <HiPlus className="text-lg" />
                 <span>Tambah Data</span>
