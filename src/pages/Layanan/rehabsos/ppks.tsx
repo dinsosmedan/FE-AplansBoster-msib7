@@ -1,83 +1,121 @@
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
-import { Container, DatePicker, Loading, SearchSelect } from '@/components'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-
-import * as React from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { HiTrash, HiPlus } from 'react-icons/hi2'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { Input } from '@/components/ui/input'
 import { useFieldArray, useForm } from 'react-hook-form'
-
+import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Textarea } from '@/components/ui/textarea'
+import useTitle from '@/hooks/useTitle'
+import { HiPlus } from 'react-icons/hi'
+import { Container, Loading, SearchSelect } from '@/components'
+import { kubeValidation, type kubeFields } from '@/lib/validations/dayasos.validation'
 import {
-  useCreateCommunityGroups,
+  useCreateBusinessGroup,
   useGetBeneficaryByNIK,
-  useGetCommunityGroup,
+  useGetBusinessGroupById,
   useGetKecamatan,
   useGetKelurahan,
-  useUpdateCommunityGroups
+  useUpdateJointBusiness
 } from '@/store/server'
-
+import { yupResolver } from '@hookform/resolvers/yup'
+import { HiMagnifyingGlass, HiTrash } from 'react-icons/hi2'
 import { cn } from '@/lib/utils'
-import { POKMAS_DEFAULT_VALUES } from '@/lib/defaultValues'
-import { COMMUNITY_ACTIVITY_CODE, COMMUNITY_ASSISTANCE_TYPE } from '@/lib/data'
-import { formatDateToString, formatStringToDate } from '@/lib/services/formatDate'
-import { type pokmasFields, pokmasValidation } from '@/lib/validations/dayasos.validation'
-
-import { useToastNik, useTitle, useNotFound } from '@/hooks'
+import * as React from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useTitleHeader } from '@/store/client'
+import { useNotFound, useToastNik } from '@/hooks'
 
 const Ppks = () => {
   const navigate = useNavigate()
+
   const { id } = useParams<{ id: string }>()
-  useTitle(`${id ? 'Update' : 'Tambah'} Data`)
-  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+  useTitle(`${id ? 'Ubah' : 'Tambah'} Data`)
+  const setBreadcrumb = useTitleHeader((state) => state.setBreadcrumbs)
 
   React.useEffect(() => {
-    setBreadcrumbs([
+    setBreadcrumb([
       { url: '/data-penerima', label: 'Data Penerima' },
-      { url: '/data-penerima/dayasos', label: 'Dayasos & PFM' },
-      { url: '/data-penerima/dayasos/pokmas', label: 'Pokmas' }
+      { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
+      { url: '/data-penerima/rehabsos/ppks', label: 'PPKS' }
     ])
   }, [])
 
   const [NIK, setNIK] = React.useState('')
   const [index, setIndex] = React.useState(0)
 
-  const forms = useForm<pokmasFields>({
+  const forms = useForm<kubeFields>({
     mode: 'onTouched',
-    resolver: yupResolver(pokmasValidation),
-    defaultValues: POKMAS_DEFAULT_VALUES
-  })
-
-  const { fields, append, remove } = useFieldArray({
-    control: forms.control,
-    name: 'members'
+    resolver: yupResolver(kubeValidation),
+    defaultValues: {
+      businessName: '',
+      businessType: '',
+      businessAddress: '',
+      areaLevel3: '',
+      areaLevel4: '',
+      assistanceAmount: 0,
+      budgetYear: '',
+      status: '',
+      note: '',
+      members: [{ beneficiary: '', position: '', nik: '' }]
+    }
   })
 
   const areaLevel3 = forms.watch('areaLevel3')
   const { data: kecamatan } = useGetKecamatan()
-  const { data: kelurahan, isLoading: isLoadingKelurahan } = useGetKelurahan(areaLevel3 ?? '')
-  const { data: beneficiary, refetch, isFetching, isError, isLoading } = useGetBeneficaryByNIK(NIK, false)
-  const { mutate: createPokmas, isLoading: isLoadingCreate } = useCreateCommunityGroups()
+  const { data: kelurahan } = useGetKelurahan(areaLevel3 ?? '')
+  const { data: beneficiary, refetch, isLoading, isError: isErrorBeneficary } = useGetBeneficaryByNIK(NIK, false)
+  const { mutate: createKube, isLoading: isLoadingCreate } = useCreateBusinessGroup()
+  const { mutate: UpdateJointBusiness, isLoading: isLoadingUpdate } = useUpdateJointBusiness()
+  const { data: BusinessGroup, isSuccess, isLoading: isLoadingBusinessGroupById, isError } = useGetBusinessGroupById(id)
 
-  const { data: communityGroup, isSuccess, isLoading: isLoadingGet, isError: isErrorGet } = useGetCommunityGroup(id)
-  const { mutate: updateCommunityGroup, isLoading: isLoadingUpdate } = useUpdateCommunityGroups()
-
-  useNotFound(isErrorGet)
+  useNotFound(isError)
 
   useToastNik({
     successCondition: !isLoading && beneficiary != null,
-    notFoundCondition: isError,
-    notRegisteredCondition: Object.keys(forms.formState.errors).length > 0 && forms.formState.isSubmitted,
-    onSuccess: () => forms.setValue(`members.${index}.beneficiary`, beneficiary?.id as string)
+    onSuccess: () => forms.setValue(`members.${index}.beneficiary`, beneficiary?.id as string),
+    notFoundCondition: isErrorBeneficary,
+    notRegisteredCondition:
+      forms.getValues(`members.${index}.beneficiary`) === '' && NIK !== '' && forms.formState.isSubmitted
   })
 
   React.useEffect(() => {
     if (NIK !== '') void refetch()
   }, [NIK])
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      forms.reset({
+        businessName: BusinessGroup?.businessName,
+        businessType: BusinessGroup?.businessType,
+        areaLevel3: BusinessGroup?.businessAddress?.areaLevel3?.id as string,
+        areaLevel4: BusinessGroup?.businessAddress?.areaLevel4?.id as string,
+        budgetYear: BusinessGroup?.budgetYear,
+        note: BusinessGroup?.note,
+        status: BusinessGroup?.status,
+        businessAddress: BusinessGroup?.businessAddress.fullAddress,
+        members: BusinessGroup?.members?.map((member: any) => {
+          return { beneficiary: member.id, nik: member.identityNumber, position: member.position }
+        })
+      })
+    }
+  }, [isSuccess, BusinessGroup])
+
+  const onSuccess = () => {
+    forms.reset()
+    navigate('/data-penerima/rehabsos/ppks')
+  }
+
+  const onSubmit = async (values: kubeFields) => {
+    const newData = {
+      ...values,
+      members: values?.members?.map((member) => {
+        const { nik, ...newMember } = member
+        return newMember
+      })
+    }
+
+    if (!id) return createKube(newData, { onSuccess })
+    UpdateJointBusiness({ id, fields: newData }, { onSuccess })
+  }
 
   const handleFetchNik = async (index: number) => {
     const nik = forms.getValues(`members.${index}.nik`)
@@ -87,462 +125,223 @@ const Ppks = () => {
     }
   }
 
-  const onSuccess = () => {
-    forms.reset()
-    navigate('/data-penerima/rehabsos/ppks')
-  }
-
-  const onSubmit = async (values: pokmasFields) => {
-    const newData = {
-      ...values,
-      members: values?.members?.map((member) => {
-        const { nik, ...newMember } = member
-        return newMember
-      }),
-      executionDate: formatDateToString(values.executionDate as Date)
-    }
-
-    if (!id) return createPokmas(newData, { onSuccess })
-    updateCommunityGroup({ id, fields: newData }, { onSuccess })
-  }
-
-  React.useEffect(() => {
-    if (isSuccess) {
-      forms.reset({
-        applicantPhoneNumber: communityGroup?.applicantPhoneNumber as string,
-        communityName: communityGroup?.communityName,
-        communityAddress: communityGroup?.address.fullAddress,
-        communityActivityCode: communityGroup?.communityActivityCode,
-        communityActivityTypeDescription: communityGroup.communityActivityTypeDescription,
-        communityAssistanceType: communityGroup?.communityAssistanceType,
-        areaLevel3: communityGroup.address?.areaLevel3?.id,
-        areaLevel4: communityGroup.address?.areaLevel4?.id,
-        requestedRabAmount: communityGroup.requestedRabAmount,
-        requestedBansosAmount: communityGroup.requestedBansosAmount,
-        approvedFundAmount: communityGroup.approvedFundAmount,
-        applicationYear: communityGroup.applicationYear,
-        bankName: communityGroup.bankName,
-        bankAccName: communityGroup?.bankAccName as string,
-        bankAccNumber: communityGroup.bankAccNumber,
-        bankAccAddress: communityGroup.bankAccAddress as string,
-        statusDisimbursement: communityGroup?.statusDisimbursement as string,
-        note: communityGroup?.note,
-        executionDate: formatStringToDate(communityGroup?.executionDate as string),
-        executionPlace: communityGroup?.executionPlace as string,
-        members: communityGroup?.members?.map((member) => {
-          return {
-            nik: member.beneficiary.identityNumber,
-            position: member.position,
-            beneficiary: member.beneficiary.id
-          }
-        })
-      })
-    }
-  }, [isSuccess, communityGroup])
-
-  if (isLoadingGet) return <Loading />
+  if (isLoadingBusinessGroupById) return <Loading />
 
   return (
-    <Container className="py-10 px-16">
+    <Container className="py-10 px-[47px]">
+      <div className="w-full text-center">
+        <p className="text-2xl font-bold">Data Personal</p>
+      </div>
       <Form {...forms}>
-        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-7">
-          <p className="text-2xl font-bold text-center">Data Personal</p>
-          <section className="grid grid-cols-2 gap-6">
-            <FormField
-              name="communityName"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nama Kelompok Masyarakat</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      value={field.value ?? ''}
-                      type="text"
-                      placeholder="Masukkan Nama Kelompok Masyarakat"
-                    />
-                  </FormControl>
-                  <FormMessage />
+      <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col">
+            {!id && (
+              <div className="flex flex-row justify-between gap-3">
+                <FormItem className="w-full">
+                  <FormLabel className="font-semibold dark:text-white">NIK</FormLabel>
+                  <Input
+                    type="number"
+                    placeholder="Masukkan NIK Masyarakat"
+                    value={NIK}
+                    onChange={(e) => setNIK(e.target.value)}
+                  />
                 </FormItem>
-              )}
-            />
-            <FormField
-              name="applicantPhoneNumber"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>No. HP Pemohon</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan No. HP Pemohon" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </section>
-          <p className="text-2xl text-center font-bold">Alamat POKMAS</p>
-          <section className="grid grid-cols-2 gap-6">
-            <FormField
-              name="areaLevel3"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Kecamatan</FormLabel>
-                  <FormControl>
-                    <SearchSelect
-                      selected={field.value ?? ''}
-                      onChange={field.onChange}
-                      width="w-[540px]"
-                      placeholder="Pilih Kecamatan"
-                      options={kecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="areaLevel4"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Kelurahan</FormLabel>
-                  <FormControl>
-                    <SearchSelect
-                      selected={field.value ?? ''}
-                      onChange={field.onChange}
-                      disabled={areaLevel3 === '' || isLoadingKelurahan}
-                      width="w-[540px]"
-                      placeholder="Pilih Kelurahan"
-                      options={kelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </section>
-          <FormField
-            name="communityAddress"
-            control={forms.control}
-            render={({ field }) => (
-              <FormItem className="-mt-3">
-                <FormLabel>Alamat Lengkap</FormLabel>
-                <FormControl>
-                  <Textarea {...field} value={field.value ?? ''} placeholder="Masukkan Alamat Lengkap Masyarakat." />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <p className="text-2xl font-bold text-center">Data Lembaga</p>
-          <section className="grid grid-cols-3 gap-6">
-            <FormField
-              name="communityActivityCode"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Kode Kegiatan</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Kode Kegiatan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {COMMUNITY_ACTIVITY_CODE.map((item, index) => (
-                        <SelectItem value={item.label} key={index}>
-                          {item.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="communityActivityTypeDescription"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Jenis Kegiatan</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Jenis Kegiatan" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="communityAssistanceType"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Jenis Bantuan</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih Jenis Bantuan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {COMMUNITY_ASSISTANCE_TYPE.map((item, index) => (
-                        <SelectItem value={item.label} key={index}>
-                          {item.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="requestedRabAmount"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Jumlah Permohonan RAB</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value as number} type="number" placeholder="Rp. " />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="requestedBansosAmount"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Jumlah Permohonan Bansos</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value as number} type="number" placeholder="Rp. " />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="approvedFundAmount"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Jumlah Dana Disetujui</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value as number} type="number" placeholder="Rp. " />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="executionDate"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Jadwal Pelaksaaan</FormLabel>
-                  <DatePicker selected={field.value as Date} onChange={field.onChange} placeholder="dd/mm/yyy" />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="executionPlace"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tempat Pelaksanaan</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tempat Pelaksanaan" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              name="applicationYear"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tahun Permohonan</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Permohonan" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="bankName"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nama Bank</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Bank Sumut" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="bankAccName"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nama Rekening</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Rekening" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="bankAccNumber"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nomor Rekening</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Nomor Rekening" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="bankAccAddress"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Alamat Rekening</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Alamat Rekening" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="statusDisimbursement"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Status Pencairan</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Masukkan Status Pencairan" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="TIDAK BERHASIL">TIDAK BERHASIL</SelectItem>
-                      <SelectItem value="TERTUNDA">TERTUNDA</SelectItem>
-                      <SelectItem value="BERHASIL">BERHASIL</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="note"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Keterangan</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Keterangan" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </section>
-          <p className="text-2xl font-bold text-center">Data Pengurus</p>
-          {fields.map((field, index) => (
-            <div className="flex flex-row gap-4" key={field.id}>
-              <FormField
-                name={`members.${index}.beneficiary`}
-                control={forms.control}
-                render={({ field }) => (
-                  <Input {...field} value={field.value ?? ''} type="text" hidden className="hidden" />
-                )}
-              />
-              <FormField
-                name={`members.${index}.nik`}
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>NIK</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan NIK" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name={`members.${index}.position`}
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Jabatan</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Jabatan" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="ketua">Ketua</SelectItem>
-                        <SelectItem value="sekretaris">Sekretaris</SelectItem>
-                        <SelectItem value="bendahara">Bendahara</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className={cn('flex items-end justify-end gap-2', index > 0 ? 'w-auto' : 'w-[11%]')}>
-                <Button
-                  className="w-full"
-                  type="button"
-                  onClick={async () => await handleFetchNik(index)}
-                  loading={isFetching}
-                >
-                  Cari
-                </Button>
-                {index > 0 && (
-                  <Button
-                    className="w-full bg-white border border-zinc-500 hover:bg-zinc-200"
-                    type="button"
-                    onClick={() => remove(index)}
-                  >
-                    <HiTrash className="text-lg text-zinc-800" />
+                <div className="w-fit flex items-end justify-end" onClick={async () => await refetch()}>
+                  <Button className="w-full gap-2" loading={isLoading} type="button">
+                    <HiMagnifyingGlass className="text-lg" />
+                    <span>Cari</span>
                   </Button>
-                )}
+                </div>
               </div>
+            )}
+            <div className="flex flex-row gap-5 mt-2">
+            <div className="w-6/12 ">
+              <FormField
+                name="businessName"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">No KK</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="number"
+                        placeholder="Masukkan No KK Masyarakat"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-          ))}
-          <Button
-            className="bg-primary flex w-fit mx-auto rounded-xl py-6 gap-2"
-            type="button"
-            onClick={() => append({ beneficiary: '', position: '', nik: '' })}
-          >
-            <HiPlus className="w-6 h-6 text-white" />
-            <p className="font-bold text-sm text-white">Tambah Anggota</p>
-          </Button>
+            <div className="w-6/12">
+              <FormField
+                name="businessType"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama Masyarakat" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          <div className="flex flex-row gap-5 mt-2">
+            <div className="w-6/12 ">
+              <FormField
+                name="businessName"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Tempat Lahir</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="text"
+                        placeholder="Masukkan Tempat lahir"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="w-6/12">
+              <FormField
+                name="businessType"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Tanggal Lahir</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} type="date" placeholder="Tanggal Lahir Anda" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          <div className="flex flex-row gap-5 mt-2">
+            <div className="w-6/12 ">
+              <FormField
+                name="businessName"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Umur</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="number"
+                        placeholder="Masukkan Umur"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+              <div className="w-6/12">
+                <FormField
+                  name={`members.${index}.position`}
+                  control={forms.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold dark:text-white">Jenis Kelamin</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Pilih Jenis Kelamin" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="perempuan">Perempuan</SelectItem>
+                          <SelectItem value="laki-laki">Laki-laki</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              </div>
+
+          <div className="w-full text-center mt-2">
+            <p className="text-2xl font-bold mt-8">Alamat</p>
+          </div>
+          <div className="flex flex-row gap-4 mt-2">
+            <div className="w-6/12">
+              <FormField
+                name="areaLevel3"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Kecamatan</FormLabel>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        width="w-[560px]"
+                        placeholder="Pilih Kecamatan"
+                        options={kecamatan?.map((kecamatan) => ({ label: kecamatan.name, value: kecamatan.id })) ?? []}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="w-6/12">
+              <FormField
+                name="areaLevel4"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Kelurahan</FormLabel>
+                    <FormControl>
+                      <SearchSelect
+                        selected={field.value}
+                        onChange={field.onChange}
+                        disabled={!areaLevel3 || !kelurahan}
+                        width="w-[560px]"
+                        placeholder="Pilih Kelurahan"
+                        options={kelurahan?.map((kelurahan) => ({ label: kelurahan.name, value: kelurahan.id })) ?? []}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          <div>
+            <FormField
+              name="businessAddress"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold dark:text-white">Alamat Lengkap</FormLabel>
+                  <FormControl>
+                    <Textarea {...field} value={field.value ?? ''} placeholder="Masukkan Alamat Lengkap Masyarakat." />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <div className="flex justify-end gap-4 mt-8">
             <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
               Cancel
             </Button>
             <Button className="font-bold" type="submit" loading={isLoadingCreate || isLoadingUpdate}>
-              {id ? 'Update' : 'Submit'}
+              Submit
             </Button>
           </div>
         </form>

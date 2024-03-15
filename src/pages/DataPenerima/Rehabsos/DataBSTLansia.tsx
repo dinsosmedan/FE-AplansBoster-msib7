@@ -293,10 +293,8 @@ const DataBSTLansia = () => {
                 const beneficiaryItem = beneficiary?.data.find((item) => item.identityNumber == elderlyItem.nokk)
                 const dtksStatus = beneficiaryItem ? (beneficiaryItem.isDtks ? 'DTKS' : '') : 'Non DTKS'
                 return (
-                  <TableRow key={elderlyItem.no}>
-                    <TableCell className="text-left bg-[#F9FAFC]">
-                      {(elderlys.meta.currentPage - 1) * elderlys.meta.perPage + index + 1}
-                    </TableCell>
+                  <TableRow key={elderlyItem.id}>
+                    <TableCell className="text-left bg-[#F9FAFC]">{index + 1}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.nik ?? '-'}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.nokk ?? '-'}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.nama ?? '-'}</TableCell>
@@ -305,7 +303,7 @@ const DataBSTLansia = () => {
                     <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.kelurahan ?? '-'}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]"></TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                      <Action onDetail={() => showDetail(elderlyItem.no)} />
+                      <Action onDetail={() => showDetail(elderlyItem.id)} />
                     </TableCell>
                   </TableRow>
                 )

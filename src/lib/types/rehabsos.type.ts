@@ -3,7 +3,7 @@ import { type IAddress, type IMeta } from './dayasos.type'
 import { type IPath } from './service.type'
 
 export interface IElderlyCashSocialAssistanceDetail {
-  no: string
+  id: string
   nokk: string
   nik: string
   nama: string
