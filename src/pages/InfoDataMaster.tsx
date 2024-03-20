@@ -20,7 +20,6 @@ const InfoDataMaster = () => {
               <TableHead className="text-white">NIK</TableHead>
               <TableHead className="text-white">Nama</TableHead>
               <TableHead className="text-white">Hubungan keluarga</TableHead>
-              <TableHead className="text-white">Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="bg-white">
@@ -35,9 +34,6 @@ const InfoDataMaster = () => {
                   </TableCell>
                   <TableCell className="" position="center">
                     {item.familyRelationship}
-                  </TableCell>
-                  <TableCell className="" position="center">
-                    {item.isDtks ? 'DTKS' : 'Non DTKS'}
                   </TableCell>
                 </TableRow>
               ))

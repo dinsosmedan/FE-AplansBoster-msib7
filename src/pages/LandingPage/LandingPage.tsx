@@ -59,14 +59,7 @@ export default function LandingPage() {
             Pengajuan Bantuan Secara Online Menjadi Mudah dan bisa dilakukan dimana saja
           </p>
         </div>
-        <div className="mt-16 grid grid-cols-1 lg:grid-cols-3 lg:gap-[92px] gap-[40px]">
-          <CardLandingPage
-            title="DTKS (Data Terpadu Kesejahteraan Sosial)"
-            desc="Layanan Pengajuan DTKS (Data Terpadu Kesejahteraan Sosial)"
-            btnText="Pendaftaran Pengajuan"
-            href="/user/dtks"
-            icon={HiGift}
-          />
+        <div className="mt-16 grid grid-cols-6 lg:grid-cols-2 lg:gap-[92px] gap-[40px]">
           <CardLandingPage
             curvePosition="right"
             title="Bantuan Biaya Pendidikan"

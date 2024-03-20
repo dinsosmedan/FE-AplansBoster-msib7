@@ -1,4 +1,4 @@
-import { Container, CreateDataMaster, Loading, Pagination, SearchSelect } from '@/components'
+import { Container, ExportButton, CreateDataMaster, Loading, Pagination, SearchSelect } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -8,6 +8,7 @@ import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@
 import { formatToView } from '@/lib/services/formatDate'
 import { useGetBeneficiary, useGetKecamatan, useGetKelurahan } from '@/store/server'
 import * as React from 'react'
+import { exportElderlyCashSocialAssistanceFn, getElderlyCashSocialAssistanceFn } from '@/api/rehabsos.api'
 import { useForm } from 'react-hook-form'
 import { HiArrowPath, HiMagnifyingGlass, HiOutlineExclamationCircle, HiPlus } from 'react-icons/hi2'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
@@ -80,6 +81,43 @@ export default function DataMaster() {
     setSearchParams(searchParams.toString(), { replace: true })
     await refetch()
   }
+  const exportAsCsv = async () => {
+    setIsShow(true)
+    const response = await exportElderlyCashSocialAssistanceFn('csv', {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+
+      q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsShow(false)
+  }
+
+  const exportAsXlsx = async () => {
+    setIsShow(true)
+    const response = await exportElderlyCashSocialAssistanceFn('xlsx', {
+      idKecamatan: kecamatan,
+      idKelurahan: kelurahan,
+
+      q
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsShow(false)
+  }
 
   const handleReset = () => {
     forms.reset({ q: '', kecamatan: '', kelurahan: '', isDtks: '' })
@@ -96,20 +134,16 @@ export default function DataMaster() {
               name="q"
               control={forms.control}
               render={({ field }) => (
-                <FormItem className="w-[40%]">
+                <FormItem className="w-[90%]">
                   <FormControl>
                     <Input {...field} value={field.value ?? ''} placeholder="Cari berdasarkan NIK atau Nama" />
                   </FormControl>
                 </FormItem>
               )}
             />
-            <Button type="button" className="bg-primary w-[140px] flex rounded-xl py-4" onClick={() => setIsShow(true)}>
-              <HiPlus className="w-6 h-6 text-white" />
-              <p className="font-bold text-sm text-white">Tambah Data</p>
-            </Button>
           </div>
           <div className="w-full flex flex-row gap-5 my-5">
-            <div className="w-[20%]">
+            <div className="w-[40%]">
               <FormField
                 name="kecamatan"
                 control={forms.control}
@@ -130,7 +164,7 @@ export default function DataMaster() {
                 )}
               />
             </div>
-            <div className="w-[20%]">
+            <div className="w-[40%]">
               <FormField
                 name="kelurahan"
                 control={forms.control}
@@ -152,28 +186,8 @@ export default function DataMaster() {
                 )}
               />
             </div>
-            <div className="w-[20%]">
-              <FormField
-                name="isDtks"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger className=" bg-white focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0">
-                          <SelectValue placeholder="Status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="true">DTKS</SelectItem>
-                          <SelectItem value="false">Non DTKS</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex items-center gap-3 w-[40%] justify-end">
+
+            <div className="flex items-center gap-3 w-[40%] justify-start">
               <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
                 <HiArrowPath className="text-lg" />
                 <span>Reset</span>
@@ -185,6 +199,15 @@ export default function DataMaster() {
             </div>
           </div>
         </form>
+        <div className="flex items-left gap-3 w-[40%] justify-start">
+          <Button type="button" className="bg-primary w-[140px] flex rounded-xl py-4" onClick={() => setIsShow(true)}>
+            <HiPlus className="w-6 h-6 text-white" />
+            <p className="font-bold text-sm text-white">Tambah Data</p>
+          </Button>
+          {beneficiary?.data?.length !== 0 ? (
+            <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+          ) : null}
+        </div>
       </Form>
       <Table className="mt-5">
         <TableHeader className="bg-primary">
@@ -195,7 +218,6 @@ export default function DataMaster() {
             <TableHead className="text-white font-bold text-[15px]">Nama</TableHead>
             <TableHead className="text-white font-bold text-[15px]">Kecamatan</TableHead>
             <TableHead className="text-white font-bold text-[15px]">Kelurahan</TableHead>
-            <TableHead className="text-white font-bold text-[15px]">Status</TableHead>
             <TableHead className="text-white font-bold text-[15px]">Tanggal Update</TableHead>
             <TableHead className="text-white font-bold text-[15px]">Action</TableHead>
           </TableRow>
@@ -219,9 +241,6 @@ export default function DataMaster() {
                 </TableCell>
                 <TableCell className="text-center bg-[#F9FAFC]" position="center">
                   {item.address.areaLevel4?.name ?? '-'}
-                </TableCell>
-                <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                  {item.isDtks ? 'DTKS' : 'Non DTKS'}
                 </TableCell>
                 <TableCell className="text-center bg-[#F9FAFC]" position="center">
                   {formatToView(item.createdAt) ?? '-'}
