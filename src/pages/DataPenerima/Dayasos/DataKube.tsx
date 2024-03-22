@@ -20,7 +20,7 @@ import {
 } from '@/store/server'
 import { useAlert, useTitleHeader } from '@/store/client'
 import { exportJointBussinessFn } from '@/api/dayasos.api'
-import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
+import { formatRibuan, useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 interface FormValues {
   q: string
   kelurahan: string
@@ -281,6 +281,7 @@ const DataKube = () => {
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
+                <TableHead className="text-[#534D59] font-bold text-[15px]">File</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]"> Tanggal Update</TableHead>
                 <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
               </TableRow>
@@ -301,6 +302,9 @@ const DataKube = () => {
                       {item.businessAddress?.areaLevel4?.name}
                     </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{item.businessType}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                      {item.budgetYear}
+                    </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]" position="center">
                       {item.budgetYear}
                     </TableCell>
@@ -372,7 +376,7 @@ const DataKube = () => {
           </div>
           <div>
             <p className="text-sm font-bold">Jumlah Bantuan</p>
-            <p className="text-base capitalize">{businessGroup?.assistanceAmount ?? '-'}</p>
+            <p className="text-base capitalize">{businessGroup?.assistanceAmount ? `Rp. ${formatRibuan(businessGroup?.assistanceAmount)}` : '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">Tahun Anggaran</p>
@@ -387,6 +391,47 @@ const DataKube = () => {
             <p className="text-base capitalize">{businessGroup?.note ?? '-'}</p>
           </div>
         </div>
+        <div className="text-center mt-[-20px]">
+            <p className="text-lg font-bold">Data Anggota</p>
+          </div>
+          <section className="border">
+            <Table>
+              <TableHeader className="bg-primary">
+                <TableRow>
+                  <TableHead className="text-white font-bold text-[15px]">Nama</TableHead>
+                  <TableHead className="text-white font-bold text-[15px]">NIK</TableHead>
+                  <TableHead className="text-white font-bold text-[15px]"> Jabatan</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {businessGroup?.members?.length !== 0 ? (
+                  businessGroup?.members.map((items) => (
+                  // const beneficiaryItem = items?.beneficiary.find((items) => items.identityNumber == businessGroup?.members?.identityNumber)
+                  // const dtksStatus = beneficiaryItem ? (beneficiaryItem.isDtks ? 'DTKS' : '') : 'Non DTKS'
+                  // return (
+                    <TableRow key={items?.id}>
+                      <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                        {items?.name ?? ''}
+                      </TableCell>
+                      <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                        {items?.identityNumber ?? '-'}
+                      </TableCell>
+                      <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                        {items?.position ?? '-'}
+                      </TableCell>
+                    </TableRow>
+                  )
+                  )
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={4} className="text-center">
+                      Tidak ada data
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </section>
       </Modal>
     </React.Fragment>
   )

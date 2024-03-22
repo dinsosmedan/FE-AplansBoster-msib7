@@ -11,7 +11,7 @@ export default function LandingPage() {
 
   return (
     <>
-      <section className="h-[calc(100vh-80px)] relative lg:gap-[40px] flex justify-between w-full bg-[url('@/assets/images/bg-landing-page.webp')] bg-cover">
+      <section className="h-[calc(100vh-80px)] relative lg:gap-[40px] flex justify-between w-full bg-[url('@/assets/images/bg-landing-page.png')] bg-cover">
         <div className="lg:relative lg:flex-1">
           <img src={ImageCover} alt="image-cover" className="absolute bottom-0 w-full" />
         </div>
@@ -59,7 +59,12 @@ export default function LandingPage() {
             Pengajuan Bantuan Secara Online Menjadi Mudah dan bisa dilakukan dimana saja
           </p>
         </div>
+<<<<<<< HEAD
         <div className="mt-16 grid grid-cols-6 lg:grid-cols-2 lg:gap-[92px] gap-[40px]">
+=======
+        <div className="mt-16 grid grid-cols-1 lg:grid-cols-3 lg:gap-[92px] gap-[40px]">
+          
+>>>>>>> 866460a1cdd715af33dcc076b799251e9ac60d2a
           <CardLandingPage
             curvePosition="right"
             title="Bantuan Biaya Pendidikan"
