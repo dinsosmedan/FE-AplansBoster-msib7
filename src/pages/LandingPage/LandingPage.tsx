@@ -59,7 +59,7 @@ export default function LandingPage() {
             Pengajuan Bantuan Secara Online Menjadi Mudah dan bisa dilakukan dimana saja
           </p>
         </div>
-        <div className="mt-16 grid grid-cols-2 lg:grid-cols-3 lg:gap-[92px] gap-[40px]">
+        <div className="mt-16 grid grid-cols-2 lg:grid-cols-2 lg:gap-[92px] gap-[40px]">
           <CardLandingPage
             curvePosition="right"
             title="Bantuan Biaya Pendidikan"
