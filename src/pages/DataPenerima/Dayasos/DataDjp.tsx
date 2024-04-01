@@ -268,6 +268,16 @@ const DataDjp = () => {
           </section>
 
           <section className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+              <Button
+                type="button"
+                className="gap-2 border-none rounded-lg"
+                onClick={() => navigate('/data-penerima/dayasos/djpm/create')}
+              >
+                <HiPlus className="text-lg" />
+                <span>Tambah Data</span>
+              </Button>
+            </div>
             <div className="flex items-center gap-3">
               {/* <Button
                 type="button"

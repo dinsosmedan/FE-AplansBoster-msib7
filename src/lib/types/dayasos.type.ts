@@ -147,6 +147,7 @@ export interface ICommunityGroup {
   bankAccAddress: string | null
   members: Array<{
     id: string
+    beneficiary_id: string
     beneficiary: IBeneficary
     position: string
   }>

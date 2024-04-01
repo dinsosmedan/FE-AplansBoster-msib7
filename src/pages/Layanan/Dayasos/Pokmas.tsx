@@ -74,13 +74,17 @@ const Pokmas = () => {
   console.log('pokmas', forms.getValues(`members.${index}.nik`)?.toString)
 
   useToastNikPokmas({
-    successCondition:
-      !isLoading &&
-      beneficiary != null &&
-      communityGroup?.members.every(
-        (member) => member?.beneficiary?.identityNumber !== forms.getValues(`members.${index}.nik`)
-      ),
-    failedCondition: !isLoading && beneficiary != null,
+    failedCondition: communityGroup?.members.every(
+         (member) => member?.beneficiary?.identityNumber !== ('pokmas')),
+      // !isLoading &&
+      // beneficiary != null &&
+      // communityGroup?.members.every(
+      //   (member) => member?.beneficiary?.identityNumber !== forms.getValues(`members.${index}.beneficiary`)
+      // ),
+    // failedCondition: communityGroup?.members.every(
+    //   (member) => member?.beneficiary?.identityNumber === forms.getValues(`members.${index}.beneficiary`)
+    // ),
+    // failedCondition: !isLoading && beneficiary != null,
     notFoundCondition: isError,
     notRegisteredCondition: Object.keys(forms.formState.errors).length > 0 && forms.formState.isSubmitted,
     onSuccess: () => forms.setValue(`members.${index}.beneficiary`, beneficiary?.id as string)
