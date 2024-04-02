@@ -58,11 +58,11 @@ export const getElderlyCashSocialAssistanceFn = async ({
   page,
   kecamatan,
   kelurahan,
-  year,
-  q
+  q,
+  year
 }: ElderlyCashSocialAssistanceQuery): Promise<IElderlyCashSocialAssistance> => {
   const response = await api.get(
-    `getElderly/?page=${page}&kecamatan=${kecamatan}&kelurahan=${kelurahan}&tahun=${year}&nik=${q}`
+    `/getElderly?page=${page}&kecamatan=${kecamatan}&kelurahan=${kelurahan}&nik=${q}tahun=${year}`
   )
   return response.data
 }
@@ -71,9 +71,7 @@ export const storeElderlyCashSocialAssistanceFn = async (data: elderlyCashSocial
   await api.post('/lansia', data)
 }
 
-export const showDetailElderlyCashSocialAssistanceFn = async (
-  id: string
-): Promise<IElderlyCashSocialAssistanceDetail> => {
+export const getElderlyAssistanceByIdFn = async (id: string): Promise<IElderlyCashSocialAssistanceDetail> => {
   const response = await api.get(`/getElderlybyID/${id}`)
   return response.data?.data
 }

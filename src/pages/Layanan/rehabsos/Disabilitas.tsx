@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTitleHeader } from '@/store/client'
 
-const Lansia = () => {
+const Disabilitas = () => {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   const setBreadcrumb = useTitleHeader((state) => state.setBreadcrumbs)
@@ -50,4 +50,4 @@ const Lansia = () => {
   )
 }
 
-export default Lansia
+export default Disabilitas

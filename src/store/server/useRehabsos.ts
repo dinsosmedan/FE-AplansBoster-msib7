@@ -3,7 +3,6 @@ import {
   getElderlyCashSocialAssistanceFn,
   storeElderlyCashSocialAssistanceFn,
   updateElderlyCashSocialAssistanceFn,
-  showDetailElderlyCashSocialAssistanceFn,
   deleteElderlyCashSocialAssistanceFn,
   NeedForSocialWelfareServicesQuery,
   showDetailNeedForSocialWelfareServicesFn,
@@ -26,7 +25,8 @@ import {
   storeOperationLicenseOfSocialInstitutionFn,
   showDetailOperationLicenseOfSocialInstitutionFn,
   updateOperationLicenseOfSocialInstitutionFn,
-  deleteOperationLicenseOfSocialInstitutionFn
+  deleteOperationLicenseOfSocialInstitutionFn,
+  getElderlyAssistanceByIdFn
 } from '@/api/rehabsos.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -45,7 +45,7 @@ export const useElderlyCashSocialAssistance = ({
   year
 }: ElderlyCashSocialAssistanceQuery) => {
   return useQuery(
-    ['getElderlybyID', page, kecamatan, kelurahan, q, year],
+    ['elderly', page, kecamatan, kelurahan, q, year],
     async () =>
       await getElderlyCashSocialAssistanceFn({
         page,
@@ -85,8 +85,8 @@ export const useCreateElderlyCashSocialAssistance = () => {
   })
 }
 
-export const useGetDetailElderlyCashSocialAssistance = (id: string) => {
-  return useQuery(['elderly', id], async () => await showDetailElderlyCashSocialAssistanceFn(id), {
+export const useGetElderlyAssistanceID = (id?: string) => {
+  return useQuery(['elderly', id], async () => await getElderlyAssistanceByIdFn(id as string), {
     enabled: !!id
   })
 }

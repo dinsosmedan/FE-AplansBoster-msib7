@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Container } from '@/components'
+import { Container, Loading } from '@/components'
 import { Button } from '@/components/ui/button'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTitleHeader } from '@/store/client'
@@ -13,7 +13,7 @@ const Ppks = () => {
     setBreadcrumb([
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
-      { url: '/data-penerima/rehabsos/ppks', label: 'PPKS' }
+      { url: '/data-penerima/rehabsos/bstlansia', label: 'PPKS' }
     ])
   }, [])
 
@@ -32,7 +32,7 @@ const Ppks = () => {
       method: 'POST',
       body: formData
     })
-    alert('data added')
+    alert('Data Berhasil ditambahkan.')
   }
 
   return (
@@ -49,5 +49,4 @@ const Ppks = () => {
     </Container>
   )
 }
-
 export default Ppks
