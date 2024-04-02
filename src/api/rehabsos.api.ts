@@ -74,7 +74,7 @@ export const storeElderlyCashSocialAssistanceFn = async (data: elderlyCashSocial
 export const showDetailElderlyCashSocialAssistanceFn = async (
   id: string
 ): Promise<IElderlyCashSocialAssistanceDetail> => {
-  const response = await api.get(`/lansia/${id}`)
+  const response = await api.get(`/getElderlybyID/${id}`)
   return response.data?.data
 }
 

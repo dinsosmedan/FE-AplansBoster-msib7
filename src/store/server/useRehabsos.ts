@@ -45,7 +45,7 @@ export const useElderlyCashSocialAssistance = ({
   year
 }: ElderlyCashSocialAssistanceQuery) => {
   return useQuery(
-    ['getElderly', page, kecamatan, kelurahan, q, year],
+    ['getElderlybyID', page, kecamatan, kelurahan, q, year],
     async () =>
       await getElderlyCashSocialAssistanceFn({
         page,
@@ -65,7 +65,7 @@ export const useCreateElderlyCashSocialAssistance = () => {
   const queryClient = useQueryClient()
   return useMutation(storeElderlyCashSocialAssistanceFn, {
     onSuccess: () => {
-      void queryClient.invalidateQueries('lansia')
+      void queryClient.invalidateQueries('getElderlybyID')
       toast({
         title: 'Proses Berhasil',
         description: 'Data BST Lansia berhasil ditambahkan'
@@ -86,7 +86,7 @@ export const useCreateElderlyCashSocialAssistance = () => {
 }
 
 export const useGetDetailElderlyCashSocialAssistance = (id: string) => {
-  return useQuery(['getElderly', id], async () => await showDetailElderlyCashSocialAssistanceFn(id), {
+  return useQuery(['elderly', id], async () => await showDetailElderlyCashSocialAssistanceFn(id), {
     enabled: !!id
   })
 }
@@ -95,7 +95,7 @@ export const useUpdateElderlyCashSocialAssistance = () => {
   const queryClient = useQueryClient()
   return useMutation(updateElderlyCashSocialAssistanceFn, {
     onSuccess: async () => {
-      await queryClient.invalidateQueries('lansia')
+      await queryClient.invalidateQueries('getElderlybyID')
       toast({
         title: 'Proses Berhasil',
         description: 'Data BST Lansia berhasil diubah'
@@ -119,7 +119,7 @@ export const useDeleteBstLansia = () => {
 
   return useMutation(deleteElderlyCashSocialAssistanceFn, {
     onSuccess: () => {
-      void queryClient.invalidateQueries('getElderly')
+      void queryClient.invalidateQueries('getElderlybyID')
       toast({
         variant: 'default',
         duration: 1500,

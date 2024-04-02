@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTitleHeader } from '@/store/client'
 
-const Anak = () => {
+const Lks = () => {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   const setBreadcrumb = useTitleHeader((state) => state.setBreadcrumbs)
@@ -13,7 +13,7 @@ const Anak = () => {
     setBreadcrumb([
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
-      { url: '/data-penerima/rehabsos/anakpanti', label: 'Anak Di Luar Panti' }
+      { url: '/data-penerima/rehabsos/izin-operasi-lks', label: 'Tanda Daftar/Izin Operasional LKS' }
     ])
   }, [])
 
@@ -28,7 +28,7 @@ const Anak = () => {
     console.warn(file)
     const formData = new FormData()
     formData.append('file', file)
-    let result = await fetch('http://127.0.0.1:8000/api/v1/lansia', {
+    let result = await fetch('http://127.0.0.1:8000/api/v1/lks', {
       method: 'POST',
       body: formData
     })
@@ -50,4 +50,4 @@ const Anak = () => {
   )
 }
 
-export default Anak
+export default Lks

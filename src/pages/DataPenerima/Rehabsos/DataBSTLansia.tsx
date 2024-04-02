@@ -11,8 +11,7 @@ import {
   useGetKecamatan,
   useGetKelurahan,
   useGetDetailElderlyCashSocialAssistance,
-  useElderlyCashSocialAssistance,
-  useGetTuitionAssistanceID
+  useElderlyCashSocialAssistance
 } from '@/store/server'
 import React from 'react'
 import { exportElderlyCashSocialAssistanceFn, getElderlyCashSocialAssistanceFn } from '@/api/rehabsos.api'
@@ -263,7 +262,6 @@ const DataBSTLansia = () => {
           <TableBody>
             {elderlys?.data?.length !== 0 ? (
               elderlys?.data.map((elderlyItem, index) => {
-                console.log(elderlyItem)
                 return (
                   <TableRow key={elderlyItem.id}>
                     <TableCell className="text-left bg-[#F9FAFC]">
@@ -276,7 +274,7 @@ const DataBSTLansia = () => {
                     <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.kelurahan ?? '-'}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.tahun ?? '-'}</TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                      <Action onDetail={() => showDetail(elderlyItem.id)} />
+                      <Action onDetail={() => showDetail(elderlyItem.nik)} />
                     </TableCell>
                   </TableRow>
                 )
