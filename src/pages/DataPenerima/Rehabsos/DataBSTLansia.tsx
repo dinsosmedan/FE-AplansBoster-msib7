@@ -6,7 +6,7 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { HiArrowPath, HiMagnifyingGlass, HiPencil, HiPlus } from 'react-icons/hi2'
+import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
 import {
   useGetKecamatan,
   useGetKelurahan,
@@ -131,6 +131,7 @@ const DataBSTLansia = () => {
 
     await refetchBSTLansia()
   }
+
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
     const response = await exportElderlyCashSocialAssistanceFn('csv', {
@@ -383,28 +384,28 @@ const DataBSTLansia = () => {
         </div>
       </Modal>
 
-      <Modal isShow={isUpdate} className="md:max-w-4xl">
+      <Modal isShow={isUpdate} className="md:max-w-2xl">
         <Modal.Header setIsShow={setIsUpdate} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Edit Status</h3>
-          <p className="text-sm text-[#A1A1A1]">Edit Status Penerima</p>
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">{elderly?.nama ?? '-'}</h3>
+          <h4 className="text-sm text-[#A1A1A1]">{elderly?.nik ?? '-'}</h4>
         </Modal.Header>
         {isLoadingElderly && <Loading />}
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-2 gap-5">
           <div>
             <p className="text-sm font-bold">Status Penerima</p>
             <p className="text-base capitalize">{elderly?.status ?? '-'}</p>
-            <div className="flex flex-col">
-              <select onChange={handleStatusChange}>
-                <option value="">Pilih Status</option>
-                <option value="TIDAK DITEMUKAN">Data Tidak Ditemukan</option>
-                <option value="MENINGGAL">Meninggal</option>
-                <option value="PINDAH">Pindah</option>
-                <option value="AKTIF">Penerima Aktif</option>
-              </select>
-              <Button onClick={handleSubmitStatus}>Submit</Button>
-            </div>
           </div>
-          <div></div>
+          <div className="flex flex-col space-y-3">
+            <p className="text-sm font-bold">Edit Status Penerima</p>
+            <select onChange={handleStatusChange}>
+              <option value="">Pilih Status</option>
+              <option value="TIDAK DITEMUKAN">Data Tidak Ditemukan</option>
+              <option value="MENINGGAL">Meninggal</option>
+              <option value="PINDAH">Pindah</option>
+              <option value="AKTIF">Penerima Aktif</option>
+            </select>
+            <Button onClick={handleSubmitStatus}>Submit</Button>
+          </div>
         </div>
       </Modal>
     </Container>
