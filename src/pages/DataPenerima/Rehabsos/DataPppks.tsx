@@ -4,18 +4,16 @@ import Container from '@/components/atoms/Container'
 import { Action, ExportButton, Loading, Modal, Pagination, SearchSelect } from '@/components'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
-import { formatToView } from '@/lib/services/formatDate'
 import {
-  useGetEvent,
   useGetKecamatan,
   useGetKelurahan,
   useGetTuitionAssistanceFn,
   useGetTuitionAssistanceID,
-  useGetUniversities
+  useGetUniversities,
+  useNeedForSocialWelfareServices
 } from '@/store/server'
 import React from 'react'
 import { exportTuitionAssistanceFn } from '@/api/linjamsos.api'
@@ -26,9 +24,6 @@ interface FormValues {
   kelurahan: string
   kecamatan: string
   year: string
-  status: string
-  event: string
-  university: string
 }
 const DataPppks = () => {
   useTitle('Data Penerima')
@@ -38,7 +33,7 @@ const DataPppks = () => {
     setBreadcrumbs([
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
-      { url: '/data-penerima/rehabsos/pppks', label: 'Penanganan Pemerlu Pelayanan Kesejahteraan Sosial' }
+      { url: '/data-penerima/rehabsos/ppks', label: 'Penanganan Pemerlu Pelayanan Kesejahteraan Sosial' }
     ])
   }, [])
 
@@ -53,10 +48,7 @@ const DataPppks = () => {
     'kecamatan',
     'kelurahan',
     'page',
-    'year',
-    'status',
-    'event',
-    'university'
+    'year'
   ])
 
   const forms = useForm<FormValues>({
@@ -64,34 +56,25 @@ const DataPppks = () => {
       q: q ?? '',
       kecamatan: kecamatan ?? '',
       kelurahan: kelurahan ?? '',
-      year: year ?? '',
-      status: status ?? '',
-      event: event ?? '',
-      university: university ?? ''
+      year: year ?? ''
     }
   })
   const areaLevel3 = forms.watch('kecamatan')
-
-  const { data: listEvent } = useGetEvent()
   const { data: listKecamatan } = useGetKecamatan()
-  const { data: universities } = useGetUniversities()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
   const { data: tuition, isLoading: isLoadingTuition } = useGetTuitionAssistanceID(selectedId)
 
   const {
-    data: tuitions,
+    data: welfare,
     refetch,
     isFetching,
     isLoading
-  } = useGetTuitionAssistanceFn({
+  } = useNeedForSocialWelfareServices({
     page: parseInt(page) ?? 1,
-    idKecamatan: kecamatan,
-    idKelurahan: kelurahan,
+    kecamatan,
+    kelurahan,
     year,
-    status,
-    event,
-    q,
-    university
+    q
   })
   useDisableBodyScroll(isFetching)
 
@@ -114,9 +97,6 @@ const DataPppks = () => {
     updateParam('kecamatan', values.kecamatan)
     updateParam('kelurahan', values.kelurahan)
     updateParam('year', values.year)
-    updateParam('status', values.status)
-    updateParam('event', values.event)
-    updateParam('university', values.university)
 
     await refetch()
   }
@@ -126,8 +106,6 @@ const DataPppks = () => {
       idKecamatan: kecamatan,
       idKelurahan: kelurahan,
       year,
-      status,
-      event,
       q
     })
     if (response.success) {
@@ -162,19 +140,14 @@ const DataPppks = () => {
     setIsLoadingExport(false)
   }
   const handleReset = () => {
-    navigate('/data-penerima/rehabsos/pppks')
+    navigate('/data-penerima/rehabsos/ppks')
     forms.reset({
       q: '',
       kecamatan: '',
       kelurahan: '',
-      year: '',
-      status: '',
-      event: '',
-      university: ''
+      year: ''
     })
   }
-
-  useDisableBodyScroll(isFetching)
 
   if (isLoading && isLoadingTuition) return <Loading />
 
@@ -248,7 +221,7 @@ const DataPppks = () => {
                   </FormControl>
                 </FormItem>
               )}
-            />
+            />
           </div>
 
           <section className="flex items-center justify-between">
@@ -256,12 +229,12 @@ const DataPppks = () => {
               <Button
                 type="button"
                 className="gap-2 border-none rounded-lg"
-                onClick={() => navigate('/data-penerima/linjamsos/bbp/create')}
+                onClick={() => navigate('/data-penerima/rehabsos/ppks/create')}
               >
                 <HiPlus className="text-lg" />
                 <span>Tambah Data</span>
               </Button>
-              {tuitions?.data?.length !== 0 ? (
+              {welfare?.data?.length !== 0 ? (
                 <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
               ) : null}
             </div>
@@ -285,42 +258,35 @@ const DataPppks = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tempat Lahir</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Lahir</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Usia</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kelamin</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Tempat/Tanggal Lahir</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat KK</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat Domisili</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis PPKS</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {tuitions?.data?.length !== 0 ? (
-              tuitions?.data.map((item, index) => (
+            {welfare?.data?.length !== 0 ? (
+              welfare?.data.map((item, index) => (
                 <TableRow key={item.id}>
                   <TableCell className="text-left bg-[#F9FAFC]">
-                    {(tuitions.meta.currentPage - 1) * tuitions.meta.perPage + index + 1}
+                    {(welfare.meta.currentPage - 1) * welfare.meta.perPage + index + 1}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.name ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.identityNumber ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.birthPlace ?? '-'},{' '}
-                    {item.application?.beneficiary?.birthDate ?? '-'}
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.nama ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.nik ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.tmpt_tgl_lahir ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {item.alamatkk ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application?.beneficiary?.birthDate ?? '-'}
+                    {item.alamatdomisili ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application?.beneficiary?.age ?? '-'}
+                    {item.kecamatan ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application?.beneficiary?.gender ? item.application.beneficiary.gender : '-'}
-                  </TableCell>
-                  <TableCell>
-                    {item.budgetYear}
+                    {item.ppks_type ?? '-'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action onDetail={() => showDetail(item.id)} />
@@ -337,10 +303,10 @@ const DataPppks = () => {
           </TableBody>
         </Table>
       </section>
-      {(tuitions?.meta?.total as number) > 30 ? (
+      {(welfare?.meta?.total as number) > 30 ? (
         <Pagination
           currentPage={page !== '' ? parseInt(page) : 1}
-          totalCount={tuitions?.meta.total as number}
+          totalCount={welfare?.meta.total as number}
           pageSize={30}
           onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
         />

@@ -4,19 +4,15 @@ import Container from '@/components/atoms/Container'
 import { Action, ExportButton, Loading, Modal, Pagination, SearchSelect } from '@/components'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
-import { formatToView } from '@/lib/services/formatDate'
 import {
-  useGetEvent,
   useGetKecamatan,
   useGetKelurahan,
   useGetDetailElderlyCashSocialAssistance,
   useElderlyCashSocialAssistance,
-  useGetTuitionAssistanceID,
-  useGetBeneficiary
+  useGetTuitionAssistanceID
 } from '@/store/server'
 import React from 'react'
 import { exportElderlyCashSocialAssistanceFn, getElderlyCashSocialAssistanceFn } from '@/api/rehabsos.api'
@@ -27,8 +23,6 @@ interface FormValues {
   kelurahan: string
   kecamatan: string
   year: string
-  status: string
-  event: string
 }
 const DataBSTLansia = () => {
   useTitle('Data Penerima')
@@ -48,32 +42,21 @@ const DataBSTLansia = () => {
   const [isLoadingExport, setIsLoadingExport] = React.useState(false)
   const [isShow, setIsShow] = React.useState(false)
   const [selectedId, setSelectedId] = React.useState('')
-  const { q, kecamatan, kelurahan, page, year, status, isDtks } = useGetParams([
-    'q',
-    'kecamatan',
-    'kelurahan',
-    'page',
-    'year',
-    'status',
-    'event',
-    'isDtks'
-  ])
+  const { q, kecamatan, kelurahan, page, year } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'year'])
 
   const forms = useForm<FormValues>({
     defaultValues: {
       q: q ?? '',
       kecamatan: kecamatan ?? '',
       kelurahan: kelurahan ?? '',
-      year: year ?? '',
-      status: status ?? ''
+      year: year ?? ''
     }
   })
   const areaLevel3 = forms.watch('kecamatan')
 
-  const { data: listEvent } = useGetEvent()
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
-  const { data: tuition, isLoading: isLoadingTuition } = useGetTuitionAssistanceID(selectedId)
+  const { data: elderly, isLoading: isLoadingElderly } = useGetDetailElderlyCashSocialAssistance(selectedId)
 
   const {
     data: elderlys,
@@ -82,21 +65,12 @@ const DataBSTLansia = () => {
     isLoading
   } = useElderlyCashSocialAssistance({
     page: parseInt(page) ?? 1,
-    idKecamatan: kecamatan,
-    idKelurahan: kelurahan,
+    kecamatan,
+    kelurahan,
     year,
     q
   })
   useDisableBodyScroll(isFetchingTuitions)
-
-  const { data: beneficiary, isFetching: isFetchingBeneficiary } = useGetBeneficiary({
-    page: parseInt(page) ?? 1,
-    idKecamatan: kecamatan,
-    idKelurahan: kelurahan,
-    q,
-    isDtks
-  })
-  useDisableBodyScroll(isFetchingBeneficiary || isShow)
 
   const showDetail = (id: string) => {
     setSelectedId(id)
@@ -123,8 +97,8 @@ const DataBSTLansia = () => {
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
     const response = await exportElderlyCashSocialAssistanceFn('csv', {
-      idKecamatan: kecamatan,
-      idKelurahan: kelurahan,
+      kecamatan: kecamatan,
+      kelurahan: kelurahan,
       year,
       q
     })
@@ -142,8 +116,8 @@ const DataBSTLansia = () => {
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
     const response = await exportElderlyCashSocialAssistanceFn('xlsx', {
-      idKecamatan: kecamatan,
-      idKelurahan: kelurahan,
+      kecamatan: kecamatan,
+      kelurahan: kelurahan,
       year,
       q
     })
@@ -169,7 +143,7 @@ const DataBSTLansia = () => {
 
   useDisableBodyScroll(isFetchingTuitions)
 
-  if (isLoading && isLoadingTuition) return <Loading />
+  if (isLoading && isLoadingElderly) return <Loading />
 
   return (
     <Container>
@@ -280,7 +254,6 @@ const DataBSTLansia = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Kartu Keluarga</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Status</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
@@ -290,18 +263,18 @@ const DataBSTLansia = () => {
           <TableBody>
             {elderlys?.data?.length !== 0 ? (
               elderlys?.data.map((elderlyItem, index) => {
-                const beneficiaryItem = beneficiary?.data.find((item) => item.identityNumber == elderlyItem.nokk)
-                const dtksStatus = beneficiaryItem ? (beneficiaryItem.isDtks ? 'DTKS' : '') : 'Non DTKS'
+                console.log(elderlyItem)
                 return (
                   <TableRow key={elderlyItem.id}>
-                    <TableCell className="text-left bg-[#F9FAFC]">{index + 1}</TableCell>
+                    <TableCell className="text-left bg-[#F9FAFC]">
+                      {(elderlys.meta.currentPage - 1) * elderlys.meta.perPage + index + 1}
+                    </TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.nik ?? '-'}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.nokk ?? '-'}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.nama ?? '-'}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{dtksStatus}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.kecamatan ?? '-'}</TableCell>
                     <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.kelurahan ?? '-'}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]"></TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.tahun ?? '-'}</TableCell>
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                       <Action onDetail={() => showDetail(elderlyItem.id)} />
                     </TableCell>
@@ -328,10 +301,26 @@ const DataBSTLansia = () => {
       ) : null}
       <Modal isShow={isShow} className="md:max-w-4xl">
         <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data BBP</h3>
-          <p className="text-sm text-[#A1A1A1]">View Data Detail Data BBP</p>
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data BST Lansia</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data BST Lansia</p>
         </Modal.Header>
-        {isLoadingTuition && <Loading />}
+        {isLoadingElderly && <Loading />}
+        <div className="grid grid-cols-3 gap-5">
+          <div>
+            <p className="text-sm font-bold">Nama</p>
+            <p className="text-base capitalize">{elderly?.nama ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">NIK</p>
+            <p className="text-base capitalize">{elderly?.nik ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
+            <p className="text-base capitalize">
+              {elderly?.tmpt_lahir ?? '-'} / {elderly?.tgl_lahir ?? '-'}
+            </p>
+          </div>
+        </div>
       </Modal>
     </Container>
   )

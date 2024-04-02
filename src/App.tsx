@@ -104,6 +104,7 @@ import Disabilitas from './pages/Layanan/rehabsos/Disabilitas'
 import Lansia from './pages/Layanan/rehabsos/Lansia'
 import DataPppks from './pages/DataPenerima/Rehabsos/DataPppks'
 import Ppks from './pages/Layanan/rehabsos/Ppks'
+import Lks from './pages/Layanan/rehabsos/Lks'
 
 export default function App() {
   useScrollToTop()
@@ -147,11 +148,11 @@ export default function App() {
                 <Route path="Rehabsos">
                   <Route index element={<DataPenerimaRehabsos />} />
                   <Route path="bstlansia">
-                    <Route index element={<DataBSTLansia/>} />
+                    <Route index element={<DataBSTLansia />} />
                     <Route path="create" element={<Lansia />} />
                     <Route path="create/:id" element={<Lansia />} />
                   </Route>
-                  <Route path="bstdisab">
+                  <Route path="bstdisabilitas">
                     <Route index element={<DataBSTdisab />} />
                     <Route path="create" element={<Disabilitas />} />
                     <Route path="create/:id" element={<Disabilitas />} />
@@ -168,8 +169,8 @@ export default function App() {
                   </Route>
                   <Route path="izin-operasi-lks">
                     <Route index element={<DataLks />} />
-                    <Route path="create" element={<Djp />} />
-                    <Route path="create/:id" element={<Djp />} />
+                    <Route path="create" element={<Lks />} />
+                    <Route path="create/:id" element={<Lks />} />
                   </Route>
                 </Route>
 

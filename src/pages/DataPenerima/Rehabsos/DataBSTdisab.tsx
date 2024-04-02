@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
 import { formatToView } from '@/lib/services/formatDate'
 import {
+  useDisabilitySocialAssistance,
   useGetEvent,
   useGetKecamatan,
   useGetKelurahan,
@@ -79,19 +80,16 @@ const DataBSTdisab = () => {
   const { data: tuition, isLoading: isLoadingTuition } = useGetTuitionAssistanceID(selectedId)
 
   const {
-    data: tuitions,
+    data: disability,
     refetch,
     isFetching,
     isLoading
-  } = useGetTuitionAssistanceFn({
+  } = useDisabilitySocialAssistance({
     page: parseInt(page) ?? 1,
-    idKecamatan: kecamatan,
-    idKelurahan: kelurahan,
+    kecamatan,
+    kelurahan,
     year,
-    status,
-    event,
-    q,
-    university
+    q
   })
   useDisableBodyScroll(isFetching)
 
@@ -114,9 +112,6 @@ const DataBSTdisab = () => {
     updateParam('kecamatan', values.kecamatan)
     updateParam('kelurahan', values.kelurahan)
     updateParam('year', values.year)
-    updateParam('status', values.status)
-    updateParam('event', values.event)
-    updateParam('university', values.university)
 
     await refetch()
   }
@@ -147,8 +142,6 @@ const DataBSTdisab = () => {
       idKecamatan: kecamatan,
       idKelurahan: kelurahan,
       year,
-      status,
-      event,
       q
     })
     if (response.success) {
@@ -167,10 +160,7 @@ const DataBSTdisab = () => {
       q: '',
       kecamatan: '',
       kelurahan: '',
-      year: '',
-      status: '',
-      event: '',
-      university: ''
+      year: ''
     })
   }
 
@@ -192,7 +182,12 @@ const DataBSTdisab = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Nama/ NIK/ Nomor Kartu Keluarga" />
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        type="text"
+                        placeholder="Masukkan Nama/ NIK/ Nomor Kartu Keluarga"
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -249,20 +244,20 @@ const DataBSTdisab = () => {
                   </FormControl>
                 </FormItem>
               )}
-            />
+            />
           </div>
-          
+
           <section className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Button
                 type="button"
                 className="gap-2 border-none rounded-lg"
-                onClick={() => navigate('/data-penerima/rehabsos/bstdisab/create')}
+                onClick={() => navigate('/data-penerima/rehabsos/bstdisabilitas/create')}
               >
                 <HiPlus className="text-lg" />
                 <span>Tambah Data</span>
               </Button>
-              {tuitions?.data?.length !== 0 ? (
+              {disability?.data?.length !== 0 ? (
                 <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
               ) : null}
             </div>
@@ -299,41 +294,32 @@ const DataBSTdisab = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {tuitions?.data?.length !== 0 ? (
-              tuitions?.data.map((item, index) => (
+            {disability?.data?.length !== 0 ? (
+              disability?.data.map((item, index) => (
                 <TableRow key={item.id}>
                   <TableCell className="text-left bg-[#F9FAFC]">
-                    {(tuitions.meta.currentPage - 1) * tuitions.meta.perPage + index + 1}
+                    {(disability.meta.currentPage - 1) * disability.meta.perPage + index + 1}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.identityNumber ?? '-'}
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.nama ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.nama ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.nama ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.nama ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {item.nama ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.identityNumber ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.name ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.birthPlace ?? '-'}
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.nama ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.nama ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
+                    {item.nama ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application?.beneficiary?.birthDate ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]"></TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">
-                    {item.application?.beneficiary?.address.fullAddress ?? '-'}
+                    {item.nama ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application?.beneficiary?.address.areaLevel3?.name ?? '-'}
+                    {item.nama ?? '-'}
                   </TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.application?.beneficiary?.address.areaLevel4?.name ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.budgetYear ?? '-'}
+                    {item.nama ?? '-'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action onDetail={() => showDetail(item.id)} />
@@ -350,10 +336,10 @@ const DataBSTdisab = () => {
           </TableBody>
         </Table>
       </section>
-      {(tuitions?.meta?.total as number) > 30 ? (
+      {(disability?.meta?.total as number) > 30 ? (
         <Pagination
           currentPage={page !== '' ? parseInt(page) : 1}
-          totalCount={tuitions?.meta.total as number}
+          totalCount={disability?.meta.total as number}
           pageSize={30}
           onPageChange={(page) => createParams({ key: 'page', value: page.toString() })}
         />
