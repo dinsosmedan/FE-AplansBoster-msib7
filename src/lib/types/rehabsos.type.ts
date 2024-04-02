@@ -8,9 +8,9 @@ export interface IElderlyCashSocialAssistanceDetail {
   nik: string
   nama: string
   tmpt_lahir: string
-  ttgl_lahir: string
+  tgl_lahir: string
   umur: string
-  jennkel: string
+  jenkel: string
   alamatpadan: string
   alamat: string
   kelurahan: string
@@ -18,6 +18,11 @@ export interface IElderlyCashSocialAssistanceDetail {
   programbansos: string
   created_at: string
   updated_at: string
+  tahun:string
+  status:string
+  area_level_3:string
+  area_level_4:string
+
 }
 
 export interface IElderlyCashSocialAssistance {

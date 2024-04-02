@@ -4,7 +4,8 @@ import {
   storeElderlyCashSocialAssistanceFn,
   updateElderlyCashSocialAssistanceFn,
   showDetailElderlyCashSocialAssistanceFn,
-  deleteBstLansiaFn
+  deleteBstLansiaFn,
+  getElderlyAssistanceByIdFn
 } from '@/api/rehabsos.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -17,18 +18,18 @@ import { handleOnError } from '@/lib/utils'
 // BST Lansia//
 export const useElderlyCashSocialAssistance = ({
   page,
-  idKecamatan,
-  idKelurahan,
+  kecamatan,
+  kelurahan,
   q,
   year
 }: ElderlyCashSocialAssistanceQuery) => {
   return useQuery(
-    ['elderly', page, idKecamatan, idKelurahan, q, year],
+    ['elderly', page, kecamatan, kelurahan, q, year],
     async () =>
       await getElderlyCashSocialAssistanceFn({
         page,
-        idKecamatan,
-        idKelurahan,
+        kecamatan,
+        kelurahan,
         q,
         year
       }),
@@ -105,5 +106,10 @@ export const useDeleteBstLansia = () => {
         description: 'Data BST Lansia Berhasil Dihapus'
       })
     }
+  })
+}
+export const useGetElderlyAssistanceID = (id?: string) => {
+  return useQuery(['elderly', id], async () => await getElderlyAssistanceByIdFn(id as string), {
+    enabled: !!id
   })
 }

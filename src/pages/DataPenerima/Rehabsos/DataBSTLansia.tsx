@@ -7,13 +7,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
+import { HiArrowPath, HiMagnifyingGlass, HiPencil, HiPlus } from 'react-icons/hi2'
 import { formatToView } from '@/lib/services/formatDate'
 import {
   useGetEvent,
   useGetKecamatan,
   useGetKelurahan,
   useGetDetailElderlyCashSocialAssistance,
+  useGetElderlyAssistanceID,
   useElderlyCashSocialAssistance,
   useGetTuitionAssistanceID,
   useGetBeneficiary
@@ -73,21 +74,21 @@ const DataBSTLansia = () => {
   const { data: listEvent } = useGetEvent()
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
-  const { data: tuition, isLoading: isLoadingTuition } = useGetTuitionAssistanceID(selectedId)
+  const { data: elderly, isLoading: isLoadingBSTLansia} = useGetElderlyAssistanceID(selectedId)
 
   const {
     data: elderlys,
-    refetch: refetchTuitions,
-    isFetching: isFetchingTuitions,
+    refetch: refetchBSTLansia,
+    isFetching: isFetchingBSTLansia,
     isLoading
   } = useElderlyCashSocialAssistance({
     page: parseInt(page) ?? 1,
-    idKecamatan: kecamatan,
-    idKelurahan: kelurahan,
+   kecamatan:kecamatan,
+    kelurahan:kelurahan,
     year,
     q
   })
-  useDisableBodyScroll(isFetchingTuitions)
+  useDisableBodyScroll(isFetchingBSTLansia)
 
   const { data: beneficiary, isFetching: isFetchingBeneficiary } = useGetBeneficiary({
     page: parseInt(page) ?? 1,
@@ -102,7 +103,10 @@ const DataBSTLansia = () => {
     setSelectedId(id)
     setIsShow(true)
   }
-
+  const showEdit = (id: string) => {
+    setSelectedId(id)
+    setIsShow(true)
+  }
   const updateParam = (key: any, value: any) => {
     if (value !== '') {
       createParams({ key, value })
@@ -118,13 +122,13 @@ const DataBSTLansia = () => {
     updateParam('kelurahan', values.kelurahan)
     updateParam('year', values.year)
 
-    await refetchTuitions()
+    await refetchBSTLansia()
   }
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
     const response = await exportElderlyCashSocialAssistanceFn('csv', {
-      idKecamatan: kecamatan,
-      idKelurahan: kelurahan,
+      kecamatan: kecamatan,
+     kelurahan: kelurahan,
       year,
       q
     })
@@ -142,8 +146,8 @@ const DataBSTLansia = () => {
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
     const response = await exportElderlyCashSocialAssistanceFn('xlsx', {
-      idKecamatan: kecamatan,
-      idKelurahan: kelurahan,
+      kecamatan: kecamatan,
+      kelurahan: kelurahan,
       year,
       q
     })
@@ -167,17 +171,17 @@ const DataBSTLansia = () => {
     })
   }
 
-  useDisableBodyScroll(isFetchingTuitions)
+  useDisableBodyScroll(isFetchingBSTLansia)
 
-  if (isLoading && isLoadingTuition) return <Loading />
+  if (isLoading && isLoadingBSTLansia) return <Loading />
 
   return (
     <Container>
-      {(isFetchingTuitions || isLoadingExport) && <Loading />}
-      <h1 className="font-bold text-xl ">Bantuan Sosial Tunai Lansia</h1>
+      {(isFetchingBSTLansia || isLoadingExport) && <Loading />}
+      <h1 className="text-xl font-bold ">Bantuan Sosial Tunai Lansia</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="flex flex-row justify-between items-center gap-5 mt-5">
+          <div className="flex flex-row items-center justify-between gap-5 mt-5">
             <div className="flex-1 ">
               <FormField
                 name="q"
@@ -260,19 +264,19 @@ const DataBSTLansia = () => {
               ) : null}
             </div>
             <div className="flex gap-3">
-              <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
+              <Button type="button" variant="outline" className="gap-3 rounded-lg text-primary" onClick={handleReset}>
                 <HiArrowPath className="text-lg" />
                 <span>Reset</span>
               </Button>
               <Button>
                 <HiMagnifyingGlass className="w-4 h-4 py" />
-                <p className="font-bold text-sm text-white ml-3 w-max">Cari Data</p>
+                <p className="ml-3 text-sm font-bold text-white w-max">Cari Data</p>
               </Button>
             </div>
           </section>
         </form>
       </Form>
-      <section className="border rounded-xl mt-5 overflow-hidden">
+      <section className="mt-5 overflow-hidden border rounded-xl">
         <Table>
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
@@ -280,10 +284,11 @@ const DataBSTLansia = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor Kartu Keluarga</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Status</TableHead>
+             
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Status</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -295,15 +300,17 @@ const DataBSTLansia = () => {
                 return (
                   <TableRow key={elderlyItem.id}>
                     <TableCell className="text-left bg-[#F9FAFC]">{index + 1}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.nik ?? '-'}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.nokk ?? '-'}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.nama ?? '-'}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{dtksStatus}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.kecamatan ?? '-'}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]">{elderlyItem.kelurahan ?? '-'}</TableCell>
-                    <TableCell className="text-center bg-[#F9FAFC]"></TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]"position="center">{elderlyItem.nik ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]"position="center">{elderlyItem.nokk ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]"position="center">{elderlyItem.nama ?? '-'}</TableCell>
+                   
+                    <TableCell className="text-center bg-[#F9FAFC]" position="center">{elderlyItem.kecamatan?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]"position="center">{elderlyItem.kelurahan?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]"position="center">{elderlyItem.tahun ?? '-'}</TableCell>
+                    <TableCell className="text-center bg-[#F9FAFC]"position="center">{elderlyItem.status ?? 'Meninggal'}</TableCell>
+                
                     <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                      <Action onDetail={() => showDetail(elderlyItem.id)} />
+                      <Action onDetail={() => showDetail(elderlyItem.nik)} onEdit={()=>showEdit(elderlyItem.nik)}/>
                     </TableCell>
                   </TableRow>
                 )
@@ -327,11 +334,46 @@ const DataBSTLansia = () => {
         />
       ) : null}
       <Modal isShow={isShow} className="md:max-w-4xl">
-        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
-          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data BBP</h3>
-          <p className="text-sm text-[#A1A1A1]">View Data Detail Data BBP</p>
+        <Modal.Header setIsShow={setIsShow} className="flex flex-col gap-1">
+          <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data BST Lansia</h3>
+          <p className="text-sm text-[#A1A1A1]">View Data Detail Data BST Lansia</p>
         </Modal.Header>
-        {isLoadingTuition && <Loading />}
+        {isLoadingBSTLansia && <Loading />}
+        
+        <div className="grid grid-cols-3 gap-y-5">
+          <div>
+            <p className="text-sm font-bold">Nama</p>
+            <p className="text-base capitalize">{elderly?.nama ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">NIK</p>
+            <p className="text-base capitalize">{elderly?.nik ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">No. KK</p>
+            <p className="text-base capitalize">{elderly?.nokk ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kecamatan</p>
+            <p className="text-base capitalize">{elderly?.kecamatan?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Kelurahan</p>
+            <p className="text-base capitalize">{elderly?.kelurahan?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Alamat</p>
+            <p className="text-base capitalize">{elderly?.alamat?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tahun</p>
+            <p className="text-base capitalize">{elderly?.tahun?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Status</p>
+            <p className="text-base capitalize">{elderly?.status?? '-'}</p>
+          </div>
+        </div>
       </Modal>
     </Container>
   )

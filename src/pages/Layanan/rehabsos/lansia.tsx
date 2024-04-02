@@ -44,7 +44,7 @@ const Lansia = () => {
       method: 'POST',
       body: formData
     })
-    alert('data added')
+    alert('Data Berhasil ditambahkan.')
   }
 
   return (

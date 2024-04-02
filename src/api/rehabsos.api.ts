@@ -19,8 +19,8 @@ import api from './axiosInstance'
 import { type elderlyCashSocialAssistanceFields } from '@/lib/validations/rehabsos.validation'
 export interface ElderlyCashSocialAssistanceQuery {
   page?: number
-  idKecamatan?: string
-  idKelurahan?: string
+  kecamatan?: string
+  kelurahan?: string
   q?: string
   year?: string
 }
@@ -66,11 +66,12 @@ export interface TuitionAssistanceQuery {
 // BST Lansia //
 export const getElderlyCashSocialAssistanceFn = async ({
   page,
-  idKecamatan,
-  idKelurahan,
-  q
+  kecamatan,
+  kelurahan,
+  q,
+  year
 }: ElderlyCashSocialAssistanceQuery): Promise<IElderlyCashSocialAssistance> => {
-  const response = await api.get(`/lansia?page=${page}&kecamatan=${idKecamatan}&kelurahan=${idKelurahan}&q=${q}`)
+  const response = await api.get(`/getElderly?page=${page}&kecamatan=${kecamatan}&kelurahan=${kelurahan}&nik=${q}tahun=${year}`)
   return response.data
 }
 
@@ -99,10 +100,14 @@ export const updateElderlyCashSocialAssistanceFn = async ({ id, fields }: IElder
 
 export const exportElderlyCashSocialAssistanceFn = async (
   type: 'xlsx' | 'csv',
-  { page, idKecamatan, idKelurahan, q, year }: ElderlyCashSocialAssistanceQuery
+  { page, kecamatan, kelurahan, q, year }: ElderlyCashSocialAssistanceQuery
 ) => {
   const response = await api.get(
-    `/lansia/export/${type}?page=${page}&area_level_3=${idKecamatan}&area_level_4=${idKelurahan}&q=${q}&budget_year=${year}`
+    `/lansia/export/${type}?page=${page}&area_level_3=${kecamatan}&area_level_4=${kelurahan}&q=${q}&budget_year=${year}`
   )
   return response.data
+}
+export const getElderlyAssistanceByIdFn = async (id: string): Promise<IElderlyCashSocialAssistanceDetail> => {
+  const response = await api.get(`/getElderlybyID/${id}`)
+  return response.data?.data
 }
