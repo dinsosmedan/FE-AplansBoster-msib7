@@ -1,22 +1,10 @@
 import React, { useState } from 'react'
-import { Container, Loading } from '@/components'
+import { Container } from '@/components'
 import { Button } from '@/components/ui/button'
-import {
-  useCreateBusinessGroup,
-  useGetBeneficaryByNIK,
-  useGetBusinessGroupById,
-  useGetKecamatan,
-  useGetKelurahan,
-  useUpdateJointBusiness
-} from '@/store/server'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { kubeValidation } from '@/lib/validations/dayasos.validation'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTitleHeader } from '@/store/client'
-import { useNotFound, useToastNik } from '@/hooks'
 
-const Lansia = () => {
+const Anak = () => {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   const setBreadcrumb = useTitleHeader((state) => state.setBreadcrumbs)
@@ -40,7 +28,7 @@ const Lansia = () => {
     console.warn(file)
     const formData = new FormData()
     formData.append('file', file)
-    let result = await fetch('http://127.0.0.1:8000/api/excel', {
+    let result = await fetch('http://127.0.0.1:8000/api/v1/lansia', {
       method: 'POST',
       body: formData
     })
@@ -62,4 +50,4 @@ const Lansia = () => {
   )
 }
 
-export default Lansia
+export default Anak

@@ -1,20 +1,8 @@
 import React, { useState } from 'react'
-import { Container, Loading } from '@/components'
+import { Container } from '@/components'
 import { Button } from '@/components/ui/button'
-import {
-  useCreateBusinessGroup,
-  useGetBeneficaryByNIK,
-  useGetBusinessGroupById,
-  useGetKecamatan,
-  useGetKelurahan,
-  useUpdateJointBusiness
-} from '@/store/server'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { kubeValidation } from '@/lib/validations/dayasos.validation'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTitleHeader } from '@/store/client'
-import { useNotFound, useToastNik } from '@/hooks'
 
 const Lansia = () => {
   const navigate = useNavigate()
@@ -44,7 +32,7 @@ const Lansia = () => {
       method: 'POST',
       body: formData
     })
-    alert('data added')
+    alert('Data Berhasil ditambahkan.')
   }
 
   return (
