@@ -59,7 +59,7 @@ export default function LandingPage() {
             Pengajuan Bantuan Secara Online Menjadi Mudah dan bisa dilakukan dimana saja
           </p>
         </div>
-        <div className="mt-16 grid grid-cols-6 lg:grid-cols-2 lg:gap-[92px] gap-[40px]">
+        <div className="mt-16 grid grid-cols-2 lg:grid-cols-2 lg:gap-[92px] gap-[40px]">
           <CardLandingPage
             curvePosition="right"
             title="Bantuan Biaya Pendidikan"
@@ -75,6 +75,31 @@ export default function LandingPage() {
             href="/user/sktm"
             icon={HiDocumentText}
           />
+        </div>
+        <div className="flex flex-col gap-12 lg:w-fit mx-auto mt-12">
+          <h2 className="lg:text-5xl md:text-4xl text-[24px] font-bold font-volkhov text-center">
+            <span>Regulasi :</span>
+          </h2>
+        </div>
+        <div className="mt-16 grid grid-cols-2 lg:grid-cols-2 lg:gap-[100px] gap-[100px]">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-4">
+              PERATURAN WALIKOTA KOTA MEDAN NOMOR 33 TAHUN 2021 TENTANG KRITERIA FAKIR MISKIN DAN ORANG TIDAK MAMPU DI
+              KOTA MEDAN
+            </h3>
+            <p className="text-gray-600 mb-4">
+              Dalam rangka pelaksanaan pemberian Bantuan Sosial kepada masyarakat agar tepat sasaran dan tertib
+              administrasi perlu di tetapkan Kriteria Fakir Miskin dan Orang Tidak Mampu. Berdasarkan pertimbangan
+              tersebut perlu membentuk Peraturan Walikota tentang Kriteria Fakir Miskin dan Orang Tidak Mampu. Lampiran
+              Peraturan Walikkota Kota Medan.
+            </p>
+            <a
+              href="https://dissos.pemkomedan.go.id/uploads_gallery/upload/files/Perwal%20Nomor%2033%20Tahun%202021.pdf"
+              className="text-blue-500 hover:underline"
+            >
+              Unduh disini
+            </a>
+          </div>
         </div>
       </section>
       <section className="hidden lg:block ">
