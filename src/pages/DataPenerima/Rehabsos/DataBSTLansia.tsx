@@ -14,7 +14,7 @@ import {
   useGetElderlyAssistanceID
 } from '@/store/server'
 import React from 'react'
-import { exportElderlyCashSocialAssistanceFn, getElderlyCashSocialAssistanceFn } from '@/api/rehabsos.api'
+import { exportElderlyCashSocialAssistanceFn } from '@/api/rehabsos.api'
 import { useAlert, useTitleHeader } from '@/store/client'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 interface FormValues {
@@ -57,7 +57,7 @@ const DataBSTLansia = () => {
 
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
-  const { data: elderly, isLoading: isLoadingElderly } = useGetElderlyAssistanceID(selectedId)
+  const { data: elderly, refetch: refetchElderly, isLoading: isLoadingElderly } = useGetElderlyAssistanceID(selectedId)
 
   const {
     data: elderlys,
@@ -115,6 +115,7 @@ const DataBSTLansia = () => {
         setIsUpdate(false)
         setSelectedId(selectedId)
         setSelectedStatus(selectedStatus)
+        refetchElderly()
       } catch (error) {
         console.error('Error updating status:', error)
       }
@@ -274,7 +275,7 @@ const DataBSTLansia = () => {
                 <HiArrowPath className="text-lg" />
                 <span>Reset</span>
               </Button>
-              <Button>
+              <Button className="gap-2 border-none rounded-lg" type="submit">
                 <HiMagnifyingGlass className="w-4 h-4 py" />
                 <p className="ml-3 text-sm font-bold text-white w-max">Cari Data</p>
               </Button>
@@ -389,7 +390,7 @@ const DataBSTLansia = () => {
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">{elderly?.nama ?? '-'}</h3>
           <h4 className="text-sm text-[#A1A1A1]">{elderly?.nik ?? '-'}</h4>
         </Modal.Header>
-        {isLoadingElderly && <Loading />}
+        {(isLoadingElderly || isLoadingExport) && <Loading />}
         <div className="grid grid-cols-2 gap-5">
           <div>
             <p className="text-sm font-bold">Status Penerima</p>
