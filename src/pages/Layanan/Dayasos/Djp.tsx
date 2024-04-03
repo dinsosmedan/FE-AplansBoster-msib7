@@ -1,21 +1,40 @@
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
+import { Container, Loading } from '@/components'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import useTitle from '@/hooks/useTitle'
-import { djpmValidation, type djpmFields } from '@/lib/validations/dayasos.validation'
-import { Container } from '@/components'
+
 import * as React from 'react'
-import { useCreateServiceFund, useGetBeneficaryByNIK, useGetServiceFund, useGetServiceTypes } from '@/store/server'
-import { useToast } from '@/components/ui/use-toast'
+import { useForm } from 'react-hook-form'
+import { HiMagnifyingGlass } from 'react-icons/hi2'
+import { useNavigate, useParams } from 'react-router-dom'
+
+import {
+  useCreateServiceFund,
+  useGetBeneficaryByNIK,
+  useGetServiceFund,
+  useGetServiceTypes,
+  useUpdateServiceFund
+} from '@/store/server'
+import { useTitleHeader } from '@/store/client'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useParams } from 'react-router-dom'
+import { useNotFound, useToastNik, useTitle } from '@/hooks'
+import { djpmValidation, type djpmFields } from '@/lib/validations/dayasos.validation'
 
 const Djpm = () => {
-  const { toast } = useToast()
+  const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
-  useTitle(Dana Jasa Pelayanan Masyarakat${id ? '[Ubah Data]' : ''})
+
+  useTitle(`${id ? ' Ubah' : 'Tambah'} Data`)
+  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+
+  React.useEffect(() => {
+    setBreadcrumbs([
+      { url: '/data-penerima', label: 'Data Penerima' },
+      { url: '/data-penerima/dayasos', label: 'Dayasos & PFM' },
+      { url: '/data-penerima/dayasos/djpm', label: 'DJPM' }
+    ])
+  }, [])
 
   const [NIK, setNIK] = React.useState('')
 
@@ -27,7 +46,6 @@ const Djpm = () => {
       bankAccountName: '',
       bankBranchName: '',
       status: '',
-      assistanceAmount: 0,
       budgetYear: '',
       dutyAddress: '',
       serviceType: '',
@@ -37,65 +55,56 @@ const Djpm = () => {
     }
   })
 
-  const onSubmit = (values: djpmFields) => {
-    createServiceFund(values, {
-      onSuccess: () => forms.reset()
-    })
-  }
-
-  const { data: beneficiary, refetch, isLoading, isError } = useGetBeneficaryByNIK(NIK, false)
-  const { data: serviceFund, isSuccess } = useGetServiceFund(id)
-  const { data: serviceTypes } = useGetServiceTypes()
-
   const { mutate: createServiceFund, isLoading: isLoadingCreate } = useCreateServiceFund()
+  const { data: beneficiary, refetch, isLoading, isError } = useGetBeneficaryByNIK(NIK, false)
+  const { mutateAsync: updateServiceFund, isLoading: isLoadingUpdate } = useUpdateServiceFund()
+  const { data: serviceTypes } = useGetServiceTypes()
+  const {
+    data: serviceFund,
+    isSuccess,
+    isLoading: isLoadingServiceFund,
+    isError: isErrorServiceFund
+  } = useGetServiceFund(id)
 
-  React.useEffect(() => {
-    if (!isLoading && beneficiary != null) {
-      forms.setValue('beneficiary', beneficiary?.id)
-      toast({
-        title: 'NIK terdaftar',
-        description: 'NIK terdaftar, silahkan isi form berikut'
-      })
-    }
-  }, [isLoading, beneficiary])
+  useNotFound(isErrorServiceFund)
 
-  React.useEffect(() => {
-    if (isError) {
-      toast({
-        title: 'NIK tidak terdaftar',
-        description: 'Maaf NIK tidak terdaftar silahkan daftarkan NIK pada menu Data Master',
-        variant: 'destructive'
-      })
-    }
-  }, [isError])
-
-  React.useEffect(() => {
-    if (forms.getValues('beneficiary') === '' && NIK !== '' && forms.formState.isSubmitted) {
-      toast({
-        title: 'NIK wajib terdaftar',
-        description: 'Anda belum tekan tombol cari untuk mencari NIK, apakah NIK Anda terdaftar atau belum',
-        variant: 'destructive'
-      })
-    }
-  }, [forms.getValues('beneficiary'), NIK, forms.formState.isSubmitted])
+  useToastNik({
+    successCondition: !isLoading && beneficiary != null,
+    onSuccess: () => forms.setValue('beneficiary', beneficiary?.id as string),
+    notFoundCondition: isError,
+    notRegisteredCondition: forms.getValues('beneficiary') === '' && NIK !== '' && forms.formState.isSubmitted
+  })
 
   React.useEffect(() => {
     if (isSuccess) {
+      forms.setValue('beneficiary', serviceFund?.beneficiary?.id)
+      forms.setValue('phoneNumber', serviceFund?.phoneNumber)
+      forms.setValue('serviceType', serviceFund?.serviceType?.id)
+      forms.setValue('dutyPlace', serviceFund?.dutyPlace)
+      forms.setValue('dutyAddress', serviceFund?.dutyAddress)
       forms.setValue('bankAccountNumber', serviceFund?.bankAccountNumber)
       forms.setValue('bankAccountName', serviceFund?.bankAccountName)
       forms.setValue('bankBranchName', serviceFund?.bankBranchName)
       forms.setValue('status', serviceFund?.status as string)
-      forms.setValue('assistanceAmount', serviceFund?.assistanceAmount as number)
       forms.setValue('budgetYear', serviceFund?.budgetYear)
-      forms.setValue('dutyAddress', serviceFund?.dutyAddress)
-      forms.setValue('dutyPlace', serviceFund?.dutyPlace)
-      forms.setValue('serviceType', '9ab9e901-b996-4170-ae99-5ca29e519c27')
-      forms.setValue('phoneNumber', serviceFund?.phoneNumber)
+      forms.setValue('assistanceAmount', serviceFund?.assistanceAmount as number)
     }
   }, [isSuccess, serviceFund])
 
+  const onSuccess = () => {
+    forms.reset()
+    navigate('/data-penerima/dayasos/djpm')
+  }
+
+  const onSubmit = async (values: djpmFields) => {
+    if (!id) return createServiceFund(values, { onSuccess })
+    await updateServiceFund({ id, fields: values }, { onSuccess })
+  }
+
+  if (isLoadingServiceFund) return <Loading />
+
   return (
-    <Container className="py-10">
+    <Container className="py-10 px-[47px]">
       <section className="w-full mx-auto">
         <p className="text-2xl font-bold text-center mb-3">Data Personal</p>
         <Form {...forms}>
@@ -112,8 +121,9 @@ const Djpm = () => {
                   />
                 </FormItem>
                 <div className="w-fit flex items-end justify-end" onClick={async () => await refetch()}>
-                  <Button className="w-full" loading={isLoading} type="button">
-                    Cari
+                  <Button className="w-full gap-2" loading={isLoading} type="button">
+                    <HiMagnifyingGlass className="text-lg" />
+                    <span>Cari</span>
                   </Button>
                 </div>
               </div>
@@ -190,15 +200,15 @@ const Djpm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Status Pencairan</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih Status Pencairan" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="disetujui">Disetujui</SelectItem>
-                        <SelectItem value="diproses">Diproses</SelectItem>
+                        <SelectItem value="aktif">Aktif</SelectItem>
+                        <SelectItem value="non_aktif">Non Aktif</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -230,7 +240,7 @@ const Djpm = () => {
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Tahun anggaran</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun Anggaran" />
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan Tahun Anggaran" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -276,7 +286,7 @@ const Djpm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold dark:text-white">Jenis Layanan</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Pliih Jenis Layanan" />
@@ -297,10 +307,10 @@ const Djpm = () => {
             </div>
 
             <div className="flex justify-end gap-4 mt-8">
-              <Button variant="cancel" className="font-bold" onClick={() => forms.reset()}>
+              <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
                 Cancel
               </Button>
-              <Button className="font-bold" type="submit" loading={isLoadingCreate}>
+              <Button className="font-bold" type="submit" loading={isLoadingCreate || isLoadingUpdate}>
                 {id ? 'Ubah Data' : 'Submit'}
               </Button>
             </div>
