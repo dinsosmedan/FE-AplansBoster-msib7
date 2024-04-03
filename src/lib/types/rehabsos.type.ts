@@ -30,12 +30,14 @@ export interface IDisabilitySocialAssistanceDetail {
   id: string
   nama: string
   nik: string
+  nokk: string
   product_id: string
   tmpt_tgl_lahir: string
-  alamatkk: string
+  alamat: string
   alamatdomisili: string
-  kecamatan: string
-  ppks_type: string
+  kecamatan: string  
+  kelurahan: string
+  disability_type: string
   tahun: string
   created_at: string
   updated_at: string
@@ -55,7 +57,8 @@ export interface IFinancialAssistanceForNonOrpahangesDetail {
   nik: string
   product_id: string
   tmpt_tgl_lahir: string
-  alamatkk: string
+  alamatkk: string 
+  nokk: string
   alamatdomisili: string
   kecamatan: string
   ppks_type: string

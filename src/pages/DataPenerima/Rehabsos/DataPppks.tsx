@@ -13,7 +13,8 @@ import {
   useGetTuitionAssistanceFn,
   useGetTuitionAssistanceID,
   useGetUniversities,
-  useNeedForSocialWelfareServices
+  useNeedForSocialWelfareServices,
+  useGetWelfaresID
 } from '@/store/server'
 import React from 'react'
 import { exportTuitionAssistanceFn } from '@/api/linjamsos.api'
@@ -62,7 +63,7 @@ const DataPppks = () => {
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
-  const { data: tuition, isLoading: isLoadingTuition } = useGetTuitionAssistanceID(selectedId)
+  const { data: welfares, isLoading: isLoadingWelfares } = useGetWelfaresID(selectedId)
 
   const {
     data: welfare,
@@ -149,7 +150,7 @@ const DataPppks = () => {
     })
   }
 
-  if (isLoading && isLoadingTuition) return <Loading />
+  if (isLoading && isLoadingWelfares) return <Loading />
 
   return (
     <Container>
@@ -258,9 +259,6 @@ const DataPppks = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nomor</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tempat/Tanggal Lahir</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat KK</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat Domisili</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis PPKS</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
@@ -273,15 +271,10 @@ const DataPppks = () => {
                   <TableCell className="text-left bg-[#F9FAFC]">
                     {(welfare.meta.currentPage - 1) * welfare.meta.perPage + index + 1}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.nama ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.nik ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.tmpt_tgl_lahir ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.alamatkk ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.alamatdomisili ?? '-'}
-                  </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.nama ?? '-'}</TableCell>
+          
+        
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.kecamatan ?? '-'}
                   </TableCell>
@@ -289,7 +282,7 @@ const DataPppks = () => {
                     {item.ppks_type ?? '-'}
                   </TableCell>
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
-                    <Action onDetail={() => showDetail(item.id)} />
+                    <Action onDetail={() => showDetail(item.nama)} />
                   </TableCell>
                 </TableRow>
               ))
@@ -316,30 +309,39 @@ const DataPppks = () => {
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data PPKS</h3>
           <p className="text-sm text-[#A1A1A1]">View Data Detail Data PPKS</p>
         </Modal.Header>
-        {isLoadingTuition && <Loading />}
+        {isLoadingWelfares && <Loading />}
         <div className="grid grid-cols-3 gap-5">
           <div>
             <p className="text-sm font-bold">Nama</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.name ?? '-'}</p>
+            <p className="text-base capitalize">{welfares?.nama ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">NIK</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.identityNumber ?? '-'}</p>
+            <p className="text-base capitalize">{welfares?.nik ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">Tempat / Tanggal Lahir</p>
             <p className="text-base capitalize">
-              {tuition?.application?.beneficiary.birthPlace ?? '-'} /{' '}
-              {tuition?.application?.beneficiary.birthDate ?? '-'}
+              {welfares?.tmpt_tgl_lahir ?? '-'} 
+             
             </p>
           </div>
           <div>
-            <p className="text-sm font-bold">Usia</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.age ?? '-'}</p>
+            <p className="text-sm font-bold">Alamat Domisili</p>
+            <p className="text-base capitalize">{welfares?.alamatdomisili ?? '-'}</p>
+          </div> 
+        
+          <div>
+            <p className="text-sm font-bold">Kecamatan</p>
+            <p className="text-base capitalize">{welfares?.kecamatan ?? '-'}</p>
           </div>
           <div>
-            <p className="text-sm font-bold">Jenis Kelamin</p>
-            <p className="text-base capitalize">{tuition?.application?.beneficiary.gender ?? '-'}</p>
+            <p className="text-sm font-bold">Jenis PPKS</p>
+            <p className="text-base capitalize">{welfares?.ppks_type ?? '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold">Tahun</p>
+            <p className="text-base capitalize">{welfares?.tahun ?? '-'}</p>
           </div>
         </div>
       </Modal>
