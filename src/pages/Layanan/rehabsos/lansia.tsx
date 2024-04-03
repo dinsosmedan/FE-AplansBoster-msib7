@@ -3,7 +3,6 @@ import { Container, Loading } from '@/components'
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
 import { useTitleHeader } from '@/store/client'
-import { FileInputIcon } from 'lucide-react'
 import { useToastImport } from '@/hooks'
 import { FaFileUpload } from 'react-icons/fa'
 
@@ -11,9 +10,9 @@ const Lansia = () => {
   const navigate = useNavigate()
   const setBreadcrumb = useTitleHeader((state) => state.setBreadcrumbs)
   const [file, setFile] = useState<any>(null)
-  const [loading, setLoading] = useState<boolean>(false) // State untuk menandai sedang dalam proses upload
+  const [loading, setLoading] = useState<boolean>(false)
   const toastImport = useToastImport()
-  const [fileName, setFileName] = useState<string>('') // State untuk menyimpan nama file yang dipilih
+  const [fileName, setFileName] = useState<string>('')
 
   React.useEffect(() => {
     setBreadcrumb([
@@ -26,7 +25,7 @@ const Lansia = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setFile(e.target.files[0])
-      setFileName(e.target.files[0].name) // Mengambil nama file yang dipilih dan menyimpannya dalam state fileName
+      setFileName(e.target.files[0].name)
     }
   }
 
