@@ -39,8 +39,24 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
       <section className="py-[70px] md:px-14 px-5 bg-[#F9F9F9] relative overflow-hidden lg:mb-0 pb-20 mb-[100px]">
         <div className="w-96 h-96 opacity-20 bg-rose-600 rounded-full absolute top-[calc(-192px+38px)] right-[calc(-192px+103px)] blur-3xl" />
+        <div className="rounded-xl py-[25px] shadow-lg bg-white w-[100%] bg-no-repeat hover:shadow-2xl shadow-zinc-500/30 transition-shadow cursor-pointer duration-300 relative z-10 leading-relaxed">
+          <h2 className="mt-5 lg:text-5xl md:text-4xl text-[24px] font-bold font-volkhov text-center">
+            Regulasi
+          </h2>
+          <h3 className="mt-5 font-semibold md:text-xl text-md mx-auto text-center"> 
+          PERATURAN WALIKOTA KOTA MEDAN NOMOR 33 TAHUN 2021 <br />
+          TENTANG KRITERIA FAKIR MISKIN DAN ORANG TIDAK MAMPU DI KOTA MEDAN
+          </h3>
+          <p className="mt-3 mb-6 lg:text-lg md:text-md text-[12px] text-[#666666] text-center leading-relaxed">
+          Dalam rangka pelaksanaan pemberian Bantuan Sosial kepada masyarakat agar tepat sasaran dan tertib administrasi perlu di tetapkan Kriteria Fakir Miskin dan Orang Tidak Mampu. Berdasarkan pertimbangan tersebut perlu membentuk Peraturan Walikota tentang Kriteria Fakir Miskin dan Orang Tidak Mampu. Lampiran Peraturan Walikkota Kota Medan.
+          <br />
+          <a className="text-[#330aff]" href="https://dissos.pemkomedan.go.id/uploads_gallery/upload/files/Perwal%20Nomor%2033%20Tahun%202021.pdf" target='_blank'>Unduh disini. </a>
+          </p>
+        </div>
+
         <div className="text-center mb-11 mt-0">
           <Button
             variant="ghost"
@@ -59,8 +75,7 @@ export default function LandingPage() {
             Pengajuan Bantuan Secara Online Menjadi Mudah dan bisa dilakukan dimana saja
           </p>
         </div>
-        <div className="mt-16 grid grid-cols-1 lg:grid-cols-3 lg:gap-[92px] gap-[40px]">
-          
+        <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 lg:gap-[92px] gap-[40px]">
           <CardLandingPage
             curvePosition="right"
             title="Bantuan Biaya Pendidikan"
