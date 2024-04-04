@@ -26,11 +26,11 @@ const DataPenerimaRehabsos = () => {
         <CardSub
           title={'Bantuan Sosial Tunai (BST) Disabilitas'}
           subTitle={'Financial Assistance for Disability Support'}
-          href={'/data-penerima/rehabsos/bstdisab'}
+          href={'/data-penerima/rehabsos/bstdisabilitas'}
         />
         <CardSub
           title={'Bantuan Sosial Tunai Anak Diluar Panti'}
-          subTitle={'Financial Assistance fo Non-Orpahanges'}
+          subTitle={'Financial Assistance for Non-Orpahanges'}
           href={'/data-penerima/rehabsos/anak'}
         />
         <CardSub

@@ -391,15 +391,15 @@ const DataSktm = () => {
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data SKTM</h3>
           <p className="text-sm text-[#A1A1A1]">View Data Detail Data SKTM</p>
         </Modal.Header>
-        {isLoadingIndigencyCertificate && <Loading />}
-        {/* <div className="grid grid-cols-3 gap-y-5">
+        {/* {isLoadingIndigencyCertificate && <Loading />}
+        <div className="grid grid-cols-3 gap-y-5">
           <div>
             <p className="text-sm font-bold">Nama Pemohon</p>
-            <p className="text-base capitalize">{indigency?.application.applicant.name ?? '-'}</p>
+            <p className="text-base capitalize">{indigency?.application.name ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">NIK Pemohon</p>
-            <p className="text-base capitalize">{indigency?.application.applicant.benifictiary ?? '-'}</p>
+            <p className="text-base capitalize">{indigency?.application.identityNumber ?? '-'}</p>
           </div>
           <div>
             <p className="text-sm font-bold">No. KK Pemohon</p>

@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { HiArrowPath, HiMagnifyingGlass } from 'react-icons/hi2'
+import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
 
 import { DTKS_DEFAULT_VALUES } from '@/lib/defaultValues'
 import { Container, Loading, Pagination, SearchSelect } from '@/components'
@@ -237,15 +237,17 @@ export default function DataDtks() {
               />
             </div>
             <div className="flex items-center gap-3">
-              {shouldDisplayResetButton('with-page') && (
-                <Button className="gap-3 py-6 text-primary" type="button" variant="outline" onClick={handleReset}>
-                  <HiArrowPath className="text-xl" />
-                  <span>Reset</span>
-                </Button>
-              )}
-              <Button className="gap-3 py-6" type="submit">
-                <HiMagnifyingGlass className="text-xl" />
-                <span>Cari Data</span>
+              <Button
+                type="button"
+                className="gap-2 border-none rounded-lg"
+                onClick={() => navigate('/data-penerima/rehabsos/anak/create')}
+              >
+                <HiPlus className="text-lg" />
+                <span>Tambah Data</span>
+              </Button>
+              <Button>
+                <HiMagnifyingGlass className="w-4 h-4 py" />
+                <p className="font-bold text-sm text-white ml-3 w-max">Cari Data</p>
               </Button>
             </div>
           </section>
