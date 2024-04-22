@@ -57,7 +57,7 @@ const DataBSTLansia = () => {
 
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
-  const { data: elderly, refetch: refetchElderly, isLoading: isLoadingElderly } = useGetElderlyAssistanceID(selectedId)
+  const { data: elderly,refetch:refetchElderly, isLoading: isLoadingElderly } = useGetElderlyAssistanceID(selectedId)
 
   const {
     data: elderlys,
@@ -80,6 +80,7 @@ const DataBSTLansia = () => {
   const showEdit = (id: string) => {
     setSelectedId(id)
     setIsUpdate(true)
+    
   }
   const updateParam = (key: any, value: any) => {
     if (value !== '') {
@@ -104,7 +105,8 @@ const DataBSTLansia = () => {
       body: JSON.stringify(data)
     })
     if (response.ok) {
-      refetchBSTLansia()
+      
+      await refetchBSTLansia()
     }
   }
 
@@ -340,7 +342,7 @@ const DataBSTLansia = () => {
         />
       ) : null}
       <Modal isShow={isShow} className="md:max-w-4xl">
-        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+        <Modal.Header setIsShow={setIsShow} className="flex flex-col gap-1">
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data BST Lansia</h3>
           <p className="text-sm text-[#A1A1A1]">View Data Detail Data BST Lansia</p>
         </Modal.Header>
@@ -386,11 +388,12 @@ const DataBSTLansia = () => {
       </Modal>
 
       <Modal isShow={isUpdate} className="md:max-w-2xl">
-        <Modal.Header setIsShow={setIsUpdate} className="gap-1 flex flex-col">
+        <Modal.Header setIsShow={setIsUpdate} className="flex flex-col gap-1">
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">{elderly?.nama ?? '-'}</h3>
           <h4 className="text-sm text-[#A1A1A1]">{elderly?.nik ?? '-'}</h4>
+          
         </Modal.Header>
-        {(isLoadingElderly || isLoadingExport) && <Loading />}
+        {isLoadingElderly && <Loading />}
         <div className="grid grid-cols-2 gap-5">
           <div>
             <p className="text-sm font-bold">Status Penerima</p>
@@ -400,10 +403,10 @@ const DataBSTLansia = () => {
             <p className="text-sm font-bold">Edit Status Penerima</p>
             <select onChange={handleStatusChange}>
               <option value="">Pilih Status</option>
-              <option value="TIDAK DITEMUKAN">Data Tidak Ditemukan</option>
-              <option value="MENINGGAL">Meninggal</option>
-              <option value="PINDAH">Pindah</option>
-              <option value="AKTIF">Penerima Aktif</option>
+              <option value="Tidak Ditemukan">Data Tidak Ditemukan</option>
+              <option value="Meninggal">Meninggal</option>
+              <option value="Pindah">Pindah</option>
+              <option value="Aktif">Penerima Aktif</option>
             </select>
             <Button onClick={handleSubmitStatus}>Submit</Button>
           </div>

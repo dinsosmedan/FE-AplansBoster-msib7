@@ -171,10 +171,10 @@ const DataBSTdisab = () => {
   return (
     <Container>
       {(isFetching || isLoadingExport) && <Loading />}
-      <h1 className="font-bold text-xl ">Bantuan Sosial Tunai Disabilitas</h1>
+      <h1 className="text-xl font-bold ">Bantuan Sosial Tunai Disabilitas</h1>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="flex flex-row justify-between items-center gap-5 mt-5">
+          <div className="flex flex-row items-center justify-between gap-5 mt-5">
             <div className="flex-1 ">
               <FormField
                 name="q"
@@ -262,19 +262,19 @@ const DataBSTdisab = () => {
               ) : null}
             </div>
             <div className="flex gap-3">
-              <Button type="button" variant="outline" className="gap-3 text-primary rounded-lg" onClick={handleReset}>
+              <Button type="button" variant="outline" className="gap-3 rounded-lg text-primary" onClick={handleReset}>
                 <HiArrowPath className="text-lg" />
                 <span>Reset</span>
               </Button>
               <Button>
                 <HiMagnifyingGlass className="w-4 h-4 py" />
-                <p className="font-bold text-sm text-white ml-3 w-max">Cari Data</p>
+                <p className="ml-3 text-sm font-bold text-white w-max">Cari Data</p>
               </Button>
             </div>
           </section>
         </form>
       </Form>
-      <section className="border rounded-xl mt-5 overflow-hidden">
+      <section className="mt-5 overflow-hidden border rounded-xl">
         <Table>
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
@@ -282,13 +282,12 @@ const DataBSTdisab = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">No. Kartu Keluarga</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">NIK</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tempat Lahir</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Tanggal Lahir</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis Kelamin</TableHead>
+     
+         
               <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kecamatan</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Kelurahan</TableHead>
-              <TableHead className="text-[#534D59] font-bold text-[15px]">Status</TableHead>
+              <TableHead className="text-[#534D59] font-bold text-[15px]">Jenis</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
             </TableRow>
@@ -300,27 +299,21 @@ const DataBSTdisab = () => {
                   <TableCell className="text-left bg-[#F9FAFC]">
                     {(disability.meta.currentPage - 1) * disability.meta.perPage + index + 1}
                   </TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.nokk ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]">{item.nama ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.nama ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.nama ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.nama ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.alamat ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.kecamatan ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
                     {item.nama ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.nama ?? '-'}</TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]">{item.nama ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.kelurahan ?? '-'}</TableCell>
+                  <TableCell className="text-center bg-[#F9FAFC]">{item.disability_type ?? '-'}</TableCell>
                   <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.nama ?? '-'}
+                    {item.tahun ?? '-'}
                   </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.nama ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.nama ?? '-'}
-                  </TableCell>
-                  <TableCell className="text-center bg-[#F9FAFC]" position="center">
-                    {item.nama ?? '-'}
-                  </TableCell>
+                 
+                  
+                 
                   <TableCell className="flex items-center justify-center bg-[#F9FAFC]">
                     <Action onDetail={() => showDetail(item.id)} />
                   </TableCell>
@@ -345,7 +338,7 @@ const DataBSTdisab = () => {
         />
       ) : null}
       <Modal isShow={isShow} className="md:max-w-4xl">
-        <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+        <Modal.Header setIsShow={setIsShow} className="flex flex-col gap-1">
           <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Detail Data BBP</h3>
           <p className="text-sm text-[#A1A1A1]">View Data Detail Data BBP</p>
         </Modal.Header>

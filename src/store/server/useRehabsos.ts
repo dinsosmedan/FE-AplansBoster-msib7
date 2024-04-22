@@ -26,7 +26,8 @@ import {
   showDetailOperationLicenseOfSocialInstitutionFn,
   updateOperationLicenseOfSocialInstitutionFn,
   deleteOperationLicenseOfSocialInstitutionFn,
-  getElderlyAssistanceByIdFn
+  getElderlyAssistanceByIdFn,
+  getWelfaresByIdFn
 } from '@/api/rehabsos.api'
 import { toast } from '@/components/ui/use-toast'
 import { type IErrorResponse } from '@/lib/types/user.type'
@@ -87,7 +88,11 @@ export const useGetElderlyAssistanceID = (id?: string) => {
     enabled: !!id
   })
 }
-
+export const useGetWelfaresID = (id?: string) => {
+  return useQuery(['elderly', id], async () => await getWelfaresByIdFn(id as string), {
+    enabled: !!id
+  })
+}
 export const useUpdateElderlyCashSocialAssistance = () => {
   const queryClient = useQueryClient()
   return useMutation(updateElderlyCashSocialAssistanceFn, {
@@ -151,6 +156,7 @@ export const useDisabilitySocialAssistance = ({
     }
   )
 }
+
 
 export const useCreateDisabilitySocialAssistance = () => {
   const queryClient = useQueryClient()

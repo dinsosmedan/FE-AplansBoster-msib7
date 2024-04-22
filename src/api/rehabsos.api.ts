@@ -75,7 +75,10 @@ export const getElderlyAssistanceByIdFn = async (id: string): Promise<IElderlyCa
   const response = await api.get(`/getElderlybyID/${id}`)
   return response.data?.data
 }
-
+export const getWelfaresByIdFn = async (id: string): Promise<INeedForSocialWelfareServicesDetail> => {
+  const response = await api.get(`/getPPKSbyID/${id}`)
+  return response.data?.data
+}
 export const deleteElderlyCashSocialAssistanceFn = async (id: string) => {
   await api.delete(`/lansia/${id}`)
 }
@@ -107,7 +110,7 @@ export const getDisabilitySocialAssistanceFn = async ({
   q
 }: DisabilitySocialAssistanceQuery): Promise<IDisabilitySocialAssistance> => {
   const response = await api.get(
-    `getElderly/?page=${page}&kecamatan=${kecamatan}&kelurahan=${kelurahan}&tahun=${year}&nik=${q}`
+    `getDisability/?page=${page}&kecamatan=${kecamatan}&kelurahan=${kelurahan}&tahun=${year}&nik=${q}`
   )
   return response.data
 }
@@ -255,7 +258,7 @@ export const getNeedForSocialWelfareServicesFn = async ({
   q
 }: NeedForSocialWelfareServicesQuery): Promise<INeedForSocialWelfareServices> => {
   const response = await api.get(
-    `getPPKS/?page=${page}&kecamatan=${kecamatan}&kelurahan=${kelurahan}&tahun=${year}&nik=${q}`
+    `getPPKS/?page=${page}&kecamatan=${kecamatan}&tahun=${year}&nik=${q}`
   )
   return response.data
 }

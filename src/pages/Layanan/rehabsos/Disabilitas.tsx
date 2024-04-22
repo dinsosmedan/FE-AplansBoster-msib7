@@ -28,7 +28,7 @@ const Disabilitas = () => {
     console.warn(file)
     const formData = new FormData()
     formData.append('file', file)
-    let result = await fetch('http://127.0.0.1:8000/api/v1/lansia', {
+    let result = await fetch('http://127.0.0.1:8000/api/v1/importDisability', {
       method: 'POST',
       body: formData
     })
