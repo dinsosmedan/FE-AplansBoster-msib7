@@ -56,6 +56,20 @@ export default function HeaderUser() {
                   <Link to="/user/cek-bansos" className="hover:text-primary">
                     Cek Bansos
                   </Link>
+
+                  <Link to="/" className="hover:text-primary pe-5">
+                    
+                  </Link>
+                  {auth.token && (
+                    <Link to="/user/" className="hover:text-primary pe-5">
+                      Regulasi
+                    </Link>
+                  )}
+
+                    
+                  
+                 
+
                 </div>
                 {auth.token && (
                   <section className="flex items-center gap-3">

@@ -20,6 +20,7 @@ const InfoDataMaster = () => {
               <TableHead className="text-white">NIK</TableHead>
               <TableHead className="text-white">Nama</TableHead>
               <TableHead className="text-white">Hubungan keluarga</TableHead>
+              <TableHead className="text-white">Jenis Bantuan</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="bg-white">
@@ -31,6 +32,9 @@ const InfoDataMaster = () => {
                   </TableCell>
                   <TableCell className="" position="center">
                     {item.name}
+                  </TableCell>
+                  <TableCell className="" position="center">
+                    {item.familyRelationship}
                   </TableCell>
                   <TableCell className="" position="center">
                     {item.familyRelationship}

@@ -5,7 +5,7 @@ import useGetParams from './useGetParams'
 import useCreateParams from './useCreateParams'
 import useDebounce from './useDebounce'
 import useToastNik from './useToastNik'
-import useToastNikPokmas from './useToastNikPokmas'
+import useToastImport from './useToastImport'
 import { formatRibuan, hitungPersentase } from './useAngka'
 import useDeleteParams from './useDeleteParams'
 import useNotFound from './useNotFound'
@@ -20,7 +20,7 @@ export {
   useCreateParams,
   useDebounce,
   useToastNik,
-  useToastNikPokmas,
+  useToastImport,
   useDeleteParams,
   formatRibuan,
   hitungPersentase,

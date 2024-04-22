@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
-import { Container } from '@/components'
+import { Container, Loading } from '@/components'
 import { Button } from '@/components/ui/button'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useTitleHeader } from '@/store/client'
+import { useToastImport } from '@/hooks'
+import { FaFileUpload } from 'react-icons/fa'
 
 const Lansia = () => {
   const navigate = useNavigate()
-  const { id } = useParams<{ id: string }>()
   const setBreadcrumb = useTitleHeader((state) => state.setBreadcrumbs)
+  const [file, setFile] = useState<any>(null)
+  const [loading, setLoading] = useState<boolean>(false)
+  const toastImport = useToastImport()
+  const [fileName, setFileName] = useState<string>('')
 
   React.useEffect(() => {
     setBreadcrumb([
@@ -17,34 +22,79 @@ const Lansia = () => {
     ])
   }, [])
 
-  const [file, setFile] = useState<any>(null)
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFile(e.target.files[0])
+      setFileName(e.target.files[0].name)
+    }
+  }
 
-  const Excel = async () => {
+  const importData = async () => {
     if (!file) {
-      alert('Please select a file')
+      toastImport({
+        notFoundCondition: true
+      })
       return
     }
-
-    console.warn(file)
+    setLoading(true)
     const formData = new FormData()
     formData.append('file', file)
-    let result = await fetch('http://127.0.0.1:8000/api/v1/lansia', {
-      method: 'POST',
-      body: formData
-    })
-    alert('Data Berhasil ditambahkan.')
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/v1/lansia', {
+        method: 'POST',
+        body: formData
+      })
+      if (response.ok) {
+        toastImport({
+          successCondition: true,
+          onSuccess: () => {}
+        })
+        navigate('/data-penerima/rehabsos/bstlansia')
+      } else {
+        toastImport({
+          failedCondition: true
+        })
+      }
+    } catch (error) {
+      console.error('Error during import:', error)
+      toastImport({
+        failedCondition: true
+      })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
-    <Container className="py-10 px-[47px]">
-      <div className="w-full text-center">
+    <Container className="flex flex-col items-center px-[47px] ">
+      <div className="w-full mb-3">
         <p className="text-2xl font-bold">Import Data</p>
       </div>
-      <div className="App">
-        <input type="file" onChange={(e) => setFile(e.target.files![0])} />
-        <Button className="font-bold" onClick={Excel}>
-          Submit
-        </Button>
+      <div className="flex flex-col justify-center w-full">
+        <label
+          htmlFor="fileInput"
+          className="flex flex-col justify-end items-center  h-60 bg-slate-200 rounded-md cursor-pointer p-3 "
+        >
+          <FaFileUpload className="h-32 w-32 text-slate-400" />
+          <span className=" text-slate-600 mt-2">{fileName || 'Tambahkan File'}</span>{' '}
+          <input id="fileInput" type="file" className="hidden" onChange={handleFileChange} />
+        </label>
+
+        <section className="flex items-center justify-end">
+          <div className="flex items-center gap-3">
+            <Button className="font-bold mt-3" onClick={importData}>
+              {loading && <Loading />}
+              Submit
+            </Button>
+            <Button
+              variant="outline"
+              className="rounded-lg text-primary border-primary font-bold  mt-3"
+              onClick={() => navigate('/data-penerima/rehabsos/bstlansia')}
+            >
+              Cancel
+            </Button>
+          </div>
+        </section>
       </div>
     </Container>
   )

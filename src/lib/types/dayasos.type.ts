@@ -147,6 +147,7 @@ export interface ICommunityGroup {
   bankAccAddress: string | null
   members: Array<{
     id: string
+    beneficiary_id: string
     beneficiary: IBeneficary
     position: string
   }>
@@ -175,11 +176,13 @@ export interface IBusinessGroupDetail {
   note: string
   createdAt: string
   updatedAt: string
-  members: Array<{
-    id: string
-    identityNumber: string
-    position: string
-  }> | null
+  members: IBeneficary[]
+  // members: Array<{
+  //   id: string
+  //   identityNumber: string
+  //   beneficiary: IBeneficary
+  //   position: string
+  // }>
 }
 export interface IBusinessGroup {
   success: boolean

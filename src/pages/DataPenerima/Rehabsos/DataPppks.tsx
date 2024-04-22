@@ -10,16 +10,16 @@ import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
 import {
   useGetKecamatan,
   useGetKelurahan,
-  useGetTuitionAssistanceFn,
   useGetTuitionAssistanceID,
   useGetUniversities,
   useNeedForSocialWelfareServices,
   useGetWelfaresID
+
 } from '@/store/server'
 import React from 'react'
-import { exportTuitionAssistanceFn } from '@/api/linjamsos.api'
 import { useAlert, useTitleHeader } from '@/store/client'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
+import { exportNeedForSocialWelfareServicesFn } from '@/api/rehabsos.api'
 interface FormValues {
   q: string
   kelurahan: string
@@ -103,9 +103,9 @@ const DataPppks = () => {
   }
   const exportAsCsv = async () => {
     setIsLoadingExport(true)
-    const response = await exportTuitionAssistanceFn('csv', {
-      idKecamatan: kecamatan,
-      idKelurahan: kelurahan,
+    const response = await exportNeedForSocialWelfareServicesFn('csv', {
+      kecamatan,
+      kelurahan,
       year,
       q
     })
@@ -122,12 +122,10 @@ const DataPppks = () => {
 
   const exportAsXlsx = async () => {
     setIsLoadingExport(true)
-    const response = await exportTuitionAssistanceFn('xlsx', {
-      idKecamatan: kecamatan,
-      idKelurahan: kelurahan,
+    const response = await exportNeedForSocialWelfareServicesFn('xlsx', {
+      kecamatan,
+      kelurahan,
       year,
-      status,
-      event,
       q
     })
     if (response.success) {
@@ -267,7 +265,7 @@ const DataPppks = () => {
           <TableBody>
             {welfare?.data?.length !== 0 ? (
               welfare?.data.map((item, index) => (
-                <TableRow key={item.id}>
+                <TableRow key={item.nama}>
                   <TableCell className="text-left bg-[#F9FAFC]">
                     {(welfare.meta.currentPage - 1) * welfare.meta.perPage + index + 1}
                   </TableCell>
