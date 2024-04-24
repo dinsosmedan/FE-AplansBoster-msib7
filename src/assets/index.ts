@@ -19,17 +19,18 @@ import CekBansosIlustration from './icons/cek-bansos.svg'
 import Substract from './images/Subtract.svg'
 import NotFoundIllustration from './images/not-found.svg'
 import NotFoundNumber from './images/not-found-number.svg'
-import BgProfile from './images/bg-profile.svg'
+import BgProfile from './images/bg-profile.png'
 import BgEmpty from './images/bg-empty.svg'
 import Bgsuccessful from './images/bg-successful.svg'
 import BgVerified from './images/bg-verified.svg'
 import ForbidenNumber from './images/forbiden-number.svg'
 // gambar user slideshow
-import gambar from './images/kegiatan1.jpg'
+import gambar from './images/kegiatan6.jpg'
 import gambar2 from './images/kegiatan2.jpg'
 import gambar3 from './images/kegiatan3.jpg'
 import gambar4 from './images/kegiatan4.jpg'
 import gambar5 from './images/kegiatan5.jpg'
+import gamba6 from './images/kegiatan1.jpg'
 // penginputan foto pada laman user
 
 
@@ -38,4 +39,4 @@ import gambar5 from './images/kegiatan5.jpg'
 
 
 export { Logo, BgLogin, LogoMini, BgDukcapil, BgBansos, BgDataRehabsos, BgDataDayasos, BgDataLinjmasos, BgLayananRehabsos, BgLayananDayasos, BgLayananLinjmasos, ImageCover, BgCard, DinsosLogo, MedanBerkahLogo, NotFoundBansos, Swafoto, CekBansosIlustration, Substract, NotFoundIllustration, NotFoundNumber, BgProfile, BgEmpty, Bgsuccessful, 
-    BgVerified, ForbidenNumber, gambar, gambar2, gambar3, gambar4, gambar5 }
+    BgVerified, ForbidenNumber, gambar, gambar2, gambar3, gambar4, gambar5, gamba6 }
