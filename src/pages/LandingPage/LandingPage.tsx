@@ -1,4 +1,4 @@
-import { ImageCover, gambar, gambar2, gambar3, gambar4, gambar5 } from '@/assets'
+import { ImageCover, gamba6, gambar, gambar2, gambar3, gambar4, gambar5 } from '@/assets'
 import { Button } from '@/components/ui/button'
 import { HiAcademicCap, HiArrowRightCircle, HiDocumentText } from 'react-icons/hi2'
 import { CardLandingPage } from '@/components'
@@ -59,13 +59,14 @@ export default function LandingPage() {
           <br /> 
           
           
-      
-          <div className="mt-3 mb-6 lg:text-lg md:text-md text-[12px] text-[#666666] flex space-x-4">
+          
+  <div className="mt-3 mb-6 lg:text-lg md:text-md text-[12px] text-[#F9F9F9] overflow-x-auto flex space-x-4 scroll-snap-x">
   <img src={gambar} alt="kegiatan1" className="w-96 h-96 opacity-100  " />
   <img src={gambar2} alt="kegiatan2" className="w-96 h-96 opacity-100  " />
   <img src={gambar3} alt="kegiatan3" className="w-96 h-96 opacity-100  " />
   <img src={gambar4} alt="kegiatan4" className="w-96 h-96 opacity-100  " />
   <img src={gambar5} alt="kegiatan5" className="w-96 h-96 opacity-100  " />
+  <img src={gamba6} alt="kegiatan6" className="w-96 h-96 opacity-100  " />
 
 </div>
 
