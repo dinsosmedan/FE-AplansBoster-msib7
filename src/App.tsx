@@ -92,6 +92,7 @@ import ProfileLayout from './components/layouts/landingPage/ProfileLayout'
 import SuccessfulRegister from './components/layouts/landingPage/SuccessfulRegister'
 import VerifiedAccount from './components/layouts/landingPage/VerifiedAccount'
 import DtksSchool from './pages/LandingPage/SKTM/DtksSchool'
+import Regulasi from './pages/LandingPage/Regulasi'
 import NonDtksSchool from './pages/LandingPage/SKTM/NonDtksSchool'
 import DtksCourts from './pages/LandingPage/SKTM/DtksCourts'
 import NonDtksCourts from './pages/LandingPage/SKTM/NonDtksCourts'
@@ -102,10 +103,9 @@ import DataLks from './pages/DataPenerima/Rehabsos/DataLks'
 import DataPppks from './pages/DataPenerima/Rehabsos/DataPppks'
 import Disabilitas from './pages/Layanan/rehabsos/Disabilitas'
 import Anak from './pages/Layanan/rehabsos/anak'
-
+import Ppks from './pages/Layanan/rehabsos/ppks'
 import Lks from './pages/Layanan/rehabsos/Lks'
 import Lansia from './pages/TambahDataDtks'
-import Ppks from './pages/Layanan/rehabsos/Ppks'
 
 export default function App() {
   useScrollToTop()
@@ -259,6 +259,7 @@ export default function App() {
 
             <Route path="/user">
               <Route path="cek-bansos" element={<CekBansosUser />} />
+              <Route path="regulasi" element={<Regulasi />} />
               <Route element={<UserProtectedAuth />}>
                 <Route element={<AuthUserLayout />}>
                   <Route path="login" element={<LoginUser />} />
@@ -270,6 +271,10 @@ export default function App() {
                   <Route path="reset-password" element={<UpdatePasswordUser />} />
                 </Route>
               </Route>
+
+              
+              <Route path="regulasi" element={<Regulasi />} />
+             
 
               <Route element={<UserProtectedRoute />}>
                 <Route path="sktm">
