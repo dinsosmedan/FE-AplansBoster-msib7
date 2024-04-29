@@ -60,11 +60,10 @@ export default function HeaderUser() {
                   <Link to="/" className="hover:text-primary pe-5">
                     
                   </Link>
-                  {auth.token && (
-                    <Link to="/user/" className="hover:text-primary">
+                  <Link to="/user/regulasi" className="hover:text-primary pe-5">
                       Regulasi
                     </Link>
-                  )}
+                  
 
                     
                   
@@ -152,12 +151,11 @@ export default function HeaderUser() {
               <Link to="/user/cek-bansos" className="hover:text-primary">
                 Cek Bansos
               </Link>
-
-              <Link to="/user/" className="hover:text-primary">
-                regulasi
+            </li>
+            <li>
+              <Link to="/user/regulasi" className="hover:text-primary">
+                Regulasi
               </Link>
-
-
             </li>
           </ul>
         </div>
