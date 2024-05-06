@@ -1,238 +1,103 @@
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { useForm } from 'react-hook-form'
+import React, { useState } from 'react'
+import { Container, Loading } from '@/components'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import useTitle from '@/hooks/useTitle'
-import { Container } from '@/components'
-import { HiMagnifyingGlass } from 'react-icons/hi2'
 import { useNavigate } from 'react-router-dom'
 import { useTitleHeader } from '@/store/client'
-import * as React from 'react'
-import { useCreateIndegencyCertificate, useMutationGetBeneficaryByNIK } from '@/store/server'
-import { useToastNik } from '@/hooks'
-import { indigencyCertificateValidation, type indigencyCertificateFields } from '@/lib/validations/linjamsos.validation'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { CATEGORY_APPLICATION, STATUS_DTKS } from '@/lib/data'
+import { useToastImport } from '@/hooks'
+import { FaFileUpload } from 'react-icons/fa'
 
-const Pkr = () => {
+const importsktm = () => {
   const navigate = useNavigate()
-  useTitle('Tambah Data')
-  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+  const setBreadcrumb = useTitleHeader((state) => state.setBreadcrumbs)
+  const [file, setFile] = useState<any>(null)
+  const [loading, setLoading] = useState<boolean>(false)
+  const toastImport = useToastImport()
+  const [fileName, setFileName] = useState<string>('')
 
   React.useEffect(() => {
-    setBreadcrumbs([
+    setBreadcrumb([
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/linjamsos', label: 'Linjamsos' },
-      { url: '/data-penerima/linjamsos/sktm', label: 'SKTM' }
+      { url: '/data-penerima/linjamsos/sktm', label: 'Sktm' }
     ])
   }, [])
 
-  const forms = useForm<indigencyCertificateFields>({
-    mode: 'onTouched',
-    resolver: yupResolver(indigencyCertificateValidation)
-  })
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFile(e.target.files[0])
+      setFileName(e.target.files[0].name)
+    }
+  }
 
-  const [beneficaryApplicant, setBeneficaryApplicant] = React.useState('')
-  const [beneficaryPeopleConcerned, setBeneficaryPeopleConcerned] = React.useState('')
-  const { mutate: searchNik, isLoading, isError, isSuccess } = useMutationGetBeneficaryByNIK()
-  const { mutate: createIndegencyCertificate, isLoading: isLoadingCreate } = useCreateIndegencyCertificate()
-
-  useToastNik({
-    successCondition: !isLoading && isSuccess,
-    notFoundCondition: isError,
-    notRegisteredCondition:
-      (forms.getValues('applicant') === '' || forms.getValues('peopleConcerned') === '') && forms.formState.isSubmitted
-  })
-
-  const handleApplicantSearch = () => {
-    const applicant = forms.getValues('applicant')
-    if (applicant !== '') {
-      searchNik(applicant, {
-        onError: () => {
-          forms.setError('applicant', { type: 'manual', message: 'NIK tidak terdaftar' })
-        },
-        onSuccess: (data) => {
-          forms.clearErrors('applicant')
-          setBeneficaryApplicant(data.id)
-        }
+  const importData = async () => {
+    if (!file) {
+      toastImport({
+        notFoundCondition: true
       })
+      return
     }
-  }
-
-  const handlePeopleConcernedSearch = () => {
-    const peopleConcerned = forms.getValues('peopleConcerned')
-    if (peopleConcerned !== '') {
-      searchNik(peopleConcerned, {
-        onError: () => {
-          forms.setError('peopleConcerned', { type: 'manual', message: 'NIK tidak terdaftar' })
-        },
-        onSuccess: (data) => {
-          forms.clearErrors('peopleConcerned')
-          setBeneficaryPeopleConcerned(data.id)
-        }
+    setLoading(true)
+    const formData = new FormData()
+    formData.append('file', file)
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/v1/importSktm', {
+        method: 'POST',
+        body: formData
       })
+      if (response.ok) {
+        toastImport({
+          successCondition: true,
+          onSuccess: () => {}
+        })
+        navigate('/data-penerima/linjamsos/sktm')
+      } else {
+        toastImport({
+          failedCondition: true
+        })
+      }
+    } catch (error) {
+      console.error('Error during import:', error)
+      toastImport({
+        failedCondition: true
+      })
+    } finally {
+      setLoading(false)
     }
-  }
-
-  const onSuccess = () => {
-    forms.reset()
-    navigate('/data-penerima/linjamsos/sktm')
-  }
-
-  const onSubmit = async (values: indigencyCertificateFields) => {
-    const newData = {
-      ...values,
-      applicant: beneficaryApplicant,
-      peopleConcerned: beneficaryPeopleConcerned
-    }
-
-    createIndegencyCertificate(newData, { onSuccess })
   }
 
   return (
-    <Container className="py-10">
-      <section className="w-9/12 mx-auto">
-        <p className="text-2xl font-bold text-center">Data Pemohon</p>
-        <Form {...forms}>
-          <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-            <div className="flex flex-row justify-between gap-3">
-              <div className="w-11/12">
-                <FormField
-                  name="applicant"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-semibold dark:text-white">NIK Pemohon</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          value={field.value ?? ''}
-                          type="number"
-                          placeholder="Masukkan NIK Masyarakat"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="w-fit flex items-end justify-end">
-                <Button className="w-full gap-2" type="button" loading={isLoading} onClick={handleApplicantSearch}>
-                  <HiMagnifyingGlass className="text-lg" />
-                  <span>Cari</span>
-                </Button>
-              </div>
-            </div>
+    <Container className="flex flex-col items-center px-[47px] ">
+      <div className="w-full mb-3">
+        <p className="text-2xl font-bold">Import Data</p>
+      </div>
+      <div className="flex flex-col justify-center w-full">
+        <label
+          htmlFor="fileInput"
+          className="flex flex-col justify-end items-center  h-60 bg-slate-200 rounded-md cursor-pointer p-3 "
+        >
+          <FaFileUpload className="h-32 w-32 text-slate-400" />
+          <span className=" text-slate-600 mt-2">{fileName || 'Tambahkan File'}</span>{' '}
+          <input id="fileInput" type="file" className="hidden" onChange={handleFileChange} />
+        </label>
 
-            <div className="flex flex-row justify-between gap-3">
-              <div className="w-11/12">
-                <FormField
-                  name="peopleConcerned"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-semibold dark:text-white">NIK Yang Bersangkutan</FormLabel>
-                      <FormControl>
-                        <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan NIK " />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="w-fit flex items-end justify-end">
-                <Button
-                  className="w-full gap-2"
-                  type="button"
-                  loading={isLoading}
-                  onClick={handlePeopleConcernedSearch}
-                >
-                  <HiMagnifyingGlass className="text-lg" />
-                  <span>Cari</span>
-                </Button>
-              </div>
-            </div>
-            <div className="w-12/12">
-              <FormField
-                name="statusDtks"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Status DTKS</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih status DTKS" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {STATUS_DTKS.map((status, index) => (
-                          <SelectItem key={index} value={status.value} className="capitalize">
-                            {status.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-full text-center">
-              <p className="text-2xl font-bold">Lainnya</p>
-            </div>
-            <div className="flex flex-row gap-4">
-              <div className="w-6/12">
-                <FormField
-                  name="certificateDestination"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-semibold dark:text-white">Tujuan SKTM</FormLabel>
-                      <FormControl>
-                        <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tujuan SKTM" />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="w-6/12">
-                <FormField
-                  name="categoryApplication"
-                  control={forms.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-semibold dark:text-white">Kategori SKTM</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih kategori SKTM" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {CATEGORY_APPLICATION.map((category, index) => (
-                            <SelectItem key={index} value={category.value} className="capitalize">
-                              {category.value}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-            <div className="flex justify-end gap-4">
-              <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
-                Cancel
-              </Button>
-              <Button className="font-bold" type="submit" loading={isLoadingCreate}>
-                Submit
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </section>
+        <section className="flex items-center justify-end">
+          <div className="flex items-center gap-3">
+            <Button className="font-bold mt-3" onClick={importData}>
+              {loading && <Loading />}
+              Submit
+            </Button>
+            <Button
+              variant="outline"
+              className="rounded-lg text-primary border-primary font-bold  mt-3"
+              onClick={() => navigate('/data-penerima/linjamsos/sktm')}
+            >
+              Cancel
+            </Button>
+          </div>
+        </section>
+      </div>
     </Container>
   )
 }
 
-export default Pkr
+export default importsktm
