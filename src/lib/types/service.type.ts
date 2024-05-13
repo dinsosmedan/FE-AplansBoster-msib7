@@ -1,5 +1,5 @@
 import { type IBeneficary } from './beneficary.type'
-import { type IMeta } from './rehabsos.type'
+import { type IMeta } from './dayasos.type'
 import { type IDocument, type IUniversity } from './linjamsos.type'
 
 export interface ITuitionAssistanceEvent {

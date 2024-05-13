@@ -96,6 +96,11 @@ export default function BbpUser() {
                     fileName={details?.requiredDocuments?.biodata?.originalName as string}
                   />
                   <FileDownload
+                    title="Template Surat Permohonan ditujukan kepada Bapak Wali Kota Medan Cq. Kepala Dinas Sosial Kota Medan"
+                    url={details?.requiredDocuments?.scholarshipApplicationLetter?.url as string}
+                    fileName={details?.requiredDocuments?.scholarshipApplicationLetter?.originalName as string}
+                  />
+                  <FileDownload
                     title="Template Surat Pernyataan Tidak Menerima Beasiswa/Bantuan Biaya Pendidikan Dari Sumber Lain"
                     url={details?.requiredDocuments?.nonReceiptOfScholarshipLetter?.url as string}
                     fileName={details?.requiredDocuments?.nonReceiptOfScholarshipLetter?.originalName as string}

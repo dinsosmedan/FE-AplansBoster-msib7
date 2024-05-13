@@ -44,18 +44,15 @@ export default function BbpRegister() {
 
   const forms = useForm<publicEventTuitionFields>({
     mode: 'onTouched',
-    resolver: yupResolver(publicEventTuitionValidation)
+    resolver: yupResolver(publicEventTuitionValidation),
   })
 
   const areaLevel3 = forms.watch('areaLevel3')
   const university = forms.watch('universityId')
   const studyProgram = forms.watch('studyProgramId')
   const bank = forms.watch('bank')
-  const identityNumber = forms.watch('identityNumber')
 
   const { data, isLoading, isSuccess } = useGetPublicEventTuition()
-  const { data: assistance, isLoading: isLoadingAssistance, refetch } = useGetIdentityCheck(identityNumber, false)
-
   const { mutate: create, isLoading: isLoadingCreate } = useCreatePublicEventTuition()
   const { mutate: update, isLoading: isLoadingUpdate } = useUpdatePublicEventTuition()
 
@@ -153,18 +150,6 @@ export default function BbpRegister() {
   }, [isSuccessDetail, forms])
 
   React.useEffect(() => {
-    if (assistance) {
-      forms.setValue('name', assistance?.name)
-      forms.setValue('birthPlace', assistance.birthPlace)
-      forms.setValue('address', assistance?.address?.fullAddress)
-      forms.setValue('areaLevel3', assistance?.address?.areaLevel3?.id as string)
-      forms.setValue('areaLevel4', assistance?.address?.areaLevel4?.id as string)
-      forms.setValue('birthDate', formatStringToDate(assistance?.birthDate))
-      forms.setValue('gender', assistance.gender)
-    }
-  }, [assistance, forms])
-
-  React.useEffect(() => {
     if (bank && !isSuccessDetail) {
       forms.setValue('bankAccountName', bankLists?.find((item) => item.id === bank)?.name as string)
     }
@@ -244,16 +229,6 @@ export default function BbpRegister() {
                             placeholder="Cari NIK"
                           />
                         </FormControl>
-                        <div className="flex items-end">
-                          <Button
-                            type="button"
-                            className="rounded-md rounded-l-none"
-                            onClick={async () => await refetch()}
-                            loading={isLoadingAssistance}
-                          >
-                            <HiMagnifyingGlass className="h-5 w-5" />
-                          </Button>
-                        </div>
                       </div>
                       <FormMessage />
                     </FormItem>
@@ -308,9 +283,10 @@ export default function BbpRegister() {
                 <FormItem>
                   <FormLabel>Tanggal Lahir</FormLabel>
                   <FormControl>
-                    <DatePicker
-                      selected={field.value as Date}
-                      onChange={field.onChange}
+                    <Input
+                     {...field}
+                     type="date"
+                     value={typeof field.value === 'string' ? field.value : ''}
                       placeholder="dd/mm/yyy"
                       className="rounded-md"
                     />
@@ -450,7 +426,7 @@ export default function BbpRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Perguruan Tinggi</FormLabel>
                   <FormControl>
-                    <SearchSelect
+                    {/* <SearchSelect
                       selected={field.value}
                       onChange={field.onChange}
                       width="md:w-[300px] lg:w-[700px]"
@@ -459,6 +435,13 @@ export default function BbpRegister() {
                       options={
                         universities?.map((university) => ({ label: university.name, value: university.id })) ?? []
                       }
+                    /> */}
+                    <Input
+                      {...field}
+                      value={field.value ?? ''}
+                      className="rounded-md"
+                      type="text"
+                      placeholder="Universitas"
                     />
                   </FormControl>
                   <FormMessage />
@@ -472,7 +455,7 @@ export default function BbpRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Prodi</FormLabel>
                   <FormControl>
-                    <SearchSelect
+                    {/* <SearchSelect
                       selected={field.value}
                       onChange={field.onChange}
                       width="md:w-[300px] lg:w-[700px]"
@@ -483,6 +466,13 @@ export default function BbpRegister() {
                         studyPrograms?.map((studyProgram) => ({ label: studyProgram.name, value: studyProgram.id })) ??
                         []
                       }
+                    /> */}
+                    <Input
+                      {...field}
+                      value={field.value ?? ''}
+                      className="rounded-md"
+                      type="text"
+                      placeholder="Prodi"
                     />
                   </FormControl>
                   <FormMessage />
