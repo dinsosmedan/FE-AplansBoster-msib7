@@ -434,11 +434,11 @@ const DataPokmas = () => {
             </div>
             <div>
               <p className="text-sm font-bold">Bantuan yang diajukan</p>
-              <p className="text-base capitalize">{communityGroup?.requestedRabAmount ?? '-'}</p>
+              <p className="text-base capitalize">{communityGroup?.requestedRabAmount ? `Rp. ${formatRibuan(communityGroup?.requestedRabAmount)}` : '-'}</p>
             </div>
             <div>
               <p className="text-sm font-bold">Jumlah Bansos yang diajukan</p>
-              <p className="text-base capitalize">{communityGroup?.requestedBansosAmount ?? '-'}</p>
+              <p className="text-base capitalize">{communityGroup?.requestedBansosAmount ? `Rp. ${formatRibuan(communityGroup?.requestedBansosAmount)}` : '-'}</p>
             </div>
             <div>
               <p className="text-sm font-bold">Alamat Eksekusi</p>

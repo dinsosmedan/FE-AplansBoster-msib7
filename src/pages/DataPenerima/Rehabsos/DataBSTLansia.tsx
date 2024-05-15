@@ -14,7 +14,7 @@ import {
   useGetElderlyAssistanceID
 } from '@/store/server'
 import React from 'react'
-import { exportElderlyCashSocialAssistanceFn, getElderlyCashSocialAssistanceFn } from '@/api/rehabsos.api'
+import { exportElderlyCashSocialAssistanceFn } from '@/api/rehabsos.api'
 import { useAlert, useTitleHeader } from '@/store/client'
 import { useCreateParams, useDisableBodyScroll, useGetParams, useTitle } from '@/hooks'
 interface FormValues {
@@ -277,7 +277,7 @@ const DataBSTLansia = () => {
                 <HiArrowPath className="text-lg" />
                 <span>Reset</span>
               </Button>
-              <Button>
+              <Button className="gap-2 border-none rounded-lg" type="submit">
                 <HiMagnifyingGlass className="w-4 h-4 py" />
                 <p className="ml-3 text-sm font-bold text-white w-max">Cari Data</p>
               </Button>
@@ -393,7 +393,6 @@ const DataBSTLansia = () => {
           <h4 className="text-sm text-[#A1A1A1]">{elderly?.nik ?? '-'}</h4>
           
         </Modal.Header>
-       
         {isLoadingElderly && <Loading />}
         <div className="grid grid-cols-2 gap-5">
           <div>

@@ -143,12 +143,32 @@ const Pokmas = () => {
   if (isLoadingGet) return <Loading />
 
   return (
-    <Container className="py-10 px-16">
+    <Container className="px-16 py-10">
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-7">
           <p className="text-2xl font-bold text-center">Data Pengurus</p>
           {fields.map((field, index) => (
             <div className="flex flex-row gap-4" key={field.id}>
+              <FormField
+                name={`members.${index}.beneficiary`}
+                control={forms.control}
+                render={({ field }) => (
+                  <Input {...field} value={field.value ?? ''} type="text" hidden className="hidden" />
+                )}
+              />
+              <FormField
+                name={`members.${index}.nik`}
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>NIK</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan NIK" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 name={`members.${index}.position`}
                 control={forms.control}
@@ -165,26 +185,13 @@ const Pokmas = () => {
                         <SelectItem value="ketua">Ketua</SelectItem>
                         <SelectItem value="sekretaris">Sekretaris</SelectItem>
                         <SelectItem value="bendahara">Bendahara</SelectItem>
+                        <SelectItem value="Anggota">Anggota</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
-                name={`members.${index}.nik`}
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>NIK</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="number" placeholder="Masukkan NIK" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <div className={cn('flex items-end justify-end gap-2', index > 0 ? 'w-auto' : 'w-[11%]')}>
                 <Button
                   className="w-full"
@@ -207,12 +214,12 @@ const Pokmas = () => {
             </div>
           ))}
           <Button
-            className="bg-primary flex w-fit mx-auto rounded-xl py-6 gap-2"
+            className="flex gap-2 py-6 mx-auto bg-primary w-fit rounded-xl"
             type="button"
             onClick={() => append({ beneficiary: '', position: '', nik: '' })}
           >
             <HiPlus className="w-6 h-6 text-white" />
-            <p className="font-bold text-sm text-white">Tambah Anggota</p>
+            <p className="text-sm font-bold text-white">Tambah Anggota</p>
           </Button>
           <p className="text-2xl font-bold text-center">Data Personal</p>
           <section className="grid grid-cols-2 gap-6">
@@ -248,7 +255,7 @@ const Pokmas = () => {
               )}
             />
           </section>
-          <p className="text-2xl text-center font-bold">Alamat POKMAS</p>
+          <p className="text-2xl font-bold text-center">Alamat POKMAS</p>
           <section className="grid grid-cols-2 gap-6">
             <FormField
               name="areaLevel3"
@@ -531,7 +538,6 @@ const Pokmas = () => {
               )}
             />
           </section>
-
           <div className="flex justify-end gap-4 mt-8">
             <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
               Cancel

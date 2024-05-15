@@ -263,10 +263,6 @@ export const getNeedForSocialWelfareServicesFn = async ({
   return response.data
 }
 
-// export const storeNeedForSocialWelfareServiceFn = async (data: elderlyCashSocialAssistanceFields) => {
-//   await api.post('/lansia', data)
-// }
-
 export const showDetailNeedForSocialWelfareServicesFn = async (
   id: string
 ): Promise<INeedForSocialWelfareServicesDetail> => {

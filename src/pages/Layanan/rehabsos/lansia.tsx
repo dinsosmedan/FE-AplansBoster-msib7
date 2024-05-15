@@ -80,24 +80,24 @@ const Lansia = () => {
       <div className="flex flex-col justify-center w-full">
         <label
           htmlFor="fileInput"
-          className="flex flex-col justify-end items-center  h-60 bg-slate-200 rounded-md cursor-pointer p-3 "
+          className="flex flex-col items-center justify-end p-3 rounded-md cursor-pointer h-60 bg-slate-200 "
         >
-          <FaFileUpload className="h-32 w-32 text-slate-400" />
-          <span className=" text-slate-600 mt-2">{fileName || 'Tambahkan File'}</span>{' '}
+          <FaFileUpload className="w-32 h-32 text-slate-400" />
+          <span className="mt-2 text-slate-600">{fileName || 'Tambahkan File'}</span>{' '}
           <input id="fileInput" type="file" className="hidden" onChange={handleFileChange} />
         </label>
 
         <section className="flex items-center justify-end">
           <div className="flex items-center gap-3">
-            <div className="w-fit flex items-end justify-end" onClick={importData}>
-              <Button className="font-bold mt-3">
+            <div className="flex items-end justify-end w-fit" onClick={importData}>
+              <Button className="mt-3 font-bold">
                 {loading && <Loading />}
                 Submit
               </Button>
             </div>
             <Button
               variant="outline"
-              className="rounded-lg text-primary border-primary font-bold  mt-3"
+              className="mt-3 font-bold rounded-lg text-primary border-primary"
               onClick={() => navigate('/data-penerima/rehabsos/bstlansia')}
             >
               Cancel

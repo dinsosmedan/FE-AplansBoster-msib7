@@ -56,6 +56,19 @@ export default function HeaderUser() {
                   <Link to="/user/cek-bansos" className="hover:text-primary">
                     Cek Bansos
                   </Link>
+
+                  <Link to="/" className="hover:text-primary pe-5">
+                    
+                  </Link>
+                  <Link to="/user/regulasi" className="hover:text-primary pe-5">
+                      Regulasi
+                    </Link>
+                  
+
+                    
+                  
+                 
+
                 </div>
                 {auth.token && (
                   <section className="flex items-center gap-3">
@@ -65,7 +78,7 @@ export default function HeaderUser() {
                           <img
                             alt="profile"
                             className="w-10 h-10 rounded-full object-cover bg-[#ECF0F4]"
-                            src={`https://ui-avatars.com/api/?background=fce9ee&color=dd2153&bold=true&name=${auth.user?.name}`}
+                            src={`https://ui-avatars.com/api/?background=4c6f88&color=d5e9f7&bold=true&name=${auth.user?.name}`}
                           />
                           <div className="absolute z-100 -bottom-1 -right-1 border-white border bg-[#ECF0F4] rounded-full w-5 h-5 flex">
                             <HiChevronDown className="m-auto text-sm" />
@@ -137,6 +150,11 @@ export default function HeaderUser() {
             <li>
               <Link to="/user/cek-bansos" className="hover:text-primary">
                 Cek Bansos
+              </Link>
+            </li>
+            <li>
+              <Link to="/user/regulasi" className="hover:text-primary">
+                Regulasi
               </Link>
             </li>
           </ul>
