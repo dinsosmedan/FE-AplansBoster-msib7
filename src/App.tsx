@@ -102,10 +102,10 @@ import DataBSTanak from './pages/DataPenerima/Rehabsos/DataBSTanak'
 import DataLks from './pages/DataPenerima/Rehabsos/DataLks'
 import DataPppks from './pages/DataPenerima/Rehabsos/DataPppks'
 import Disabilitas from './pages/Layanan/rehabsos/Disabilitas'
-import Anak from './pages/Layanan/rehabsos/anak'
-import Ppks from './pages/Layanan/rehabsos/ppks'
 import Lks from './pages/Layanan/rehabsos/Lks'
 import Lansia from './pages/TambahDataDtks'
+import Anak from './pages/Layanan/rehabsos/anak'
+import Ppks from './pages/Layanan/rehabsos/ppks'
 
 export default function App() {
   useScrollToTop()
