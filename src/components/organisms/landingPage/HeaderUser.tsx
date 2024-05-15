@@ -147,11 +147,11 @@ export default function HeaderUser() {
                 </Link>
               )}
             </li>
-            <li>
+            {/* <li>
               <Link to="/user/cek-bansos" className="hover:text-primary">
                 Cek Bansos
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link to="/user/regulasi" className="hover:text-primary">
                 Regulasi

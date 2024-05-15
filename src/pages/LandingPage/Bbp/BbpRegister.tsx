@@ -170,44 +170,57 @@ export default function BbpRegister() {
   }, [isSuccess, id])
 
   const onSubmit = async (values: publicEventTuitionFields) => {
-    const birthDate = new Date(values.birthDate)
-    console.log('Form values:', values);
+    let birthDate: Date;
+  
+    if (typeof values.birthDate === 'string') {
+      birthDate = new Date(values.birthDate);
+    } else if (values.birthDate instanceof Date) {
+      birthDate = values.birthDate;
+    } else {
+      console.error('Invalid birthDate:', values.birthDate);
+      return;
+    }
+  
     if (isNaN(birthDate.getTime())) {
-    console.error('Invalid birthDate:', values.birthDate);
-    return;
-  }
+      console.error('Invalid birthDate:', values.birthDate);
+      return;
+    }
+  
+    const formattedBirthDate = formatDateToString(birthDate);
+  
     if (!bbpId) {
       const newData = {
         ...values,
-        birthDate: formatDateToString(birthDate),
-        event: id as string
-      }
-
+        birthDate: formattedBirthDate,
+        event: id as string,
+      };
+  
       create(newData, {
         onSuccess: () => {
-          forms.reset()
-          navigate(`/user/bbp/${id}`)
-        }
-      })
-      return
+          forms.reset();
+          navigate(`/user/bbp/${id}`);
+        },
+      });
+      return;
     }
-
+  
     const newData = {
       ...values,
-      birthDate: formatDateToString(values.birthDate as Date),
-      event: bbpId
-    }
-
+      birthDate: formattedBirthDate,
+      event: bbpId,
+    };
+  
     update(
       { id: bbpId, fields: newData },
       {
         onSuccess: () => {
-          forms.reset()
-          navigate('/user/bbp')
-        }
-      }
-    )
-  }
+          forms.reset();
+          navigate('/user/bbp');
+        },
+      }
+    );
+  };
+  
 
   if (isLoading || isLoadingDetail) return <Loading />
 
@@ -292,7 +305,13 @@ export default function BbpRegister() {
                     <Input
                      {...field}
                      type="date"
-                     value={field.value ?? ''}
+                     value={
+                      field.value
+                        ? typeof field.value === 'string'
+                          ? field.value
+                          : (field.value as Date).toISOString().split('T')[0]
+                        : ''
+                    }
                       placeholder="dd/mm/yyy"
                       className="rounded-md"
                     />
