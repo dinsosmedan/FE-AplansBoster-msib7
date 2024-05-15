@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Action, ExportButton, Loading, Modal, Title, Pagination, Container, SearchSelect } from '@/components'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { formatToView } from '@/lib/services/formatDate'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -14,7 +16,8 @@ import {
   useGetKelurahan,
   useGetMe,
   useGetServiceFund,
-  useGetServiceFunds
+  useGetServiceFunds,
+  useGetServiceTypes
 } from '@/store/server'
 import { exportServiceFundFn } from '@/api/dayasos.api'
 import { useAlert, useTitleHeader } from '@/store/client'
@@ -28,7 +31,7 @@ interface FormValues {
   year: string
 }
 
-const DataLks = () => {
+const DataAlatbantu = () => {
   useTitle('Data Penerima')
   const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
 
@@ -36,7 +39,7 @@ const DataLks = () => {
     setBreadcrumbs([
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
-      { url: '/data-penerima/rehabsos/izin-operasi-lks', label: 'Tanda Daftar/Izin Operasional LKS' }
+      { url: '/data-penerima/rehabsos/penerima-alat-bantu', label: 'Penerima Alat Bantu' }
     ])
   }, [])
 
@@ -74,6 +77,7 @@ const DataLks = () => {
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
+  const { data: serviceTypes } = useGetServiceTypes()
   const { data: serviceFund, isLoading: isLoadingServiceFund } = useGetServiceFund(selectedId)
   const { mutateAsync: deleteServiceFund } = useDeleteServiceFund()
 
@@ -94,7 +98,7 @@ const DataLks = () => {
   useDisableBodyScroll(isFetching || isLoadingExport || isLoadingServiceFund || isLoading)
 
   const handleReset = () => {
-    navigate('/data-penerima/rehabsos/izin-operasi-lks')
+    navigate('/data-penerima/rehabsos/penerima-alat-bantu')
     forms.reset()
   }
 
@@ -119,7 +123,7 @@ const DataLks = () => {
 
   const handleDelete = (id: string) => {
     void alert({
-      title: 'Hapus Data Tanda Daftar/Izin Operasional LKS',
+      title: 'Hapus Data Tanda Daftar/penerima alat bantu',
       description: 'Apakah kamu yakin ingin menghapus data ini?',
       variant: 'danger',
       submitText: 'Delete'
@@ -176,7 +180,7 @@ const DataLks = () => {
   return (
     <Container>
       {(isFetching || isLoadingExport) && <Loading />}
-      <Title>Tanda Daftar/Izin Operasional LKS</Title>
+      <Title>Tanda Daftar Penerima Alat Bantu </Title>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-[18px]">
           <section>
@@ -252,7 +256,7 @@ const DataLks = () => {
               <Button
                 type="button"
                 className="gap-2 border-none rounded-lg"
-                onClick={() => navigate('/data-penerima/rehabsos/izin-operasi-lks/create')}
+                onClick={() => navigate('/data-penerima/rehabsos/penerima-alat-bantu/create')}
               >
                 <HiPlus className="text-lg" />
                 <span>Tambah Data</span>
@@ -317,7 +321,7 @@ const DataLks = () => {
                       <Action
                         onDetail={() => showDetail(item.id)}
                         onDelete={() => handleDelete(item.id)}
-                        onEdit={() => navigate(`/data-penerima/rehabos/izin-operasi-lks/create/${item.id}`)}
+                        onEdit={() => navigate(`/data-penerima/rehabsos/penerima-alat-bantu/create/${item.id}`)}
                       />
                     ) : (
                       <Action onDetail={() => showDetail(item.id)} />
@@ -417,4 +421,4 @@ const DataLks = () => {
     </Container>
   )
 }
-export default DataLks
+export default DataAlatbantu

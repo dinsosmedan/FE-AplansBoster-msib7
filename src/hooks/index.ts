@@ -6,6 +6,7 @@ import useCreateParams from './useCreateParams'
 import useDebounce from './useDebounce'
 import useToastNik from './useToastNik'
 import useToastImport from './useToastImport'
+import useToastEmail from './useToastEmail'
 import { formatRibuan, hitungPersentase } from './useAngka'
 import useDeleteParams from './useDeleteParams'
 import useNotFound from './useNotFound'
@@ -21,6 +22,7 @@ export {
   useDebounce,
   useToastNik,
   useToastImport,
+  useToastEmail,
   useDeleteParams,
   formatRibuan,
   hitungPersentase,

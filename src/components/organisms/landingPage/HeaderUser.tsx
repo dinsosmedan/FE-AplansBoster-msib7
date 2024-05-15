@@ -37,7 +37,7 @@ export default function HeaderUser() {
     <>
       {isLoading && <Loading />}
       <header className="font-poppins">
-        <div className="h-20 fixed inset-x-0 top-0 bg-white flex items-center md:px-14 px-5 z-50  ">
+        <div className="fixed inset-x-0 top-0 z-50 flex items-center h-20 px-5 bg-white md:px-14 ">
           <div className="flex items-center justify-between flex-1">
             <Link to="/">
               <img src={Logo} alt="logo" className="w-[200px] md:w-[297px]" />
@@ -53,9 +53,9 @@ export default function HeaderUser() {
                       Riwayat
                     </Link>
                   )}
-                  <Link to="/user/cek-bansos" className="hover:text-primary">
+                  {/* <Link to="/user/cek-bansos" className="hover:text-primary">
                     Cek Bansos
-                  </Link>
+                  </Link> */}
 
                   <Link to="/" className="hover:text-primary pe-5">
                     
@@ -88,12 +88,12 @@ export default function HeaderUser() {
                       <DropdownMenuContent className="min-w-[300px] rounded-xl px-5 py-6 mt-8 mr-24">
                         <DropdownMenuItem>
                           <DropdownMenuLabel
-                            className="flex items-center justify-between outline-none border-none ring-0 hover:bg-zinc-100 rounded-lg cursor-pointer"
+                            className="flex items-center justify-between border-none rounded-lg outline-none cursor-pointer ring-0 hover:bg-zinc-100"
                             onClick={() => navigate('/user/profile')}
                           >
                             <div className="flex items-center gap-[22px]">
                               <div className="flex w-11 h-11 rounded-full bg-[#FCE9EE]">
-                                <HiCog6Tooth className="m-auto text-primary text-3xl" />
+                                <HiCog6Tooth className="m-auto text-3xl text-primary" />
                               </div>
                               <p className="font-poppins font-medium text-[#494949]">Pengaturan</p>
                             </div>
@@ -107,7 +107,7 @@ export default function HeaderUser() {
                             onClick={handleLogout}
                           >
                             <div className="flex w-11 h-11 rounded-full bg-[#FCE9EE]">
-                              <HiOutlineArrowRightOnRectangle className="m-auto text-primary text-2xl" />
+                              <HiOutlineArrowRightOnRectangle className="m-auto text-2xl text-primary" />
                             </div>
                             <p className="font-poppins font-medium text-[#494949]">Keluar</p>
                           </DropdownMenuLabel>
@@ -121,7 +121,7 @@ export default function HeaderUser() {
                 <>
                   <div className="h-10 w-1 rounded-full bg-[#F5F5F5]" />
                   <div className="flex items-center gap-8">
-                    <Link to="/user/login" className="hover:text-primary hidden md:block">
+                    <Link to="/user/login" className="hidden hover:text-primary md:block">
                       Masuk
                     </Link>
                     <Link to="/user/register">

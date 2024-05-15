@@ -100,12 +100,15 @@ import DataBSTLansia from './pages/DataPenerima/Rehabsos/DataBSTLansia'
 import DataBSTdisab from './pages/DataPenerima/Rehabsos/DataBSTdisab'
 import DataBSTanak from './pages/DataPenerima/Rehabsos/DataBSTanak'
 import DataLks from './pages/DataPenerima/Rehabsos/DataLks'
-import DataPppks from './pages/DataPenerima/Rehabsos/DataPppks'
+
 import Disabilitas from './pages/Layanan/rehabsos/Disabilitas'
 import Lks from './pages/Layanan/rehabsos/Lks'
 import Lansia from './pages/TambahDataDtks'
 import Anak from './pages/Layanan/rehabsos/anak'
 import Ppks from './pages/Layanan/rehabsos/ppks'
+import DataPppks from './pages/DataPenerima/Rehabsos/DataPpks'
+import DataAlatbantu from './pages/DataPenerima/Rehabsos/DataAlatBantu'
+import Alat from './pages/Layanan/rehabsos/Alat'
 
 export default function App() {
   useScrollToTop()
@@ -172,6 +175,12 @@ export default function App() {
                     <Route index element={<DataLks />} />
                     <Route path="create" element={<Lks />} />
                     <Route path="create/:id" element={<Lks />} />
+                  </Route>
+
+                  <Route path="penerima-alat-bantu">
+                    <Route index element={<DataAlatbantu />} />
+                    <Route path="create" element={<Alat />} />
+                    <Route path="create/:id" element={<Alat />} />
                   </Route>
                 </Route>
 

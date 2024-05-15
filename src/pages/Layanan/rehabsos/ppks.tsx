@@ -3,9 +3,9 @@ import { Container, Loading } from '@/components'
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
 import { useTitleHeader } from '@/store/client'
-import { FileInputIcon } from 'lucide-react'
 import { useToastImport } from '@/hooks'
 import { FaFileUpload } from 'react-icons/fa'
+import { useOperationLicenseOfSocialInstitution } from '@/store/server'
 
 const Ppks = () => {
   const navigate = useNavigate()
@@ -19,9 +19,11 @@ const Ppks = () => {
     setBreadcrumb([
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
-      { url: '/data-penerima/rehabsos/ppks', label: 'PPKS' }
+      { url: '/data-penerima/rehabsos/ppks', label: 'Tanda Daftar/Izin Operasional LKS' }
     ])
   }, [])
+
+  const { refetch } = useOperationLicenseOfSocialInstitution({})
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -50,6 +52,7 @@ const Ppks = () => {
           successCondition: true,
           onSuccess: () => {}
         })
+        await refetch()
         navigate('/data-penerima/rehabsos/ppks')
       } else {
         toastImport({
@@ -74,22 +77,24 @@ const Ppks = () => {
       <div className="flex flex-col justify-center w-full">
         <label
           htmlFor="fileInput"
-          className="flex flex-col justify-end items-center  h-60 bg-slate-200 rounded-md cursor-pointer p-3 "
+          className="flex flex-col items-center justify-end p-3 rounded-md cursor-pointer h-60 bg-slate-200 "
         >
-          <FaFileUpload className="h-32 w-32 text-slate-400" />
-          <span className=" text-slate-600 mt-2">{fileName || 'Tambahkan File'}</span>{' '}
+          <FaFileUpload className="w-32 h-32 text-slate-400" />
+          <span className="mt-2 text-slate-600">{fileName || 'Tambahkan File'}</span>{' '}
           <input id="fileInput" type="file" className="hidden" onChange={handleFileChange} />
         </label>
 
         <section className="flex items-center justify-end">
           <div className="flex items-center gap-3">
-            <Button className="font-bold mt-3" onClick={importData}>
-              {loading && <Loading />}
-              Submit
-            </Button>
+            <div className="flex items-end justify-end w-fit" onClick={importData}>
+              <Button className="mt-3 font-bold">
+                {loading && <Loading />}
+                Submit
+              </Button>
+            </div>
             <Button
               variant="outline"
-              className="rounded-lg text-primary border-primary font-bold  mt-3"
+              className="mt-3 font-bold rounded-lg text-primary border-primary"
               onClick={() => navigate('/data-penerima/rehabsos/ppks')}
             >
               Cancel

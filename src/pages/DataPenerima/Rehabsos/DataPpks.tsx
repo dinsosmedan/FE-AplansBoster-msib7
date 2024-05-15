@@ -10,8 +10,6 @@ import { HiArrowPath, HiMagnifyingGlass, HiPlus } from 'react-icons/hi2'
 import {
   useGetKecamatan,
   useGetKelurahan,
-  useGetTuitionAssistanceID,
-  useGetUniversities,
   useNeedForSocialWelfareServices,
   useGetWelfaresID
 
