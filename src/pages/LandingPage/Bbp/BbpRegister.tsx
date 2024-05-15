@@ -170,10 +170,16 @@ export default function BbpRegister() {
   }, [isSuccess, id])
 
   const onSubmit = async (values: publicEventTuitionFields) => {
+    const birthDate = new Date(values.birthDate)
+    console.log('Form values:', values);
+    if (isNaN(birthDate.getTime())) {
+    console.error('Invalid birthDate:', values.birthDate);
+    return;
+  }
     if (!bbpId) {
       const newData = {
         ...values,
-        birthDate: formatDateToString(values.birthDate as Date),
+        birthDate: formatDateToString(birthDate),
         event: id as string
       }
 
@@ -199,9 +205,9 @@ export default function BbpRegister() {
           forms.reset()
           navigate('/user/bbp')
         }
-      }
-    )
-  }
+      }
+    )
+  }
 
   if (isLoading || isLoadingDetail) return <Loading />
 
@@ -210,7 +216,7 @@ export default function BbpRegister() {
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6 pt-5">
           <p className="text-[18px] font-semibold mt-5">Informasi Pribadi</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             <div className="flex">
               <div className="w-full">
                 <FormField
@@ -224,7 +230,7 @@ export default function BbpRegister() {
                           <Input
                             {...field}
                             value={field.value ?? ''}
-                            className="focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 rounded-md rounded-r-none"
+                            className="rounded-md rounded-r-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                             type="number"
                             placeholder="Cari NIK"
                           />
@@ -275,8 +281,8 @@ export default function BbpRegister() {
               )}
             />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            <FormField
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <FormField
               name="birthDate"
               control={forms.control}
               render={({ field }) => (
@@ -286,7 +292,7 @@ export default function BbpRegister() {
                     <Input
                      {...field}
                      type="date"
-                     value={typeof field.value === 'string' ? field.value : ''}
+                     value={field.value ?? ''}
                       placeholder="dd/mm/yyy"
                       className="rounded-md"
                     />
@@ -294,7 +300,7 @@ export default function BbpRegister() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            />
             <FormField
               name="gender"
               control={forms.control}
@@ -336,7 +342,7 @@ export default function BbpRegister() {
               )}
             />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
             <FormField
               name="phoneNumber"
               control={forms.control}
@@ -418,7 +424,7 @@ export default function BbpRegister() {
             />
           </div>
           <p className="font-semibold text-[18px] mt-5">Akademis</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <FormField
               name="universityId"
               control={forms.control}
@@ -426,7 +432,7 @@ export default function BbpRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Perguruan Tinggi</FormLabel>
                   <FormControl>
-                    {/* <SearchSelect
+                    <SearchSelect
                       selected={field.value}
                       onChange={field.onChange}
                       width="md:w-[300px] lg:w-[700px]"
@@ -435,14 +441,14 @@ export default function BbpRegister() {
                       options={
                         universities?.map((university) => ({ label: university.name, value: university.id })) ?? []
                       }
-                    /> */}
-                    <Input
+                    />
+                    {/* <Input
                       {...field}
                       value={field.value ?? ''}
                       className="rounded-md"
                       type="text"
                       placeholder="Universitas"
-                    />
+                    /> */}
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -455,7 +461,7 @@ export default function BbpRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Prodi</FormLabel>
                   <FormControl>
-                    {/* <SearchSelect
+                    <SearchSelect
                       selected={field.value}
                       onChange={field.onChange}
                       width="md:w-[300px] lg:w-[700px]"
@@ -466,21 +472,21 @@ export default function BbpRegister() {
                         studyPrograms?.map((studyProgram) => ({ label: studyProgram.name, value: studyProgram.id })) ??
                         []
                       }
-                    /> */}
-                    <Input
+                    />
+                    {/* <Input
                       {...field}
                       value={field.value ?? ''}
                       className="rounded-md"
                       type="text"
                       placeholder="Prodi"
-                    />
+                    /> */}
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <FormField
               name="gpa"
               control={forms.control}
@@ -540,7 +546,7 @@ export default function BbpRegister() {
             />
           </div>
           <p className="font-semibold text-[18px] mt-5">Rekening</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <FormField
               name="bank"
               control={forms.control}
@@ -584,7 +590,7 @@ export default function BbpRegister() {
           <p className="text-[12px] text-primary font-medium">
             *Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2  gap-12 mt-5">
+          <div className="grid grid-cols-1 gap-12 mt-5 md:grid-cols-2">
             <FormField
               name="applicationLetter"
               control={forms.control}
@@ -846,20 +852,20 @@ export default function BbpRegister() {
               )}
             />
           </div>
-          <div className="md:flex justify-end gap-7 items-center pt-10">
+          <div className="items-center justify-end pt-10 md:flex gap-7">
             <Button
               variant="outline"
-              className="border-primary text-primary px-8 py-6 rounded-lg w-fit"
+              className="px-8 py-6 rounded-lg border-primary text-primary w-fit"
               type="button"
               onClick={() => navigate(-1)}
             >
               <p className="text-base font-semibold">Kembali</p>
             </Button>
             <Button
-              className="px-8 py-6 rounded-lg items-center gap-3 w-fit mt-5 md:mt-0"
+              className="items-center gap-3 px-8 py-6 mt-5 rounded-lg w-fit md:mt-0"
               loading={isLoadingCreate || isLoadingUpdate}
-              type="submit"
-            >
+              type="submit">
+            
               <p className="text-base font-semibold w-max">Kirim Pengajuan</p>
               <HiPaperAirplane className="w-5 h-5" />
             </Button>

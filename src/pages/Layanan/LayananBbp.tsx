@@ -20,7 +20,7 @@ import { useParams } from 'react-router-dom'
 import { useGetEventById } from '@/store/server'
 import * as React from 'react'
 import { useTitleHeader } from '@/store/client'
-
+import axios from 'axios';
 const dataLayanan = [
   { text: 'Data Pengajuan', tab: 'pending' },
   { text: 'Data Diproses', tab: 'processed' },
@@ -69,13 +69,26 @@ export default function LayananBbp() {
   }
 
   console.log(data)
-
+  const handleClick = async () => {
+    
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/v1/update-application-status', {
+        status: 'updated',
+      });
+      console.log(response.data);
+      
+      alert('Update berhasil!');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Terjadi kesalahan saat melakukan update.');
+    }
+  }
   return (
     <Container>
       {(isFetching || isLoadingUpdate) && <Loading />}
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSearch)} className="flex flex-col gap-6">
-          <div className="flex flex-row justify-between gap-3 py-6 items-center">
+          <div className="flex flex-row items-center justify-between gap-3 py-6">
             <div className="w-6/12">
               <FormField
                 name="search"
@@ -91,10 +104,10 @@ export default function LayananBbp() {
             </div>
             <div className="flex items-end justify-end">
               <Button className="bg-primary w-[143px] h-[56px] rounded-xl mr-4" type="button">
-                <p className="text-white text-base font-bold">Kirim Notifikasi</p>
+                <p className="text-base font-bold text-white" onClick={handleClick}>Kirim Notifikasi</p>
               </Button>
               <div className="bg-[#fce9ee] px-5 py-4 rounded-xl">
-                <p className="text-primary text-base font-bold">
+                <p className="text-base font-bold text-primary">
                   Total Kuota : {event?.filledQuota}/{event?.quota ?? event?.filledQuota}
                 </p>
               </div>
@@ -103,7 +116,7 @@ export default function LayananBbp() {
         </form>
       </Form>
       <FilterLayanan jenis={`bbp/${id}`} data={dataLayanan} />
-      <section className="border rounded-xl mt-5 overflow-hidden">
+      <section className="mt-5 overflow-hidden border rounded-xl">
         <Table>
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
