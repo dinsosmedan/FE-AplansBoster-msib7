@@ -1,3 +1,4 @@
+import ENV from '@/lib/environment'
 import {
   Action,
   Container,
@@ -21,7 +22,7 @@ import { useGetEventById } from '@/store/server'
 import * as React from 'react'
 import { useTitleHeader } from '@/store/client'
 import { useToastEmail } from '@/hooks'
-import axios from 'axios';
+import axios from 'axios'
 const dataLayanan = [
   { text: 'Data Pengajuan', tab: 'pending' },
   { text: 'Data Diproses', tab: 'processed' },
@@ -60,6 +61,7 @@ export default function LayananBbp() {
   })
 
   const forms = useForm<{ search: string }>()
+  const [loading, setLoading] = React.useState<boolean>(false)
 
   const onSearch = async (values: { search: string }) => {
     createParams({ key: 'search', value: values.search })
@@ -72,28 +74,34 @@ export default function LayananBbp() {
 
   console.log(data)
   const handleClick = async () => {
+    const apiPublic = axios.create({
+      baseURL: ENV.apiUrl
+    })
+    setLoading(true)
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/v1/update-application-status', {
-        status: 'updated',
-      });
-
+      const response = await apiPublic.post('update-application-status', {
+        status: 'updated'
+      })
       if (response.status === 200) {
         toastEmail({
           successCondition: true,
           onSuccess: () => {}
-        });
+        })
       } else {
         toastEmail({
           failedCondition: true
-        });
+        })
       }
     } catch (error) {
       toastEmail({
         failedCondition: true
-      });
+      })
     }
-  };
-  
+    finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <Container>
       {(isFetching || isLoadingUpdate) && <Loading />}
@@ -114,8 +122,9 @@ export default function LayananBbp() {
               />
             </div>
             <div className="flex items-end justify-end">
-              <Button className="bg-primary w-[143px] h-[56px] rounded-xl mr-4" type="button">
-                <p className="text-base font-bold text-white" onClick={handleClick}>Kirim Notifikasi</p>
+              <Button className="bg-primary w-[143px] h-[56px] rounded-xl mr-4" type="button" onClick={handleClick}>
+                {loading && <Loading />}
+                <p className="text-base font-bold text-white">Kirim Notifikasi</p>
               </Button>
               <div className="bg-[#fce9ee] px-5 py-4 rounded-xl">
                 <p className="text-base font-bold text-primary">

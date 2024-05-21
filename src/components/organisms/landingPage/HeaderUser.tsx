@@ -48,12 +48,12 @@ export default function HeaderUser() {
                   <Link to="/" className="hover:text-primary pe-5">
                     Beranda
                   </Link>
-                  {auth.token && (
+                  {/* {auth.token && (
                     <Link to="/user/submission-history" className="hover:text-primary pe-5">
                       Riwayat
                     </Link>
                   )}
-                  {/* <Link to="/user/cek-bansos" className="hover:text-primary">
+                  <Link to="/user/cek-bansos" className="hover:text-primary">
                     Cek Bansos
                   </Link> */}
 
@@ -140,14 +140,14 @@ export default function HeaderUser() {
                 Beranda
               </Link>
             </li>
-            <li>
+            {/* <li>
               {auth.token && (
                 <Link to="/user/submission-history" className="hover:text-primary pe-7">
                   Riwayat
                 </Link>
               )}
             </li>
-            {/* <li>
+            <li>
               <Link to="/user/cek-bansos" className="hover:text-primary">
                 Cek Bansos
               </Link>

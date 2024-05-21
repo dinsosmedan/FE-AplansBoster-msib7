@@ -27,14 +27,14 @@ export default function LandingPage() {
                 Selamat datang di Aplikasi Pelayanan Sosial Berbasis Online Terintegrasi. <br /> Dinas Sosial Kota Medan
               </p>
               <div className=" hidden lg:block">
-                <Button
+                {/* <Button
                   variant="ghost"
                   className="bg-white rounded-lg gap-3 py-7 px-10 flex text-primary"
                   onClick={() => navigate('/user/cek-bansos')}
                 >
                   <span className="font-medium">Cek Bansos Sekarang</span>
                   <HiArrowRightCircle className="text-xl" />
-                </Button>
+                </Button> */}
               </div>
             </div>
           </div>
