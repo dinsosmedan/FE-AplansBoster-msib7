@@ -8,6 +8,7 @@ interface TextEditorProps {
 }
 
 export default function TextEditor({ id, value, onChange }: TextEditorProps) {
+  apiKey='efa5um0ipuy2f437nmvmq6gfsdax3f439y8h3ncxee6zc1ud'
   const defaultInit = {
     height: 500,
     menubar: false,

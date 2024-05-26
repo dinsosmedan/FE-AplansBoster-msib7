@@ -104,13 +104,13 @@ export default function LandingPage() {
             href="/user/bbp"
             icon={HiAcademicCap}
           />
-          <CardLandingPage
+          {/* <CardLandingPage
             title="SKTM (Surat Keterangan Tidak Mampu)"
             desc="Layanan Pengajuan SKTM (Surat Keterangan Tidak Mampu)"
             btnText="Pendaftaran Pengajuan"
             href="/user/sktm"
             icon={HiDocumentText}
-          />
+          /> */}
         </div>       
       </section>
       <section className="hidden lg:block ">

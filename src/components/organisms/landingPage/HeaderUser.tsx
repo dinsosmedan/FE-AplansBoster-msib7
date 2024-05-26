@@ -37,10 +37,10 @@ export default function HeaderUser() {
     <>
       {isLoading && <Loading />}
       <header className="font-poppins">
-        <div className="fixed inset-x-0 top-0 z-50 flex items-center h-20 px-5 bg-white md:px-14 ">
+        <div className="fixed inset-x-0 top-0 z-50 flex items-center h-20 px-5 bg-white md:px-14 md:h-26">
           <div className="flex items-center justify-between flex-1">
             <Link to="/">
-              <img src={Logo} alt="logo" className="w-[200px] md:w-[297px]" />
+              <img src={Logo} alt="logo" className="w-[200px] md:w-[250px]  md:h-[65px]" />
             </Link>
             <nav className="flex items-center gap-8 font-semibold">
               <div className="flex items-center gap-8 ">
@@ -121,7 +121,7 @@ export default function HeaderUser() {
                 <>
                   <div className="h-10 w-1 rounded-full bg-[#F5F5F5]" />
                   <div className="flex items-center gap-8">
-                    <Link to="/user/login" className="hidden hover:text-primary md:block">
+                    <Link to="/user/login" className="hover:text-primary">
                       Masuk
                     </Link>
                     <Link to="/user/register">
