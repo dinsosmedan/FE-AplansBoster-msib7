@@ -66,7 +66,7 @@ export default function BbpRegister() {
   const { data: kelurahanLists } = useGetKelurahan(areaLevel3)
 
   const { data: bankLists } = useGetBank()
-  const { data: universities } = useGetUniversities()
+  const { data: universities, isLoading: isLoadingUniversities } = useGetUniversities()
   const { data: studyPrograms } = useGetStudyPrograms(university)
 
   React.useEffect(() => {
@@ -451,6 +451,9 @@ export default function BbpRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Perguruan Tinggi</FormLabel>
                   <FormControl>
+                  {isLoading ? (
+                    <Loading/>
+                    ) : (
                     <SearchSelect
                       selected={field.value}
                       onChange={field.onChange}
@@ -461,13 +464,7 @@ export default function BbpRegister() {
                         universities?.map((university) => ({ label: university.name, value: university.id })) ?? []
                       }
                     />
-                    {/* <Input
-                      {...field}
-                      value={field.value ?? ''}
-                      className="rounded-md"
-                      type="text"
-                      placeholder="Universitas"
-                    /> */}
+                  )}
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -492,13 +489,6 @@ export default function BbpRegister() {
                         []
                       }
                     />
-                    {/* <Input
-                      {...field}
-                      value={field.value ?? ''}
-                      className="rounded-md"
-                      type="text"
-                      placeholder="Prodi"
-                    /> */}
                   </FormControl>
                   <FormMessage />
                 </FormItem>
