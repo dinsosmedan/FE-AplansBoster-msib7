@@ -451,7 +451,7 @@ export default function BbpRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Perguruan Tinggi</FormLabel>
                   <FormControl>
-                  {isLoading ? (
+                  {isLoadingUniversities ? (
                     <Loading/>
                     ) : (
                     <SearchSelect
