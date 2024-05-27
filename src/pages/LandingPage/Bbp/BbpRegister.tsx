@@ -451,9 +451,6 @@ export default function BbpRegister() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Perguruan Tinggi</FormLabel>
                   <FormControl>
-                  {isLoadingUniversities ? (
-                    <Loading/>
-                    ) : (
                     <SearchSelect
                       selected={field.value}
                       onChange={field.onChange}
@@ -464,7 +461,6 @@ export default function BbpRegister() {
                         universities?.map((university) => ({ label: university.name, value: university.id })) ?? []
                       }
                     />
-                  )}
                   </FormControl>
                   <FormMessage />
                 </FormItem>
