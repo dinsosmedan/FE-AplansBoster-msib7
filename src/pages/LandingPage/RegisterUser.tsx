@@ -134,7 +134,7 @@ export default function RegisterUser() {
                   <DropZone
                     setValue={field.onChange}
                     fileValue={field.value as unknown as FileWithPreview[]}
-                    helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                    helperText="*Catatan: File yang diizinkan berupa jpg atau png. Dengan maksimal 2MB"
                     maxFiles={1}
                     id="selfie"
                     accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
@@ -154,7 +154,7 @@ export default function RegisterUser() {
                   <DropZone
                     setValue={field.onChange}
                     fileValue={field.value as unknown as FileWithPreview[]}
-                    helperText="*Catatan: File yang diizinkan berupa jpg, png atau pdf. Dengan maksimal 2MB"
+                    helperText="*Catatan: File yang diizinkan berupa jpg atau png. Dengan maksimal 2MB"
                     accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
                     maxFiles={1}
                     id="identityCard"
