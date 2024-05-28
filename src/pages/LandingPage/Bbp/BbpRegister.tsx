@@ -222,7 +222,7 @@ export default function BbpRegister() {
   };
   
 
-  if (isLoading || isLoadingDetail) return <Loading />
+  if (isLoading || isLoadingDetail || isLoadingUniversities) return <Loading />
 
   return (
     <ContainerUser title={`Form Pengajuan Bantuan Biaya Pendidikan ${details}`}>

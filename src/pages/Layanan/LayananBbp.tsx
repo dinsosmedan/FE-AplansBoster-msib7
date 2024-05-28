@@ -2,6 +2,7 @@ import ENV from '@/lib/environment'
 import {
   Action,
   Container,
+  ExportButton,
   Loading,
   ModalEditDataBBP,
   ModalEditPengajuanBBP,
@@ -23,6 +24,7 @@ import * as React from 'react'
 import { useTitleHeader } from '@/store/client'
 import { useToastEmail } from '@/hooks'
 import axios from 'axios'
+import { exportTuitionApplicationPublicFn } from '@/api/service.api'
 const dataLayanan = [
   { text: 'Data Pengajuan', tab: 'pending' },
   { text: 'Data Diproses', tab: 'processed' },
@@ -47,6 +49,7 @@ export default function LayananBbp() {
   const [isShowPengajuan, setIsShowPengajuan] = React.useState(false)
   const [tuitionAssistanceId, setTuitionAssistanceId] = React.useState('')
   const toastEmail = useToastEmail()
+  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
 
   const createParams = useCreateParams()
   const { search, tab, page } = useGetParams(['search', 'tab', 'page'])
@@ -70,6 +73,42 @@ export default function LayananBbp() {
 
   const handleChangeStatusDTKS = async (values: string, id: string) => {
     update({ id, fields: { dtksStatus: values } })
+  }
+
+  const exportAsCsv = async () => {
+    setIsLoadingExport(true)
+    const response = await exportTuitionApplicationPublicFn('csv', {
+      eventId: id as string,
+    search,
+    applicationStatus: tab || 'pending',
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
+  }
+
+  const exportAsXlsx = async () => {
+    setIsLoadingExport(true)
+    const response = await exportTuitionApplicationPublicFn('xlsx', {
+    eventId: id as string,
+    search,
+    applicationStatus: tab || 'pending',
+    })
+    if (response.success) {
+      void alert({
+        title: 'Berhasil Export',
+        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
+        submitText: 'Oke',
+        variant: 'success'
+      })
+    }
+    setIsLoadingExport(false)
   }
 
   console.log(data)
@@ -135,6 +174,9 @@ export default function LayananBbp() {
           </div>
         </form>
       </Form>
+      {data?.data?.length !== 0 ? (
+                <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
+              ) : null}
       <FilterLayanan jenis={`bbp/${id}`} data={dataLayanan} />
       <section className="mt-5 overflow-hidden border rounded-xl">
         <Table>
