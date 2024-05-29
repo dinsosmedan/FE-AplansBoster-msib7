@@ -54,6 +54,7 @@ export default function LayananBbp() {
   const createParams = useCreateParams()
   const { search, tab, page } = useGetParams(['search', 'tab', 'page'])
 
+  
   const { data: event } = useGetEventById(id as string)
   const { mutate: update, isLoading: isLoadingUpdate } = useUpdateTuitionAssistanceEventStatus()
   const { data, refetch, isFetching } = useGetTuitionAssistanceByEventId({
@@ -188,7 +189,7 @@ export default function LayananBbp() {
               <TableHead className="text-white font-bold text-[15px] bg-primary">Status</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">Jenis Kelamin</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">Kecamatan</TableHead>
-              <TableHead className="text-white font-bold text-[15px] bg-primary">Kalurahan</TableHead>
+              <TableHead className="text-white font-bold text-[15px] bg-primary">Kelurahan</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">Alamat</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">No Hp</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">Status DTKS</TableHead>

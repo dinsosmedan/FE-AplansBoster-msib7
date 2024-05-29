@@ -39,7 +39,15 @@ export const getStudyProgramsFn = async (universityId: string): Promise<IUnivers
   const response = await apiPublic.get(`/public/university/${universityId}/study-program`)
   return response.data?.data
 }
+export const getUniversitiesFnn = async (): Promise<IUniversity[]> => {
+  const response = await apiPublic.get('https://aplansboster.pemkomedan.go.id/backend/api/loadpt')
+  return response.data?.data
+}
 
+export const getStudyProgramsFnn = async (universityId: string): Promise<IUniversity[]> => {
+  const response = await apiPublic.get(`/public/university/${universityId}/study-program`)
+  return response.data?.data
+}
 export const getBankListFn = async (): Promise<IBank[]> => {
   const response = await apiPublic.get('/bank')
   return response.data?.data
@@ -112,9 +120,9 @@ export const storePublicEventTuitionFn = async (data: IStorePublicEventTuition) 
   formdata.append('gender', data.gender)
   formdata.append('phoneNumber', data.phoneNumber)
   formdata.append('email', data.email)
-  formdata.append('universityId', data.universityId)
+  
   formdata.append('universityName', data.universityName)
-  formdata.append('studyProgramId', data.studyProgramId)
+
   formdata.append('studyProgramName', data.studyProgramName)
   formdata.append('semester', data.semester as unknown as string)
   formdata.append('gpa', data.gpa as unknown as string)
@@ -382,9 +390,9 @@ export const updatePublicEventTuitionFn = async ({ id, fields }: updatePublicEve
   formdata.append('gender', fields.gender)
   formdata.append('phoneNumber', fields.phoneNumber)
   formdata.append('email', fields.email)
-  formdata.append('universityId', fields.universityId)
+
   formdata.append('universityName', fields.universityName)
-  formdata.append('studyProgramId', fields.studyProgramId)
+
   formdata.append('studyProgramName', fields.studyProgramName)
   formdata.append('semester', fields.semester as unknown as string)
   formdata.append('gpa', fields.gpa as unknown as string)

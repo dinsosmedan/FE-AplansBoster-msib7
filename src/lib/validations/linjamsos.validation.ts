@@ -58,9 +58,9 @@ export const tuitionAssistanceValidation = Yup.object({
     .max(20, 'Nomor telepon maksimal 20 karakter')
     .required('Nomor Telepon wajib diisi'),
   email: Yup.string().email('Email tidak valid').required('Email wajib diisi'),
-  universityId: Yup.string().required('Nama universitas wajib diisi'),
+
   universityName: Yup.string().required('Nama universitas wajib diisi'),
-  studyProgramId: Yup.string().required('Nama program studi wajib diisi'),
+ 
   studyProgramName: Yup.string().required('Nama program studi wajib diisi'),
   semester: Yup.number().required('Semester wajib diisi'),
   gpa: Yup.number().required('IPK wajib diisi'),
@@ -79,9 +79,9 @@ export const updateTuitionAssistanceValidation = Yup.object({
     .min(7, 'Nomor telepon minimal 7 karakter')
     .max(20, 'Nomor telepon maksimal 20 karakter'),
   email: Yup.string().email('Email tidak valid'),
-  universityId: Yup.string(),
+ 
   universityName: Yup.string(),
-  studyProgramId: Yup.string(),
+  
   studyProgramName: Yup.string(),
   semester: Yup.number(),
   gpa: Yup.number(),

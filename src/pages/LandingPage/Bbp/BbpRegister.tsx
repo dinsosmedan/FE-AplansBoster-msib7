@@ -18,6 +18,7 @@ import {
   useGetStudyPrograms,
   useGetTuitionApplicationPublicDetail,
   useGetUniversities,
+  useGetUniversitiess,
   useUpdatePublicEventTuition
 } from '@/store/server'
 import { Loading, SearchSelect } from '@/components'
@@ -48,8 +49,8 @@ export default function BbpRegister() {
   })
 
   const areaLevel3 = forms.watch('areaLevel3')
-  const university = forms.watch('universityId')
-  const studyProgram = forms.watch('studyProgramId')
+  // const university = forms.watch('universityId')
+  // const studyProgram = forms.watch('studyProgramId')
   const bank = forms.watch('bank')
 
   const { data, isLoading, isSuccess } = useGetPublicEventTuition()
@@ -66,8 +67,8 @@ export default function BbpRegister() {
   const { data: kelurahanLists } = useGetKelurahan(areaLevel3)
 
   const { data: bankLists } = useGetBank()
-  const { data: universities, isLoading: isLoadingUniversities } = useGetUniversities()
-  const { data: studyPrograms } = useGetStudyPrograms(university)
+  // const { data: universities, isLoading: isLoadingUniversities } = useGetUniversities()
+  // const { data: studyPrograms } = useGetStudyPrograms(university)
 
   React.useEffect(() => {
     if (isSuccessDetail) {
@@ -83,9 +84,9 @@ export default function BbpRegister() {
       forms.setValue('gender', detailShow.beneficiary?.gender)
       forms.setValue('email', detailShow.email)
       forms.setValue('phoneNumber', detailShow.phoneNumber)
-      forms.setValue('universityId', detailShow.university.id)
+    
       forms.setValue('universityName', detailShow.university.name)
-      forms.setValue('studyProgramId', detailShow.studyProgram.id)
+ 
       forms.setValue('studyProgramName', detailShow.studyProgram.name)
       forms.setValue('gpa', detailShow.gpa)
       forms.setValue('semester', detailShow.semester)
@@ -153,13 +154,13 @@ export default function BbpRegister() {
     if (bank && !isSuccessDetail) {
       forms.setValue('bankAccountName', bankLists?.find((item) => item.id === bank)?.name as string)
     }
-    if (university && !isSuccessDetail) {
-      forms.setValue('universityName', universities?.find((item) => item.id === university)?.name as string)
-    }
-    if (studyProgram && !isSuccessDetail) {
-      forms.setValue('studyProgramName', studyPrograms?.find((item) => item.id === studyProgram)?.name as string)
-    }
-  }, [bank, studyProgram, university, forms, isSuccessDetail])
+    // if (university && !isSuccessDetail) {
+    //   forms.setValue('universityName', universities?.find((item) => item.id === university)?.name as string)
+    // }
+    // if (studyProgram && !isSuccessDetail) {
+    //   forms.setValue('studyProgramName', studyPrograms?.find((item) => item.id === studyProgram)?.name as string)
+    // }
+  }, [bank, isSuccessDetail])
 
   React.useEffect(() => {
     if (id) {
@@ -171,6 +172,7 @@ export default function BbpRegister() {
 
   const onSubmit = async (values: publicEventTuitionFields) => {
     let birthDate: Date;
+    console.log(values)
   
     if (typeof values.birthDate === 'string') {
       birthDate = new Date(values.birthDate);
@@ -222,7 +224,7 @@ export default function BbpRegister() {
   };
   
 
-  if (isLoading || isLoadingDetail || isLoadingUniversities) return <Loading />
+  if (isLoading || isLoadingDetail ) return <Loading />
 
   return (
     <ContainerUser title={`Form Pengajuan Bantuan Biaya Pendidikan ${details}`}>
@@ -245,7 +247,7 @@ export default function BbpRegister() {
                             value={field.value ?? ''}
                             className="rounded-md rounded-r-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                             type="number"
-                            placeholder="Cari NIK"
+                            placeholder="Masukkan NIK"
                           />
                         </FormControl>
                       </div>
@@ -444,22 +446,19 @@ export default function BbpRegister() {
           </div>
           <p className="font-semibold text-[18px] mt-5">Akademis</p>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-            <FormField
-              name="universityId"
+          <FormField
+              name="universityName"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Perguruan Tinggi</FormLabel>
                   <FormControl>
-                    <SearchSelect
-                      selected={field.value}
-                      onChange={field.onChange}
-                      width="md:w-[300px] lg:w-[700px]"
+                  <Input
+                      {...field}
+                      value={field.value ?? ''}
                       className="rounded-md"
-                      placeholder="Pilih Perguruan Tinggi"
-                      options={
-                        universities?.map((university) => ({ label: university.name, value: university.id })) ?? []
-                      }
+                      type="text"
+                      placeholder="Masukan Perguruan Tinggi"
                     />
                   </FormControl>
                   <FormMessage />
@@ -467,23 +466,18 @@ export default function BbpRegister() {
               )}
             />
             <FormField
-              name="studyProgramId"
+              name="studyProgramName"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Prodi</FormLabel>
                   <FormControl>
-                    <SearchSelect
-                      selected={field.value}
-                      onChange={field.onChange}
-                      width="md:w-[300px] lg:w-[700px]"
+                  <Input
+                      {...field}
+                      value={field.value ?? ''}
                       className="rounded-md"
-                      disabled={!university || !studyPrograms}
-                      placeholder="Pilih Prodi"
-                      options={
-                        studyPrograms?.map((studyProgram) => ({ label: studyProgram.name, value: studyProgram.id })) ??
-                        []
-                      }
+                      type="text"
+                      placeholder="Masukan Program Studi"
                     />
                   </FormControl>
                   <FormMessage />
@@ -491,6 +485,7 @@ export default function BbpRegister() {
               )}
             />
           </div>
+
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <FormField
               name="gpa"
