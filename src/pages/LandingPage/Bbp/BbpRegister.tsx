@@ -736,7 +736,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-sm">Surat Pernyataan Tidak Mendapatkan Mahasiswa</FormLabel>
+                  <FormLabel className="text-sm">Surat Pernyataan Tidak Mendapatkan Beasiswa</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}

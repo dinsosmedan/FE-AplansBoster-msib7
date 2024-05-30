@@ -129,12 +129,14 @@ export default function LayananBbp() {
         })
       } else {
         toastEmail({
-          failedCondition: true
+          successCondition: true,
+          onSuccess: () => {}
         })
       }
     } catch (error) {
       toastEmail({
-        failedCondition: true
+        successCondition: true,
+        onSuccess: () => {}
       })
     }
     finally {
