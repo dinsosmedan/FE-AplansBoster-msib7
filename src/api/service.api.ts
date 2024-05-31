@@ -56,6 +56,10 @@ export const updateTuitionAssistanceEventFn = async ({ id, fields }: updateTuiti
   await api.put(`/service/tuition-assistance-application/${id}`, fields)
 }
 
+export const deleteTuitionAssistanceEventFn = async (id: string): Promise<any> => {
+  const response = await api.delete(`/service/tuition-assistance-application/${id}`)
+  return response.data
+}
 
 export const exportTuitionApplicationPublicFn = async (
   type: 'xlsx' | 'csv',
@@ -107,7 +111,8 @@ export const updateApplicationStatusFn = async ({ id, fields }: updateApplicatio
     data = {
       applicationStatus: fields.applicationStatus,
       assistanceAmount: fields.assistanceAmount,
-      budgetYear: fields.budgetYear
+      budgetYear: fields.budgetYear,
+      message: fields.message
     }
   } else if (fields.applicationStatus === 'rejected' || fields.applicationStatus === 'revision') {
     data = {

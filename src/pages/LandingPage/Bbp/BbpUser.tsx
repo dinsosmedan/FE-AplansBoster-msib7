@@ -85,7 +85,7 @@ export default function BbpUser() {
                 <p className="text-xl font-semibold">Informasi Tentang Beasiswa</p>
                 <Markdown values={details?.eventDescription} />
 
-                <section className="flex flex-col gap-5 py-3 border-t border-zinc-200">
+                {/* <section className="flex flex-col gap-5 py-3 border-t border-zinc-200">
                   <FileDownload
                     title={`Pengumuman Beasiswa ${details?.batch}`}
                     url={details?.requiredDocuments?.scholarshipApplicationLetter?.url as string}
@@ -110,6 +110,33 @@ export default function BbpUser() {
                     title="Template Surat Pernyataan Tidak Berstatus Sebagai Aparatur Sipil Negara (ASN)"
                     url={details?.requiredDocuments?.nonGovernmentEmployeeLetter?.url as string}
                     fileName={details?.requiredDocuments?.nonGovernmentEmployeeLetter?.originalName as string}
+                  />
+                </section>  */}
+                <section className="flex flex-col gap-5 border-t border-zinc-200 py-3">
+                  <FileDownload
+                    title={`Pengumuman Beasiswa ${details?.batch}`}
+                    url={`https://drive.google.com/file/d/1vvHngKYieRqzpyMB7UWS8LwYfgcEVk8u/view?usp=drive_link`}
+                    fileName={'Pengumuman Beasiswa'}
+                  />
+                  <FileDownload
+                    title="Biodata Mahasiswa Calon Penerima Bantuan Biaya Pendidikan"
+                    url={`https://drive.google.com/file/d/1wD6cq4T6hOObt6WHYqAMvD38ZM0CaFYZ/view?usp=drive_link`}
+                    fileName={'Biodata Mahasiswa Calon Penerima Bantuan Biaya Pendidikan'}
+                  />
+                  <FileDownload
+                    title="Template Surat Permohonan ditujukan kepada Bapak Wali Kota Medan Cq. Kepala Dinas Sosial Kota Medan"
+                    url={`https://drive.google.com/file/d/1w2ihSogEwUCrkHjT-mQFOOb96_HOmGQQ/view?usp=drive_link`}
+                    fileName={'Template Surat Permohonan ditujukan kepada Bapak Wali Kota Medan Cq. Kepala Dinas Sosial Kota Medan'}
+                  />
+                  <FileDownload
+                    title="Template Surat Pernyataan Tidak Menerima Beasiswa/Bantuan Biaya Pendidikan Dari Sumber Lain"
+                    url={`https://drive.google.com/file/d/1w1erkIwBLEr2ftNqPPPFK9eU_KRi87S6/view?usp=drive_link`}
+                    fileName={'Template Surat Pernyataan Tidak Menerima Beasiswa/Bantuan Biaya Pendidikan Dari Sumber Lain'}
+                  />
+                  <FileDownload
+                    title="Template Surat Pernyataan Tidak Berstatus Sebagai Aparatur Sipil Negara (ASN)"
+                    url={`https://drive.google.com/file/d/1w-va4jL9A2jt0YrKxcC1-uVK42L1ytqR/view?usp=drive_link`}
+                    fileName={'Template Surat Pernyataan Tidak Berstatus Sebagai Aparatur Sipil Negara (ASN)'}
                   />
                 </section>
               </div>

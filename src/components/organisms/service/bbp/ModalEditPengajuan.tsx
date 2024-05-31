@@ -52,12 +52,12 @@ export default function ModalEditPengajuanBBP({ isShow, setIsShow, tuitionAssist
 
   return (
     <Modal isShow={isShow} className="md:max-w-3xl max-h-[calc(100vh-50px)] overflow-y-auto" isLoading={isLoading}>
-      <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+      <Modal.Header setIsShow={setIsShow} className="flex flex-col gap-1">
         <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Edit Data Pengajuan</h3>
         <p className="text-sm text-[#A1A1A1]">Data Pengajuan BBP</p>
       </Modal.Header>
       <section className="flex flex-col">
-        <p className="w-full text-center py-4 bg-primary text-white font-bold">Berkas Mahasiswa</p>
+        <p className="w-full py-4 font-bold text-center text-white bg-primary">Berkas Mahasiswa</p>
         <Berkas title="Surat Permohonan" url={data?.documents.applicationLetter?.url as string} />
         <Berkas title="PAS FOTO" url={data?.documents.photo?.url as string} />
         <Berkas title="KARTU KELUARGA" url={data?.documents.familyCard?.url as string} />
@@ -122,6 +122,17 @@ export default function ModalEditPengajuanBBP({ isShow, setIsShow, tuitionAssist
                       <Input {...field} value={field.value ?? ''} placeholder="Masukkan tahun anggaran" />
                     </FormControl>
                   </FormItem>
+                )}/>
+                <FormField
+                name="message"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Keterangan</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan Keterangan" />
+                    </FormControl>
+                  </FormItem>
                 )}
               />
             </>
@@ -151,7 +162,7 @@ export default function ModalEditPengajuanBBP({ isShow, setIsShow, tuitionAssist
               Cancel
             </Button>
             <Button className="rounded-lg" type="submit" loading={isLoadingUpdate}>
-              <p className="text-white font-bold">Update</p>
+              <p className="font-bold text-white">Update</p>
             </Button>
           </Modal.Footer>
         </form>

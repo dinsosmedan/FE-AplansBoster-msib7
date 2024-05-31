@@ -2,7 +2,6 @@ import ENV from '@/lib/environment'
 import {
   Action,
   Container,
-  ExportButton,
   Loading,
   ModalEditDataBBP,
   ModalEditPengajuanBBP,
@@ -17,11 +16,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useForm } from 'react-hook-form'
 import FilterLayanan from './../../components/atoms/FilterLayanan'
 import { useCreateParams, useGetParams, useTitle } from '@/hooks'
-import { useGetTuitionAssistanceByEventId, useUpdateTuitionAssistanceEventStatus } from '@/store/server/useService'
+import { useDeleteTuitionAssistanceEvent, useGetTuitionAssistanceByEventId, useUpdateTuitionAssistanceEventStatus } from '@/store/server/useService'
 import { useParams } from 'react-router-dom'
 import { useGetEventById } from '@/store/server'
 import * as React from 'react'
-import { useTitleHeader } from '@/store/client'
+import { useAlert, useTitleHeader } from '@/store/client'
 import { useToastEmail } from '@/hooks'
 import axios from 'axios'
 import { exportTuitionApplicationPublicFn } from '@/api/service.api'
@@ -44,12 +43,25 @@ export default function LayananBbp() {
       { url: `/layanan/bbp/${id}`, label: 'BBP' }
     ])
   }, [])
+  const { alert } = useAlert()
+
+  const { mutateAsync: isDelete, isLoading:isLoadingDelete } = useDeleteTuitionAssistanceEvent()
+
+const handleDelete = (id: string) => {
+  void alert({
+    title: 'Delete',
+    description: 'Yakin untuk menghapus ?',
+    submitText: 'Delete',
+    variant: 'danger'
+  }).then(async () => {
+    await isDelete(id)
+  })
+}
 
   const [isShow, setIsShow] = React.useState(false)
   const [isShowPengajuan, setIsShowPengajuan] = React.useState(false)
   const [tuitionAssistanceId, setTuitionAssistanceId] = React.useState('')
   const toastEmail = useToastEmail()
-  const [isLoadingExport, setIsLoadingExport] = React.useState(false)
 
   const createParams = useCreateParams()
   const { search, tab, page } = useGetParams(['search', 'tab', 'page'])
@@ -76,43 +88,8 @@ export default function LayananBbp() {
     update({ id, fields: { dtksStatus: values } })
   }
 
-  const exportAsCsv = async () => {
-    setIsLoadingExport(true)
-    const response = await exportTuitionApplicationPublicFn('csv', {
-      eventId: id as string,
-    search,
-    applicationStatus: tab || 'pending',
-    })
-    if (response.success) {
-      void alert({
-        title: 'Berhasil Export',
-        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
-        submitText: 'Oke',
-        variant: 'success'
-      })
-    }
-    setIsLoadingExport(false)
-  }
 
-  const exportAsXlsx = async () => {
-    setIsLoadingExport(true)
-    const response = await exportTuitionApplicationPublicFn('xlsx', {
-    eventId: id as string,
-    search,
-    applicationStatus: tab || 'pending',
-    })
-    if (response.success) {
-      void alert({
-        title: 'Berhasil Export',
-        description: 'Hasil Export akan dikirim ke Email anda. Silahkan cek email anda secara berkala.',
-        submitText: 'Oke',
-        variant: 'success'
-      })
-    }
-    setIsLoadingExport(false)
-  }
 
-  console.log(data)
   const handleClick = async () => {
     const apiPublic = axios.create({
       baseURL: ENV.apiUrl
@@ -146,7 +123,7 @@ export default function LayananBbp() {
 
   return (
     <Container>
-      {(isFetching || isLoadingUpdate) && <Loading />}
+      {(isFetching || isLoadingUpdate || isLoadingDelete) && <Loading />}
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSearch)} className="flex flex-col gap-6">
           <div className="flex flex-row items-center justify-between gap-3 py-6">
@@ -177,9 +154,7 @@ export default function LayananBbp() {
           </div>
         </form>
       </Form>
-      {data?.data?.length !== 0 ? (
-                <ExportButton onExportFirst={exportAsXlsx} onExportSecond={exportAsCsv} />
-              ) : null}
+      
       <FilterLayanan jenis={`bbp/${id}`} data={dataLayanan} />
       <section className="mt-5 overflow-hidden border rounded-xl">
         <Table>
@@ -248,8 +223,12 @@ export default function LayananBbp() {
                         setIsShowPengajuan(true)
                         setTuitionAssistanceId(item.id)
                       }}
+                      onDelete={()=> {
+                        handleDelete(item.id)
+                      }}
                       editText="Edit data"
                       detailText="Edit Pengajuan"
+                      deleteText='Hapus'
                     />
                   </TableCell>
                 </TableRow>

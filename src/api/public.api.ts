@@ -31,10 +31,9 @@ export const showAssistanceCheckFn = async (nik: string): Promise<IAssistanceChe
 }
 
 export const getUniversitiesFn = async (): Promise<IUniversity[]> => {
-  const response = await apiPublic.get('/public/university')
+  const response = await axios.get('https://aplansboster.pemkomedan.go.id/backend/api/loadpt');
   return response.data?.data
 }
-
 export const getStudyProgramsFn = async (universityId: string): Promise<IUniversity[]> => {
   const response = await apiPublic.get(`/public/university/${universityId}/study-program`)
   return response.data?.data
