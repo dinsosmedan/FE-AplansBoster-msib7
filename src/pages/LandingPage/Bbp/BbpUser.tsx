@@ -41,18 +41,18 @@ export default function BbpUser() {
       <Tabs defaultValue="open">
         <div className="w-full bg-[#FFFFFF] border border-[#E4E4E4] rounded-lg pt-10 lg:pt-0">
           <p className="md:text-[26px] text-[18px] font-semibold mb-7 px-9 mt-9">Bantuan Biaya Pendidikan </p>
-          <TabsList className="p-0 h-auto bg-white gap-5 px-7">
+          <TabsList className="h-auto gap-5 p-0 bg-white px-7">
             <TabsTrigger
               value="open"
               className="shadow-none border-b-8 border-white text-black data-[state=active]:border-primary data-[state=active]:text-primary pb-5"
             >
-              <p className="md:text-lg font-medium">Sedang dibuka</p>
+              <p className="font-medium md:text-lg">Sedang dibuka</p>
             </TabsTrigger>
             <TabsTrigger
               value="request"
               className="shadow-none border-b-8 border-white text-black data-[state=active]:border-primary data-[state=active]:text-primary pb-5"
             >
-              <p className="md:text-lg font-medium">Proses Pengajuan</p>
+              <p className="font-medium md:text-lg">Proses Pengajuan</p>
             </TabsTrigger>
           </TabsList>
         </div>
@@ -60,7 +60,7 @@ export default function BbpUser() {
           value="open"
           className="mt-11 lg:flex lg:flex-row lg:justify-between grid place-items-center lg:place-items-start bg-[#F9F9F9] gap-10"
         >
-          <div className="flex gap-8 lg:flex-col lg:justify-start justify-center">
+          <div className="flex justify-center gap-8 lg:flex-col lg:justify-start">
             {data?.map((item, index) => (
               <CardLandingPage
                 key={index}
@@ -75,16 +75,17 @@ export default function BbpUser() {
                 btnText="Pendaftaran Pengajuan"
                 icon={HiAcademicCap}
                 href={`/user/bbp/${item.id}`}
+                
               />
             ))}
           </div>
           {Object.keys(details)?.length !== 0 ? (
             <section className="flex flex-col gap-8 w-[95%] mt-5 lg:mt-0 lg:justify-start justify-center">
-              <div className="bg-white rounded-lg md:px-10 px-7 md:py-14 py-9 h-fit shadow">
-                <p className="font-semibold text-xl">Informasi Tentang Beasiswa</p>
+              <div className="bg-white rounded-lg shadow md:px-10 px-7 md:py-14 py-9 h-fit">
+                <p className="text-xl font-semibold">Informasi Tentang Beasiswa</p>
                 <Markdown values={details?.eventDescription} />
 
-                <section className="flex flex-col gap-5 border-t border-zinc-200 py-3">
+                <section className="flex flex-col gap-5 py-3 border-t border-zinc-200">
                   <FileDownload
                     title={`Pengumuman Beasiswa ${details?.batch}`}
                     url={details?.requiredDocuments?.scholarshipApplicationLetter?.url as string}
@@ -113,7 +114,7 @@ export default function BbpUser() {
                 </section>
               </div>
               <Link to={`/user/bbp/form/${id ?? data?.[0].id}`}>
-                <Button className="w-full py-6">
+                <Button className="w-full py-6" disabled>
                   <p className="md:text-lg">Daftar Sekarang</p>
                 </Button>
               </Link>
@@ -124,7 +125,7 @@ export default function BbpUser() {
           value="request"
           className="lg:flex lg:flex-row lg:justify-between grid place-items-center lg:place-items-start bg-[#F9F9F9] gap-10"
         >
-          <div className="flex gap-8 lg:flex-col lg:justify-start justify-center">
+          <div className="flex justify-center gap-8 lg:flex-col lg:justify-start">
             {submissionProcess?.map((item, index) => (
               <CardLandingPage
                 key={index}
@@ -145,7 +146,7 @@ export default function BbpUser() {
           </div>
           {Object.keys(submissionProcessDetail).length !== 0 && (
             <section className="flex flex-col gap-8 w-[95%] mt-5 lg:mt-0 lg:justify-start justify-center">
-              <div className="bg-white py-24">
+              <div className="py-24 bg-white">
                 <div className="px-[90px] flex flex-row justify-center">
                   <div
                     className={cn(
@@ -239,7 +240,7 @@ const FileDownload = ({ fileName, url, title }: IFileDownloadProps) => {
   }
 
   return (
-    <div className="md:flex gap-4 items-center justify-between w-full">
+    <div className="items-center justify-between w-full gap-4 md:flex">
       <p className="text-base font-semibold md:max-w-[80%] w-full">{title}</p>
       <Button
         variant="outline"
