@@ -24,9 +24,9 @@ export const publicEventTuitionValidation = yup.object({
     .max(20, 'Nomor telepon maksimal 20 karakter')
     .required('Nomor Telepon wajib diisi'),
   email: yup.string().email('Email tidak valid').required('Email harus diisi'),
-  universityId: yup.string().required('Nama universitas harus diisi'),
+  // universityId: yup.string().required('Nama universitas harus diisi'),
   universityName: yup.string().required('Nama universitas harus diisi'),
-  studyProgramId: yup.string().required('Nama program studi harus diisi'),
+  // studyProgramId: yup.string().required('Nama program studi harus diisi'),
   studyProgramName: yup.string().required('Nama program studi harus diisi'),
   semester: yup.number().required('Semester harus diisi'),
   gpa: yup.string().required('IPK harus diisi'),

@@ -18,6 +18,7 @@ import {
   useGetStudyPrograms,
   useGetTuitionApplicationPublicDetail,
   useGetUniversities,
+  useGetUniversitiess,
   useUpdatePublicEventTuition
 } from '@/store/server'
 import { Loading, SearchSelect } from '@/components'
@@ -44,12 +45,12 @@ export default function BbpRegister() {
 
   const forms = useForm<publicEventTuitionFields>({
     mode: 'onTouched',
-    resolver: yupResolver(publicEventTuitionValidation),
+    resolver: yupResolver(publicEventTuitionValidation)
   })
 
   const areaLevel3 = forms.watch('areaLevel3')
-  const university = forms.watch('universityId')
-  const studyProgram = forms.watch('studyProgramId')
+  // const university = forms.watch('universityId')
+  // const studyProgram = forms.watch('studyProgramId')
   const bank = forms.watch('bank')
 
   const { data, isLoading, isSuccess } = useGetPublicEventTuition()
@@ -66,8 +67,8 @@ export default function BbpRegister() {
   const { data: kelurahanLists } = useGetKelurahan(areaLevel3)
 
   const { data: bankLists } = useGetBank()
-  const { data: universities, isLoading: isLoadingUniversities } = useGetUniversities()
-  const { data: studyPrograms } = useGetStudyPrograms(university)
+  // const { data: universities, isLoading: isLoadingUniversities } = useGetUniversities()
+  // const { data: studyPrograms } = useGetStudyPrograms(university)
 
   React.useEffect(() => {
     if (isSuccessDetail) {
@@ -83,9 +84,9 @@ export default function BbpRegister() {
       forms.setValue('gender', detailShow.beneficiary?.gender)
       forms.setValue('email', detailShow.email)
       forms.setValue('phoneNumber', detailShow.phoneNumber)
-      forms.setValue('universityId', detailShow.university.id)
+
       forms.setValue('universityName', detailShow.university.name)
-      forms.setValue('studyProgramId', detailShow.studyProgram.id)
+
       forms.setValue('studyProgramName', detailShow.studyProgram.name)
       forms.setValue('gpa', detailShow.gpa)
       forms.setValue('semester', detailShow.semester)
@@ -153,13 +154,13 @@ export default function BbpRegister() {
     if (bank && !isSuccessDetail) {
       forms.setValue('bankAccountName', bankLists?.find((item) => item.id === bank)?.name as string)
     }
-    if (university && !isSuccessDetail) {
-      forms.setValue('universityName', universities?.find((item) => item.id === university)?.name as string)
-    }
-    if (studyProgram && !isSuccessDetail) {
-      forms.setValue('studyProgramName', studyPrograms?.find((item) => item.id === studyProgram)?.name as string)
-    }
-  }, [bank, studyProgram, university, forms, isSuccessDetail])
+    // if (university && !isSuccessDetail) {
+    //   forms.setValue('universityName', universities?.find((item) => item.id === university)?.name as string)
+    // }
+    // if (studyProgram && !isSuccessDetail) {
+    //   forms.setValue('studyProgramName', studyPrograms?.find((item) => item.id === studyProgram)?.name as string)
+    // }
+  }, [bank, isSuccessDetail])
 
   React.useEffect(() => {
     if (id) {
@@ -170,57 +171,57 @@ export default function BbpRegister() {
   }, [isSuccess, id])
 
   const onSubmit = async (values: publicEventTuitionFields) => {
-    let birthDate: Date;
-  
+    let birthDate: Date
+    console.log(values)
+
     if (typeof values.birthDate === 'string') {
-      birthDate = new Date(values.birthDate);
+      birthDate = new Date(values.birthDate)
     } else if (values.birthDate instanceof Date) {
-      birthDate = values.birthDate;
+      birthDate = values.birthDate
     } else {
-      console.error('Invalid birthDate:', values.birthDate);
-      return;
+      console.error('Invalid birthDate:', values.birthDate)
+      return
     }
-  
+
     if (isNaN(birthDate.getTime())) {
-      console.error('Invalid birthDate:', values.birthDate);
-      return;
+      console.error('Invalid birthDate:', values.birthDate)
+      return
     }
-  
-    const formattedBirthDate = formatDateToString(birthDate);
-  
+
+    const formattedBirthDate = formatDateToString(birthDate)
+
     if (!bbpId) {
       const newData = {
         ...values,
         birthDate: formattedBirthDate,
-        event: id as string,
-      };
-  
+        event: id as string
+      }
+
       create(newData, {
         onSuccess: () => {
-          forms.reset();
-          navigate(`/user/bbp/${id}`);
-        },
-      });
-      return;
+          forms.reset()
+          navigate(`/user/bbp/${id}`)
+        }
+      })
+      return
     }
-  
+
     const newData = {
       ...values,
       birthDate: formattedBirthDate,
-      event: bbpId,
-    };
-  
+      event: bbpId
+    }
+
     update(
       { id: bbpId, fields: newData },
       {
         onSuccess: () => {
-          forms.reset();
-          navigate('/user/bbp');
-        },
+          forms.reset()
+          navigate('/user/bbp')
+        }
       }
-    );
-  };
-  
+    )
+  }
 
   if (isLoading || isLoadingDetail) return <Loading />
 
@@ -245,7 +246,7 @@ export default function BbpRegister() {
                             value={field.value ?? ''}
                             className="rounded-md rounded-r-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                             type="number"
-                            placeholder="Cari NIK"
+                            placeholder="Masukkan NIK"
                           />
                         </FormControl>
                       </div>
@@ -295,7 +296,7 @@ export default function BbpRegister() {
             />
           </div>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          <FormField
+            <FormField
               name="birthDate"
               control={forms.control}
               render={({ field }) => (
@@ -303,15 +304,15 @@ export default function BbpRegister() {
                   <FormLabel>Tanggal Lahir</FormLabel>
                   <FormControl>
                     <Input
-                     {...field}
-                     type="date"
-                     value={
-                      field.value
-                        ? typeof field.value === 'string'
-                          ? field.value
-                          : (field.value as Date).toISOString().split('T')[0]
-                        : ''
-                    }
+                      {...field}
+                      type="date"
+                      value={
+                        field.value
+                          ? typeof field.value === 'string'
+                            ? field.value
+                            : (field.value as Date).toISOString().split('T')[0]
+                          : ''
+                      }
                       placeholder="dd/mm/yyy"
                       className="rounded-md"
                     />
@@ -319,7 +320,7 @@ export default function BbpRegister() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            />
             <FormField
               name="gender"
               control={forms.control}
@@ -445,56 +446,51 @@ export default function BbpRegister() {
           <p className="font-semibold text-[18px] mt-5">Akademis</p>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <FormField
-              name="universityId"
+              name="universityName"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Perguruan Tinggi</FormLabel>
                   <FormControl>
-                  {isLoadingUniversities ? (
-                    <Loading/>
-                    ) : (
-                    <SearchSelect
-                      selected={field.value}
-                      onChange={field.onChange}
-                      width="md:w-[300px] lg:w-[700px]"
+                    <Input
+                      {...field}
+                      value={field.value ?? ''}
                       className="rounded-md"
-                      placeholder="Pilih Perguruan Tinggi"
-                      options={
-                        universities?.map((university) => ({ label: university.name, value: university.id })) ?? []
-                      }
+                      type="text"
+                      placeholder="Masukan Perguruan Tinggi"
                     />
-                  )}
                   </FormControl>
+                  <p className="text-[12px] text-zinc-500 font-medium">
+                      *Contoh Penulisan: Universitas Sumatera Utara 
+                    </p>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <FormField
-              name="studyProgramId"
+              name="studyProgramName"
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Prodi</FormLabel>
                   <FormControl>
-                    <SearchSelect
-                      selected={field.value}
-                      onChange={field.onChange}
-                      width="md:w-[300px] lg:w-[700px]"
+                    <Input
+                      {...field}
+                      value={field.value ?? ''}
                       className="rounded-md"
-                      disabled={!university || !studyPrograms}
-                      placeholder="Pilih Prodi"
-                      options={
-                        studyPrograms?.map((studyProgram) => ({ label: studyProgram.name, value: studyProgram.id })) ??
-                        []
-                      }
+                      type="text"
+                      placeholder="Masukan Program Studi"
                     />
                   </FormControl>
+                  <p className="text-[12px] text-zinc-500 font-medium">
+                      *Contoh Penulisan: Ilmu Komunikasi 
+                    </p>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
+
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <FormField
               name="gpa"
@@ -745,7 +741,7 @@ export default function BbpRegister() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-sm">Surat Pernyataan Tidak Mendapatkan Mahasiswa</FormLabel>
+                  <FormLabel className="text-sm">Surat Pernyataan Tidak Mendapatkan Beasiswa</FormLabel>
                   <FormControl className="w-[522px]">
                     <DropZone
                       setValue={field.onChange}
@@ -873,8 +869,8 @@ export default function BbpRegister() {
             <Button
               className="items-center gap-3 px-8 py-6 mt-5 rounded-lg w-fit md:mt-0"
               loading={isLoadingCreate || isLoadingUpdate}
-              type="submit">
-            
+              type="submit"
+            >
               <p className="text-base font-semibold w-max">Kirim Pengajuan</p>
               <HiPaperAirplane className="w-5 h-5" />
             </Button>
