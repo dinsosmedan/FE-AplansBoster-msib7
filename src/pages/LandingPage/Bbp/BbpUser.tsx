@@ -85,7 +85,7 @@ export default function BbpUser() {
                 <p className="text-xl font-semibold">Informasi Tentang Beasiswa</p>
                 <Markdown values={details?.eventDescription} />
 
-                <section className="flex flex-col gap-5 py-3 border-t border-zinc-200">
+                {/* <section className="flex flex-col gap-5 py-3 border-t border-zinc-200">
                   <FileDownload
                     title={`Pengumuman Beasiswa ${details?.batch}`}
                     url={details?.requiredDocuments?.scholarshipApplicationLetter?.url as string}
@@ -111,7 +111,7 @@ export default function BbpUser() {
                     url={details?.requiredDocuments?.nonGovernmentEmployeeLetter?.url as string}
                     fileName={details?.requiredDocuments?.nonGovernmentEmployeeLetter?.originalName as string}
                   />
-                </section> 
+                </section>  */}
                 <section className="flex flex-col gap-5 border-t border-zinc-200 py-3">
                   <FileDownload
                     title={`Pengumuman Beasiswa ${details?.batch}`}
