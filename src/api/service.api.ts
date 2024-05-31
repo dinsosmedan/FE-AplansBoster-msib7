@@ -107,7 +107,8 @@ export const updateApplicationStatusFn = async ({ id, fields }: updateApplicatio
     data = {
       applicationStatus: fields.applicationStatus,
       assistanceAmount: fields.assistanceAmount,
-      budgetYear: fields.budgetYear
+      budgetYear: fields.budgetYear,
+      message: fields.message
     }
   } else if (fields.applicationStatus === 'rejected' || fields.applicationStatus === 'revision') {
     data = {

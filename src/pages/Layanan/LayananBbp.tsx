@@ -112,7 +112,7 @@ export default function LayananBbp() {
     setIsLoadingExport(false)
   }
 
-  console.log(data)
+
   const handleClick = async () => {
     const apiPublic = axios.create({
       baseURL: ENV.apiUrl
