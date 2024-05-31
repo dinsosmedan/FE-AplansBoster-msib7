@@ -113,11 +113,11 @@ export default function BbpUser() {
                   />
                 </section>
               </div>
-              {/* <Link to={`/user/bbp/form/${id ?? data?.[0].id}`}>
+              {/* <Link to={`/user/bbp/form/${id ?? data?.[0].id}`}> */}
                 <Button className="w-full py-6" disabled>
-                  <p className="md:text-lg">Daftar Sekarang</p>
+                  <p className="md:text-lg">Pendaftaran Belum dibuka .</p>
                 </Button>
-              </Link> */}
+              {/* </Link> */}
             </section>
           ) : null}
         </TabsContent>
