@@ -56,6 +56,10 @@ export const updateTuitionAssistanceEventFn = async ({ id, fields }: updateTuiti
   await api.put(`/service/tuition-assistance-application/${id}`, fields)
 }
 
+export const deleteTuitionAssistanceEventFn = async (id: string): Promise<any> => {
+  const response = await api.delete(`/service/tuition-assistance-application/${id}`)
+  return response.data
+}
 
 export const exportTuitionApplicationPublicFn = async (
   type: 'xlsx' | 'csv',

@@ -13,8 +13,10 @@ import {
   getDTKSApplicationFn,
   updateIndigencyCertificateApplicationFn,
   showDTKSApplicationFn,
-  updateDTKSApplicationFn
+  updateDTKSApplicationFn,
+  deleteTuitionAssistanceEventFn
 } from '@/api/service.api'
+import { toast } from '@/components/ui/use-toast'
 import { handleMessage } from '@/lib/services/handleMessage'
 import { handleOnError } from '@/lib/utils'
 import { type AxiosError } from 'axios'
@@ -58,6 +60,21 @@ export const useUpateTuitionAssistanceEvent = () => {
     },
     onError: (error: AxiosError) => {
       handleOnError(error)
+    }
+  })
+}
+
+export const useDeleteTuitionAssistanceEvent = () => {
+  const queryClient = useQueryClient()
+  return useMutation(deleteTuitionAssistanceEventFn, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries('tuition-assistance')
+      toast({
+        variant: 'default',
+        duration: 1500,
+        title: 'Proses Berhasil',
+        description: 'User Berhasil Dihapus'
+      })
     }
   })
 }
