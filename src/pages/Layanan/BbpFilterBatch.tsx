@@ -143,7 +143,7 @@ export default function BbpFilterBatch() {
                   <TableCell className="bg-[#F9FAFC]">
                     {event.startDate ? formatToView(event.startDate) : '-'}
                   </TableCell>
-                  <TableCell className="bg-[#F9FAFC]">{event.endDate ? formatToView(event.startDate) : '-'}</TableCell>
+                  <TableCell className="bg-[#F9FAFC]">{event.endDate ? formatToView(event.endDate) : '-'}</TableCell>
                   <TableCell className="bg-[#F9FAFC] capitalize">
                     {event.status && (
                       <Status label={event.status} isSuccess="active" isWarning="in-progress" isDanger="inactive" />
