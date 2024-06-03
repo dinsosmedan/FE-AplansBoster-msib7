@@ -141,8 +141,10 @@ const handleDelete = (id: string) => {
               />
             </div>
             <div className="flex items-end justify-end">
-              <Button className="bg-primary w-[143px] h-[56px] rounded-xl mr-4" type="button" onClick={handleClick}>
-                {loading && <Loading />}
+              <Button 
+              className="bg-primary w-[143px] h-[56px] rounded-xl mr-4" type="button">
+              {/* onClick={handleClick}>
+                {loading && <Loading />} */}
                 <p className="text-base font-bold text-white">Kirim Notifikasi</p>
               </Button>
               <div className="bg-[#fce9ee] px-5 py-4 rounded-xl">
