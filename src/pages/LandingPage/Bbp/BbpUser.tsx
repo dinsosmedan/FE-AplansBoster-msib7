@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Link, useParams } from 'react-router-dom'
 import { useGetPublicEventTuition, useGetTuitionApplicationPublic } from '@/store/server'
 import { Loading, Markdown } from '@/components'
-import { useDisableBodyScroll } from '@/hooks'
+import { useDisableBodyScroll, useToastPublicEvent } from '@/hooks'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { type IPublicEventTuition } from '@/lib/types/public.type'
@@ -33,6 +33,12 @@ export default function BbpUser() {
       setSubmissionProcessDetail(submissionProcess?.find((item) => item.id === id) ?? ({} as IApplication))
     }
   }, [isSuccess, id])
+
+  const notRegisteredCondition = data?.some((item) => item.filledQuota > item.quota)
+
+  useToastPublicEvent({
+    notRegisteredCondition: notRegisteredCondition
+  })
 
   if (isLoading || isLoadingDetails) return <Loading />
 
@@ -75,7 +81,6 @@ export default function BbpUser() {
                 btnText="Pendaftaran Pengajuan"
                 icon={HiAcademicCap}
                 href={`/user/bbp/${item.id}`}
-                
               />
             ))}
           </div>
@@ -126,12 +131,16 @@ export default function BbpUser() {
                   <FileDownload
                     title="Template Surat Permohonan ditujukan kepada Bapak Wali Kota Medan Cq. Kepala Dinas Sosial Kota Medan"
                     url={`https://drive.google.com/file/d/1w2ihSogEwUCrkHjT-mQFOOb96_HOmGQQ/view?usp=drive_link`}
-                    fileName={'Template Surat Permohonan ditujukan kepada Bapak Wali Kota Medan Cq. Kepala Dinas Sosial Kota Medan'}
+                    fileName={
+                      'Template Surat Permohonan ditujukan kepada Bapak Wali Kota Medan Cq. Kepala Dinas Sosial Kota Medan'
+                    }
                   />
                   <FileDownload
                     title="Template Surat Pernyataan Tidak Menerima Beasiswa/Bantuan Biaya Pendidikan Dari Sumber Lain"
                     url={`https://drive.google.com/file/d/1w1erkIwBLEr2ftNqPPPFK9eU_KRi87S6/view?usp=drive_link`}
-                    fileName={'Template Surat Pernyataan Tidak Menerima Beasiswa/Bantuan Biaya Pendidikan Dari Sumber Lain'}
+                    fileName={
+                      'Template Surat Pernyataan Tidak Menerima Beasiswa/Bantuan Biaya Pendidikan Dari Sumber Lain'
+                    }
                   />
                   <FileDownload
                     title="Template Surat Pernyataan Tidak Berstatus Sebagai Aparatur Sipil Negara (ASN)"
@@ -141,7 +150,7 @@ export default function BbpUser() {
                 </section>
               </div>
               <Link to={`/user/bbp/form/${id ?? data?.[0].id}`}>
-                <Button className="w-full py-6" >
+                <Button className="w-full py-6">
                   <p className="md:text-lg">Daftar Sekarang</p>
                 </Button>
               </Link>

@@ -12,6 +12,7 @@ import useDeleteParams from './useDeleteParams'
 import useNotFound from './useNotFound'
 import useScrollToTop from './useScrolltoTop'
 import useGetDevices from './useGetDevices'
+import useToastPublicEvent from './useToastPubicEvent'
 
 export {
   useDisableBodyScroll,
@@ -28,5 +29,6 @@ export {
   hitungPersentase,
   useNotFound,
   useScrollToTop,
-  useGetDevices
+  useGetDevices,
+  useToastPublicEvent
 }
