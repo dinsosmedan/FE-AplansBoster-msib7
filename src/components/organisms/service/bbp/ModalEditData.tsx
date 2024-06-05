@@ -246,7 +246,7 @@ console.log(data)
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">Alamat</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value ?? ''} disabled />
+                    <Input {...field} value={field.value ?? ''}  />
                   </FormControl>
                 </FormItem>
               )}

@@ -58,6 +58,7 @@ export default function ModalEditPengajuanBBP({ isShow, setIsShow, tuitionAssist
       </Modal.Header>
       <section className="flex flex-col">
         <p className="w-full py-4 font-bold text-center text-white bg-primary">Berkas Mahasiswa</p>
+        <Berkas title="Swafoto" url={data?.documents.swafoto?.url as string} />
         <Berkas title="Surat Permohonan" url={data?.documents.applicationLetter?.url as string} />
         <Berkas title="PAS FOTO" url={data?.documents.photo?.url as string} />
         <Berkas title="KARTU KELUARGA" url={data?.documents.familyCard?.url as string} />
