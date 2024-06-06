@@ -117,7 +117,7 @@ export default function BbpUser() {
                     fileName={details?.requiredDocuments?.nonGovernmentEmployeeLetter?.originalName as string}
                   />
                 </section>  */}
-                <section className="flex flex-col gap-5 border-t border-zinc-200 py-3">
+                <section className="flex flex-col gap-5 py-3 border-t border-zinc-200">
                   <FileDownload
                     title={`Pengumuman Beasiswa ${details?.batch}`}
                     url={`https://drive.google.com/file/d/1vvHngKYieRqzpyMB7UWS8LwYfgcEVk8u/view?usp=drive_link`}
@@ -149,11 +149,11 @@ export default function BbpUser() {
                   />
                 </section>
               </div>
-              <Link to={`/user/bbp/form/${id ?? data?.[0].id}`}>
+              {/* <Link to={`/user/bbp/form/${id ?? data?.[0].id}`}> */}
                 <Button className="w-full py-6">
-                  <p className="md:text-lg">Daftar Sekarang</p>
+                  <p className="md:text-lg">Kuota Penuh</p>
                 </Button>
-              </Link>
+              {/* </Link> */}
             </section>
           ) : null}
         </TabsContent>
