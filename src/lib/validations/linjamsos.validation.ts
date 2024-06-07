@@ -105,7 +105,8 @@ export type indigencyCertificateFields = Yup.InferType<typeof indigencyCertifica
 
 export const updateTuitionAssistanceServiceValidation = Yup.object({
   applicationStatus: Yup.string().required('Status wajib diisi'),
-  message: Yup.string()
+  message: Yup.string().required('Keterangan Harus Di isi').max(1000, 'Maksimal 1000 karakter')
+ 
 })
 
 export type updateTuitionAssistanceServiceFields = Yup.InferType<typeof updateTuitionAssistanceServiceValidation>
