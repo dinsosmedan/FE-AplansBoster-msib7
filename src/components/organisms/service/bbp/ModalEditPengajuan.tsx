@@ -131,7 +131,7 @@ export default function ModalEditPengajuanBBP({ isShow, setIsShow, tuitionAssist
                   <FormItem className="flex-1">
                     <FormLabel className="font-semibold dark:text-white">Keterangan</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan Keterangan" />
+                      <Input {...field} value={field.value ?? ''} placeholder="Masukkan Keterangan"   type="text"/>
                     </FormControl>
                   </FormItem>
                 )}
