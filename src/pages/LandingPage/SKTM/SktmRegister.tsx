@@ -16,6 +16,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { SearchSelect } from '@/components'
 
 export const possibleEducationLevel = [
+  'Tidak menempuh pendidikan',
   'TK/PAUD',
   'SD/Sederajat',
   'SMP/Sederajat',
