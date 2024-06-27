@@ -22,8 +22,8 @@ export default function NotFound() {
           </Button>
         </div>
       </section>
-      <div className="w-96 h-96 opacity-20 bg-rose-600 rounded-full blur-3xl absolute -top-32 -left-32" />
-      <div className="w-96 h-96 opacity-20 bg-rose-600 rounded-full blur-3xl absolute -bottom-48 -right-32" />
+      <div className="w-96 h-96 opacity-20 bg-primary rounded-full blur-3xl absolute -top-32 -left-32" />
+      <div className="w-96 h-96 opacity-20 bg-primary rounded-full blur-3xl absolute -bottom-48 -right-32" />
     </main>
   )
 }

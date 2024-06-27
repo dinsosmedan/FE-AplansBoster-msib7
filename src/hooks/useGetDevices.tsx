@@ -14,10 +14,10 @@ export default function useGetDevices() {
     }
   }, [])
 
-  // const isMobile = width <= 768
-  // const isTablet = width > 768 && width <= 1024
-  const isMobile = width <= 0
-  const isTablet = width > 768 && width <= 0
+  const isMobile = width <= 768
+  const isTablet = width > 768 && width <= 1024
+  // const isMobile = width <= 0
+  // const isTablet = width > 768 && width <= 0
 
   return { isMobile, isTablet }
 }

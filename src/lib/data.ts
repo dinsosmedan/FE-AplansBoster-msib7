@@ -175,7 +175,7 @@ export const JENIS_RUMAH_IBADAH = [
 
 export const STATUS_DTKS = [
   { value: 'prelist', label: 'Prelist' },
-  { value: 'dtks', label: 'DKTS' },
+  { value: 'dtks', label: 'DTKS' },
   { value: 'non-dtks', label: 'Non DTKS' }
 ]
 export const CATEGORY_APPLICATION = [

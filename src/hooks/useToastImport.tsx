@@ -23,7 +23,7 @@ export default function useToastImport() {
     if (failedCondition) {
       toast({
         title: 'Data Gagal Ditambahkan',
-        description: 'Maaf, Mohon Dicoba Lagi',
+        description: 'Maaf, Data Tidak Dapat Ditambahkan',
         variant: 'destructive'
       })
     }

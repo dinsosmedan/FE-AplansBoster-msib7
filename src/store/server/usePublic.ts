@@ -3,8 +3,10 @@ import {
   getIndigencyCertificateApplicationPublicFn,
   getPublicEventTuitionFn,
   getStudyProgramsFn,
+  getStudyProgramsFnn,
   getTuitionApplicationPublicFn,
   getUniversitiesFn,
+  getUniversitiesFnn,
   showAssistanceCheckFn,
   storePublicEventDtksFn,
   storeDTKSCourtPublicFn,
@@ -32,6 +34,9 @@ export const useGetAssistanceCheck = (nik: string, enabled: boolean) => {
 
 export const useGetUniversities = () => {
   return useQuery('universities', async () => await getUniversitiesFn())
+}
+export const useGetUniversitiess = () => {
+  return useQuery('universities', async () => await getUniversitiesFnn())
 }
 
 export const useGetStudyPrograms = (universityId: string) => {

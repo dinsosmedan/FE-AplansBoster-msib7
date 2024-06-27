@@ -1,264 +1,103 @@
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { useForm } from 'react-hook-form'
+import React, { useState } from 'react'
+import { Container, Loading } from '@/components'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import useTitle from '@/hooks/useTitle'
-import Container from '@/components/atoms/Container'
-import { unregisterValidation, type unregisterFields } from '@/lib/validations/linjamsos.validation'
-import { DatePicker, Loading } from '@/components'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useCreateUnregister, useGetDetailUnregister, useUpdateUnregister } from '@/store/server'
-import { formatDateToString, formatStringToDate } from '@/lib/services/formatDate'
-import { useNavigate, useParams } from 'react-router-dom'
-import * as React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTitleHeader } from '@/store/client'
-import { useNotFound } from '@/hooks'
+import { useToastImport } from '@/hooks'
+import { FaFileUpload } from 'react-icons/fa'
 
-const Unregister = () => {
+const importunregister = () => {
   const navigate = useNavigate()
-  const { id } = useParams<{ id: string }>()
-  useTitle(`${id ? ' Ubah' : 'Tambah'} Data`)
-  const setBreadcrumbs = useTitleHeader((state) => state.setBreadcrumbs)
+  const setBreadcrumb = useTitleHeader((state) => state.setBreadcrumbs)
+  const [file, setFile] = useState<any>(null)
+  const [loading, setLoading] = useState<boolean>(false)
+  const toastImport = useToastImport()
+  const [fileName, setFileName] = useState<string>('')
 
   React.useEffect(() => {
-    setBreadcrumbs([
+    setBreadcrumb([
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/linjamsos', label: 'Linjamsos' },
       { url: '/data-penerima/linjamsos/unregister', label: 'Unregister' }
     ])
   }, [])
 
-  const { mutate: createUnregister, isLoading } = useCreateUnregister()
-  const { data: unregister, isLoading: isLoadingDetail, isSuccess, isError } = useGetDetailUnregister(id as string)
-  const { mutate: updateUnregister, isLoading: isLoadingUpdate } = useUpdateUnregister()
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFile(e.target.files[0])
+      setFileName(e.target.files[0].name)
+    }
+  }
 
-  const forms = useForm<unregisterFields>({
-    mode: 'onTouched',
-    resolver: yupResolver(unregisterValidation)
-  })
-
-  useNotFound(isError)
-
-  React.useEffect(() => {
-    if (isSuccess) {
-      forms.reset({
-        name: unregister.name,
-        age: unregister.age,
-        gender: unregister.gender,
-        dinsosLetterNumber: unregister.dinsosLetterNumber,
-        dinsosLetterDate: formatStringToDate(unregister.dinsosLetterDate),
-        diseaseDiagnosis: unregister.diseaseDiagnosis,
-        hospitalEntryDate: formatStringToDate(unregister.hospitalEntryDate),
-        hospitalLetterNumber: unregister.hospitalLetterNumber,
-        hospitalLetterDate: formatStringToDate(unregister.hospitalLetterDate)
+  const importData = async () => {
+    if (!file) {
+      toastImport({
+        notFoundCondition: true
       })
+      return
     }
-  }, [isSuccess])
-
-  const onSuccess = () => {
-    forms.reset()
-    navigate('/data-penerima/linjamsos/unregister')
-  }
-
-  const onSubmit = async (values: unregisterFields) => {
-    const newData = {
-      ...values,
-      dinsosLetterDate: formatDateToString(values.dinsosLetterDate as Date),
-      hospitalEntryDate: formatDateToString(values.hospitalEntryDate as Date),
-      hospitalLetterDate: formatDateToString(values.hospitalLetterDate as Date)
+    setLoading(true)
+    const formData = new FormData()
+    formData.append('file', file)
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/v1/importUnregister', {
+        method: 'POST',
+        body: formData
+      })
+      if (response.ok) {
+        toastImport({
+          successCondition: true,
+          onSuccess: () => {}
+        })
+        navigate('/data-penerima/linjamsos/unregister')
+      } else {
+        toastImport({
+          failedCondition: true
+        })
+      }
+    } catch (error) {
+      console.error('Error during import:', error)
+      toastImport({
+        failedCondition: true
+      })
+    } finally {
+      setLoading(false)
     }
-
-    if (!id) return createUnregister(newData, { onSuccess })
-    updateUnregister({ id, fields: newData }, { onSuccess })
   }
-
-  if (isLoadingDetail) return <Loading />
 
   return (
-    <Container className="px-[47px]">
-      <div className="w-full text-center">
-        <p className="text-2xl font-bold">Data Masyarakat</p>
+    <Container className="flex flex-col items-center px-[47px] ">
+      <div className="w-full mb-3">
+        <p className="text-2xl font-bold">Import Data</p>
       </div>
-      <Form {...forms}>
-        <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="flex flex-row gap-4 mt-5">
-            <div className="w-6/12">
-              <FormField
-                name="name"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder=" Masukkan Nama" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-6/12">
-              <FormField
-                name="age"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Umur</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Umur" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-6/12">
-              <FormField
-                name="gender"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Jenis Kelamin</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value ?? ''}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Pilih Jenis Kelamin" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="LAKI-LAKI">Laki-laki</SelectItem>
-                          <SelectItem value="PEREMPUAN">Perempuan</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-6/12">
-              <FormField
-                name="dinsosLetterNumber"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Nomor Surat Dinsos</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        type="text"
-                        placeholder="Masukkan Nomor Surat Dinsos"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-6/12">
-              <FormField
-                name="dinsosLetterDate"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Tanggal Surat Dinsos</FormLabel>
-                    <FormControl>
-                      <DatePicker selected={field.value as Date} onChange={field.onChange} placeholder="dd/mm/yyyy" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-6/12">
-              <FormField
-                name="diseaseDiagnosis"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Diagnosa Penyakit</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        type="text"
-                        placeholder="Masukkan Diagnosa Penyakit"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-6/12">
-              <FormField
-                name="hospitalEntryDate"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">Tanggal Masuk Rumah Sakit</FormLabel>
-                    <FormControl>
-                      <DatePicker selected={field.value as Date} onChange={field.onChange} placeholder="dd/mm/yyyy" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-6/12">
-              <FormField
-                name="hospitalLetterNumber"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">
-                      Nomor Surat Pengantar dari Rumah Sakit
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        type="text"
-                        placeholder="Masukkan Nomor Surat Pengantar dari Rumah Sakit"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-6/12">
-              <FormField
-                name="hospitalLetterDate"
-                control={forms.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold dark:text-white">
-                      Tanggal Surat Pengantar dari Rumah Sakit
-                    </FormLabel>
-                    <FormControl>
-                      <DatePicker selected={field.value as Date} onChange={field.onChange} placeholder="dd/mm/yyyy" />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex justify-end gap-4">
-            <Button variant="cancel" className="font-bold" onClick={() => forms.reset()} type="button">
+      <div className="flex flex-col justify-center w-full">
+        <label
+          htmlFor="fileInput"
+          className="flex flex-col justify-end items-center  h-60 bg-slate-200 rounded-md cursor-pointer p-3 "
+        >
+          <FaFileUpload className="h-32 w-32 text-slate-400" />
+          <span className=" text-slate-600 mt-2">{fileName || 'Tambahkan File'}</span>{' '}
+          <input id="fileInput" type="file" className="hidden" onChange={handleFileChange} />
+        </label>
+
+        <section className="flex items-center justify-end">
+          <div className="flex items-center gap-3">
+            <Button className="font-bold mt-3" onClick={importData}>
+              {loading && <Loading />}
+              Submit
+            </Button>
+            <Button
+              variant="outline"
+              className="rounded-lg text-primary border-primary font-bold  mt-3"
+              onClick={() => navigate('/data-penerima/linjamsos/unregister')}
+            >
               Cancel
             </Button>
-            <Button className="font-bold" type="submit" loading={isLoading || isLoadingUpdate}>
-              {id ? 'Ubah Data' : 'Submit'}
-            </Button>
           </div>
-        </form>
-      </Form>
+        </section>
+      </div>
     </Container>
   )
 }
 
-export default Unregister
+export default importunregister

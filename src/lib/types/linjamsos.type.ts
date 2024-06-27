@@ -236,6 +236,7 @@ export interface IDocument {
   createdAt: string
   gradeTranscript: IPath | null
   updatedAt: string
+  swafoto : IPath | null
 }
 export interface IApplication {
   id: string

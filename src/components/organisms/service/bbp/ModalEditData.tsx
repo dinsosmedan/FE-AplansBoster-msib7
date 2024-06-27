@@ -41,14 +41,12 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
   const { data, isSuccess, isLoading } = useGetTuitionAssistanceEventById(tuitionAssistanceId)
   const { mutate: update, isLoading: isLoadingUpdate } = useUpateTuitionAssistanceEvent()
 
-  const university = forms.watch('universityId')
-  const studyProgram = forms.watch('studyProgramId')
   const bank = forms.watch('bank')
 
   const { data: events } = useGetEvent()
   const { data: bankLists } = useGetBank()
   const { data: universities } = useGetUniversities()
-  const { data: studyPrograms } = useGetStudyPrograms(university as string)
+
 
   React.useEffect(() => {
     if (isSuccess) {
@@ -57,9 +55,9 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
         name: data?.beneficiary.name,
         email: data.email ?? '',
         gpa: data.gpa as number,
-        universityId: data.university.id,
+     
         universityName: data.university.name,
-        studyProgramId: data.studyProgram.id,
+ 
         studyProgramName: data.studyProgram.name,
         phoneNumber: data.phoneNumber as string,
         gender: data.beneficiary.gender,
@@ -82,13 +80,8 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
     if (bank) {
       forms.setValue('bankAccountName', bankLists?.find((item) => item.id === bank)?.name as string)
     }
-    if (studyProgram) {
-      forms.setValue('studyProgramName', studyPrograms?.find((item) => item.id === studyProgram)?.name as string)
-    }
-    if (university) {
-      forms.setValue('universityName', universities?.find((item) => item.id === university)?.name as string)
-    }
-  }, [bank, studyProgram, university])
+   
+  }, [bank])
 
   const onSubmit = (values: FormValuesEditData) => {
     const { nik, name, gender, birthPlace, birthDate, address, kecamatan, kelurahan, ...rest } = values
@@ -101,10 +94,10 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
       }
     })
   }
-
+console.log(data)
   return (
     <Modal isShow={isShow} className="md:max-w-3xl max-h-[calc(100vh-50px)] overflow-y-auto" isLoading={isLoading}>
-      <Modal.Header setIsShow={setIsShow} className="gap-1 flex flex-col">
+      <Modal.Header setIsShow={setIsShow} className="flex flex-col gap-1">
         <h3 className="text-base font-bold leading-6 text-title md:text-2xl">Edit Data</h3>
         <p className="text-sm text-[#A1A1A1]">Data Pengajuan BBP</p>
       </Modal.Header>
@@ -160,43 +153,39 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
                 </FormItem>
               )}
             />
-            <FormField
-              name="universityId"
+         <FormField
+              name="universityName"
               control={forms.control}
               render={({ field }) => (
-                <FormItem className="flex-1">
+                <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Perguruan Tinggi</FormLabel>
                   <FormControl>
-                    <SearchSelect
-                      selected={field.value as string}
-                      onChange={field.onChange}
-                      width="w-[330px]"
-                      placeholder="Pilih Perguruan Tinggi"
-                      options={
-                        universities?.map((university) => ({ label: university.name, value: university.id })) ?? []
-                      }
+                  <Input
+                      {...field}
+                      value={field.value ?? ''}
+                      className="rounded-md"
+                      type="text"
+                      disabled
+                      
                     />
                   </FormControl>
                 </FormItem>
               )}
             />
-            <FormField
-              name="studyProgramId"
+           <FormField
+              name="studyProgramName"
               control={forms.control}
               render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel className="font-semibold dark:text-white">Program Studi</FormLabel>
+                <FormItem>
+                  <FormLabel className="font-semibold dark:text-white">Prodi</FormLabel>
                   <FormControl>
-                    <SearchSelect
-                      selected={field.value as string}
-                      onChange={field.onChange}
-                      width="w-[330px]"
-                      disabled={!university || !studyPrograms}
-                      placeholder="Pilih Prodi"
-                      options={
-                        studyPrograms?.map((studyProgram) => ({ label: studyProgram.name, value: studyProgram.id })) ??
-                        []
-                      }
+                  <Input
+                      {...field}
+                      value={field.value ?? ''}
+                      className="rounded-md"
+                      type="text"
+                      placeholder="Masukan Program Studi"
+                      disabled
                     />
                   </FormControl>
                 </FormItem>
@@ -257,7 +246,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
                 <FormItem className="flex-1">
                   <FormLabel className="font-semibold dark:text-white">Alamat</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value ?? ''} disabled />
+                    <Input {...field} value={field.value ?? ''}  />
                   </FormControl>
                 </FormItem>
               )}
@@ -334,7 +323,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
               )}
             />
           </div>
-          <p className="text-2xl font-bold py-5 text-center">Data Bank</p>
+          <p className="py-5 text-2xl font-bold text-center">Data Bank</p>
           <div className="grid grid-cols-2 gap-3">
             <FormField
               name="bankAccountNumber"
@@ -381,7 +370,7 @@ export default function ModalEditDataBBP({ isShow, setIsShow, tuitionAssistanceI
               Cancel
             </Button>
             <Button className="rounded-lg" type="submit" loading={isLoadingUpdate}>
-              <p className="text-white font-bold">Update</p>
+              <p className="font-bold text-white">Update</p>
             </Button>
           </Modal.Footer>
         </form>

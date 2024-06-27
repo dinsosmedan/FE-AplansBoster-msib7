@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Link, useParams } from 'react-router-dom'
 import { useGetPublicEventTuition, useGetTuitionApplicationPublic } from '@/store/server'
 import { Loading, Markdown } from '@/components'
-import { useDisableBodyScroll } from '@/hooks'
+import { useDisableBodyScroll, useToastPublicEvent } from '@/hooks'
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { type IPublicEventTuition } from '@/lib/types/public.type'
@@ -34,6 +34,12 @@ export default function BbpUser() {
     }
   }, [isSuccess, id])
 
+  const notRegisteredCondition = data?.some((item) => item.filledQuota > item.quota)
+
+  useToastPublicEvent({
+    notRegisteredCondition: notRegisteredCondition
+  })
+
   if (isLoading || isLoadingDetails) return <Loading />
 
   return (
@@ -41,18 +47,18 @@ export default function BbpUser() {
       <Tabs defaultValue="open">
         <div className="w-full bg-[#FFFFFF] border border-[#E4E4E4] rounded-lg pt-10 lg:pt-0">
           <p className="md:text-[26px] text-[18px] font-semibold mb-7 px-9 mt-9">Bantuan Biaya Pendidikan </p>
-          <TabsList className="p-0 h-auto bg-white gap-5 px-7">
+          <TabsList className="h-auto gap-5 p-0 bg-white px-7">
             <TabsTrigger
               value="open"
               className="shadow-none border-b-8 border-white text-black data-[state=active]:border-primary data-[state=active]:text-primary pb-5"
             >
-              <p className="md:text-lg font-medium">Sedang dibuka</p>
+              <p className="font-medium md:text-lg">Sedang dibuka</p>
             </TabsTrigger>
             <TabsTrigger
               value="request"
               className="shadow-none border-b-8 border-white text-black data-[state=active]:border-primary data-[state=active]:text-primary pb-5"
             >
-              <p className="md:text-lg font-medium">Proses Pengajuan</p>
+              <p className="font-medium md:text-lg">Proses Pengajuan</p>
             </TabsTrigger>
           </TabsList>
         </div>
@@ -60,7 +66,7 @@ export default function BbpUser() {
           value="open"
           className="mt-11 lg:flex lg:flex-row lg:justify-between grid place-items-center lg:place-items-start bg-[#F9F9F9] gap-10"
         >
-          <div className="flex gap-8 lg:flex-col lg:justify-start justify-center">
+          <div className="flex justify-center gap-8 lg:flex-col lg:justify-start">
             {data?.map((item, index) => (
               <CardLandingPage
                 key={index}
@@ -80,11 +86,11 @@ export default function BbpUser() {
           </div>
           {Object.keys(details)?.length !== 0 ? (
             <section className="flex flex-col gap-8 w-[95%] mt-5 lg:mt-0 lg:justify-start justify-center">
-              <div className="bg-white rounded-lg md:px-10 px-7 md:py-14 py-9 h-fit shadow">
-                <p className="font-semibold text-xl">Informasi Tentang Beasiswa</p>
+              <div className="bg-white rounded-lg shadow md:px-10 px-7 md:py-14 py-9 h-fit">
+                <p className="text-xl font-semibold">Informasi Tentang Beasiswa</p>
                 <Markdown values={details?.eventDescription} />
 
-                <section className="flex flex-col gap-5 border-t border-zinc-200 py-3">
+                {/* <section className="flex flex-col gap-5 py-3 border-t border-zinc-200">
                   <FileDownload
                     title={`Pengumuman Beasiswa ${details?.batch}`}
                     url={details?.requiredDocuments?.scholarshipApplicationLetter?.url as string}
@@ -96,6 +102,11 @@ export default function BbpUser() {
                     fileName={details?.requiredDocuments?.biodata?.originalName as string}
                   />
                   <FileDownload
+                    title="Template Surat Permohonan ditujukan kepada Bapak Wali Kota Medan Cq. Kepala Dinas Sosial Kota Medan"
+                    url={details?.requiredDocuments?.scholarshipApplicationLetter?.url as string}
+                    fileName={details?.requiredDocuments?.scholarshipApplicationLetter?.originalName as string}
+                  />
+                  <FileDownload
                     title="Template Surat Pernyataan Tidak Menerima Beasiswa/Bantuan Biaya Pendidikan Dari Sumber Lain"
                     url={details?.requiredDocuments?.nonReceiptOfScholarshipLetter?.url as string}
                     fileName={details?.requiredDocuments?.nonReceiptOfScholarshipLetter?.originalName as string}
@@ -105,13 +116,44 @@ export default function BbpUser() {
                     url={details?.requiredDocuments?.nonGovernmentEmployeeLetter?.url as string}
                     fileName={details?.requiredDocuments?.nonGovernmentEmployeeLetter?.originalName as string}
                   />
+                </section>  */}
+                <section className="flex flex-col gap-5 py-3 border-t border-zinc-200">
+                  <FileDownload
+                    title={`Pengumuman Beasiswa ${details?.batch}`}
+                    url={`https://drive.google.com/file/d/1vvHngKYieRqzpyMB7UWS8LwYfgcEVk8u/view?usp=drive_link`}
+                    fileName={'Pengumuman Beasiswa'}
+                  />
+                  <FileDownload
+                    title="Biodata Mahasiswa Calon Penerima Bantuan Biaya Pendidikan"
+                    url={`https://drive.google.com/file/d/1wD6cq4T6hOObt6WHYqAMvD38ZM0CaFYZ/view?usp=drive_link`}
+                    fileName={'Biodata Mahasiswa Calon Penerima Bantuan Biaya Pendidikan'}
+                  />
+                  <FileDownload
+                    title="Template Surat Permohonan ditujukan kepada Bapak Wali Kota Medan Cq. Kepala Dinas Sosial Kota Medan"
+                    url={`https://drive.google.com/file/d/1w2ihSogEwUCrkHjT-mQFOOb96_HOmGQQ/view?usp=drive_link`}
+                    fileName={
+                      'Template Surat Permohonan ditujukan kepada Bapak Wali Kota Medan Cq. Kepala Dinas Sosial Kota Medan'
+                    }
+                  />
+                  <FileDownload
+                    title="Template Surat Pernyataan Tidak Menerima Beasiswa/Bantuan Biaya Pendidikan Dari Sumber Lain"
+                    url={`https://drive.google.com/file/d/1w1erkIwBLEr2ftNqPPPFK9eU_KRi87S6/view?usp=drive_link`}
+                    fileName={
+                      'Template Surat Pernyataan Tidak Menerima Beasiswa/Bantuan Biaya Pendidikan Dari Sumber Lain'
+                    }
+                  />
+                  <FileDownload
+                    title="Template Surat Pernyataan Tidak Berstatus Sebagai Aparatur Sipil Negara (ASN)"
+                    url={`https://drive.google.com/file/d/1w-va4jL9A2jt0YrKxcC1-uVK42L1ytqR/view?usp=drive_link`}
+                    fileName={'Template Surat Pernyataan Tidak Berstatus Sebagai Aparatur Sipil Negara (ASN)'}
+                  />
                 </section>
               </div>
-              <Link to={`/user/bbp/form/${id ?? data?.[0].id}`}>
+              {/* <Link to={`/user/bbp/form/${id ?? data?.[0].id}`}> */}
                 <Button className="w-full py-6">
-                  <p className="md:text-lg">Daftar Sekarang</p>
+                  <p className="md:text-lg">Kuota Penuh</p>
                 </Button>
-              </Link>
+              {/* </Link> */}
             </section>
           ) : null}
         </TabsContent>
@@ -119,7 +161,7 @@ export default function BbpUser() {
           value="request"
           className="lg:flex lg:flex-row lg:justify-between grid place-items-center lg:place-items-start bg-[#F9F9F9] gap-10"
         >
-          <div className="flex gap-8 lg:flex-col lg:justify-start justify-center">
+          <div className="flex justify-center gap-8 lg:flex-col lg:justify-start">
             {submissionProcess?.map((item, index) => (
               <CardLandingPage
                 key={index}
@@ -140,7 +182,7 @@ export default function BbpUser() {
           </div>
           {Object.keys(submissionProcessDetail).length !== 0 && (
             <section className="flex flex-col gap-8 w-[95%] mt-5 lg:mt-0 lg:justify-start justify-center">
-              <div className="bg-white py-24">
+              <div className="py-24 bg-white">
                 <div className="px-[90px] flex flex-row justify-center">
                   <div
                     className={cn(
@@ -234,7 +276,7 @@ const FileDownload = ({ fileName, url, title }: IFileDownloadProps) => {
   }
 
   return (
-    <div className="md:flex gap-4 items-center justify-between w-full">
+    <div className="items-center justify-between w-full gap-4 md:flex">
       <p className="text-base font-semibold md:max-w-[80%] w-full">{title}</p>
       <Button
         variant="outline"

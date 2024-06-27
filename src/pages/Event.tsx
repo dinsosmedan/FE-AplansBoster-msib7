@@ -175,7 +175,7 @@ const Event = () => {
                 </TableCell>
                 <TableCell className="bg-[#F9FAFC]">{event.type.name ?? '-'}</TableCell>
                 <TableCell className="bg-[#F9FAFC]">{event.startDate ? formatToView(event.startDate) : '-'}</TableCell>
-                <TableCell className="bg-[#F9FAFC]">{event.endDate ? formatToView(event.startDate) : '-'}</TableCell>
+                <TableCell className="bg-[#F9FAFC]">{event.endDate ? formatToView(event.endDate) : '-'}</TableCell>
                 <TableCell className="bg-[#F9FAFC]">{event.batch ?? '-'}</TableCell>
                 <TableCell className="bg-[#F9FAFC]">{event.quota ?? '-'}</TableCell>
                 <TableCell className="bg-[#F9FAFC] capitalize" position="center">

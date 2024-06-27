@@ -51,6 +51,12 @@ const ManajemenUser = () => {
   }, [userId])
 
   React.useEffect(() => {
+    if (users) {
+      console.log('Data pengguna:', users)
+    }
+  }, [users])
+
+  React.useEffect(() => {
     if (isSuccess && userId) {
       forms.reset({
         employeeIdentityNumber: user?.identityNumber,
@@ -84,10 +90,11 @@ const ManajemenUser = () => {
 
   const onSubmit = async (values: userUpdateFields) => {
     const newData = {
-      isActive: values.isActive ? '1' : '0'
+      isActive: values.isActive
     }
-    updateUser({ id: userId, fields: newData }, { onSuccess })
+    await updateUser({ id: userId, fields: newData }, { onSuccess })
   }
+
   const onSuccess = () => {
     forms.reset()
     setIsShow(false)
@@ -299,4 +306,5 @@ const ManajemenUser = () => {
     </Container>
   )
 }
+
 export default ManajemenUser

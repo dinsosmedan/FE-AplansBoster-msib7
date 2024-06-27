@@ -37,10 +37,10 @@ export default function HeaderUser() {
     <>
       {isLoading && <Loading />}
       <header className="font-poppins">
-        <div className="h-20 fixed inset-x-0 top-0 bg-white flex items-center md:px-14 px-5 z-50  ">
+        <div className="fixed inset-x-0 top-0 z-50 flex items-center h-20 px-5 bg-white md:px-14 md:h-26">
           <div className="flex items-center justify-between flex-1">
             <Link to="/">
-              <img src={Logo} alt="logo" className="w-[200px] md:w-[297px]" />
+              <img src={Logo} alt="logo" className="w-[200px] md:w-[250px]  md:h-[65px]" />
             </Link>
             <nav className="flex items-center gap-8 font-semibold">
               <div className="flex items-center gap-8 ">
@@ -48,23 +48,22 @@ export default function HeaderUser() {
                   <Link to="/" className="hover:text-primary pe-5">
                     Beranda
                   </Link>
-                  {auth.token && (
+                  {/* {auth.token && (
                     <Link to="/user/submission-history" className="hover:text-primary pe-5">
                       Riwayat
                     </Link>
                   )}
                   <Link to="/user/cek-bansos" className="hover:text-primary">
                     Cek Bansos
-                  </Link>
+                  </Link> */}
 
                   <Link to="/" className="hover:text-primary pe-5">
                     
                   </Link>
-                  {auth.token && (
-                    <Link to="/user/" className="hover:text-primary pe-5">
+                  <Link to="/user/regulasi" className="hover:text-primary pe-5">
                       Regulasi
                     </Link>
-                  )}
+                  
 
                     
                   
@@ -79,7 +78,7 @@ export default function HeaderUser() {
                           <img
                             alt="profile"
                             className="w-10 h-10 rounded-full object-cover bg-[#ECF0F4]"
-                            src={`https://ui-avatars.com/api/?background=fce9ee&color=dd2153&bold=true&name=${auth.user?.name}`}
+                            src={`https://ui-avatars.com/api/?background=4c6f88&color=d5e9f7&bold=true&name=${auth.user?.name}`}
                           />
                           <div className="absolute z-100 -bottom-1 -right-1 border-white border bg-[#ECF0F4] rounded-full w-5 h-5 flex">
                             <HiChevronDown className="m-auto text-sm" />
@@ -89,12 +88,12 @@ export default function HeaderUser() {
                       <DropdownMenuContent className="min-w-[300px] rounded-xl px-5 py-6 mt-8 mr-24">
                         <DropdownMenuItem>
                           <DropdownMenuLabel
-                            className="flex items-center justify-between outline-none border-none ring-0 hover:bg-zinc-100 rounded-lg cursor-pointer"
+                            className="flex items-center justify-between border-none rounded-lg outline-none cursor-pointer ring-0 hover:bg-zinc-100"
                             onClick={() => navigate('/user/profile')}
                           >
                             <div className="flex items-center gap-[22px]">
                               <div className="flex w-11 h-11 rounded-full bg-[#FCE9EE]">
-                                <HiCog6Tooth className="m-auto text-primary text-3xl" />
+                                <HiCog6Tooth className="m-auto text-3xl text-primary" />
                               </div>
                               <p className="font-poppins font-medium text-[#494949]">Pengaturan</p>
                             </div>
@@ -108,7 +107,7 @@ export default function HeaderUser() {
                             onClick={handleLogout}
                           >
                             <div className="flex w-11 h-11 rounded-full bg-[#FCE9EE]">
-                              <HiOutlineArrowRightOnRectangle className="m-auto text-primary text-2xl" />
+                              <HiOutlineArrowRightOnRectangle className="m-auto text-2xl text-primary" />
                             </div>
                             <p className="font-poppins font-medium text-[#494949]">Keluar</p>
                           </DropdownMenuLabel>
@@ -122,7 +121,7 @@ export default function HeaderUser() {
                 <>
                   <div className="h-10 w-1 rounded-full bg-[#F5F5F5]" />
                   <div className="flex items-center gap-8">
-                    <Link to="/user/login" className="hover:text-primary hidden md:block">
+                    <Link to="/user/login" className="hover:text-primary">
                       Masuk
                     </Link>
                     <Link to="/user/register">
@@ -141,7 +140,7 @@ export default function HeaderUser() {
                 Beranda
               </Link>
             </li>
-            <li>
+            {/* <li>
               {auth.token && (
                 <Link to="/user/submission-history" className="hover:text-primary pe-7">
                   Riwayat
@@ -151,6 +150,11 @@ export default function HeaderUser() {
             <li>
               <Link to="/user/cek-bansos" className="hover:text-primary">
                 Cek Bansos
+              </Link>
+            </li> */}
+            <li>
+              <Link to="/user/regulasi" className="hover:text-primary">
+                Regulasi
               </Link>
             </li>
           </ul>

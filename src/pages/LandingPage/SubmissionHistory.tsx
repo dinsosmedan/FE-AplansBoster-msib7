@@ -44,12 +44,12 @@ export default function SubmissionHistory() {
               <HiChevronDown className="text-lg " />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-[#ECF0F4] w-[155px] ">
-              <DropdownMenuItem className=" cursor-pointer text-left">
+              <DropdownMenuItem className="text-left cursor-pointer ">
                 <DropdownMenuLabel className="w-full" onClick={async () => await onChangeFilter('SKTM')}>
                   SKTM
                 </DropdownMenuLabel>
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer text-left">
+              <DropdownMenuItem className="text-left cursor-pointer">
                 <DropdownMenuLabel className="w-full" onClick={async () => await onChangeFilter('BBP')}>
                   BBP
                 </DropdownMenuLabel>
@@ -73,11 +73,11 @@ export default function SubmissionHistory() {
             const waktulalu = waktuLalu(waktuDiberikan)
             return (
               <div className="md:pl-[90px] pl-[20px] flex" key={index}>
-                <div className="bg-red-600/10  rounded-full md:w-14 w-16 md:h-14 h-11 flex items-center justify-center ">
-                  <HiAcademicCap className="md:w-10 w-8 md:h-10 h-8 text-primary" />
+                <div className="flex items-center justify-center w-16 rounded-full bg-red-600/10 md:w-14 md:h-14 h-11 ">
+                  <HiAcademicCap className="w-8 h-8 md:w-10 md:h-10 text-primary" />
                 </div>
-                <div className="flex flex-col md:pl-7 pl-4 gap-1">
-                  <p className="lg:text-lg text-md font-semibold">{title}</p>
+                <div className="flex flex-col gap-1 pl-4 md:pl-7">
+                  <p className="font-semibold lg:text-lg text-md">{title}</p>
                   <div className="flex items-center gap-2">
                     <div className="bg-[#5BC665] w-[18px] h-[18px] rounded-md flex items-center justify-center">
                       {}

@@ -3,8 +3,6 @@ import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Action, ExportButton, Loading, Modal, Title, Pagination, Container, SearchSelect } from '@/components'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { formatToView } from '@/lib/services/formatDate'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -16,8 +14,7 @@ import {
   useGetKelurahan,
   useGetMe,
   useGetServiceFund,
-  useGetServiceFunds,
-  useGetServiceTypes
+  useGetServiceFunds
 } from '@/store/server'
 import { exportServiceFundFn } from '@/api/dayasos.api'
 import { useAlert, useTitleHeader } from '@/store/client'
@@ -40,8 +37,8 @@ const DataLks = () => {
       { url: '/data-penerima', label: 'Data Penerima' },
       { url: '/data-penerima/rehabsos', label: 'Rehabsos' },
       { url: '/data-penerima/rehabsos/izin-operasi-lks', label: 'Tanda Daftar/Izin Operasional LKS' }
-    ])
-  }, [])
+    ])
+  }, [])
 
   const navigate = useNavigate()
   const { alert } = useAlert()
@@ -63,20 +60,13 @@ const DataLks = () => {
     page,
     type,
     year: budgetYear
-  } = useGetParams([
-    'q', 
-    'kecamatan', 
-    'kelurahan', 
-    'page', 
-    'type', 
-    'year'
-  ])
+  } = useGetParams(['q', 'kecamatan', 'kelurahan', 'page', 'type', 'year'])
   const forms = useForm<FormValues>({
-    defaultValues: { 
-      q: q ?? '', 
-      kelurahan: kelurahan ?? '', 
-      kecamatan: kecamatan ?? '', 
-      type: '', 
+    defaultValues: {
+      q: q ?? '',
+      kelurahan: kelurahan ?? '',
+      kecamatan: kecamatan ?? '',
+      type: '',
       year: ''
     }
   })
@@ -84,7 +74,6 @@ const DataLks = () => {
   const areaLevel3 = forms.watch('kecamatan')
   const { data: listKecamatan } = useGetKecamatan()
   const { data: listKelurahan } = useGetKelurahan(areaLevel3 ?? kecamatan)
-  const { data: serviceTypes } = useGetServiceTypes()
   const { data: serviceFund, isLoading: isLoadingServiceFund } = useGetServiceFund(selectedId)
   const { mutateAsync: deleteServiceFund } = useDeleteServiceFund()
 
@@ -244,17 +233,17 @@ const DataLks = () => {
                   </FormItem>
                 )}
               />
-             <FormField
-              name="year"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun" />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+              <FormField
+                name="year"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ''} type="text" placeholder="Masukkan Tahun" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
             </div>
           </section>
 
@@ -288,7 +277,7 @@ const DataLks = () => {
       <section className="border rounded-xl mt-5 overflow-hidden">
         <Table>
           <TableHeader className="bg-white">
-          <TableRow>
+            <TableRow>
               <TableHead className="text-[#534D59] font-bold text-[15px]">No .</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Nama</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Alamat</TableHead>
@@ -297,7 +286,8 @@ const DataLks = () => {
               <TableHead className="text-[#534D59] font-bold text-[15px]">Jumlah</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Tahun Anggaran</TableHead>
               <TableHead className="text-[#534D59] font-bold text-[15px]">Action</TableHead>
-            </TableRow>
+                   
+            </TableRow>
           </TableHeader>
           <TableBody>
             {serviceFunds?.data?.length !== 0 ? (

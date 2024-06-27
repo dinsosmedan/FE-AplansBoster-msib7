@@ -1,3 +1,4 @@
+import ENV from '@/lib/environment'
 import {
   Action,
   Container,
@@ -15,12 +16,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useForm } from 'react-hook-form'
 import FilterLayanan from './../../components/atoms/FilterLayanan'
 import { useCreateParams, useGetParams, useTitle } from '@/hooks'
-import { useGetTuitionAssistanceByEventId, useUpdateTuitionAssistanceEventStatus } from '@/store/server/useService'
+import { useDeleteTuitionAssistanceEvent, useGetTuitionAssistanceByEventId, useUpdateTuitionAssistanceEventStatus } from '@/store/server/useService'
 import { useParams } from 'react-router-dom'
 import { useGetEventById } from '@/store/server'
 import * as React from 'react'
-import { useTitleHeader } from '@/store/client'
-
+import { useAlert, useTitleHeader } from '@/store/client'
+import { useToastEmail } from '@/hooks'
+import axios from 'axios'
+import { exportTuitionApplicationPublicFn } from '@/api/service.api'
 const dataLayanan = [
   { text: 'Data Pengajuan', tab: 'pending' },
   { text: 'Data Diproses', tab: 'processed' },
@@ -40,14 +43,30 @@ export default function LayananBbp() {
       { url: `/layanan/bbp/${id}`, label: 'BBP' }
     ])
   }, [])
+  const { alert } = useAlert()
+
+  const { mutateAsync: isDelete, isLoading:isLoadingDelete } = useDeleteTuitionAssistanceEvent()
+
+const handleDelete = (id: string) => {
+  void alert({
+    title: 'Delete',
+    description: 'Yakin untuk menghapus ?',
+    submitText: 'Delete',
+    variant: 'danger'
+  }).then(async () => {
+    await isDelete(id)
+  })
+}
 
   const [isShow, setIsShow] = React.useState(false)
   const [isShowPengajuan, setIsShowPengajuan] = React.useState(false)
   const [tuitionAssistanceId, setTuitionAssistanceId] = React.useState('')
+  const toastEmail = useToastEmail()
 
   const createParams = useCreateParams()
   const { search, tab, page } = useGetParams(['search', 'tab', 'page'])
 
+  
   const { data: event } = useGetEventById(id as string)
   const { mutate: update, isLoading: isLoadingUpdate } = useUpdateTuitionAssistanceEventStatus()
   const { data, refetch, isFetching } = useGetTuitionAssistanceByEventId({
@@ -58,6 +77,7 @@ export default function LayananBbp() {
   })
 
   const forms = useForm<{ search: string }>()
+  const [loading, setLoading] = React.useState<boolean>(false)
 
   const onSearch = async (values: { search: string }) => {
     createParams({ key: 'search', value: values.search })
@@ -68,14 +88,45 @@ export default function LayananBbp() {
     update({ id, fields: { dtksStatus: values } })
   }
 
-  console.log(data)
+
+
+  const handleClick = async () => {
+    const apiPublic = axios.create({
+      baseURL: ENV.apiUrl
+    })
+    setLoading(true)
+    try {
+      const response = await apiPublic.post('update-application-status', {
+        status: 'updated'
+      })
+      if (response.status === 200) {
+        toastEmail({
+          successCondition: true,
+          onSuccess: () => {}
+        })
+      } else {
+        toastEmail({
+          successCondition: true,
+          onSuccess: () => {}
+        })
+      }
+    } catch (error) {
+      toastEmail({
+        successCondition: true,
+        onSuccess: () => {}
+      })
+    }
+    finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <Container>
-      {(isFetching || isLoadingUpdate) && <Loading />}
+      {(isFetching || isLoadingUpdate || isLoadingDelete) && <Loading />}
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSearch)} className="flex flex-col gap-6">
-          <div className="flex flex-row justify-between gap-3 py-6 items-center">
+          <div className="flex flex-row items-center justify-between gap-3 py-6">
             <div className="w-6/12">
               <FormField
                 name="search"
@@ -90,11 +141,14 @@ export default function LayananBbp() {
               />
             </div>
             <div className="flex items-end justify-end">
-              <Button className="bg-primary w-[143px] h-[56px] rounded-xl mr-4" type="button">
-                <p className="text-white text-base font-bold">Kirim Notifikasi</p>
+              <Button 
+              className="bg-primary w-[143px] h-[56px] rounded-xl mr-4" type="button"   onClick={handleClick}>
+              {loading && <Loading />}
+            
+                <p className="text-base font-bold text-white">Kirim Notifikasi</p>
               </Button>
               <div className="bg-[#fce9ee] px-5 py-4 rounded-xl">
-                <p className="text-primary text-base font-bold">
+                <p className="text-base font-bold text-primary">
                   Total Kuota : {event?.filledQuota}/{event?.quota ?? event?.filledQuota}
                 </p>
               </div>
@@ -102,8 +156,9 @@ export default function LayananBbp() {
           </div>
         </form>
       </Form>
+      
       <FilterLayanan jenis={`bbp/${id}`} data={dataLayanan} />
-      <section className="border rounded-xl mt-5 overflow-hidden">
+      <section className="mt-5 overflow-hidden border rounded-xl">
         <Table>
           <TableHeader className="bg-[#FFFFFF]">
             <TableRow>
@@ -113,7 +168,7 @@ export default function LayananBbp() {
               <TableHead className="text-white font-bold text-[15px] bg-primary">Status</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">Jenis Kelamin</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">Kecamatan</TableHead>
-              <TableHead className="text-white font-bold text-[15px] bg-primary">Kalurahan</TableHead>
+              <TableHead className="text-white font-bold text-[15px] bg-primary">Kelurahan</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">Alamat</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">No Hp</TableHead>
               <TableHead className="text-white font-bold text-[15px] bg-primary">Status DTKS</TableHead>
@@ -170,8 +225,12 @@ export default function LayananBbp() {
                         setIsShowPengajuan(true)
                         setTuitionAssistanceId(item.id)
                       }}
+                      onDelete={()=> {
+                        handleDelete(item.id)
+                      }}
                       editText="Edit data"
                       detailText="Edit Pengajuan"
+                      deleteText='Hapus'
                     />
                   </TableCell>
                 </TableRow>
